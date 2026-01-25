@@ -1,0 +1,13 @@
+image: python:3.11
+
+pages:
+  stage: deploy
+  script:
+    - pip install mkdocs mkdocs-material
+    # Build ke folder "public" karena GitLab Pages publish dari artifacts public/
+    - mkdocs build --site-dir public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
