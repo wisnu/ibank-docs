@@ -1,6 +1,6 @@
 site_name: iBank Documentation
 site_description: Dokumentasi aplikasi core banking iBank
-site_url: https://github.com/wishnew/ibank-docs
+site_url: https://wisnu.github.io/ibank-docs/
 
 theme:
   name: material

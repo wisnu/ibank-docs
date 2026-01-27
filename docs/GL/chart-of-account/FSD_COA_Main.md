@@ -1,12 +1,13 @@
 # FSD: COA Management (Chart of Account)
 
-> Module: COA Management
-> Parent FSD: FSD-Main.md
-> Version: 1.0
-> Date: 2026-01-19
-> Status: Draft
-> Status: Final
-> Owner: IT / System Owner
+| **Metadata** | |
+|--------------|-------------|
+| **Module** | COA Management |
+| **Parent FSD** | FSD-Main.md |
+| **Version** | 1.0 |
+| **Date** | 2026-01-19 |
+| **Status** | Final |
+| **Owner** | IT / System Owner |
 
 ---
 

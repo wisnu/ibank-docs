@@ -1,9 +1,11 @@
 # Dokumen Testing: Ubah Rekening (COA)
 
-> Sumber: [FSD_COA_Edit.md](FSD_COA_Edit.md)
-> Versi: 1.0
-> Tanggal: 2026-01-19
-> Status: Draft
+| **Metadata** | |
+|--------------|-------------|
+| **Sumber** | [FSD_COA_Edit.md](FSD_COA_Edit.md) |
+| **Versi** | 1.0 |
+| **Tanggal** | 2026-01-19 |
+| **Status** | Draft |
 
 ---
 

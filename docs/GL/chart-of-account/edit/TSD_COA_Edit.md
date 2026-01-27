@@ -1,11 +1,13 @@
 # TSD: Ubah Rekening (Chart of Account)
 
-> Module: COA Management – Ubah Rekening
-> Parent FSD: FSD_COA_Edit_v2.md
-> Version: 2.0
-> Date: 2026-01-19
-> Status: Draft
-> Owner: IT / System Owner
+| **Metadata** | |
+|--------------|-------------|
+| **Module** | COA Management – Ubah Rekening |
+| **Parent FSD** | FSD_COA_Edit_v2.md |
+| **Version** | 2.0 |
+| **Date** | 2026-01-19 |
+| **Status** | Draft |
+| **Owner** | IT / System Owner |
 
 ---
 

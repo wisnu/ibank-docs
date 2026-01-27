@@ -1,11 +1,13 @@
 # FSD: Daftar Rekening (Chart of Account)
 
-> Module: COA Management - Daftar Rekening
-> Parent FSD: FSD_COA_Main.md
-> Version: 1.0
-> Date: 2026-01-19
-> Status: Draft
-> Owner: IT / System Owner
+| **Metadata** | |
+|--------------|-------------|
+| **Module** | COA Management - Daftar Rekening |
+| **Parent FSD** | FSD_COA_Main.md |
+| **Version** | 1.0 |
+| **Date** | 2026-01-19 |
+| **Status** | Draft |
+| **Owner** | IT / System Owner |
 
 ---
 
