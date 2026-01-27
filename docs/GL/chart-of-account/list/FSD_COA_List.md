@@ -11,10 +11,11 @@
 
 ---
 
-## Change Log (v1.0)
+## Change Log
 
-- Initial FSD untuk fitur Daftar Rekening.
-
+### 2026-01-19
+- Inisialisasi 
+- 
 ---
 
 ## Module Overview

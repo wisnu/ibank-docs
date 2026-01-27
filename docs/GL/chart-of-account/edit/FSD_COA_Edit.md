@@ -11,15 +11,6 @@
 
 ---
 
-## Change Log (v1.1)
-
-- Menghapus referensi **fallback** (tidak relevan untuk modul ini).
-- Menyesuaikan **Data Model** dan seluruh mapping field ke schema:
-  - `ibcore.account`
-  - `ibcore.accountinstance`
-
----
-
 ## Module Overview
 
 Modul **Ubah Rekening (COA)** menyediakan fungsi untuk melakukan perubahan data master rekening (COA) beserta parameter pendukungnya.
@@ -541,3 +532,15 @@ Kolom penting yang relevan untuk modul Ubah Rekening:
 
 | # | Question                                                                          | Status | Notes                               |
 | --- | ----------------------------------------------------------------------------------- | -------- | ------------------------------------- |
+
+
+
+---
+
+## Change Log
+
+### 2026-01-19
+- Inisialisasi 
+- Menyesuaikan **Data Model** dan seluruh mapping field ke schema:
+  - `ibcore.account`
+  - `ibcore.accountinstance`
