@@ -598,7 +598,687 @@
               </tr>
               <tr>
                 <td>525</td>
-                <td>KANTOR CABANG BSD</td>
+                <td>KANTOR CABANG
+                  <!doctype html>
+                  <html lang="id">
+
+                  <head>
+                    <meta charset="utf-8" />
+                    <meta name="viewport" content="width=device-width,initial-scale=1" />
+                    <title>Simulasi Mockup - Ubah COA (Operator)</title>
+                    <style>
+                      :root {
+                        --bg: #f6f7fb;
+                        --card: #ffffff;
+                        --text: #111827;
+                        --muted: #6b7280;
+                        --line: #e5e7eb;
+                        --primary: #b91c1c;
+                        --primary-hover: #991b1b;
+                        --shadow: 0 6px 18px rgba(17, 24, 39, .08);
+                        --radius: 12px;
+                        --coa-bg: #fff7ed;
+                        --coa-border: #fed7aa;
+                        --param-bg: #f0f9ff;
+                        --param-border: #bae6fd;
+                      }
+
+                      * {
+                        box-sizing: border-box
+                      }
+
+                      body {
+                        margin: 0;
+                        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+                        background: var(--bg);
+                        color: var(--text)
+                      }
+
+                      .page {
+                        max-width: 1500px;
+                        margin: 22px auto;
+                        padding: 0 18px 28px
+                      }
+
+                      .titlebar {
+                        display: flex;
+                        align-items: flex-start;
+                        justify-content: space-between;
+                        gap: 12px;
+                        margin: 6px 0 14px
+                      }
+
+                      .title {
+                        font-size: 18px;
+                        font-weight: 800;
+                        margin: 0
+                      }
+
+                      .subtitle {
+                        margin: 4px 0 0;
+                        font-size: 12px;
+                        color: var(--muted)
+                      }
+
+                      .card {
+                        background: var(--card);
+                        border: 1px solid var(--line);
+                        border-radius: var(--radius);
+                        box-shadow: var(--shadow);
+                        padding: 16px
+                      }
+
+                      .grid {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 14px 22px
+                      }
+
+                      @media (max-width:980px) {
+                        .grid {
+                          grid-template-columns: 1fr
+                        }
+                      }
+
+                      .grid-3 {
+                        grid-template-columns: 1fr 1fr 1fr
+                      }
+
+                      @media (max-width:980px) {
+                        .grid-3 {
+                          grid-template-columns: 1fr
+                        }
+                      }
+
+                      .field label {
+                        display: block;
+                        font-size: 12px;
+                        color: var(--muted);
+                        margin: 2px 0 6px
+                      }
+
+                      .req::after {
+                        content: " *";
+                        color: var(--primary);
+                        font-weight: 800
+                      }
+
+                      .control {
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid var(--line);
+                        border-radius: 10px;
+                        background: #fff;
+                        font-size: 14px;
+                        outline: none
+                      }
+
+                      .control:focus {
+                        border-color: #c7c9d1;
+                        box-shadow: 0 0 0 3px rgba(185, 28, 28, .12)
+                      }
+
+                      textarea.control {
+                        min-height: 110px;
+                        resize: vertical
+                      }
+
+                      .readonly {
+                        background: #f3f4f6;
+                        color: #6b7280
+                      }
+
+                      .row-all {
+                        grid-column: 1/-1
+                      }
+
+                      .checks {
+                        display: flex;
+                        gap: 22px;
+                        align-items: center;
+                        padding-top: 6px;
+                        flex-wrap: wrap
+                      }
+
+                      .check {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: var(--muted);
+                        font-size: 13px;
+                        user-select: none
+                      }
+
+                      .tabs {
+                        margin-top: 14px;
+                        padding-top: 14px;
+                        border-top: 1px solid var(--line)
+                      }
+
+                      .tab-buttons {
+                        display: flex;
+                        gap: 8px;
+                        flex-wrap: wrap;
+                        margin-bottom: 10px
+                      }
+
+                      .tab-btn {
+                        border: 1px solid var(--line);
+                        background: #fff;
+                        color: var(--muted);
+                        padding: 8px 12px;
+                        border-radius: 12px;
+                        font-weight: 800;
+                        cursor: pointer;
+                        font-size: 12px
+                      }
+
+                      .tab-btn.active {
+                        border-color: rgba(185, 28, 28, .35);
+                        box-shadow: 0 0 0 3px rgba(185, 28, 28, .10);
+                        color: var(--text)
+                      }
+
+                      .tab {
+                        display: none;
+                        border: 1px solid var(--line);
+                        border-radius: 12px;
+                        padding: 12px;
+                        background: #fff
+                      }
+
+                      .tab.active {
+                        display: block
+                      }
+
+                      .tab.tab-coa {
+                        background: var(--coa-bg);
+                        border-color: var(--coa-border)
+                      }
+
+                      .tab.tab-param {
+                        background: var(--param-bg);
+                        border-color: var(--param-border)
+                      }
+
+                      .tab-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        margin: -12px -12px 12px;
+                        padding: 10px 12px;
+                        border-bottom: 1px dashed
+                      }
+
+                      .tab-coa .tab-header {
+                        background: #fffaf2;
+                        border-bottom-color: var(--coa-border)
+                      }
+
+                      .tab-param .tab-header {
+                        background: #f8fdff;
+                        border-bottom-color: var(--param-border)
+                      }
+
+                      .pill {
+                        font-size: 11px;
+                        font-weight: 900;
+                        border-radius: 999px;
+                        padding: 4px 8px
+                      }
+
+                      .pill-coa {
+                        background: #ffedd5;
+                        color: #9a3412
+                      }
+
+                      .pill-param {
+                        background: #e0f2fe;
+                        color: #075985
+                      }
+
+                      .section-title {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin: 4px 0 10px
+                      }
+
+                      .section-title h3 {
+                        margin: 0;
+                        font-size: 13px;
+                        font-weight: 900;
+                        color: var(--primary);
+                        letter-spacing: .2px
+                      }
+
+                      .table-wrapper {
+                        width: 100%;
+                        overflow-x: auto;
+                        margin-top: 10px
+                      }
+
+                      table {
+                        width: 100%;
+                        min-width: 900px;
+                        border-collapse: collapse;
+                        font-size: 13px
+                      }
+
+                      thead th {
+                        text-align: left;
+                        color: var(--muted);
+                        font-weight: 700;
+                        background: #fafafa;
+                        border: 1px solid var(--line);
+                        padding: 10px 10px
+                      }
+
+                      tbody td {
+                        border: 1px solid var(--line);
+                        padding: 10px 10px;
+                        color: #374151;
+                        vertical-align: top
+                      }
+
+                      .actions {
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 10px;
+                        margin-top: 14px;
+                        padding-top: 14px;
+                        border-top: 1px solid var(--line)
+                      }
+
+                      .btn {
+                        border: 1px solid var(--line);
+                        background: #fff;
+                        color: var(--primary);
+                        padding: 10px 16px;
+                        border-radius: 12px;
+                        font-weight: 900;
+                        cursor: pointer;
+                        font-size: 13px
+                      }
+
+                      .btn:hover {
+                        filter: brightness(.98)
+                      }
+
+                      .btn-primary {
+                        border-color: var(--primary);
+                        background: var(--primary);
+                        color: #fff
+                      }
+
+                      .btn-primary:hover {
+                        background: var(--primary-hover)
+                      }
+
+                      .mini-actions {
+                        display: flex;
+                        gap: 8px;
+                        align-items: center;
+                        justify-content: flex-end;
+                        flex-wrap: wrap
+                      }
+
+                      .btn-ghost {
+                        border: 1px dashed var(--line);
+                        background: transparent;
+                        color: var(--muted);
+                        padding: 8px 12px;
+                        border-radius: 12px;
+                        font-weight: 900;
+                        cursor: pointer;
+                        font-size: 12px
+                      }
+
+                      .btn-ghost:hover {
+                        filter: brightness(.98)
+                      }
+
+                      .badge {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 6px;
+                        background: #fff;
+                        border: 1px solid var(--line);
+                        border-radius: 999px;
+                        padding: 6px 10px;
+                        font-size: 12px;
+                        color: var(--muted);
+                        font-weight: 800
+                      }
+
+                      .dot {
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 999px;
+                        background: var(--primary);
+                        display: inline-block
+                      }
+
+                      .toast {
+                        position: fixed;
+                        right: 18px;
+                        bottom: 18px;
+                        background: #111827;
+                        color: #fff;
+                        border-radius: 14px;
+                        padding: 12px 14px;
+                        font-size: 13px;
+                        box-shadow: 0 10px 28px rgba(0, 0, 0, .18);
+                        opacity: 0;
+                        transform: translateY(10px);
+                        transition: .2s ease;
+                        max-width: min(520px, calc(100vw - 36px));
+                        pointer-events: none;
+                        white-space: pre-wrap
+                      }
+
+                      .toast.show {
+                        opacity: 1;
+                        transform: translateY(0)
+                      }
+
+                      .hint {
+                        font-size: 12px;
+                        color: var(--muted);
+                        margin-top: 6px
+                      }
+                    </style>
+                  </head>
+
+                  <body>
+                    <div class="page">
+                      <div class="titlebar">
+                        <div>
+                          <h1 class="title">Ubah Rekening COA</h1>
+                          <p class="subtitle">Role: Operator • Submit akan menghasilkan pengajuan (Pending Approval).
+                          </p>
+                        </div>
+                      </div>
+
+                      <form class="card" id="form">
+                        <div class="grid">
+                          <div class="field"><label>Kelompok Rekening (RO)</label><select class="control readonly"
+                              disabled>
+                              <option>Harta (Asset)</option>
+                            </select></div>
+                          <div class="field"><label>Tanggal Pembuatan (RO)</label><input class="control readonly"
+                              type="date" value="2022-03-19" disabled /></div>
+                          <div class="checks row-all">
+                            <label class="check"><input type="checkbox" disabled checked /> Detail</label>
+                            <label class="check"><input type="checkbox" disabled checked /> Rekening RPV</label>
+                          </div>
+                          <div class="field row-all">
+                            <label class="req">Rekening Induk</label>
+                            <select class="control" id="rekeningInduk" required>
+                              <option value="" disabled>-- PILIH REKENING INDUK --</option>
+                              <option selected value="1000001">1000001 - Kas Besar</option>
+                              <option value="1000002">1000002 - Kas Kecil</option>
+                              <option value="1100001">1100001 - Giro di Bank</option>
+                            </select>
+                            <div class="hint">Dropdown seperti referensi UI (searchable di implementasi FE).</div>
+                          </div>
+                          <div class="field"><label>Kode Rekening (RO)</label><input class="control readonly"
+                              value="1000001005" disabled /></div>
+                          <div class="field">
+                            <label class="req">Nama Rekening</label>
+                            <input id="nama" class="control" required value="Kas Besar" />
+                            <div class="hint">Diisi operator. Maks 200 karakter.</div>
+                          </div>
+                          <div class="field row-all">
+                            <label class="req">Grup Rekening</label>
+                            <select class="control" id="grupRekening" required>
+                              <option value="" disabled>-- PILIH GRUP REKENING --</option>
+                              <option selected value="ASET">ASET</option>
+                              <option value="KEWAJIBAN">KEWAJIBAN</option>
+                              <option value="MODAL">MODAL</option>
+                              <option value="PENDAPATAN">PENDAPATAN</option>
+                              <option value="BEBAN">BEBAN</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="field row-all"><label>Deskripsi Rekening</label><textarea id="desc"
+                            class="control">Akun ini digunakan untuk pembukuan kas.</textarea>
+                          <div class="hint">Max 400 karakter (rule FSD).</div>
+                        </div>
+
+                        <div class="field row-all"><label>Keterhubungan CPA</label><input id="cpa" class="control"
+                            placeholder="Pilih CPA" /></div>
+
+                        <div class="tabs">
+                          <div class="tab-buttons">
+                            <button type="button" class="tab-btn active" data-tab="t1">Konfigurasi Pelaporan</button>
+                            <button type="button" class="tab-btn" data-tab="t2">Konfigurasi Saldo & Transaksi</button>
+                          </div>
+
+                          <!-- TAB: KONFIGURASI PELAPORAN -->
+                          <div id="t1" class="tab tab-coa active">
+                            <div class="section-title">
+                              <h3>Parameter Report</h3>
+                            </div>
+                            <div class="grid">
+                              <div class="field"><label>LBUS Code</label><input class="control" /></div>
+                              <div class="field"><label>LBUS Type</label><input class="control" /></div>
+                              <div class="field"><label>LSMK Code</label><input class="control" /></div>
+                              <div class="field"><label>LSMK Type</label><input class="control" /></div>
+                              <div class="field"><label>LBBU Code</label><input class="control" /></div>
+                              <div class="field"><label>Intern Code</label><input class="control" /></div>
+                              <div class="field"><label>PUB Code</label><input class="control" /></div>
+                            </div>
+                            <div class="section-title" style="margin-top:14px">
+                              <h3>Parameter Pajak</h3>
+                            </div>
+                            <div class="grid">
+                              <div class="field">
+                                <label>Tipe Pajak</label>
+                                <select class="control" id="taxType">
+                                  <option value="" selected>-- PILIH TIPE PAJAK --</option>
+                                  <option value="PPH21">PPH 21</option>
+                                  <option value="PPH23">PPH 23</option>
+                                  <option value="PPN">PPN</option>
+                                  <option value="LAINNYA">Lainnya</option>
+                                </select>
+                              </div>
+                              <div class="field"><label>Tenaga Ahli</label>
+                                <div class="checks" style="padding-top:0"><label class="check"><input id="taxExpert"
+                                      type="checkbox" />
+                                    Centang jika Tenaga Ahli</label></div>
+                              </div>
+                              <div class="field"><label>Kode Pajak</label><input class="control" /></div>
+                              <div class="field">
+                                <label>Nomor Akun Pajak</label>
+                                <select class="control" id="taxAccount">
+                                  <option value="" selected>-- PILIH NOMOR AKUN PAJAK --</option>
+                                  <option value="2110001">2110001 - Hutang Pajak</option>
+                                  <option value="2110002">2110002 - Hutang PPh</option>
+                                  <option value="2110003">2110003 - Hutang PPN</option>
+                                </select>
+                                <div class="hint">Sumber data: COA detail (is_detail='T').</div>
+                              </div>
+                              <div class="field"><label>Tarif Pajak NPWP</label><input class="control" type="number"
+                                  min="0" step="0.01" value="0" /></div>
+                              <div class="field"><label>Tarif Pajak Non NPWP</label><input class="control" type="number"
+                                  min="0" step="0.01" value="0" /></div>
+                            </div>
+                          </div>
+
+                          <!-- TAB: KONFIGURASI SALDO & TRANSAKSI -->
+                          <div id="t2" class="tab tab-param">
+                            <div class="section-title">
+                              <h3>Default Saldo & Transaksi</h3>
+                            </div>
+                            <div class="grid">
+                              <div class="field">
+                                <label class="req">Saldo Normal (Default)</label>
+                                <div style="display:flex;gap:10px;align-items:center">
+                                  <select class="control" id="defNormal" required>
+                                    <option>Debet</option>
+                                    <option>Kredit</option>
+                                    <option>Netral</option>
+                                  </select>
+                                  <button type="button" class="btn-ghost" id="btnPropNormal">Terapkan ke semua Account
+                                    Instance</button>
+                                </div>
+                              </div>
+
+                              <div class="field">
+                                <label class="req">Saldo Harus Nihil (Default)</label>
+                                <div style="display:flex;gap:10px;align-items:center">
+                                  <select class="control" id="defZero" required>
+                                    <option>Boleh Tidak Nihil</option>
+                                    <option>Harus Nihil</option>
+                                  </select>
+                                  <button type="button" class="btn-ghost" id="btnPropZero">Terapkan ke semua Account
+                                    Instance</button>
+                                </div>
+                              </div>
+
+                              <div class="field">
+                                <label class="req">Status Transaksi (Default)</label>
+                                <div style="display:flex;gap:10px;align-items:center">
+                                  <select class="control" id="defTrx" required>
+                                    <option>Boleh Bertransaksi</option>
+                                    <option>Tidak Boleh Bertransaksi</option>
+                                  </select>
+                                  <button type="button" class="btn-ghost" id="btnPropTrx">Terapkan ke semua Account
+                                    Instance</button>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="section-title" style="margin-top:14px">
+                              <h3>List Account Instance</h3>
+                            </div>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Kode Kantor</th>
+                                  <th>Nama Kantor</th>
+                                  <th>Valuta</th>
+                                  <th>Saldo Normal</th>
+                                  <th>Saldo Harus Nihil</th>
+                                  <th>Tipe Transaksi</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>504</td>
+                                  <td>KANTOR CABANG TANGERANG</td>
+                                  <td>IDR</td>
+                                  <td><select class="control">
+                                      <option>Debet</option>
+                                      <option>Kredit</option>
+                                      <option selected>Netral</option>
+                                    </select></td>
+                                  <td><select class="control">
+                                      <option selected>Boleh Tidak Nihil</option>
+                                      <option>Harus Nihil</option>
+                                    </select></td>
+                                  <td><select class="control">
+                                      <option>Boleh Bertransaksi</option>
+                                      <option selected>Boleh Bertransaksi Antar Cabang</option>
+                                      <option>Tidak Boleh Bertransaksi</option>
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                  <td>524</td>
+                                  <td>KANTOR CABANG CILEDUG</td>
+                                  <td>IDR</td>
+                                  <td><select class="control">
+                                      <option>Debet</option>
+                                      <option selected>Kredit</option>
+                                      <option>Netral</option>
+                                    </select></td>
+                                  <td><select class="control">
+                                      <option selected>Boleh Tidak Nihil</option>
+                                      <option>Harus Nihil</option>
+                                    </select></td>
+                                  <td><select class="control">
+                                      <option selected>Boleh Bertransaksi</option>
+                                      <option>Boleh Bertransaksi Antar Cabang</option>
+                                      <option>Tidak Boleh Bertransaksi</option>
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                  <td>525</td>
+                                  <td>KANTOR CABANG BSD</td>
+                                  <td>IDR</td>
+                                  <td><select class="control">
+                                      <option selected>Debet</option>
+                                      <option>Kredit</option>
+                                      <option>Netral</option>
+                                    </select></td>
+                                  <td><select class="control">
+                                      <option>Boleh Tidak Nihil</option>
+                                      <option selected>Harus Nihil</option>
+                                    </select></td>
+                                  <td><select class="control">
+                                      <option>Boleh Bertransaksi</option>
+                                      <option selected>Boleh Bertransaksi Antar Cabang</option>
+                                      <option>Tidak Boleh Bertransaksi</option>
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                  <td>505</td>
+                                  <td>KANTOR CABANG DEPOK</td>
+                                  <td>IDR</td>
+                                  <td><select class="control">
+                                      <option>Debet</option>
+                                      <option selected>Kredit</option>
+                                      <option>Netral</option>
+                                    </select></td>
+                                  <td><select class="control">
+                                      <option selected>Boleh Tidak Nihil</option>
+                                      <option>Harus Nihil</option>
+                                    </select></td>
+                                  <td><select class="control">
+                                      <option selected>Boleh Bertransaksi</option>
+                                      <option>Boleh Bertransaksi Antar Cabang</option>
+                                      <option>Tidak Boleh Bertransaksi</option>
+                                    </select></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="actions"><button type="button" class="btn" id="btnCancel">Batal</button><button
+                            type="submit" class="btn btn-primary">Submit</button></div>
+                      </form>
+                    </div>
+
+                    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+                    <script>
+                      const $ = (id) => document.getElementById(id);
+                      const toast = $("toast");
+                      function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(showToast._t); showToast._t = setTimeout(() => toast.classList.remove('show'), 2400) }
+                      document.querySelectorAll('.tab-btn').forEach(b => { b.addEventListener('click', () => { document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); b.classList.add('active'); document.getElementById(b.dataset.tab).classList.add('active') }) });
+                      $("btnCancel").addEventListener('click', () => { showToast('Batal (simulasi). Tidak ada perubahan disimpan.') });
+                      $("form").addEventListener('submit', (e) => { e.preventDefault(); if (!e.target.checkValidity()) { e.target.reportValidity(); return; } const payload = { account_code: '1000001005', account_name: $("nama").value, account_desc: $("desc").value, fl_cpa_accountcode: $("cpa").value, normal_balance_type_def: $("defNormal").value, is_zero_balance_def: $("defZero").value, trx_permit_type_def: $("defTrx").value, role: 'Operator', status: 'Pending Approval (simulasi)' }; showToast('Submit berhasil (simulasi). Pengajuan dibuat:\n' + JSON.stringify(payload, null, 2)) });
+                      const applyToInstances = (col, val) => {
+                        document.querySelectorAll('#t2 tbody tr').forEach(tr => {
+                          const map = { normal: 3, zero: 4, trx: 5 };
+                          const idx = map[col];
+                          const sel = tr.children[idx]?.querySelector('select');
+                          if (sel) { sel.value = val; }
+                        });
+                      };
+                      const btnN = document.getElementById('btnPropNormal');
+                      const btnZ = document.getElementById('btnPropZero');
+                      const btnT = document.getElementById('btnPropTrx');
+                      if (btnN) btnN.addEventListener('click', () => { applyToInstances('normal', document.getElementById('defNormal').value); showToast('Terapkan ke semua Account Instance (Saldo Normal) berhasil.'); });
+                      if (btnZ) btnZ.addEventListener('click', () => { applyToInstances('zero', document.getElementById('defZero').value); showToast('Terapkan ke semua Account Instance (Saldo Nihil) berhasil.'); });
+                      if (btnT) btnT.addEventListener('click', () => { applyToInstances('trx', document.getElementById('defTrx').value); showToast('Terapkan ke semua Account Instance (Status Transaksi) berhasil.'); });
+                    </script>
+                  </body>
+
+                  </html>VBSD
+                </td>
                 <td>IDR</td>
                 <td><select class="control">
                     <option selected>Debet</option>
