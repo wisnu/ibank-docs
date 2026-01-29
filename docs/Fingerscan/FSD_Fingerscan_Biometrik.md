@@ -626,11 +626,13 @@ sequenceDiagram
     participant Admin
     participant Portal as Single UI
     participant Service as Fingerscan Service
+    participant OIDC as OIDC Provider
     participant Station as Fingerstation
     
     Admin->>Portal: 1. Select User
     Portal->>Service: 2. Validate User
-    Service->>Service: 3. Check HRMIS
+    Service->>OIDC: 3. Authenticate User
+    OIDC-->>Service: User authenticated
     Service-->>Portal: User validated
     
     Admin->>Portal: 4. Start Capture
