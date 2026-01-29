@@ -1,330 +1,187 @@
-# FSD: Ubah Rekening (Chart of Account)
 
-| **Metadata** | |
-|--------------|-------------|
-| **Module** | COA Management – Ubah Rekening |
-| **Parent FSD** | FSD_COA_Main.md |
-| **Version** | 1.0 |
-| **Date** | 2026-01-19 |
-| **Status** | Draft |
-| **Owner** | IT / System Owner |
+# FSD – COA Maintenance: Ubah Rekening
 
----
+## Document Metadata
 
-## Module Overview
-
-Modul **Ubah Rekening (COA)** menyediakan fungsi untuk melakukan perubahan data master rekening (COA) beserta parameter pendukungnya.
-Perubahan **tidak langsung efektif**, melainkan masuk ke **daftar otorisasi** untuk kemudian di-*approve* / di-*reject* oleh user berwenang.
-
-Cakupan utama:
-
-- Edit atribut COA pada level master (`ibcore.account`)
-- Edit atribut COA per kantor & valuta (`ibcore.accountinstance`)
-- Submit perubahan untuk proses otorisasi
+| Item | Value |
+|------|-------|
+| Module | COA Management – Ubah Rekening |
+| Parent FSD | FSD_COA_Main |
+| Version | 1.2 |
+| Date | 2026-01-19 |
+| Status | Draft |
+| Owner | IT / System Owner |
+| Notes | Dokumen terpusat FSD (Backend + Frontend) dengan struktur berlapis |
 
 ---
 
-## Actors & Roles
+## 1. Overview & Scope
 
+Modul **Ubah Rekening (Chart of Account / COA)** digunakan untuk melakukan perubahan data rekening,
+baik pada level **master rekening** maupun **instance rekening per cabang & valuta**.
 
-| Actor         | Deskripsi                                        |
-| --------------- | -------------------------------------------------- |
-| Operator Data | Mengajukan perubahan COA                         |
-| Otorisator    | Melakukan approve/reject pengajuan perubahan COA |
+Seluruh perubahan **tidak langsung efektif**, namun harus melalui proses **otorisasi (maker–checker)**.
 
----
-
-## Data Flow Diagram
-
-TBD
-
-## 🖥️ Frontend Requirements (FE)
-
-### FR-COA-001 (FE): Akses Halaman Ubah Rekening (COA)
-
-**Deskripsi:**
-Sistem harus menyediakan akses halaman untuk mengubah data rekening COA dari menu COA.
-
-**Actor:** Operator Data
-
-**Functional Acceptance Criteria:**
-
-- Operator dapat membuka menu **Data Master → Data Rekening (COA)**
-- Operator dapat memilih salah satu rekening dan klik **Ubah Rekening**
-- Sistem menampilkan form edit dengan data existing
-- Field **read-only** tetap tidak bisa diubah
-
-**Functional Flow:**
-
-
-| Step | Actor    | Action                                  | System Response               | Notes                 |
-| ------ | ---------- | ----------------------------------------- | ------------------------------- | ----------------------- |
-| 1    | Operator | Login                                   | Sistem validasi credential    |                       |
-| 2    | Operator | Buka Data Master → Data Rekening (COA) | Sistem tampilkan daftar COA   |                       |
-| 3    | Operator | Pilih COA, klik Ubah Rekening           | Sistem tampilkan halaman edit | Pre-fill data dari DB |
+**Cakupan fungsi:**
+- Perubahan atribut master COA
+- Perubahan parameter saldo & transaksi (default dan per instance)
+- Pengajuan perubahan untuk otorisasi
+- Proses approve / reject
 
 ---
 
-### FR-COA-002 (FE): Submit Perubahan COA untuk Otorisasi
+## 2. Actors & Roles
 
-**Deskripsi:**
-Sistem harus menerima perubahan COA dan menyimpannya sebagai pengajuan yang memerlukan otorisasi.
-
-**Actor:** Operator Data
-
-**Functional Acceptance Criteria:**
-
-- Sistem memvalidasi field mandatory & rule FE/BE
-- Sistem menyimpan perubahan sebagai **pengajuan** dengan status **Pending Approval**
-- Pengajuan muncul di daftar otorisasi untuk Otorisator
-
-**Functional Flow:**
-
-
-| Step | Actor    | Action                    | System Response                                                 | Notes                    |
-| ------ | ---------- | --------------------------- | ----------------------------------------------------------------- | -------------------------- |
-| 1    | Operator | Ubah field yang diizinkan | Sistem menerima input                                           |                          |
-| 2    | Operator | Klik Submit               | Sistem validasi data                                            |                          |
-| 3    | System   | Validasi                  | **IF** valid **THEN** simpan pengajuan **ELSE** tampilkan error |                          |
-| 4    | System   | Simpan pengajuan          | Pengajuan masuk daftar otorisasi                                | Status: Pending Approval |
+| Actor | Description |
+|------|------------|
+| Operator Data | Mengajukan perubahan COA |
+| Otorisator | Melakukan approve / reject perubahan |
 
 ---
 
-### FR-COA-003 (FE): Otorisasi Perubahan COA (Approve/Reject)
+## 3. Shared Business Rules
 
-**Deskripsi:**
-Sistem harus menyediakan daftar pengajuan perubahan COA dan memungkinkan Otorisator melakukan approve/reject.
-
-**Actor:** Otorisator
-
-**Functional Acceptance Criteria:**
-
-- Otorisator dapat membuka daftar otorisasi (pending list)
-- Otorisator dapat melihat detail perubahan (before/after)
-- Otorisator dapat **Approve** atau **Reject**
-- Jika Approve → perubahan diterapkan ke data aktif
-- Jika Reject → perubahan dibatalkan, data aktif tidak berubah
-
-**Functional Flow:**
-
-
-| Step | Actor      | Action                | System Response                   | Notes                   |
-| ------ | ------------ | ----------------------- | ----------------------------------- | ------------------------- |
-| 1    | Otorisator | Login                 | Sistem validasi                   |                         |
-| 2    | Otorisator | Buka daftar otorisasi | Sistem tampilkan data pending     |                         |
-| 3    | Otorisator | Pilih pengajuan       | Sistem tampilkan detail perubahan | before/after            |
-| 4    | Otorisator | Klik Approve/Reject   | Sistem proses keputusan           |                         |
-| 5a   | System     | Approve               | Terapkan perubahan ke data aktif  | Update tabel terkait    |
-| 5b   | System     | Reject                | Tandai pengajuan rejected         | Tidak update data aktif |
+| Rule ID | Description |
+|--------|------------|
+| BR-COA-01 | `account_code` bersifat read-only |
+| BR-COA-02 | Semua perubahan wajib melalui proses otorisasi |
+| BR-COA-03 | Jika Reject, data aktif tidak berubah |
+| BR-COA-04 | Parameter default dapat dipropagasikan ke seluruh instance |
+| BR-COA-05 | Nilai tarif pajak tidak boleh negatif |
+| BR-COA-06 | Field read-only tidak dapat dimodifikasi dari UI |
 
 ---
 
-### UI/UX Specification
+## 4. Backend Functional Specification
 
-#### Menu & Navigasi
+### 4.1 Use Case: Get Data COA
 
-- **Data Master → Data Rekening (COA) → Ubah Rekening**
+**Purpose**  
+Mengambil data COA untuk keperluan tampilan dan pengolahan perubahan.
 
-#### Proses Utama (UI)
-
-1. Operator pilih rekening → buka form ubah
-2. Operator edit field yang diizinkan
-3. Operator submit → masuk otorisasi
-4. Otorisator approve/reject
-
----
-
-#### Mockup
-
-- [FSD_COA_Edit.html](../assets/FSD_COA_Edit.html)
-
-#### Screenshot
-
-Screenshot Tab `Konfigurasi Pelaporan`
-
-![COA Ubah Rekening 1](../assets/FSD_COA_Edit_ss1.png)
-
-Screenshot Tab `Konfigurasi Saldo & Transaksi`
-
-![COA Ubah Rekening 2](../assets/FSD_COA_Edit_ss2.png) |
-
----
-
-### Frontend Field Specification & Validation
-
-> Catatan: Beberapa label field UI dipetakan ke kolom DB berikut.
-
-#### Form Ubah Rekening (Master `ibcore.account`)
-
-
-| Field (UI)                    | Mandatory | DB Column                                   | Rules                                                 |
-| ------------------------------- | ----------- | --------------------------------------------- | ------------------------------------------------------- |
-| Kelompok Rekening             | M         | `account_group_code`                        | Read-only dari DB                                     |
-| Tanggal Pembuatan             | M         | `time_create`                               | Read-only dari DB                                     |
-| Rekening Administratif Aktiva | O         | `isactivaoffbalancesheet`                   | Read-only dari DB                                     |
-| Account RPV                   | O         | `isrpvaccount`                              | Read-only dari DB                                     |
-| Rekening Induk                | M         | `fl_parent_account`                         | Read-only. Parent rekening                            |
-| Nama Rekening Induk           | M         | (lookup)                                    | Read-only. Lookup dari`account.account_name` parent   |
-| Kode Rekening                 | M         | `account_code`                              | Read-only                                             |
-| Nama Rekening                 | M         | `account_name`                              | Tidak boleh kosong. Max 200 char                      |
-| Deskripsi Rekening            | O         | `account_desc`                              | Max 400 char                                          |
-| Grup Rekening                 | M         | `account_type` / atau `account_group_code`* | Sesuaikan implementasi sistem: klasifikasi laporan    |
-| Detail                        | O         | `is_detail`                                 | Read-only. Posting account indicator                  |
-| Keterhubungan CPA             | O         | `fl_cpa_accountcode`                        | Pilih dari referensi CPA                              |
-| LBUS Code                     | O         | `lbus_code`                                 | Pelaporan regulator                                   |
-| LBUS Type                     | O         | `lbus_type`                                 | Pelaporan regulator                                   |
-| LSMK Code                     | O         | `lsmk_code`                                 | Pelaporan regulator                                   |
-| LSMK Type                     | O         | `lsmk_type`                                 | Pelaporan regulator                                   |
-| LBBU Code                     | O         | `lbbu_code`                                 | Laporan internal                                      |
-| Intern Code                   | O         | `intern_code`                               | Klasifikasi internal                                  |
-| PUB Code                      | O         | `pub_code`                                  | Publikasi/laporan tertentu                            |
-| Sandi BI                      | O         | `sandi_bi`                                  | Max 10 char                                           |
-| Tipe Pajak                    | O         | `tax_type`                                  | Dari master pajak                                     |
-| Tenaga Ahli                   | O         | `tax_flag_expert`                           | Default uncheck                                       |
-| Kode Pajak                    | O         | `tax_code`                                  | Max 20 char                                           |
-| Nomor Akun Pajak              | O         | `tax_account_code`                          | Refer ke`account.account_code` dengan `is_detail='T'` |
-| Tarif Pajak NPWP              | O         | `tax_rate_npwp`                             | Numerik >= 0, default 0.00                            |
-| Tarif Pajak Non NPWP          | O         | `tax_rate_non_npwp`                         | Numerik >= 0, default 0.00                            |
-| Flag PPh21                    | O         | `tax_flag_pph21`                            | Opsional, flag                                        |
-| RPV RAK Report Show           | O         | `isrpvrakreportshow`                        | Flag tampil report                                    |
-| Hidden Offbalance Sheet       | O         | `is_hidden_offbalancesheet`                 | Flag                                                  |
-| RAK Account                   | O         | `israkaccount`                              | Flag                                                  |
-
-\*Catatan: pada dokumen lama ada "Grup Rekening" sebagai klasifikasi laporan (misal ASET). Di schema tersedia `account_group_code` dan `account_type`. Implementasi final perlu konsisten (pilih salah satu atau gabungkan aturan).
-
----
-
-#### Tab: Parameter Saldo dan Transaksi (Default di `ibcore.account`)
-
-
-| Field (UI)                  | Mandatory | DB Column                 | Rules                                                                    |
-| ----------------------------- | ----------- | --------------------------- | -------------------------------------------------------------------------- |
-| Saldo Normal (Default)      | M         | `normal_balance_type_def` | Dropdown: {Debet, Kredit, Netral} (mapping ke kode internal`varchar(1)`) |
-| Saldo Harus Nihil (Default) | M         | `is_zero_balance_def`     | Dropdown: {Boleh Tidak Nihil, Harus Nihil} (mapping`varchar(1)`)         |
-| Status Transaksi (Default)  | M         | `trx_permit_type_def`     | Dropdown status transaksi (mapping`varchar(1)`)                          |
-
-##### Button Rules
-
-
-| Button                        | Aksi                                                                                           |
-| ------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Set Semua Status Saldo Normal | Update`accountinstance.normal_balance_type` untuk seluruh instance sesuai default yang dipilih |
-| Set Semua Status Saldo Nihil  | Update`accountinstance.is_zero_balance` untuk seluruh instance sesuai default yang dipilih     |
-| Set Semua Status Transaksi    | Update`accountinstance.trx_permit_type` untuk seluruh instance sesuai default yang dipilih     |
-
----
-
-#### Grid: List Account Instance (`ibcore.accountinstance`)
-
-
-| Field (UI)        | Mandatory | DB Column             | Rules                           |
-| ------------------- | ----------- | ----------------------- | --------------------------------- |
-| Kode Kantor       | M         | `branch_code`         | Read-only                       |
-| Nama Kantor       | M         | (lookup)              | Read-only, lookup master branch |
-| Kode Valuta       | M         | `currency_code`       | Read-only                       |
-| Saldo Normal      | M         | `normal_balance_type` | Editable                        |
-| Saldo Harus Nihil | M         | `is_zero_balance`     | Editable                        |
-| Tipe Bertransaksi | M         | `trx_permit_type`     | Editable                        |
-
----
-
-## 🛠️ Backend Requirements (BE)
-
-### Backend Data Requirements
-
-#### Entity: `ibcore.account` (Master COA)
-
-Primary Key: `account_code`
-
-Kolom penting yang relevan untuk modul Ubah Rekening:
-
-- Identitas & hirarki: `account_code`, `account_name`, `account_level`, `fl_parent_account`, `is_detail`
-- Klasifikasi & pelaporan: `account_group_code`, `account_type`, `lbus_code`, `lbus_type`, `lsmk_code`, `lsmk_type`, `lbbu_code`, `intern_code`, `pub_code`, `sandi_bi`
-- Parameter saldo & transaksi (default): `normal_balance_type_def`, `is_zero_balance_def`, `trx_permit_type_def`
-- Parameter pajak: `tax_type`, `tax_code`, `tax_account_code`, `tax_rate_npwp`, `tax_rate_non_npwp`, `tax_flag_pph21`, `tax_flag_expert`
-- Flag lain: `isactivaoffbalancesheet`, `isrpvrakreportshow`, `isrpvaccount`, `is_hidden_offbalancesheet`, `israkaccount`
-- Audit: `userid_create`, `time_create`, `userid_last_modified`, `time_last_modified`
-
-#### Entity: `ibcore.accountinstance` (COA per Branch & Currency)
-
-Primary Key: `accountinstance_id`
-
-Kolom penting yang relevan untuk modul Ubah Rekening:
-
-- Identitas & relasi: `accountinstance_id`, `account_code`, `branch_code`, `currency_code`
-- Parameter saldo & transaksi (per instance): `normal_balance_type`, `is_zero_balance`, `trx_permit_type`, `isbolehinput`, `balance_sign`
-- (Read-only untuk konteks perubahan COA): berbagai kolom saldo seperti `balance`, `trial_balance`, dll.
-
----
-
-### BE-COA-001: Validasi Submit Pengajuan
-
-**Input minimal yang harus ada:**
-
+**Input**
 - `account_code`
-- `changes` (daftar field yang berubah)
-- `alasan` (reason) jika diwajibkan oleh kebijakan otorisasi
-- `user_input` (userid operator)
 
-**Validasi:**
+**Process**
+1. Sistem mengambil data master rekening
+2. Sistem mengambil seluruh instance rekening
+3. Sistem melakukan lookup data referensi
 
-- `account_code` harus exist di `ibcore.account`
-- Field perubahan hanya boleh pada whitelist field editable
-- Numeric (tarif pajak) tidak boleh negatif
-- Default parameter (saldo/transaksi) harus punya nilai yang valid
-- Jika ada perubahan ke accountinstance, pastikan baris instance target exist
+**Output**
+- Data master rekening
+- Daftar instance rekening
 
 ---
 
-### BE-COA-002: Persist & Approval Apply
 
-**Saat submit:**
 
-- Simpan pengajuan perubahan + detail before/after (untuk audit & review otorisasi)
-- Status pengajuan: Pending Approval
+### 4.2 Use Case: Submit Perubahan COA
 
-**Saat approve:**
-
-- Update `ibcore.account` sesuai perubahan master
-- Update `ibcore.accountinstance` sesuai perubahan per instance
-- Update audit field `userid_last_modified`, `time_last_modified` pada `ibcore.account`
-- Status pengajuan: Approved
-
-**Saat reject:**
-
-- Status pengajuan: Rejected
-- Tidak ada perubahan ke data aktif
+**Process**
+1. Sistem melakukan validasi
+2. Sistem menyimpan perubahan sebagai pengajuan
+3. Status pengajuan: *Pending Approval*
 
 ---
 
-## 📌 Shared Business Rules
+### 4.3 Use Case: Approval / Rejection
 
-
-| Rule ID    | Description                                                                                                               |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| FR-COA-R01 | `account_code` bersifat **read-only** dan tidak boleh diubah                                                              |
-| FR-COA-R02 | `fl_parent_account` (rekening induk) bersifat **read-only** pada proses ubah rekening (sesuai dokumen awal)               |
-| FR-COA-R03 | Semua perubahan wajib melalui**otorisasi** sebelum efektif                                                                |
-| FR-COA-R04 | Jika pengajuan**Reject**, data aktif pada `account`/`accountinstance` tidak berubah                                       |
-| FR-COA-R05 | Perubahan parameter default (di`account`) dapat dipropagasikan ke seluruh `accountinstance` melalui tombol "Set Semua..." |
-| FR-COA-R06 | Field tarif pajak (`tax_rate_npwp`, `tax_rate_non_npwp`) tidak boleh negatif dan default 0.00 jika kosong                 |
+| Action | Result |
+|------|--------|
+| Approve | Perubahan diterapkan ke data aktif |
+| Reject | Pengajuan dibatalkan |
 
 ---
 
-## Open Questions (untuk finalisasi implementasi)
+## 5. Frontend Functional Specification
 
+### 5.1 Screen: Form Ubah Rekening
 
-| # | Question                                                                          | Status | Notes                               |
-| --- | ----------------------------------------------------------------------------------- | -------- | ------------------------------------- |
+**Fungsi utama:**
+- Menampilkan data COA existing
+- Mengatur field read-only & editable
+- Mengirim pengajuan perubahan
 
+---
 
+### 5.2 UI Actions
+
+| Action | Description |
+|------|-------------|
+| Submit | Mengirim pengajuan perubahan |
+| Set Semua Parameter | Sinkronisasi parameter default ke seluruh instance |
+| Approve / Reject | Dilakukan oleh Otorisator |
+
+---
+
+## 6. Integration Notes
+
+- UI menggunakan BE service untuk retrieve dan submit data
+- Validasi dilakukan di FE dan BE
+- Error dikembalikan dalam format standar sistem
+
+---
+
+## Appendix A – UI Field Specification
+
+> Bagian ini mendefinisikan detail field UI, validasi, dan perilaku.
+
+### A.1 Form Ubah Rekening – Master
+
+- Field read-only: kode rekening, rekening induk, flag sistem
+- Field editable: nama rekening, deskripsi, klasifikasi, pajak
+
+### A.2 Parameter Saldo & Transaksi
+
+- Default saldo normal
+- Default saldo harus nihil
+- Default status transaksi
+
+### A.3 Grid Account Instance
+
+- Parameter saldo & transaksi per cabang dan valuta
+
+---
+
+## Appendix B – Backend Data Mapping
+
+> Bagian ini mendefinisikan entitas dan atribut backend yang relevan.
+
+### B.1 Entity: Account (Master)
+
+- Identitas & hirarki
+- Klasifikasi & pelaporan
+- Parameter default
+- Parameter pajak
+- Audit
+
+### B.2 Entity: Account Instance
+
+- Relasi cabang & valuta
+- Parameter saldo & transaksi per instance
+
+---
+
+## Appendix C – Traceability Matrix
+
+| FR ID | Description | BE Use Case | UI Screen | Business Rule |
+|------|------------|------------|-----------|---------------|
+| FR-COA-001 | Akses Ubah Rekening | Get Data COA | Form Ubah Rekening | BR-COA-01 |
+| FR-COA-002 | Submit Perubahan | Submit Perubahan COA | Form Ubah Rekening | BR-COA-02 |
+| FR-COA-003 | Approval COA | Approval / Rejection | Approval Screen | BR-COA-03 |
+| FR-COA-004 | Set Semua Parameter | Submit Perubahan COA | Form Ubah Rekening | BR-COA-04 |
+
+---
+
+## Appendix D – Open Points
+
+| No | Description | Status |
+|----|------------|--------|
 
 ---
 
 ## Change Log
 
-### 2026-01-19
-- Inisialisasi 
-- Menyesuaikan **Data Model** dan seluruh mapping field ke schema:
-  - `ibcore.account`
-  - `ibcore.accountinstance`
+| Date | Description |
+|------|-------------|
+| 2026-01-19 | Restrukturisasi FSD berlapis + traceability |
