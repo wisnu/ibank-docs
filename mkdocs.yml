@@ -45,6 +45,9 @@ nav:
               - TSD: GL/chart-of-account/edit/TSD_COA_Edit.md
               - TEST: GL/chart-of-account/edit/TEST_COA_Edit.md
 
+  - Fingerscan:
+      - FSD: Fingerscan/FSD_Fingerscan_Biometrik.md
+
 markdown_extensions:
   - pymdownx.superfences:
       custom_fences:
