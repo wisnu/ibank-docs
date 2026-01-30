@@ -516,9 +516,31 @@ C4Dynamic
 
 ---
 
-## 3. Modul Sistem
+## 3. Business Rules
 
-### 3.1 Fingerstation (Client App)
+| ID | Category | Rule | Implementation |
+|----|----------|------|----------------|
+| BR-001 | Enrollment | Minimal 2 jari dari kedua tangan | Validation sebelum save |
+| BR-002 | Enrollment | Quality score minimal 40 | Check saat capture |
+| BR-003 | Enrollment | Tidak boleh duplicate | Cross-check dengan existing templates |
+| BR-004 | Enrollment | User harus aktif di HRMIS | API call ke HRMIS |
+| BR-005 | Verification | Max retry 3x | Counter di database |
+| BR-006 | Verification | Timeout 30 detik | Session expiry |
+| BR-007 | Verification | Match threshold configurable | Default 40 |
+| BR-008 | Verification | 1 active session per user | Reject concurrent |
+| BR-009 | Lock | Auto lock setelah 3x gagal | System triggered |
+| BR-010 | Lock | Manual unlock by admin only | Role-based access |
+| BR-011 | Fallback | Approval dari Admin Kantor Pusat | Workflow approval |
+| BR-012 | Fallback | Max duration 30 hari | Validation |
+| BR-013 | Fallback | Auto disable setelah expired | Scheduler |
+| BR-014 | Audit | Semua aktivitas harus di-log | Aspect/interceptor |
+| BR-015 | Audit | Retention minimal 2 tahun | Archival policy |
+
+---
+
+## 4. Modul Sistem
+
+### 4.1 Fingerstation (Client App)
 
 **Deskripsi:** Aplikasi desktop yang diinstal pada workstation cabang untuk menghubungkan device fingerprint dengan Fingerscan Service.
 
@@ -549,7 +571,7 @@ stateDiagram-v2
     SENDING --> ONLINE: Send Complete
 ```
 
-### 3.2 Fingerscan Service (Backend)
+### 4.2 Fingerscan Service (Backend)
 
 **Deskripsi:** Backend service yang menangani logika bisnis verifikasi, enrollment, dan manajemen sistem.
 
@@ -566,7 +588,7 @@ stateDiagram-v2
 | **Audit Service** | Logging dan reporting |
 | **Scheduler** | Fallback expiry, cleanup tasks |
 
-### 3.3 Fingerscan Management (Web Portal)
+### 4.3 Fingerscan Management (Web Portal)
 
 **Deskripsi:** Portal web untuk administrasi sistem fingerprint.
 
@@ -604,9 +626,9 @@ Fingerscan Management
 
 ---
 
-## 4. Spesifikasi Fungsional
+## 5. Spesifikasi Fungsional
 
-### 4.1 F01: Enrollment Sidik Jari
+### 5.1 F01: Enrollment Sidik Jari
 
 #### 4.1.1 Deskripsi
 
@@ -1077,129 +1099,76 @@ wss://fingerscan.bank.internal/ws/station
 
 ### 6.1 Entity Relationship Diagram
 
-```
-┌─────────────────┐       ┌─────────────────┐
-│   fp_user       │       │  fp_finger      │
-├─────────────────┤       ├─────────────────┤
-│ PK user_id      │──┐    │ PK finger_id    │
-│    status       │  │    │ FK user_id      │──┐
-│    lock_counter │  │    │    finger_index │  │
-│    fallback_on  │  └───►│    template     │  │
-│    fallback_exp │       │    quality      │  │
-│    created_at   │       │    created_at   │  │
-│    updated_at   │       └─────────────────┘  │
-└─────────────────┘                            │
-                                               │
-┌─────────────────┐       ┌─────────────────┐  │
-│   fp_station    │       │ fp_verification │  │
-├─────────────────┤       ├─────────────────┤  │
-│ PK station_id   │◄──┐   │ PK verify_id    │  │
-│    branch_code  │   │   │ FK user_id      │◄─┘
-│    device_serial│   │   │ FK station_id   │──┐
-│    status       │   │   │    session_id   │  │
-│    ip_address   │   │   │    txn_ref      │  │
-│    last_hbeat   │   └───│    status       │  │
-│    created_at   │       │    match_score  │  │
-└─────────────────┘       │    created_at   │  │
-                          └─────────────────┘  │
-                                               │
-┌─────────────────┐       ┌─────────────────┐  │
-│  fp_audit_log   │       │  fp_fallback    │  │
-├─────────────────┤       ├─────────────────┤  │
-│ PK log_id       │       │ PK fallback_id  │  │
-│    event_type   │       │ FK user_id      │◄─┘
-│    user_id      │       │    approved_by  │
-│    actor_id     │       │    reason       │
-│    app_code     │       │    start_date   │
-│    txn_ref      │       │    end_date     │
-│    station_id   │       │    status       │
-│    result       │       │    created_at   │
-│    details      │       └─────────────────┘
-│    created_at   │
-└─────────────────┘
+> [!NOTE]
+> Diagram berikut menunjukkan relasi antar tabel. Detail field lengkap akan didokumentasikan dalam TSD.
+
+```mermaid
+erDiagram
+    fp_user ||--o{ fp_finger : "memiliki"
+    fp_user ||--o{ fp_verification : "melakukan"
+    fp_user ||--o{ fp_fallback : "menggunakan"
+    fp_station ||--o{ fp_verification : "digunakan_di"
+    
+    fp_user {
+        varchar user_id PK
+    }
+    
+    fp_finger {
+        uuid finger_id PK
+        varchar user_id FK
+    }
+    
+    fp_station {
+        uuid station_id PK
+    }
+    
+    fp_verification {
+        uuid verify_id PK
+        varchar user_id FK
+        uuid station_id FK
+    }
+    
+    fp_fallback {
+        uuid fallback_id PK
+        varchar user_id FK
+    }
+    
+    fp_audit_log {
+        uuid log_id PK
+    }
 ```
 
-### 6.2 Data Dictionary
+### 6.2 Deskripsi Tabel Database
 
-#### 6.2.1 Table: fp_user
+> [!NOTE]
+> Detail lengkap spesifikasi kolom, tipe data, constraint, dan index akan didokumentasikan dalam TSD (Technical Specification Document).
 
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| user_id | VARCHAR(50) | NO | - | PK, ID dari HRMIS |
-| status | VARCHAR(20) | NO | 'ACTIVE' | ACTIVE, LOCKED, INACTIVE |
-| lock_counter | INT | NO | 0 | Counter kegagalan verifikasi |
-| fallback_enabled | BOOLEAN | NO | FALSE | Status fallback aktif |
-| fallback_expiry | TIMESTAMP | YES | NULL | Waktu expired fallback |
-| created_at | TIMESTAMP | NO | NOW() | Waktu pembuatan |
-| updated_at | TIMESTAMP | NO | NOW() | Waktu update terakhir |
+#### 6.2.1 fp_user
+Tabel master untuk menyimpan data user yang ter-enroll dalam sistem biometrik. Menyimpan informasi status user, counter lock, dan konfigurasi fallback authentication.
 
-#### 6.2.2 Table: fp_finger
+#### 6.2.2 fp_finger
+Tabel untuk menyimpan template sidik jari user. Setiap user dapat memiliki multiple records (maksimal 10 jari). Template disimpan dalam bentuk encrypted.
 
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| finger_id | UUID | NO | gen_uuid() | PK |
-| user_id | VARCHAR(50) | NO | - | FK to fp_user |
-| finger_index | INT | NO | - | 1-10 (index jari) |
-| template | BYTEA | NO | - | Encrypted template |
-| quality_score | INT | NO | - | Skor kualitas capture |
-| created_at | TIMESTAMP | NO | NOW() | Waktu enrollment |
-| updated_at | TIMESTAMP | NO | NOW() | Waktu update |
+#### 6.2.3 fp_station
+Tabel master station/device fingerprint scanner. Menyimpan informasi lokasi, status koneksi, dan konfigurasi device.
 
-#### 6.2.3 Table: fp_station
+#### 6.2.4 fp_verification
+Tabel transaksi untuk mencatat setiap proses verifikasi fingerprint. Menyimpan informasi session, hasil matching, dan referensi ke aplikasi/transaksi yang memerlukan autentikasi.
 
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| station_id | UUID | NO | gen_uuid() | PK |
-| station_name | VARCHAR(100) | NO | - | Nama station |
-| branch_code | VARCHAR(20) | NO | - | Kode cabang |
-| device_serial | VARCHAR(100) | NO | - | Serial number device |
-| status | VARCHAR(20) | NO | 'OFFLINE' | ONLINE, OFFLINE, ERROR, MAINTENANCE |
-| ip_address | VARCHAR(45) | NO | - | IP address |
-| location_desc | VARCHAR(200) | YES | NULL | Deskripsi lokasi |
-| last_heartbeat | TIMESTAMP | YES | NULL | Waktu heartbeat terakhir |
-| created_at | TIMESTAMP | NO | NOW() | Waktu registrasi |
-| updated_at | TIMESTAMP | NO | NOW() | Waktu update |
+#### 6.2.5 fp_fallback
+Tabel untuk mencatat aktivasi fallback authentication. Berisi informasi approval, periode aktif, dan alasan aktivasi fallback.
 
-#### 6.2.4 Table: fp_verification
-
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| verify_id | UUID | NO | gen_uuid() | PK |
-| session_id | UUID | NO | - | Session ID |
-| user_id | VARCHAR(50) | NO | - | FK to fp_user |
-| station_id | UUID | NO | - | FK to fp_station |
-| application_code | VARCHAR(50) | NO | - | Kode aplikasi |
-| transaction_ref | VARCHAR(100) | NO | - | Referensi transaksi |
-| transaction_type | VARCHAR(50) | NO | - | Jenis transaksi |
-| status | VARCHAR(20) | NO | 'PENDING' | PENDING, SUCCESS, FAILED, TIMEOUT, CANCELLED |
-| match_score | INT | YES | NULL | Skor matching |
-| auth_type | VARCHAR(20) | NO | 'FINGERPRINT' | FINGERPRINT, FALLBACK |
-| created_at | TIMESTAMP | NO | NOW() | Waktu mulai |
-| completed_at | TIMESTAMP | YES | NULL | Waktu selesai |
-
-#### 6.2.5 Table: fp_audit_log
-
-| Column | Type | Nullable | Default | Description |
-|--------|------|----------|---------|-------------|
-| log_id | UUID | NO | gen_uuid() | PK |
-| event_type | VARCHAR(50) | NO | - | Tipe event |
-| user_id | VARCHAR(50) | YES | NULL | User terkait |
-| actor_id | VARCHAR(50) | NO | - | User yang melakukan aksi |
-| application_code | VARCHAR(50) | YES | NULL | Kode aplikasi |
-| transaction_ref | VARCHAR(100) | YES | NULL | Referensi transaksi |
-| station_id | UUID | YES | NULL | Station ID |
-| ip_address | VARCHAR(45) | YES | NULL | IP address |
-| result | VARCHAR(20) | NO | - | SUCCESS, FAILED |
-| details | JSONB | YES | NULL | Detail tambahan |
-| created_at | TIMESTAMP | NO | NOW() | Waktu event |
+#### 6.2.6 fp_audit_log
+Tabel audit log untuk mencatat semua event penting dalam sistem (enrollment, verification, admin actions, dll). Mendukung compliance dan troubleshooting.
 
 ---
 
 ## 7. Spesifikasi User Interface
 
 ### 7.1 Fingerstation UI
+TBD
 
-**Main Window:**
+<!-- **Main Window:**
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -1225,11 +1194,11 @@ wss://fingerscan.bank.internal/ws/station
 ├─────────────────────────────────────────────────────────┤
 │   [Settings]                      [Reconnect] [Exit]   │
 └─────────────────────────────────────────────────────────┘
-```
+``` -->
 
 ### 7.2 Verification Dialog
-
-**Verification Prompt (Muncul di aplikasi bisnis):**
+TBD
+<!-- **Verification Prompt (Muncul di aplikasi bisnis):**
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -1274,11 +1243,11 @@ wss://fingerscan.bank.internal/ws/station
 ├─────────────────────────────────────────────────────────┤
 │                        [OK]                             │
 └─────────────────────────────────────────────────────────┘
-```
+``` -->
 
 ### 7.3 Management Portal
-
-**Dashboard:**
+TBD
+<!-- **Dashboard:**
 
 ```
 ┌────────────────────────────────────────────────────────────────────┐
@@ -1311,7 +1280,7 @@ wss://fingerscan.bank.internal/ws/station
 │                  │  └──────────────────────────────────────────┘  │
 │                  │                                                 │
 └──────────────────┴─────────────────────────────────────────────────┘
-```
+``` -->
 
 ---
 
