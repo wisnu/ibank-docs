@@ -353,166 +353,164 @@ C4Container
 ### 2.2.1 Enrollment Process Flow
 
 ```mermaid
-C4Dynamic
-    title Dynamic Diagram - Fingerprint Enrollment Flow
+sequenceDiagram
+    autonumber
+    participant Admin
+    participant Portal as Frontend App
+    participant Backend as Backend Service
+    participant Service as Fingerscan Service
+    participant Redis as Redis Cache
+    participant Station as Fingerstation
+    participant Device as Fingerprint Device
+    participant DB as PostgreSQL
 
-    Person(admin, "Admin", "User performing enrollment")
-    
-    Boundary(workstation, "Workstation Cabang", "Windows PC") {
-        Container(portal, "Single UI", "Web App", "Management portal for enrollment")
-        Container(station, "Fingerstation", "Electron/C++", "Client app untuk capture sidik jari")
-    }
-    
-    Boundary(datacenter, "Data Center", "Private Cloud") {
-        Container(backend, "BE Single UI", "Java/Spring", "Backend service untuk Single UI")
-        Container(service, "Fingerscan Service", "Java/Spring", "Enrollment, Verification, Session Management")
-        
-        ContainerDb(coredb, "Core DB", "Database", "Business data, user info, transactions")
-        ContainerDb(db, "Fingerprint DB", "Database", "Menyimpan template, audit log, konfigurasi")
-        System_Ext(oidc, "OIDC Provider", "Autentikasi dan autorisasi user")
-    }
+    Admin->>Portal: Pilih user untuk enrollment
+    Portal->>Backend: Request enrollment
+    Backend->>Service: POST /enrollment/start
+    Service->>DB: Create enrollment_session
+    DB-->>Service: session_id
+    Service-->>Backend: {session_id, status: pending}
+    Backend-->>Portal: Session created
 
-    Rel(admin, portal, "1", "UI")
-    Rel(portal, backend, "2", "HTTP")
-    Rel(backend, coredb, "3", "SQL")
-    Rel(backend, service, "4", "REST")
-    Rel(service, oidc, "5", "OAuth2")
-    Rel(service, service, "6", "Validate")
-    Rel(service, station, "7", "WebSocket")
-    Rel(admin, station, "8", "Physical")
-    Rel(station, service, "9", "WebSocket")
-    Rel(service, db, "10", "SQL")
-    Rel(service, backend, "11", "HTTPS")
-    Rel(backend, portal, "12", "Response")
-    Rel(portal, admin, "13", "UI")
+    loop For each finger (min 3)
+        Portal->>Backend: Request capture
+        Backend->>Service: POST /enrollment/capture-sync
+        Service->>Redis: Publish capture command
+        Redis-->>Station: Capture command
+        Station->>Admin: "Letakkan jari Anda"
+        Admin->>Device: Place finger
+        Device-->>Station: Raw fingerprint data
+        Station->>Station: Extract template
+        Station->>Redis: Publish capture result
+        Redis-->>Service: Template + quality_score
+        Service->>DB: Save to fingerprint_templates
+        Service->>DB: Log to enrollment_logs
+        Service-->>Backend: {step: n/3, quality_score}
+        Backend-->>Portal: Capture success
+        Portal-->>Admin: Show progress
+    end
 
-    UpdateRelStyle(admin, portal, $textColor="blue", $offsetY="-30")
-    UpdateRelStyle(portal, backend, $textColor="red", $offsetY="-30")
-    UpdateRelStyle(backend, coredb, $textColor="orange", $offsetX="-50")
-    UpdateRelStyle(backend, service, $textColor="red", $offsetY="-30")
-    UpdateRelStyle(service, oidc, $textColor="green", $offsetX="-50")
-    UpdateRelStyle(service, service, $textColor="purple", $offsetX="50")
-    UpdateRelStyle(service, station, $textColor="red", $offsetY="20")
-    UpdateRelStyle(admin, station, $textColor="blue", $offsetY="-30")
-    UpdateRelStyle(station, service, $textColor="red", $offsetY="-30")
-    UpdateRelStyle(service, db, $textColor="orange", $offsetX="20")
-    UpdateRelStyle(service, backend, $textColor="green", $offsetY="20")
-    UpdateRelStyle(backend, portal, $textColor="green", $offsetY="20")
-    UpdateRelStyle(portal, admin, $textColor="blue", $offsetX="50")
+    Portal->>Backend: Complete enrollment
+    Backend->>Service: POST /enrollment/complete
+    Service->>DB: Update session status
+    Service-->>Backend: {status: completed}
+    Backend-->>Portal: Enrollment success
+    Portal-->>Admin: Konfirmasi sukses
 ```
 
 **Penjelasan Alur:**
 
 | Step | Dari | Ke | Deskripsi | Protokol |
 |------|------|-----|-----------|----------|
-| **1** | Admin | Single UI | Admin memilih user untuk enrollment | UI Action |
-| **2** | Single UI | BE Single UI | Portal mengirim request enrollment ke backend | HTTP/GraphQL |
-| **3** | BE Single UI | Core DB | Backend validasi user data dan business rules | JDBC/SQL |
-| **4** | BE Single UI | Fingerscan Service | Backend mengirim request ke Fingerscan Service | REST API (HTTPS) |
-| **5** | Fingerscan Service | OIDC | Validasi user aktif dan check hak akses enrollment | OAuth2/OIDC |
-| **6** | Fingerscan Service | Fingerscan Service | Validasi user dan inisialisasi session | Internal |
-| **7** | Fingerscan Service | Fingerstation | Mengirim perintah capture ke Fingerstation | WebSocket (mTLS) |
-| **8** | Admin | Fingerstation | User meletakkan jari di device (min 3 jari) | Physical Action |
-| **9** | Fingerstation | Fingerscan Service | Mengirim template hasil capture | WebSocket (mTLS) |
-| **10** | Fingerscan Service | Fingerprint DB | Menyimpan template terenkripsi dan audit log | JDBC/SQL |
-| **11** | Fingerscan Service | BE Single UI | Mengembalikan hasil enrollment ke backend | Response/HTTPS |
-| **12** | BE Single UI | Single UI | Backend mengembalikan hasil ke portal | Response |
-| **13** | Single UI | Admin | Menampilkan konfirmasi sukses | UI |
+| **1-3** | Admin → Service | Inisiasi enrollment session | REST API |
+| **4-5** | Service → DB | Buat record enrollment_session | SQL |
+| **6-7** | Service → Portal | Return session_id untuk tracking | HTTP Response |
+| **8-10** | Portal → Service | Request capture untuk setiap jari | REST API |
+| **11-12** | Service → Station | Kirim capture command via Redis pub/sub | Redis |
+| **13-15** | Admin → Device | User meletakkan jari di scanner | Physical |
+| **16-17** | Station | Ekstrak template dari raw data | Internal |
+| **18-19** | Station → Service | Kirim template hasil capture via Redis | Redis |
+| **20-21** | Service → DB | Simpan template dan log enrollment | SQL |
+| **22-25** | Service → Admin | Return hasil capture | HTTP Response |
+| **26-31** | Portal → Admin | Complete enrollment dan konfirmasi | REST + UI |
 
 **Timeline Estimasi:**
-- Step 1-7: ~450ms (UI + DB validation + backend routing + OIDC auth + initiation)
-- Step 8: ~10-30 detik (capture 3+ fingers with quality check)
-- Step 9-13: ~550ms (save + response chain)
-- **Total: ~11-31 detik** (user-dependent)
+- Step 1-7: ~200ms (session creation)
+- Step 8-25: ~5-10 detik per jari (capture + save)
+- Step 26-31: ~100ms (complete session)
+- **Total: ~16-31 detik** untuk 3 jari (user-dependent)
 
 
 ### 2.2.2 Verification Process Flow
 
 ```mermaid
-C4Dynamic
-    title Dynamic Diagram - Fingerprint Verification Flow
+sequenceDiagram
+    autonumber
+    participant Approver
+    participant App as Frontend App
+    participant Backend as Backend Service
+    participant Service as Fingerscan Service
+    participant Redis as Redis Cache
+    participant Station as Fingerstation
+    participant Device as Fingerprint Device
+    participant DB as PostgreSQL
 
-    Person(approver, "Approver", "User yang melakukan approval transaksi")
-    
-    Boundary(workstation, "Workstation Cabang", "Windows PC") {
-        System_Ext(device, "DigitalPersona 4500", "Fingerprint Reader Hardware")
-        Container(app, "Frontend App", "", "DAF, BDS, atau Corporate App")
-        Container(station, "Fingerstation", "Electron/C++", "Client app untuk capture sidik jari")
-        
-    }
-    
-    Boundary(datacenter, "Data Center", "Private Cloud") {
-        Container(backend, "Backend Service", "Java/Spring", "BE_DAF, BE_BDS, atau BE_SingleUI")
-        Container(service, "Fingerscan Service", "Java/Spring", "Verification, Enrollment, Session Management")
-        
-        ContainerDb(cache, "Redis Cache", "Redis", "Cache untuk template yang sering digunakan")
-        ContainerDb(db, "Fingerprint DB", "Database", "Menyimpan template, audit log, konfigurasi")
-    }
+    Approver->>App: Klik tombol Approve
+    App->>Backend: Request verification
+    Backend->>Service: POST /fingerprint/verify-sync
 
-    Rel(approver, app, "1", "UI")
-    Rel(app, station, "2", "IPC")
-    Rel(app, backend, "3", "HTTP/TCP/GraphQL")
-    Rel(backend, service, "4", "REST")
-    Rel(service, cache, "5", "Redis")
-    Rel(service, station, "6", "WebSocket")
-    Rel(station, approver, "7", "UI")
-    Rel(approver, device, "8", "Physical")
-    Rel(device, station, "9", "USB/SDK")
-    Rel(station, service, "10", "WebSocket")
-    Rel(service, cache, "11", "Redis")
-    Rel(service, db, "12", "SQL")
-    Rel(service, service, "13", "Internal")
-    Rel(service, db, "14", "SQL")
-    Rel(service, backend, "15", "HTTPS")
-    Rel(backend, app, "16", "Response")
-    Rel(app, approver, "17", "UI")
+    Note over Service: Validate user status
+    Service->>DB: Check user (is_active, is_blocked)
+    DB-->>Service: User status OK
 
-    UpdateRelStyle(approver, app, $textColor="blue", $offsetY="-30")
-    UpdateRelStyle(app, station, $textColor="purple", $offsetX="-40")
-    UpdateRelStyle(app, backend, $textColor="red", $offsetY="-30")
-    UpdateRelStyle(backend, service, $textColor="red", $offsetY="-30")
-    UpdateRelStyle(service, cache, $textColor="orange", $offsetX="20")
-    UpdateRelStyle(service, station, $textColor="red", $offsetY="20")
-    UpdateRelStyle(station, approver, $textColor="blue", $offsetY="20")
-    UpdateRelStyle(approver, device, $textColor="blue", $offsetY="-30")
-    UpdateRelStyle(device, station, $textColor="green", $offsetX="20")
-    UpdateRelStyle(station, service, $textColor="red", $offsetY="-30")
-    UpdateRelStyle(service, cache, $textColor="orange", $offsetX="-50")
-    UpdateRelStyle(service, db, $textColor="orange", $offsetX="20", $offsetY="-20")
-    UpdateRelStyle(service, db, $textColor="purple", $offsetX="40", $offsetY="20")
-    UpdateRelStyle(service, backend, $textColor="green", $offsetY="20")
-    UpdateRelStyle(backend, app, $textColor="green", $offsetY="20")
-    UpdateRelStyle(app, approver, $textColor="blue", $offsetX="50")
+    Note over Service: Resolve device
+    Service->>DB: Get device by id/ip_address
+    DB-->>Service: Device info (is_online: true)
+
+    Service->>Redis: Publish capture command
+    Redis-->>Station: Capture command + context
+    Station->>Approver: "Letakkan jari Anda"
+    Approver->>Device: Place finger
+    Device-->>Station: Raw fingerprint data
+    Station->>Station: Extract template
+
+    Station->>Redis: Publish capture result
+    Redis-->>Service: Captured template
+
+    Note over Service: Matching Process
+    Service->>DB: Get enrolled templates for user
+    DB-->>Service: Stored templates
+    Service->>Service: Compare templates (1:1 match)
+
+    alt Match Found (confidence >= threshold)
+        Service->>DB: Reset failed_verification_attempts
+        Service->>DB: Log to verification_logs (result: match)
+        Service->>Redis: Store result
+        Service-->>Backend: {success: true, confidence_score}
+        Backend-->>App: Verification success
+        App-->>Approver: Approval berhasil
+    else No Match
+        Service->>DB: Increment failed_verification_attempts
+        alt attempts >= 3
+            Service->>DB: Set is_blocked = true
+            Service->>DB: Log to verification_logs (result: no_match, blocked)
+            Service-->>Backend: {success: false, blocked: true}
+            Backend-->>App: User blocked
+            App-->>Approver: Akun terkunci
+        else attempts < 3
+            Service->>DB: Log to verification_logs (result: no_match)
+            Service-->>Backend: {success: false, retry_remaining}
+            Backend-->>App: Verification failed
+            App-->>Approver: Gagal, coba lagi
+        end
+    end
 ```
 
 **Penjelasan Alur:**
 
 | Step | Dari | Ke | Deskripsi | Protokol |
 |------|------|-----|-----------|----------|
-| **1** | Approver | Frontend App | User menekan tombol approval di aplikasi bisnis | UI Action |
-| **2** | Frontend App | Fingerstation | Aplikasi mengambil Device ID dari Fingerstation | Local Call/IPC |
-| **3** | Frontend App | Backend Service | Aplikasi mengirim request approval ke Backend | HTTP/TCP/GraphQL |
-| **4** | Backend Service | Fingerscan Service | Backend mengirim request inisialisasi verifikasi | REST API (HTTPS) |
-| **5** | Fingerscan Service | Redis Cache | Membuat session verifikasi dengan TTL 30 detik | Redis SET |
-| **6** | Fingerscan Service | Fingerstation | Mengirim perintah capture ke Fingerstation user | WebSocket (mTLS) |
-| **7** | Fingerstation | Approver | Menampilkan dialog "Letakkan jari Anda" | Desktop UI |
-| **8** | Approver | DigitalPersona 4500 | User meletakkan jari di device fingerprint reader | Physical Action |
-| **9** | DigitalPersona 4500 | Fingerstation | Device mengirim raw fingerprint data ke Fingerstation | USB/SDK |
-| **10** | Fingerstation | Fingerscan Service | Mengirim template hasil capture ke service | WebSocket (mTLS) |
-| **11** | Fingerscan Service | Redis Cache | Mengambil template enrolled user dari cache | Redis GET |
-| **12** | Fingerscan Service | PostgreSQL | Jika cache miss, ambil dari database | JDBC/SQL |
-| **13** | Fingerscan Service | Fingerscan Service | Proses matching 1:1 antara template capture vs enrolled | Internal |
-| **14** | Fingerscan Service | PostgreSQL | Menyimpan hasil verifikasi dan audit log | JDBC/SQL |
-| **15** | Fingerscan Service | Backend Service | Mengembalikan hasil verifikasi (SUCCESS/FAILED) | Response/HTTPS |
-| **16** | Backend Service | Frontend App | Backend mengembalikan hasil approval ke aplikasi | Response |
-| **17** | Frontend App | Approver | Menampilkan hasil approval atau error message | UI |
+| **1-3** | Approver → Service | Request verifikasi saat approval transaksi | REST API |
+| **4-5** | Service → DB | Validasi user aktif dan tidak di-block | SQL |
+| **6-7** | Service → DB | Resolve device dari device_id atau ip_address | SQL |
+| **8-9** | Service → Station | Kirim capture command via Redis pub/sub | Redis |
+| **10-12** | Approver → Device | User meletakkan jari di scanner | Physical |
+| **13** | Station | Ekstrak template dari raw fingerprint | Internal |
+| **14-15** | Station → Service | Kirim template via Redis | Redis |
+| **16-17** | Service → DB | Ambil enrolled templates untuk matching | SQL |
+| **18** | Service | Proses matching 1:1 | Internal |
+| **19-24** | Service → App | Handle result (success/failed/blocked) | HTTP |
 
 **Timeline Estimasi:**
-- Step 1-7: ~250ms (local + network + initiation)
-- Step 8-9: ~2-5 detik (user action + capture)
-- Step 10-14: ~400ms (template processing + matching + logging)
-- Step 15-17: ~200ms (response chain)
-- **Total: ~3-6 detik** (user-dependent)
+- Step 1-9: ~200ms (validation + command dispatch)
+- Step 10-15: ~2-5 detik (user action + capture)
+- Step 16-18: ~100ms (matching process)
+- Step 19-24: ~50ms (logging + response)
+- **Total: ~2.5-5.5 detik** (user-dependent)
+
+**Timeout Handling:**
+- Sync mode timeout: 30 detik
+- Jika timeout tercapai, return HTTP 408 dengan status "timeout"
 
 ---
 
@@ -575,18 +573,31 @@ stateDiagram-v2
 
 **Deskripsi:** Backend service yang menangani logika bisnis verifikasi, enrollment, dan manajemen sistem.
 
-**Teknologi:** Java Spring Boot / Node.js
+**Teknologi:** Python Sanic (Async Framework)
 
-**Sub-modul:**
+**Stack:**
 
-| Sub-modul | Fungsi |
-|-----------|--------|
-| **Verification Engine** | Matching template, session management |
-| **Enrollment Service** | Pendaftaran dan update template user |
-| **Station Manager** | Manajemen koneksi station |
-| **Admin Service** | Konfigurasi dan parameter sistem |
-| **Audit Service** | Logging dan reporting |
-| **Scheduler** | Fallback expiry, cleanup tasks |
+| Component | Technology |
+|-----------|------------|
+| Framework | Sanic 25.x (Async Python) |
+| Database | PostgreSQL 15+ |
+| ORM | SQLAlchemy 2.0 (Async) |
+| Cache/Messaging | Redis (Pub/Sub) |
+| Authentication | JWT + Bcrypt |
+
+**Sub-modul (Services):**
+
+| Sub-modul | File | Fungsi |
+|-----------|------|--------|
+| **Fingerprint Verification** | fingerprint_verification_service.py | Matching template 1:1, logging hasil |
+| **Enrollment Service** | enrollment_service.py | Session management, template capture |
+| **Device Service** | device_service.py | Device registration, status, resolve |
+| **User Service** | user_service.py | User CRUD, blocking, auth |
+| **Template Service** | fingerprint_template_service.py | Template CRUD, upsert |
+| **Command Service** | command_service.py | Dispatch command ke station via Redis |
+| **Redis Service** | redis_service.py | Redis connection, pub/sub |
+| **Log Service** | log_service.py | Audit logging ke database |
+| **Parameter Service** | parameter_service.py | System configuration |
 
 ### 4.3 Fingerscan Management (Web Portal)
 
@@ -636,43 +647,51 @@ Proses pendaftaran sidik jari user ke dalam sistem untuk pertama kali. Enrollmen
 
 #### 4.1.2 Precondition
 
-- User terdaftar dan aktif di HRMIS
-- User telah login ke sistem via OIDC
-- Fingerstation dalam status ONLINE
-- Device DigitalPersona terhubung dan berfungsi
+- User terdaftar di sistem (exists in users table)
+- User aktif (is_active = true)
+- Device terdaftar dan online (is_online = true)
+- Device dapat melakukan enrollment (can_enroll = true)
 
 #### 4.1.3 Flow Diagram
 
 ```mermaid
 sequenceDiagram
     participant Admin
-    participant Portal as Single UI
+    participant Portal as Frontend App
     participant Service as Fingerscan Service
-    participant OIDC as OIDC Provider
+    participant Redis
     participant Station as Fingerstation
-    
-    Admin->>Portal: 1. Select User
-    Portal->>Service: 2. Validate User
-    Service->>OIDC: 3. Authenticate User
-    OIDC-->>Service: User authenticated
-    Service-->>Portal: User validated
-    
-    Admin->>Portal: 4. Start Capture
-    Portal->>Service: 5. Init Session
-    Service->>Station: 6. Capture Cmd
-    
-    Note over Station: User places finger
-    
-    Station-->>Service: 7. Template
-    Service-->>Portal: 8. Quality Check
-    
-    Note over Admin,Station: Repeat for each finger (min 3)
-    
-    Admin->>Portal: 9. Confirm Save
-    Portal->>Service: 10. Save Encrypted
-    Service->>Service: Store to DB
-    Service-->>Portal: Success
-    Portal-->>Admin: 11. Success confirmation
+    participant DB as PostgreSQL
+
+    Admin->>Portal: 1. Select User untuk enrollment
+    Portal->>Service: 2. POST /enrollment/start
+    Service->>DB: 3. Create enrollment_session
+    Service-->>Portal: 4. {session_id, status: pending}
+
+    loop For each finger (templates_required = 3)
+        Admin->>Portal: 5. Request capture
+        Portal->>Service: 6. POST /enrollment/capture-sync
+        Service->>Redis: 7. Publish capture command
+        Redis-->>Station: 8. Capture request + finger_position
+
+        Note over Station: User places finger
+
+        Station-->>Redis: 9. Template + quality_score
+        Redis-->>Service: 10. Capture result
+
+        alt quality_score >= threshold
+            Service->>DB: 11. Save fingerprint_template
+            Service->>DB: 12. Update templates_captured++
+            Service-->>Portal: 13. {step: n/3, success}
+        else quality_score < threshold
+            Service-->>Portal: 13. {error: low quality, retry}
+        end
+    end
+
+    Portal->>Service: 14. POST /enrollment/complete
+    Service->>DB: 15. Update session_status = completed
+    Service-->>Portal: 16. {status: completed}
+    Portal-->>Admin: 17. Enrollment berhasil
 ```
 
 #### 4.1.4 Business Rules
@@ -714,56 +733,72 @@ Proses verifikasi sidik jari user saat melakukan approval transaksi. Verifikasi 
 
 #### 4.2.2 Precondition
 
-- User telah melakukan enrollment
-- User tidak dalam status LOCKED
-- User aktif di HRMIS
-- Fingerstation dalam status ONLINE
+- User telah melakukan enrollment (memiliki fingerprint_templates)
+- User tidak dalam status blocked (is_blocked = false)
+- User aktif (is_active = true)
+- Device dalam status online (is_online = true)
 
 #### 4.2.3 Sequence Diagram
 
 ```mermaid
 sequenceDiagram
     participant App as Business App
-    participant Dialog as Approval Dialog
+    participant Backend as Backend Service
     participant Service as Fingerscan Service
-    participant Cache as Redis Cache
+    participant Redis
     participant Station as Fingerstation
-    
-    App->>Dialog: 1. Request Approval
-    Dialog->>Service: 2. Init Verify
-    Service->>Cache: 3. Create Session
-    Cache-->>Service: Session created
-    
-    Service->>Station: 4. Send Capture
-    Station-->>Dialog: 5. Show Prompt
-    
-    Note over Dialog,Station: User scans finger
-    
-    Station-->>Service: 6. Template
-    Service->>Cache: 7. Get Enrolled Template
-    Cache-->>Service: Template data
-    
-    Service->>Service: 8. Match Process
-    Service->>Service: 9. Log Result
-    
-    Service-->>Dialog: 10. Result
-    Dialog-->>App: 11. Proceed/Reject
+    participant DB as PostgreSQL
+
+    App->>Backend: 1. Request Approval
+    Backend->>Service: 2. POST /fingerprint/verify-sync
+
+    Service->>DB: 3. Check user status
+    DB-->>Service: 4. {is_active: true, is_blocked: false}
+
+    Service->>DB: 5. Resolve device
+    DB-->>Service: 6. Device info
+
+    Service->>Redis: 7. Publish capture command
+    Redis-->>Station: 8. Capture request
+
+    Note over Station: User scans finger
+
+    Station-->>Redis: 9. Template result
+    Redis-->>Service: 10. Captured template
+
+    Service->>DB: 11. Get enrolled templates
+    DB-->>Service: 12. User templates
+    Service->>Service: 13. Match Process (1:1)
+
+    alt Match Success
+        Service->>DB: 14a. Log verification (result: match)
+        Service->>DB: 14b. Reset failed_attempts
+        Service-->>Backend: 15. {success: true, confidence_score}
+        Backend-->>App: 16. Proceed with transaction
+    else No Match
+        Service->>DB: 14a. Increment failed_attempts
+        Service->>DB: 14b. Log verification (result: no_match)
+        Service-->>Backend: 15. {success: false, retry_remaining}
+        Backend-->>App: 16. Reject / Allow retry
+    end
 ```
 
 #### 4.2.4 Flow: Verifikasi Gagal
 
 ```mermaid
 flowchart TD
-    Failed([Verification Failed]) --> Increment[Increment Fail Counter]
-    Increment --> Check{Counter >= 3?}
+    Failed([Verification Failed]) --> Increment[Increment failed_verification_attempts]
+    Increment --> Check{attempts >= 3?}
     Check -->|No| Retry[Allow Retry]
-    Check -->|Yes| Lock[Lock User]
-    Lock --> Notify[Notify Admin]
-    
+    Check -->|Yes| Lock[Set is_blocked = true]
+    Lock --> SetReason[Set blocked_reason]
+    SetReason --> Log[Log to verification_logs]
+    Log --> Return[Return blocked status]
+
     style Failed fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
     style Check fill:#F39C12,stroke:#C87F0A,stroke-width:2px,color:#fff
     style Lock fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
-    style Notify fill:#F39C12,stroke:#C87F0A,stroke-width:2px,color:#fff
+    style Return fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
     style Retry fill:#50C878,stroke:#2E7D4E,stroke-width:2px,color:#fff
 ```
 
@@ -771,37 +806,59 @@ flowchart TD
 
 | Rule ID | Rule | Action |
 |---------|------|--------|
-| BR-V01 | Max retry 3x | Lock user setelah 3x gagal |
-| BR-V02 | Timeout 30 detik | Cancel session jika timeout |
-| BR-V03 | Match threshold >= 40 | Configurable via parameter |
-| BR-V04 | 1 session per user | Reject concurrent request |
-| BR-V05 | User harus aktif HRMIS | Check sebelum verify |
+| BR-V01 | Max retry 3x | Set is_blocked=true setelah 3x gagal |
+| BR-V02 | Timeout 30 detik | Return HTTP 408 jika timeout |
+| BR-V03 | Match threshold configurable | Via parameters table |
+| BR-V04 | User harus aktif | Check is_active sebelum verify |
+| BR-V05 | User tidak boleh blocked | Check is_blocked sebelum verify |
 
 #### 4.2.6 API Request
 
 ```json
-POST /api/v1/verification/init
+POST /fingerprint/verify-sync
 {
-  "user_id": "USR001",
-  "station_id": "STN-001-A",
-  "transaction_ref": "TRX20250128001",
-  "transaction_type": "TRANSFER",
-  "application_code": "DAF-CORE",
-  "amount": 50000000,
-  "callback_url": "https://daf.internal/callback"
+  "user_id": "550e8400-e29b-41d4-a716-446655440000",
+  "device_id": "660e8400-e29b-41d4-a716-446655440001",
+  "username": "john.doe",
+  "application": "DAF-CORE",
+  "transaction_code": "TRX20250128001",
+  "supervisor_name": "Jane Smith",
+  "reference_number": "REF-001",
+  "description": "Transfer approval Rp 50.000.000"
 }
 ```
 
 #### 4.2.7 API Response
 
+**Success:**
 ```json
 {
-  "session_id": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "SUCCESS",
-  "verified_at": "2025-01-28T10:30:00Z",
-  "user_id": "USR001",
-  "verification_id": "VRF-20250128-00001",
-  "match_score": 85
+  "status": "success",
+  "result": {
+    "match": true,
+    "confidence_score": 95.2
+  },
+  "timestamp": "2025-01-28T10:30:00Z",
+  "verification_id": "verify_sync_660e8400_1706438400",
+  "device_id": "660e8400-e29b-41d4-a716-446655440001"
+}
+```
+
+**Failed (Blocked):**
+```json
+{
+  "status": "blocked",
+  "message": "Too many failed verification attempts",
+  "user_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+**Timeout:**
+```json
+{
+  "status": "timeout",
+  "message": "Verification process timed out. Please try again.",
+  "verification_id": "verify_sync_660e8400_1706438400"
 }
 ```
 
@@ -1580,53 +1637,90 @@ Semua akses dan operasi dicatat dengan informasi:
 
 ## 12. Lampiran
 
-### Lampiran A: Finger Index Mapping
+### Lampiran A: Finger Position Mapping
 
-| Index | Tangan | Jari |
-|-------|--------|------|
-| 1 | Kanan | Jempol |
-| 2 | Kanan | Telunjuk |
-| 3 | Kanan | Tengah |
-| 4 | Kanan | Manis |
-| 5 | Kanan | Kelingking |
-| 6 | Kiri | Jempol |
-| 7 | Kiri | Telunjuk |
-| 8 | Kiri | Tengah |
-| 9 | Kiri | Manis |
-| 10 | Kiri | Kelingking |
+| Position (String) | Tangan | Jari |
+|-------------------|--------|------|
+| right_thumb | Kanan | Jempol |
+| right_index | Kanan | Telunjuk |
+| right_middle | Kanan | Tengah |
+| right_ring | Kanan | Manis |
+| right_little | Kanan | Kelingking |
+| left_thumb | Kiri | Jempol |
+| left_index | Kiri | Telunjuk |
+| left_middle | Kiri | Tengah |
+| left_ring | Kiri | Manis |
+| left_little | Kiri | Kelingking |
+
+> **Note:** Setiap user hanya dapat memiliki satu template per finger_position (unique constraint pada user_id + finger_position).
 
 ### Lampiran B: Status Transition
 
 **User Status:**
 ```mermaid
 stateDiagram-v2
-    [*] --> ACTIVE
-    ACTIVE --> LOCKED: 3x failed attempts
-    LOCKED --> ACTIVE: admin unlock
-    ACTIVE --> INACTIVE: HRMIS inactive
-    INACTIVE --> ACTIVE: HRMIS active
+    [*] --> is_active_true
+    is_active_true --> is_blocked_true: 3x failed_verification_attempts
+    is_blocked_true --> is_active_true: PUT /users/{id} (unblock: true)
+    is_active_true --> is_active_false: Admin deactivate
+    is_active_false --> is_active_true: Admin activate
+
+    state is_active_true {
+        [*] --> Normal
+        Normal: is_active=true, is_blocked=false
+    }
+
+    state is_blocked_true {
+        [*] --> Blocked
+        Blocked: is_blocked=true, blocked_reason set
+    }
 ```
 
-**Verification Status:**
+**Verification Result:**
 ```mermaid
 stateDiagram-v2
-    [*] --> PENDING
-    PENDING --> SUCCESS: verification success
-    PENDING --> FAILED: verification failed
-    PENDING --> TIMEOUT: session timeout
-    PENDING --> CANCELLED: user/system cancel
+    [*] --> pending
+    pending --> match: fingerprint matched
+    pending --> no_match: fingerprint not matched
+    pending --> timeout: 30s timeout (HTTP 408)
+    pending --> error: system error
+
+    match --> logged: Log to verification_logs
+    no_match --> check_attempts
+    check_attempts --> logged: attempts < 3
+    check_attempts --> blocked: attempts >= 3
+    blocked --> logged: Log with blocked status
 ```
 
-**Station Status:**
+**Device Status:**
 ```mermaid
 stateDiagram-v2
-    [*] --> OFFLINE
-    OFFLINE --> ONLINE: connect & authenticate
-    ONLINE --> OFFLINE: disconnect / no heartbeat
-    ONLINE --> ERROR: device error
-    ERROR --> MAINTENANCE: admin action
-    MAINTENANCE --> OFFLINE: complete
-    OFFLINE --> MAINTENANCE: manual mode
+    [*] --> pending: Device auto-register
+    pending --> approved: POST /devices/{id}/approve
+    approved --> active: Device connected
+    active --> is_online_true: WebSocket connected
+    is_online_true --> is_online_false: Disconnect / no heartbeat
+
+    state is_online_true {
+        [*] --> Online
+        Online: is_online=true, can process requests
+    }
+
+    state is_online_false {
+        [*] --> Offline
+        Offline: is_online=false
+    }
+```
+
+**Enrollment Session Status:**
+```mermaid
+stateDiagram-v2
+    [*] --> pending: POST /enrollment/start
+    pending --> in_progress: First capture received
+    in_progress --> in_progress: templates_captured++
+    in_progress --> completed: templates_captured >= templates_required
+    in_progress --> failed: Error / timeout
+    pending --> failed: Error
 ```
 
 ### Lampiran C: Checklist Deployment
