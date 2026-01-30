@@ -6,8 +6,8 @@
 | Dokumen | Nilai |
 |---------|-------|
 | Nomor Dokumen | FSD-BJBS-FingerScan-01 |
-| Versi | 1.0.0 |
-| Tanggal | 01 Januari 2026 |
+| Versi | 1.1.0 |
+| Tanggal | 30 Januari 2026 |
 | Referensi PRD | PRD-BJBS-FingerScan-01 |
 
 ---
@@ -980,79 +980,161 @@ sequenceDiagram
 #### 5.1.1 Base URL
 
 ```
-Production: https://fingerscan.bank.internal/api/v1
-Staging:    https://fingerscan-stg.bank.internal/api/v1
+Production: https://fingerscan.bank.internal/api
+Staging:    https://fingerscan-stg.bank.internal/api
 ```
 
-#### 5.1.2 Authentication
+#### 5.1.2 Technology Stack
 
-Semua API menggunakan Bearer Token dari OIDC:
+| Component | Technology |
+|-----------|------------|
+| Framework | Sanic (Async Python) |
+| Database | PostgreSQL 15+ |
+| ORM | SQLAlchemy 2.0 (Async) |
+| Cache/Messaging | Redis (Pub/Sub) |
+| Authentication | JWT (24h expiration) |
+| Real-time | WebSocket |
+| API Documentation | OpenAPI 3.0 / Swagger |
+
+#### 5.1.3 Authentication
+
+Semua API menggunakan JWT Bearer Token:
 
 ```
 Authorization: Bearer <access_token>
 ```
 
-#### 5.1.3 Endpoints
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| /auth/register | POST | User registration |
+| /auth/login | POST | Login dan mendapatkan JWT token |
+| /auth/me | GET | Get current user info |
+
+#### 5.1.4 Endpoints
+
+**Device Management** (`/devices`)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | /enrollment/init | Inisiasi enrollment session |
-| POST | /enrollment/capture | Capture sidik jari |
-| POST | /enrollment/save | Simpan enrollment |
-| GET | /enrollment/{user_id} | Get enrollment status |
-| DELETE | /enrollment/{user_id}/finger/{index} | Hapus jari tertentu |
-| POST | /verification/init | Inisiasi verifikasi |
-| GET | /verification/{session_id} | Get verification status |
-| POST | /verification/{session_id}/cancel | Cancel verification |
-| POST | /user/{user_id}/lock | Lock user |
-| POST | /user/{user_id}/unlock | Unlock user |
-| POST | /user/{user_id}/fallback | Activate fallback |
-| DELETE | /user/{user_id}/fallback | Deactivate fallback |
-| GET | /station | List all stations |
-| GET | /station/{station_id} | Get station detail |
-| POST | /station | Register new station |
-| PUT | /station/{station_id} | Update station |
-| GET | /audit | Get audit logs |
-| GET | /report/{type} | Generate report |
+| GET | /devices | List semua devices (dengan filter) |
+| GET | /devices/pending | List devices pending approval |
+| POST | /devices | Register device baru |
+| GET | /devices/{device_id} | Get device detail |
+| PUT | /devices/{device_id} | Update device |
+| DELETE | /devices/{device_id} | Hapus device |
+| POST | /devices/{device_id}/approve | Approve pending device |
+| POST | /devices/{device_id}/status | Check device online status |
 
-#### 5.1.4 Contoh API Detail
+**Enrollment** (`/enrollment`)
 
-**POST /verification/init**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /enrollment/start | Mulai enrollment session |
+| POST | /enrollment/capture | Request capture (async) |
+| POST | /enrollment/capture-sync | Request capture (sync, 15s timeout) |
+| POST | /enrollment/complete | Complete enrollment session |
+| GET | /enrollment/sessions | List enrollment sessions |
+| GET | /enrollment/sessions/{session_id} | Get session detail |
+| GET | /enrollment/result/{session_id} | Get capture result |
+| PUT | /enrollment/sessions/{session_id}/template | Add template to session |
+
+**Fingerprint Verification & Identification** (`/fingerprint`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /fingerprint/verify | Start verification (async) |
+| POST | /fingerprint/verify-sync | Verify synchronous (timeout) |
+| GET | /fingerprint/verification/result/{id} | Get verification result |
+| POST | /fingerprint/identify | Start identification 1:N (async) |
+| POST | /fingerprint/identify-sync | Identify synchronous |
+| GET | /fingerprint/identification/result/{id} | Get identification result |
+
+**Template Management** (`/fingerprint/templates`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /fingerprint/templates | List templates (dengan filter) |
+| GET | /fingerprint/templates/{template_id} | Get template detail |
+| POST | /fingerprint/templates | Create/update template |
+| PUT | /fingerprint/templates/{template_id} | Update template |
+| DELETE | /fingerprint/templates/{template_id} | Hapus template |
+
+**User Management** (`/users`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /users | List users (dengan filter) |
+| GET | /users/{user_id} | Get user detail |
+| PUT | /users/{user_id} | Update user (termasuk unblock) |
+| DELETE | /users/{user_id} | Hapus user |
+
+**Configuration** (`/parameters`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /parameters | List configuration parameters |
+| GET | /parameters/{parameter_id} | Get parameter |
+| POST | /parameters | Create parameter |
+| PUT | /parameters/{parameter_id} | Update parameter |
+| DELETE | /parameters/{parameter_id} | Delete parameter |
+
+#### 5.1.5 Contoh API Detail
+
+**POST /fingerprint/verify-sync** (Verifikasi Synchronous)
 
 Request:
 ```json
 {
-  "user_id": "USR001",
-  "station_id": "STN-001-A",
-  "transaction_ref": "TRX20250128001",
-  "transaction_type": "TRANSFER",
-  "application_code": "DAF-CORE",
-  "metadata": {
-    "amount": 50000000,
-    "beneficiary": "John Doe"
-  }
+  "user_id": "550e8400-e29b-41d4-a716-446655440000",
+  "device_id": "660e8400-e29b-41d4-a716-446655440001",
+  "username": "john.doe",
+  "application": "DAF-CORE",
+  "supervisor_name": "Jane Smith",
+  "reference_number": "TRX20250128001",
+  "description": "Transfer approval"
 }
 ```
 
 Response (Success):
 ```json
 {
-  "code": "00",
-  "message": "Session created",
-  "data": {
-    "session_id": "550e8400-e29b-41d4-a716-446655440000",
-    "status": "PENDING",
-    "expires_at": "2025-01-28T10:30:30Z"
-  }
+  "success": true,
+  "confidence_score": 95.2,
+  "message": "Fingerprint verified successfully",
+  "verification_id": "770e8400-e29b-41d4-a716-446655440002"
 }
 ```
 
-Response (Error):
+Response (Error - 408 Timeout):
 ```json
 {
-  "code": "E001",
-  "message": "User not enrolled",
-  "data": null
+  "error": "Verification timeout",
+  "message": "No fingerprint captured within timeout period"
+}
+```
+
+**POST /enrollment/start** (Mulai Enrollment)
+
+Request:
+```json
+{
+  "user_id": "550e8400-e29b-41d4-a716-446655440000",
+  "device_id": "660e8400-e29b-41d4-a716-446655440001",
+  "templates_required": 3,
+  "ip_address": "192.168.1.100"
+}
+```
+
+Response (201):
+```json
+{
+  "status": "success",
+  "id": "880e8400-e29b-41d4-a716-446655440003",
+  "user_id": "550e8400-e29b-41d4-a716-446655440000",
+  "device_id": "660e8400-e29b-41d4-a716-446655440001",
+  "session_status": "pending",
+  "templates_captured": 0,
+  "templates_required": 3
 }
 ```
 
@@ -1064,15 +1146,26 @@ Response (Error):
 wss://fingerscan.bank.internal/ws/station
 ```
 
-#### 5.2.2 Events
+#### 5.2.2 Communication Pattern
+
+Sistem menggunakan Redis Pub/Sub untuk komunikasi async antara API dan Fingerstation:
+
+1. **API** mengirim command ke Redis channel
+2. **Fingerstation** subscribe ke channel dan menerima command
+3. **Fingerstation** mengirim hasil capture ke Redis
+4. **API** mengambil hasil dari Redis (polling atau callback)
+
+#### 5.2.3 Events
 
 | Event | Direction | Payload |
 |-------|-----------|---------|
 | station.connect | Station → Service | { station_id, device_serial } |
-| station.heartbeat | Station → Service | { station_id, device_status } |
-| capture.request | Service → Station | { session_id, timeout } |
-| capture.result | Station → Service | { session_id, template, quality } |
+| station.heartbeat | Station → Service | { station_id, device_status, is_online } |
+| capture.request | Service → Station | { session_id, finger_position, timeout } |
+| capture.result | Station → Service | { session_id, template_data, quality_score } |
 | capture.error | Station → Service | { session_id, error_code, message } |
+| echo.request | Service → Station | { command_id, echo_text } |
+| echo.result | Station → Service | { command_id, result } |
 | station.disconnect | Station → Service | { station_id, reason } |
 
 ### 5.3 External System Integration
@@ -1104,37 +1197,85 @@ wss://fingerscan.bank.internal/ws/station
 
 ```mermaid
 erDiagram
-    fp_user ||--o{ fp_finger : "memiliki"
-    fp_user ||--o{ fp_verification : "melakukan"
-    fp_user ||--o{ fp_fallback : "menggunakan"
-    fp_station ||--o{ fp_verification : "digunakan_di"
-    
-    fp_user {
-        varchar user_id PK
+    users ||--o{ fingerprint_templates : "memiliki"
+    users ||--o{ enrollment_sessions : "melakukan"
+    users ||--o{ verification_logs : "diverifikasi"
+    users ||--o{ identification_logs : "teridentifikasi"
+    users }o--o{ devices : "user_allowed_devices"
+
+    devices ||--o{ fingerprint_templates : "digunakan_saat_capture"
+    devices ||--o{ enrollment_sessions : "digunakan_untuk"
+    devices ||--o{ enrollment_logs : "mencatat"
+    devices ||--o{ verification_logs : "mencatat"
+    devices ||--o{ identification_logs : "mencatat"
+
+    enrollment_sessions ||--o{ enrollment_logs : "memiliki"
+
+    users {
+        uuid id PK
+        string username
+        string role
+        boolean is_active
+        boolean is_blocked
+        int failed_verification_attempts
     }
-    
-    fp_finger {
-        uuid finger_id PK
-        varchar user_id FK
+
+    devices {
+        uuid id PK
+        string station_id UK
+        string serial_number UK
+        string status
+        boolean is_online
+        boolean can_enroll
     }
-    
-    fp_station {
-        uuid station_id PK
+
+    fingerprint_templates {
+        uuid id PK
+        uuid user_id FK
+        uuid device_id FK
+        binary template_data
+        string finger_position
+        int quality_score
     }
-    
-    fp_verification {
-        uuid verify_id PK
-        varchar user_id FK
-        uuid station_id FK
+
+    enrollment_sessions {
+        uuid id PK
+        uuid user_id FK
+        uuid device_id FK
+        string session_status
+        int templates_captured
+        int templates_required
     }
-    
-    fp_fallback {
-        uuid fallback_id PK
-        varchar user_id FK
+
+    verification_logs {
+        uuid id PK
+        uuid user_id FK
+        uuid device_id FK
+        string verification_result
+        float confidence_score
+        string transaction_code
     }
-    
-    fp_audit_log {
-        uuid log_id PK
+
+    identification_logs {
+        uuid id PK
+        uuid identified_user_id FK
+        uuid device_id FK
+        float confidence_score
+    }
+
+    enrollment_logs {
+        uuid id PK
+        uuid session_id FK
+        uuid user_id FK
+        uuid device_id FK
+        string finger_position
+        string result
+    }
+
+    parameters {
+        uuid id PK
+        string parameter_name
+        string parameter_value
     }
 ```
 
@@ -1143,23 +1284,32 @@ erDiagram
 > [!NOTE]
 > Detail lengkap spesifikasi kolom, tipe data, constraint, dan index akan didokumentasikan dalam TSD (Technical Specification Document).
 
-#### 6.2.1 fp_user
-Tabel master untuk menyimpan data user yang ter-enroll dalam sistem biometrik. Menyimpan informasi status user, counter lock, dan konfigurasi fallback authentication.
+#### 6.2.1 users
+Tabel master untuk menyimpan data user yang ter-enroll dalam sistem biometrik. Menyimpan informasi kredensial, role (user/admin), status aktif, counter failed verification untuk auto-lock, dan informasi blocking.
 
-#### 6.2.2 fp_finger
-Tabel untuk menyimpan template sidik jari user. Setiap user dapat memiliki multiple records (maksimal 10 jari). Template disimpan dalam bentuk encrypted.
+#### 6.2.2 devices
+Tabel master station/device fingerprint scanner. Menyimpan informasi station_id, serial_number, manufacturer, model, IP address, status koneksi (is_online), kemampuan enrollment (can_enroll), dan approval status (pending/approved/active).
 
-#### 6.2.3 fp_station
-Tabel master station/device fingerprint scanner. Menyimpan informasi lokasi, status koneksi, dan konfigurasi device.
+#### 6.2.3 fingerprint_templates
+Tabel untuk menyimpan template sidik jari user. Setiap user dapat memiliki multiple records (maksimal 10 jari dengan unique constraint pada kombinasi user_id + finger_position). Template disimpan dalam format base64. Menyimpan quality_score untuk validasi kualitas capture.
 
-#### 6.2.4 fp_verification
-Tabel transaksi untuk mencatat setiap proses verifikasi fingerprint. Menyimpan informasi session, hasil matching, dan referensi ke aplikasi/transaksi yang memerlukan autentikasi.
+#### 6.2.4 enrollment_sessions
+Tabel untuk mencatat sesi enrollment. Menyimpan progress enrollment (templates_captured vs templates_required), status session (pending/in_progress/completed/failed), dan referensi ke user dan device yang digunakan.
 
-#### 6.2.5 fp_fallback
-Tabel untuk mencatat aktivasi fallback authentication. Berisi informasi approval, periode aktif, dan alasan aktivasi fallback.
+#### 6.2.5 verification_logs
+Tabel transaksi untuk mencatat setiap proses verifikasi fingerprint 1:1. Menyimpan hasil matching (match/no_match/error), confidence_score, referensi ke aplikasi dan transaksi, serta informasi audit (IP address, timestamp).
 
-#### 6.2.6 fp_audit_log
-Tabel audit log untuk mencatat semua event penting dalam sistem (enrollment, verification, admin actions, dll). Mendukung compliance dan troubleshooting.
+#### 6.2.6 identification_logs
+Tabel transaksi untuk mencatat proses identifikasi 1:N. Menyimpan user yang teridentifikasi, confidence_score, dan informasi audit.
+
+#### 6.2.7 enrollment_logs
+Tabel detail untuk mencatat setiap capture dalam sesi enrollment. Menyimpan finger_position, quality_score, hasil capture (success/failure), dan pesan error jika ada.
+
+#### 6.2.8 user_allowed_devices (Junction Table)
+Tabel many-to-many untuk mengatur device mana saja yang boleh digunakan oleh user tertentu. Menyimpan role assignment dan status aktif.
+
+#### 6.2.9 parameters
+Tabel konfigurasi sistem untuk menyimpan parameter-parameter seperti threshold matching, timeout, dan konfigurasi lainnya.
 
 ---
 
@@ -1499,6 +1649,7 @@ stateDiagram-v2
 | Versi | Tanggal | Penulis | Perubahan |
 |-------|---------|---------|-----------|
 | 1.0.0 | 01 Januari 2026 | - | Initial document |
+| 1.1.0 | 30 Januari 2026 | - | Update API endpoints dan spesifikasi data sesuai implementasi backend (Sanic/Python) |
 
 ---
 
