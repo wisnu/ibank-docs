@@ -45,6 +45,35 @@ Sistem manajemen Chart of Account untuk pengelolaan akun-akun keuangan.
   - [TSD - COA Edit](GL/chart-of-account/edit/TSD_COA_Edit.md)
   - [TEST - COA Edit](GL/chart-of-account/edit/TEST_COA_Edit.md)
 
+#### Neraca / Laba Rugi (Balance Sheet / Income Statement)
+
+Laporan keuangan untuk Neraca dan Laba Rugi.
+
+**Dokumentasi Tersedia:**
+
+- **Laporan Neraca dan Laba Rugi**
+  - [FSD - Balance Sheet Report](GL/balance-sheet/FSD_balance-sheet_report.md)
+  - [TSD - Balance Sheet Report](GL/balance-sheet/TSD_balance-sheet_report.md)
+
+#### Trial Balance
+
+Laporan Trial Balance (Neraca Saldo).
+
+**Dokumentasi Tersedia:**
+
+- **Laporan Trial Balance**
+  - [FSD - Trial Balance Report](GL/trial-balance/FSD_trial-balance_report.md)
+  - [TSD - Trial Balance Report](GL/trial-balance/TSD_trial-balance_report.md)
+
+#### Buku Besar (General Ledger)
+
+Laporan Buku Besar.
+
+**Dokumentasi Tersedia:**
+
+- **Laporan Buku Besar**
+  - *Dokumentasi sedang dalam proses pengembangan*
+
 **Fitur Lain dalam Pengembangan:**
 - Accounting Period
 - Transactions

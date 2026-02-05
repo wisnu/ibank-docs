@@ -45,6 +45,17 @@ nav:
               - TSD: GL/chart-of-account/edit/TSD_COA_Edit.md
               - TEST: GL/chart-of-account/edit/TEST_COA_Edit.md
 
+      - Neraca / Laba Rugi:
+          - FSD: GL/balance-sheet/FSD_balance-sheet_report.md
+          - TSD: GL/balance-sheet/TSD_balance-sheet_report.md
+
+      - Trial Balance:
+          - FSD: GL/trial-balance/FSD_trial-balance_report.md
+          - TSD: GL/trial-balance/TSD_trial-balance_report.md
+
+      - Buku Besar:
+          - Coming Soon: GL/ledger/placeholder.md
+
   - Fingerscan:
       - FSD: Fingerscan/FSD_Fingerscan_Biometrik.md
 
