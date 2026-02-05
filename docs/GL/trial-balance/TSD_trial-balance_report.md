@@ -37,9 +37,12 @@ Dokumen ini menjabarkan spesifikasi teknis implementasi modul **Laporan Trial Ba
 
 ## 3. Arsitektur Ringkas
 
-- FE memanggil BE service `gl-reporting`.
+- FE memanggil BE GraphQL endpoint `/graphql` dengan query `GetReportTrialBalance`.
 - BE melakukan validasi parameter, query data transaksi, calculate balance (opening, movement, ending), konsolidasi (jika diperlukan), format ke Excel.
-- Excel file di-download langsung oleh FE.
+- BE menyimpan file Excel ke storage dan return JSON response dengan `url_path`.
+- FE download Excel file dari URL yang diberikan.
+
+> **Note**: Sistem menggunakan GraphQL untuk komunikasi FE-BE, bukan REST API.
 
 ---
 
@@ -70,143 +73,193 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
 
 #### Form Generate Laporan Trial Balance
 
-| Field (UI) | Mandatory | DB Column / Parameter | DB Table | Rules |
-|------------|-----------|----------------------|----------|--------|
-| Mulai Tanggal | M | `startDate` | - | Parameter API. Format DD/MM/YYYY. Must be valid date |
-| Hingga Tanggal | M | `endDate` | - | Parameter API. Format DD/MM/YYYY. Must be >= Mulai Tanggal and <= today |
-| Konsolidasi Valuta | O | `consolidateCurrency` | - | Parameter API. Checkbox. Default unchecked |
-| Valuta | C | `currencyCode` | `currency` | Parameter API. Dropdown: {IDR, USD, EUR, SGD}. Conditional required (jika Konsolidasi Valuta tidak checked). Disabled jika Konsolidasi Valuta checked |
-| Konsolidasi Cabang | O | `consolidateBranch` | - | Parameter API. Checkbox. Default unchecked |
-| Cabang | O | `branchCode` | `enterprise.cabang` | Parameter API. Dropdown: list of branches. Default "-- PILIH SEMUA --". Disabled jika Konsolidasi Cabang checked |
-| Tampilkan hanya yang memiliki saldo | O | `showOnlyWithBalance` | - | Parameter API. Checkbox. Default unchecked. Filter accounts with non-zero balance |
+| Field (UI) | Mandatory | GraphQL Variable | DB Table | Rules |
+|------------|-----------|------------------|----------|--------|
+| Mulai Tanggal | M | `start_date` | - | GraphQL variable. Format YYYY-MM-DD. Must be valid date |
+| Hingga Tanggal | M | `end_date` | - | GraphQL variable. Format YYYY-MM-DD. Must be >= Mulai Tanggal and <= today |
+| Konsolidasi Valuta | O | `is_consol` (affects) | - | GraphQL variable. If checked, `is_consol` = "T" and `currency` can be empty |
+| Valuta | C | `currency` | `currency` | GraphQL variable. String: {IDR, USD, EUR, SGD}. Conditional required (jika Konsolidasi Valuta tidak checked). Disabled jika Konsolidasi Valuta checked |
+| Konsolidasi Cabang | O | `is_consol` (affects) | - | GraphQL variable. If checked, `is_consol` = "T" |
+| Cabang | O | `fund` | `enterprise.cabang` | GraphQL variable. String of branch code. Default "". Disabled jika Konsolidasi Cabang checked |
+| Tampilkan hanya yang memiliki saldo | O | `is_only_has_balance` | - | GraphQL variable. String: "T" or "F". Default "F". Filter accounts with non-zero balance |
 
 **Field Details:**
 
 **1. Mulai Tanggal**
-- Type: Text input with date picker
+- Tipe: Text input dengan date picker
 - Label: "Mulai Tanggal"
-- Format: DD/MM/YYYY
-- Required: Yes
-- Default: Current date
-- Mapping: `startDate`
-- Validation:
-  - Valid date format
-  - Must be a valid date
+- Format: YYYY-MM-DD (untuk GraphQL variable)
+- Format Display: DD/MM/YYYY (untuk UI)
+- Required: Ya
+- Default: Tanggal hari ini
+- Mapping: `start_date`
+- Validasi:
+  - Format tanggal valid
+  - Harus berupa tanggal yang valid
 
 **2. Hingga Tanggal**
-- Type: Text input with date picker
+- Tipe: Text input dengan date picker
 - Label: "Hingga Tanggal"
-- Format: DD/MM/YYYY
-- Required: Yes
-- Default: Current date
-- Mapping: `endDate`
-- Validation:
-  - Valid date format
-  - Must be >= Mulai Tanggal
-  - Must be <= current date
+- Format: YYYY-MM-DD (untuk GraphQL variable)
+- Format Display: DD/MM/YYYY (untuk UI)
+- Required: Ya
+- Default: Tanggal hari ini
+- Mapping: `end_date`
+- Validasi:
+  - Format tanggal valid
+  - Harus >= Mulai Tanggal
+  - Harus <= tanggal hari ini
 
 **3. Konsolidasi Valuta**
-- Type: Checkbox
-- Default: Unchecked
-- Mapping: `consolidateCurrency` = true | false
-- Behavior: When checked, disable Valuta dropdown
+- Tipe: Checkbox
+- Default: Tidak dicentang
+- Mapping: Mempengaruhi `is_consol` = "T" | "F"
+- Perilaku: Ketika dicentang, disable dropdown Valuta
 
 **4. Valuta**
-- Type: Select/Dropdown
+- Tipe: Select/Dropdown
 - Placeholder: "-- PILIH VALUTA --"
-- Default: "Rupiah (IDR)" when enabled
-- Options:
+- Default: "Rupiah (IDR)" ketika enabled
+- Opsi:
   - Rupiah (IDR)
   - US Dollar (USD)
   - Euro (EUR)
   - Singapore Dollar (SGD)
-- Mapping: `currencyCode`
-- Disabled when: Konsolidasi Valuta is checked
+- Mapping: `currency`
+- Disabled ketika: Konsolidasi Valuta dicentang
 
 **5. Konsolidasi Cabang**
-- Type: Checkbox
-- Default: Unchecked
-- Mapping: `consolidateBranch` = true | false
-- Behavior: When checked, disable Cabang dropdown
+- Tipe: Checkbox
+- Default: Tidak dicentang
+- Mapping: Mempengaruhi `is_consol` = "T" | "F"
+- Perilaku: Ketika dicentang, disable dropdown Cabang
 
 **6. Cabang**
-- Type: Select/Dropdown
+- Tipe: Select/Dropdown
 - Placeholder: "-- PILIH SEMUA --"
-- Options: Loaded from backend (list of branches based on user access)
-- Mapping: `branchCode`
-- Disabled when: Konsolidasi Cabang is checked
+- Opsi: Dimuat dari backend (daftar cabang berdasarkan akses user)
+- Mapping: `fund`
+- Disabled ketika: Konsolidasi Cabang dicentang
 
 **7. Tampilkan hanya yang memiliki saldo**
-- Type: Checkbox
-- Default: Unchecked
-- Mapping: `showOnlyWithBalance` = true | false
-- Behavior: When checked, filter out accounts with zero ending balance
+- Tipe: Checkbox
+- Default: Tidak dicentang
+- Mapping: `is_only_has_balance` = "T" | "F"
+- Perilaku: Ketika dicentang, filter hanya account dengan saldo akhir tidak nol
 
-**8. Generate Excel Button**
-- Type: Button
+**8. Tombol Generate Excel**
+- Tipe: Button
 - Label: "Generate Excel"
 - Icon: 📊
-- Action: Submit form and download Excel file
+- Aksi: Submit form dan panggil GraphQL query untuk generate Excel file
 
 ---
 
 ## 6. 🛠️ Backend Specification
 
-### 6.1 API Specification
+### 6.1 GraphQL API Specification
 
-Base path (contoh): `/api/gl/reports`
+**GraphQL Endpoint:** `POST /graphql`
+
+**Content-Type:** `application/json`
+
+> **Note**: Backend menggunakan GraphQL API. Semua request dikirim ke `/graphql` endpoint dengan query dan variables.
 
 #### 6.1.1 Generate Laporan Trial Balance
 
-**Endpoint:** `POST /api/gl/reports/trial-balance/generate`
+**GraphQL Query:** `GetReportTrialBalance`
+
+**GraphQL Schema:**
+
+```graphql
+input ReqGenerateReportTrialBalance {
+    start_date: String!
+    end_date: String!
+    fund: String = ""
+    currency: String = ""
+    is_consol: String!
+    is_only_has_balance: String = ""
+}
+
+type RespGenerateReportTrialBalance {
+    url_path: String
+}
+
+extend type Query {
+    GetReportTrialBalance(input: ReqGenerateReportTrialBalance): RespGenerateReportTrialBalance
+}
+```
 
 **Tabel yang Diakses (SELECT):**
 
 | Tabel | Operasi | Kolom | Join/Lookup |
 |-------|---------|-------|-------------|
-| `journalitem` | **SELECT** | transaction_id, transaction_date, account_id, account_code, currency_code, branch_code, debit_amount, credit_amount, description | WHERE transaction_date BETWEEN startDate AND endDate AND (branch_code = branchCode OR consolidateBranch = true) AND (currency_code = currencyCode OR consolidateCurrency = true) |
-| `journalitem` (opening) | **SELECT** | account_id, account_code, currency_code, branch_code, SUM(debit_amount), SUM(credit_amount) | WHERE transaction_date < startDate (untuk calculate opening balance) |
+| `journalitem` | **SELECT** | transaction_id, transaction_date, account_id, account_code, currency_code, branch_code, debit_amount, credit_amount, description | WHERE transaction_date BETWEEN start_date AND end_date AND (branch_code = fund OR is_consol = 'T') AND (currency_code = currency OR is_consol = 'T') |
+| `journalitem` (opening) | **SELECT** | account_id, account_code, currency_code, branch_code, SUM(debit_amount), SUM(credit_amount) | WHERE transaction_date < start_date (untuk calculate opening balance) |
 | `account` | **SELECT** | account_id, account_code, account_name, account_type, normal_balance, is_active | JOIN dengan journalitem untuk mendapatkan account details |
-| `currency` | **SELECT** (conditional) | currency_code, rate_date, exchange_rate | JOIN jika consolidateCurrency = true. WHERE rate_date = endDate |
+| `currency` | **SELECT** (conditional) | currency_code, rate_date, exchange_rate | JOIN jika is_consol = 'T'. WHERE rate_date = end_date |
 | `enterprise.cabang` | **SELECT** (lookup) | branch_code, branch_name, is_active | JOIN untuk nama cabang (optional) |
 
-**Request**
+**Request GraphQL Query:**
 
-```json
-{
-  "startDate": "01/01/2026",
-  "endDate": "28/01/2026",
-  "consolidateCurrency": false,
-  "currencyCode": "IDR",
-  "consolidateBranch": false,
-  "branchCode": "001",
-  "showOnlyWithBalance": true
+```graphql
+query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
+  GetReportTrialBalance(input: $input) {
+    url_path
+  }
 }
 ```
 
-**Response:** Binary Excel file (.xlsx)
+**Request Variables:**
+
+```json
+{
+  "input": {
+    "start_date": "2026-01-01",
+    "end_date": "2026-01-28",
+    "fund": "001",
+    "currency": "IDR",
+    "is_consol": "F",
+    "is_only_has_balance": "T"
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "GetReportTrialBalance": {
+      "url_path": "/storage/reports/trial-balance-20260128-abc123.xlsx"
+    }
+  }
+}
+```
+
+> **Note**: Response berisi `url_path` untuk download file Excel. Frontend perlu melakukan GET request ke URL tersebut untuk download file.
 
 **Proses Backend:**
 
 1. Validasi input parameters:
-   - `startDate`: format valid DD/MM/YYYY
-   - `endDate`: format valid DD/MM/YYYY, >= startDate, <= current date
-   - `currencyCode`: valid jika consolidateCurrency = false
-   - `branchCode`: valid jika consolidateBranch = false
+   - `start_date`: format valid YYYY-MM-DD
+   - `end_date`: format valid YYYY-MM-DD, >= start_date, <= current date
+   - `currency`: valid jika is_consol = 'F'
+   - `fund`: optional, untuk filter branch
 
 2. **Calculate Opening Balance (Saldo Awal):**
-   - Query semua transaksi dengan `transaction_date < startDate`
+   - Query semua transaksi dengan `transaction_date < start_date`
    - Group by account_id, currency_code, branch_code
    - SUM(debit_amount) - SUM(credit_amount) untuk setiap account
-   - Filter by branch (jika consolidateBranch = false)
-   - Filter by currency (jika consolidateCurrency = false)
+   - Filter by fund (jika is_consol = 'F' dan fund tidak kosong)
+   - Filter by currency (jika is_consol = 'F' dan currency tidak kosong)
 
 3. **Calculate Movement (Mutasi):**
-   - Query semua transaksi dengan `transaction_date BETWEEN startDate AND endDate`
+   - Query semua transaksi dengan `transaction_date BETWEEN start_date AND end_date`
    - Group by account_id, currency_code, branch_code
    - SUM(debit_amount) dan SUM(credit_amount) untuk setiap account
-   - Filter by branch (jika consolidateBranch = false)
-   - Filter by currency (jika consolidateCurrency = false)
+   - Filter by fund (jika is_consol = 'F' dan fund tidak kosong)
+   - Filter by currency (jika is_consol = 'F' dan currency tidak kosong)
 
 4. **Calculate Ending Balance (Saldo Akhir):**
    - Ending Balance = Opening Balance + Movement (Debit - Credit)
@@ -214,22 +267,19 @@ Base path (contoh): `/api/gl/reports`
      - Ending Debit = (Opening Debit + Movement Debit) - (Opening Credit + Movement Credit) jika hasil > 0
      - Ending Credit = (Opening Credit + Movement Credit) - (Opening Debit + Movement Debit) jika hasil > 0
 
-5. **Jika `consolidateCurrency = true`:**
-   - Query exchange rate dari `currency` untuk `rate_date = endDate`
+5. **Jika `is_consol = 'T'`:**
+   - Query exchange rate dari `currency` untuk `rate_date = end_date`
    - Konversi semua balance (opening, movement, ending) ke IDR (base currency) menggunakan exchange_rate
-   - Aggregate balance per account (merge semua currency)
+   - Aggregate balance per account (merge semua currency dan fund/branch)
 
-6. **Jika `consolidateBranch = true`:**
-   - Aggregate balance (opening, movement, ending) per account across all branches
-
-7. **Jika `showOnlyWithBalance = true`:**
+6. **Jika `is_only_has_balance = 'T'`:**
    - Filter hanya account dengan ending balance != 0 (ending_debit > 0 OR ending_credit > 0)
 
-8. **Grouping dan Sorting:**
+7. **Grouping dan Sorting:**
    - Join dengan `account` untuk mendapatkan account_name
    - Sort by account_code (ascending)
 
-9. **Calculate Grand Total:**
+8. **Calculate Grand Total:**
    - Grand Total Opening Debit = SUM(opening_debit)
    - Grand Total Opening Credit = SUM(opening_credit)
    - Grand Total Movement Debit = SUM(movement_debit)
@@ -237,11 +287,11 @@ Base path (contoh): `/api/gl/reports`
    - Grand Total Ending Debit = SUM(ending_debit)
    - Grand Total Ending Credit = SUM(ending_credit)
 
-10. **Validation Balance Equation:**
+9. **Validation Balance Equation:**
     - Total Ending Debit MUST EQUAL Total Ending Credit
-    - If not balanced, return error 500
+    - If not balanced, return GraphQL error
 
-11. **Format data ke struktur Excel dengan kolom:**
+10. **Format data ke struktur Excel dengan kolom:**
     - Kode Rekening
     - Nama Rekening
     - Saldo Awal Debit
@@ -251,34 +301,163 @@ Base path (contoh): `/api/gl/reports`
     - Saldo Akhir Debit
     - Saldo Akhir Kredit
 
-12. Generate file Excel menggunakan template Trial Balance
+11. Generate file Excel menggunakan template Trial Balance
 
-13. Return file Excel sebagai binary stream dengan Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+12. **Upload file ke storage** (S3, local storage, atau file server)
+
+13. **Return JSON response** dengan `url_path` ke file Excel yang telah di-generate
 
 **Validation:**
 
-- `startDate` required dan valid format DD/MM/YYYY
-- `endDate` required dan valid format DD/MM/YYYY
-- `startDate <= endDate`
-- `endDate <= current date`
-- Jika `consolidateCurrency = false`, maka `currencyCode` required dan valid
-- Jika `consolidateBranch = false`, maka `branchCode` harus valid (optional)
+- `start_date` required dan valid format YYYY-MM-DD
+- `end_date` required dan valid format YYYY-MM-DD
+- `start_date <= end_date`
+- `end_date <= current date`
+- `is_consol` required, valid values: "T" or "F"
+- Jika `is_consol = 'F'`, maka `currency` dan/atau `fund` dapat diisi untuk filter
+- `is_only_has_balance` optional, valid values: "T" or "F", default "F"
 
-**Exception Handling:**
+**Exception Handling (GraphQL Errors):**
 
-| Code | Scenario | HTTP | Message |
-|------|----------|------|---------|
-| TB-400-01 | Invalid date format | 400 | "Format tanggal tidak valid" |
-| TB-400-02 | startDate > endDate | 400 | "Mulai tanggal tidak boleh lebih besar dari hingga tanggal" |
-| TB-400-03 | endDate > current date | 400 | "Hingga tanggal tidak boleh melebihi hari ini" |
-| TB-400-04 | Invalid currency | 400 | "Kode valuta tidak valid" |
-| TB-400-05 | Invalid branch | 400 | "Kode cabang tidak valid" |
-| TB-400-06 | Missing required parameter | 400 | "Parameter [nama] wajib diisi" |
-| TB-404-01 | No data found | 404 | "Data tidak ditemukan untuk periode yang diminta" |
-| TB-404-02 | Exchange rate not found | 404 | "Kurs tidak tersedia untuk tanggal [date]" |
-| TB-500-01 | Balance not balanced | 500 | "Total debit dan kredit tidak balance" |
-| TB-500-02 | Excel generation error | 500 | "Gagal generate file Excel" |
-| TB-500-03 | Database error | 500 | "Gagal mengambil data dari database" |
+GraphQL menggunakan error format berbeda dari HTTP status codes. Error dikembalikan dalam `errors` array di response:
+
+```json
+{
+  "errors": [
+    {
+      "message": "Format tanggal tidak valid",
+      "extensions": {
+        "code": "TB-400-01",
+        "field": "start_date"
+      }
+    }
+  ]
+}
+```
+
+| Code | Scenario | Message |
+|------|----------|---------|
+| TB-400-01 | Invalid date format | "Format tanggal tidak valid" |
+| TB-400-02 | start_date > end_date | "Mulai tanggal tidak boleh lebih besar dari hingga tanggal" |
+| TB-400-03 | end_date > current date | "Hingga tanggal tidak boleh melebihi hari ini" |
+| TB-400-04 | Invalid currency | "Kode valuta tidak valid" |
+| TB-400-05 | Invalid branch | "Kode cabang tidak valid" |
+| TB-400-06 | Missing required parameter | "Parameter [nama] wajib diisi" |
+| TB-404-01 | No data found | "Data tidak ditemukan untuk periode yang diminta" |
+| TB-404-02 | Exchange rate not found | "Kurs tidak tersedia untuk tanggal [date]" |
+| TB-500-01 | Balance not balanced | "Total debit dan kredit tidak balance" |
+| TB-500-02 | Excel generation error | "Gagal generate file Excel" |
+| TB-500-03 | Database error | "Gagal mengambil data dari database" |
+
+---
+
+### 6.3 GraphQL Integration Notes
+
+#### 6.3.1 Referensi Implementasi
+
+Backend menggunakan GraphQL implementation dari repository: `ei-ledger-gql`
+
+- **Schema File:** `/services/internal/graph/schemas/tb.graphqls`
+- **Resolver:** `/services/internal/graph/resolvers/`
+- **Generated Code:** `/services/internal/graph/generated/`
+
+#### 6.3.2 Authentication & Authorization
+
+- **Authentication:** Menggunakan JWT token di header request
+  - Header: `Authorization: Bearer <token>`
+  - Token berisi informasi user, role, dan branch access
+- **Authorization:** Validasi di resolver level
+  - User harus memiliki role yang diizinkan (Operator Data, Otorisator, Supervisor, Manager)
+  - User hanya bisa generate laporan untuk branch yang diizinkan sesuai access rights
+
+#### 6.3.3 Error Handling di GraphQL
+
+GraphQL menggunakan pendekatan error handling yang berbeda dari REST API:
+
+**REST API:**
+- Menggunakan HTTP status codes (400, 404, 500)
+- Error message di response body
+
+**GraphQL:**
+- HTTP status selalu 200 (kecuali server error)
+- Error dikembalikan di `errors` array dalam response
+- Setiap error memiliki `message` dan `extensions` (untuk metadata tambahan seperti error code, field yang error)
+
+**Contoh Response dengan Error:**
+
+```json
+{
+  "data": {
+    "GetReportTrialBalance": null
+  },
+  "errors": [
+    {
+      "message": "Format tanggal tidak valid",
+      "path": ["GetReportTrialBalance"],
+      "extensions": {
+        "code": "TB-400-01",
+        "field": "start_date",
+        "invalidValue": "2026/01/01"
+      }
+    }
+  ]
+}
+```
+
+#### 6.3.4 File Download Workflow
+
+Karena response GraphQL berupa JSON (bukan binary file), download Excel menggunakan workflow 2-step:
+
+**Step 1: Call GraphQL Query**
+- Frontend memanggil `GetReportTrialBalance` query
+- Backend generate Excel file dan upload ke storage
+- Backend return `url_path` dalam response
+
+**Step 2: Download File**
+- Frontend melakukan GET request ke `url_path` yang diberikan
+- Download Excel file dari storage
+
+**Contoh Implementation (Frontend):**
+
+```javascript
+// Step 1: Call GraphQL Query
+const response = await graphqlClient.query({
+  query: GET_REPORT_TRIAL_BALANCE,
+  variables: {
+    input: {
+      start_date: "2026-01-01",
+      end_date: "2026-01-28",
+      fund: "001",
+      currency: "IDR",
+      is_consol: "F",
+      is_only_has_balance: "T"
+    }
+  }
+});
+
+// Step 2: Download from URL
+const urlPath = response.data.GetReportTrialBalance.url_path;
+window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
+```
+
+#### 6.3.5 Retry & Timeout Logic
+
+- **Query Timeout:** Maximum 120 detik (karena complexity perhitungan balance)
+- **File Generation:** Async process, jika gagal bisa retry
+- **Storage URL:** URL mungkin memiliki expiration time (perlu dikonfirmasi dengan tim infra)
+
+#### 6.3.6 Perbedaan dengan REST API
+
+| Aspek | REST API (Lama) | GraphQL (Baru) |
+|-------|-----------------|----------------|
+| Endpoint | `POST /api/gl/reports/trial-balance/generate` | `POST /graphql` |
+| Request Format | JSON body langsung | GraphQL query + variables |
+| Response Type | Binary Excel file | JSON dengan `url_path` |
+| Error Format | HTTP status codes | GraphQL errors array |
+| Field Naming | camelCase | snake_case |
+| Date Format | DD/MM/YYYY | YYYY-MM-DD |
+| Boolean Values | true/false | "T"/"F" (String) |
+| Download | Direct download | Two-step (query → URL → download) |
 
 ---
 
@@ -622,3 +801,4 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 | Date | Description | Author |
 |------|-------------|--------|
 | 2026-02-05 | Initial TSD draft - converted from FSD_trial-balance_report.md | System Analyst |
+| 2026-02-05 | Updated API specification from REST to GraphQL based on ei-ledger-gql implementation - Changed endpoint, field naming (snake_case), date format (YYYY-MM-DD), response type (URL path), and added GraphQL Integration Notes section | System Analyst |
