@@ -34,30 +34,30 @@ nav:
 
   - General Ledger:
       - Chart of Account:
-          - PRD: GL/chart-of-account/PRD_COA_Main.md
-          - FSD: GL/chart-of-account/FSD_COA_Main.md
-          - List:
-              - FSD: GL/chart-of-account/list/FSD_COA_List.md
-          - Create:
-              - FSD: GL/chart-of-account/create/FSD_COA_Create.md
-          - Edit:
-              - FSD: GL/chart-of-account/edit/FSD_COA_Edit.md
-              - TSD: GL/chart-of-account/edit/TSD_COA_Edit.md
-              - TEST: GL/chart-of-account/edit/TEST_COA_Edit.md
+          - PRD - Chart of Account: GL/chart-of-account/PRD_COA_Main.md
+          - FSD - Chart of Account: GL/chart-of-account/FSD_COA_Main.md
+          - COA List:
+              - FSD - COA List: GL/chart-of-account/list/FSD_COA_List.md
+          - COA Create:
+              - FSD - COA Create: GL/chart-of-account/create/FSD_COA_Create.md
+          - COA Edit:
+              - FSD - COA Edit: GL/chart-of-account/edit/FSD_COA_Edit.md
+              - TSD - COA Edit: GL/chart-of-account/edit/TSD_COA_Edit.md
+              - TEST - COA Edit: GL/chart-of-account/edit/TEST_COA_Edit.md
 
       - Neraca / Laba Rugi:
-          - FSD: GL/balance-sheet/FSD_balance-sheet_report.md
-          - TSD: GL/balance-sheet/TSD_balance-sheet_report.md
+          - FSD - Neraca / Laba Rugi: GL/balance-sheet/FSD_balance-sheet_report.md
+          - TSD - Neraca / Laba Rugi: GL/balance-sheet/TSD_balance-sheet_report.md
 
       - Trial Balance:
-          - FSD: GL/trial-balance/FSD_trial-balance_report.md
-          - TSD: GL/trial-balance/TSD_trial-balance_report.md
+          - FSD - Trial Balance: GL/trial-balance/FSD_trial-balance_report.md
+          - TSD - Trial Balance: GL/trial-balance/TSD_trial-balance_report.md
 
       - Buku Besar:
           - Coming Soon: GL/ledger/placeholder.md
 
   - Fingerscan:
-      - FSD: Fingerscan/FSD_Fingerscan_Biometrik.md
+      - FSD - Fingerscan Biometrik: Fingerscan/FSD_Fingerscan_Biometrik.md
 
 markdown_extensions:
   - pymdownx.superfences:
