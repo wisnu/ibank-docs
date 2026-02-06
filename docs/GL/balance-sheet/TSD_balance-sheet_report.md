@@ -178,12 +178,25 @@ Base path (contoh): `/api/gl/reports`
    - Filter by `account_type IN ('Asset', 'Liability', 'Equity')`
    - Filter by `branch_code` (jika consolidateBranch = false)
    - Filter by `currency_code` (jika consolidateCurrency = false)
-3. Jika `consolidateCurrency = true`:
+3. **Konsolidasi Valuta** (jika `consolidateCurrency = true`):
    - Query exchange rate dari `currency_exchange_rate` untuk `rate_date = asOfDate`
-   - Konversi semua balance ke IDR (base currency) menggunakan exchange_rate
-   - Aggregate balance per account
-4. Jika `consolidateBranch = true`:
-   - Aggregate balance per account across all branches
+   - Konversi semua balance (debit_balance, credit_balance) ke IDR (base currency) menggunakan exchange_rate
+   - Formula: `amount_idr = amount_foreign_currency × exchange_rate`
+   - Aggregate balance per account per branch (merge semua currency)
+   - **Note:** Konsolidasi valuta dapat dilakukan dengan atau tanpa konsolidasi cabang
+4. **Konsolidasi Cabang** (jika `consolidateBranch = true`):
+   - Aggregate balance per account per currency (merge semua branch)
+   - SUM(debit_balance) dan SUM(credit_balance) untuk setiap account
+   - **Note:** Konsolidasi cabang dapat dilakukan dengan atau tanpa konsolidasi valuta
+4a. **Konsolidasi Penuh** (jika `consolidateCurrency = true` DAN `consolidateBranch = true`):
+   - Konversi semua valuta ke IDR
+   - Aggregate semua branch
+   - Hasil akhir: satu baris per account (total konsolidasi penuh dalam IDR)
+4b. **Kombinasi Konsolidasi** - System mendukung 4 skenario:
+   - **Skenario 1**: `consolidateCurrency=false`, `consolidateBranch=false` → Report per valuta per cabang (paling detail)
+   - **Skenario 2**: `consolidateCurrency=true`, `consolidateBranch=false` → Report dalam IDR per cabang
+   - **Skenario 3**: `consolidateCurrency=false`, `consolidateBranch=true` → Report per valuta untuk semua cabang
+   - **Skenario 4**: `consolidateCurrency=true`, `consolidateBranch=true` → Report dalam IDR untuk semua cabang (fully consolidated)
 5. Grouping account berdasarkan klasifikasi Neraca:
    - AKTIVA (Assets)
    - PASIVA (Liabilities)
@@ -197,8 +210,15 @@ Base path (contoh): `/api/gl/reports`
 
 - `reportType` = "neraca" (required)
 - `asOfDate` valid format DD/MM/YYYY dan <= current date
-- Jika `consolidateCurrency = false`, maka `currencyCode` required dan valid
-- Jika `consolidateBranch = false`, maka `branchCode` harus valid (optional)
+- **Currency Validation:**
+  - Jika `consolidateCurrency = false`, maka `currencyCode` **REQUIRED** dan harus valid (IDR, USD, EUR, SGD, JPY, CNY)
+  - Jika `consolidateCurrency = true`, maka `currencyCode` dapat kosong/diabaikan (system akan konsolidasi semua currency)
+- **Branch Validation:**
+  - Jika `consolidateBranch = false`, maka `branchCode` optional (kosong = semua cabang dengan access rights user)
+  - Jika `consolidateBranch = true`, maka `branchCode` diabaikan (system akan konsolidasi semua cabang)
+- **Consolidation Flags:**
+  - `consolidateCurrency` dan `consolidateBranch` adalah **independent** (dapat digunakan bersamaan atau terpisah)
+  - Default values: `consolidateCurrency = false`, `consolidateBranch = false`
 
 **Exception Handling:**
 
@@ -208,7 +228,9 @@ Base path (contoh): `/api/gl/reports`
 | RPT-400-02 | Date > current date | 400 | "Tanggal tidak boleh melebihi hari ini" |
 | RPT-400-03 | Invalid currency | 400 | "Kode valuta tidak valid" |
 | RPT-400-04 | Invalid branch | 400 | "Kode cabang tidak valid" |
+| RPT-400-05 | Missing currency when consolidateCurrency=false | 400 | "Parameter currencyCode wajib diisi ketika konsolidasi valuta tidak aktif" |
 | RPT-404-01 | No data found | 404 | "Data tidak ditemukan untuk periode yang diminta" |
+| RPT-404-02 | Exchange rate not found | 404 | "Kurs tidak tersedia untuk tanggal [date] dan valuta [currency]" |
 | RPT-500-01 | System error | 500 | "Gagal generate laporan" |
 
 ---
@@ -246,12 +268,18 @@ Base path (contoh): `/api/gl/reports`
    - Filter by `account_type IN ('Income', 'Expense')`
    - Filter by `branch_code` (jika consolidateBranch = false)
    - Filter by `currency_code` (jika consolidateCurrency = false)
-3. Jika `consolidateCurrency = true`:
+3. **Konsolidasi Valuta** (jika `consolidateCurrency = true`):
    - Query exchange rate dari `currency_exchange_rate` untuk `rate_date = asOfDate`
-   - Konversi semua balance ke IDR (base currency)
-   - Aggregate balance per account
-4. Jika `consolidateBranch = true`:
-   - Aggregate balance per account across all branches
+   - Konversi semua balance (debit_balance, credit_balance) ke IDR (base currency)
+   - Formula: `amount_idr = amount_foreign_currency × exchange_rate`
+   - Aggregate balance per account per branch (merge semua currency)
+4. **Konsolidasi Cabang** (jika `consolidateBranch = true`):
+   - Aggregate balance per account per currency (merge semua branch)
+   - SUM(debit_balance) dan SUM(credit_balance) untuk setiap account
+4a. **Konsolidasi Penuh** (jika keduanya `= true`):
+   - Konversi semua valuta ke IDR + Aggregate semua branch
+   - Hasil: satu baris per account (consolidated)
+4b. **Kombinasi Konsolidasi**: System mendukung 4 skenario yang sama dengan Neraca (lihat section 6.1.1)
 5. Grouping account berdasarkan klasifikasi Laba Rugi:
    - PENDAPATAN (Income/Revenue)
    - BEBAN (Expenses)
@@ -264,8 +292,13 @@ Base path (contoh): `/api/gl/reports`
 
 - `reportType` = "laba-rugi" (required)
 - `asOfDate` valid format DD/MM/YYYY dan <= current date
-- Jika `consolidateCurrency = false`, maka `currencyCode` required dan valid
-- Jika `consolidateBranch = false`, maka `branchCode` harus valid (optional)
+- **Currency Validation:**
+  - Jika `consolidateCurrency = false`, maka `currencyCode` **REQUIRED** dan harus valid (IDR, USD, EUR, SGD, JPY, CNY)
+  - Jika `consolidateCurrency = true`, maka `currencyCode` dapat kosong/diabaikan
+- **Branch Validation:**
+  - Jika `consolidateBranch = false`, maka `branchCode` optional
+  - Jika `consolidateBranch = true`, maka `branchCode` diabaikan
+- **Consolidation Flags:** Independent, dapat dikombinasikan
 
 **Exception Handling:**
 
@@ -513,39 +546,49 @@ ORDER BY branch_code ASC;
 ### 7.2 Business Logic Validation
 
 **BR-001: Jenis Laporan**
-- System must provide two report types: Neraca and Laba Rugi
-- User must select one report type before generate
+- Sistem harus menyediakan dua jenis laporan: Neraca dan Laba Rugi
+- User harus memilih salah satu jenis laporan sebelum generate
 
 **BR-002: Per Tanggal**
-- Neraca displays financial position as of specific date
-- Laba Rugi displays financial performance up to specific date (period-to-date from start of fiscal year)
-- Date format: DD/MM/YYYY
-- Date must not exceed current date
+- Neraca menampilkan posisi keuangan pada tanggal tertentu (as of date)
+- Laba Rugi menampilkan kinerja keuangan period-to-date (dari awal tahun buku sampai tanggal laporan)
+- Format tanggal: DD/MM/YYYY
+- Tanggal tidak boleh melebihi tanggal hari ini
 
 **BR-003: Konsolidasi Valuta**
-- If "Konsolidasi Valuta" checked, system consolidates all currencies into one report (base currency = IDR)
-- If not checked, user must select specific currency
-- Currency conversion uses exchange rate valid on report date
+- Jika "Konsolidasi Valuta" dicentang, sistem mengkonsolidasikan semua valuta ke dalam satu laporan (base currency = IDR)
+- Jika tidak dicentang, user harus memilih valuta spesifik (field required)
+- Konversi valuta menggunakan kurs yang berlaku pada tanggal laporan (closing rate)
+- **Independent dari Konsolidasi Cabang**: dapat digunakan bersamaan atau terpisah
 
 **BR-004: Valuta**
-- System supports multi-currency: IDR, USD, EUR, SGD, JPY, CNY
-- Default currency is IDR (Rupiah)
-- Valuta field becomes disabled if "Konsolidasi Valuta" is checked
+- Sistem mendukung multi-currency: IDR, USD, EUR, SGD, JPY, CNY
+- Default currency adalah IDR (Rupiah)
+- Field Valuta menjadi disabled jika "Konsolidasi Valuta" dicentang
+- **Field required** jika Konsolidasi Valuta tidak dicentang
 
 **BR-005: Konsolidasi Cabang**
-- If "Konsolidasi Cabang" checked, system consolidates all branches
-- If not checked, user can select specific branch
-- Cabang field becomes disabled if "Konsolidasi Cabang" is checked
+- Jika "Konsolidasi Cabang" dicentang, sistem mengkonsolidasikan semua cabang
+- Jika tidak dicentang, user dapat memilih cabang spesifik atau mengosongkan untuk semua cabang yang dapat diakses
+- Field Cabang menjadi disabled jika "Konsolidasi Cabang" dicentang
+- **Independent dari Konsolidasi Valuta**: dapat digunakan bersamaan atau terpisah
 
 **BR-006: Cabang**
-- User can select one or all branches
-- List of branches in dropdown according to user's branch access rights
-- Default option is user's branch code
-- If user only has access to one branch, "Konsolidasi Cabang" field becomes disabled
+- User dapat memilih satu cabang atau semua cabang (via opsi "-- PILIH SEMUA --")
+- List cabang di dropdown sesuai dengan hak akses cabang user
+- Default option adalah "-- PILIH SEMUA --" (semua cabang yang dapat diakses)
+- Field optional: tidak wajib dipilih
 
 **BR-007: Output Format**
-- Report generated in Excel format (.xlsx)
-- Excel file must be directly downloadable by user
+- Laporan di-generate dalam format Excel (.xlsx)
+- File Excel harus dapat langsung di-download oleh user
+
+**BR-008: Kombinasi Konsolidasi**
+- Sistem mendukung 4 skenario konsolidasi:
+  1. **Tidak ada konsolidasi** (`consolidateCurrency=false`, `consolidateBranch=false`): Laporan per valuta per cabang (paling detail)
+  2. **Konsolidasi Valuta saja** (`consolidateCurrency=true`, `consolidateBranch=false`): Laporan dalam IDR per cabang
+  3. **Konsolidasi Cabang saja** (`consolidateCurrency=false`, `consolidateBranch=true`): Laporan per valuta untuk semua cabang
+  4. **Konsolidasi Penuh** (`consolidateCurrency=true`, `consolidateBranch=true`): Laporan dalam IDR untuk semua cabang (fully consolidated)
 
 ---
 
@@ -702,12 +745,6 @@ LABA/RUGI BERSIH                    XXX,XXX.XX
 | # | Question | Status | Notes |
 | --- | -------- | ------ | ----- |
 | 1 | Konfirmasi template Excel untuk laporan Neraca dan Laba Rugi | Open | Business Analyst perlu provide template final |
-| 2 | Definisi akun-akun yang masuk kategori Aktiva, Pasiva, Modal, Pendapatan, Beban | Open | Business Analyst perlu provide mapping `account_type` |
-| 3 | Logic perhitungan konsolidasi valuta: kurs yang digunakan (closing rate, average rate, atau historical rate)? | Open | Finance Team perlu konfirmasi. Saat ini assume closing rate |
-| 4 | Start of fiscal year (untuk Laba Rugi period-to-date): bagaimana cara determine? Apakah fixed 01 Januari atau configurable? | Open | Business Owner perlu konfirmasi |
-| 5 | Apakah perlu fitur export ke PDF selain Excel? | Open | Business Owner |
-| 6 | Apakah perlu print preview sebelum download? | Open | Business Owner |
-| 7 | Maximum data size: berapa limit untuk warning jika data terlalu besar? | Open | Technical Team |
 
 ---
 

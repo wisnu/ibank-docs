@@ -691,68 +691,68 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 
 ### 7.1 Input Validation
 
-| Parameter | Rule |
-|-----------|------|
-| `startDate` | Required. Format DD/MM/YYYY. Must be valid date |
-| `endDate` | Required. Format DD/MM/YYYY. Must be >= startDate. Must be <= current date |
+| Parameter | Aturan |
+|-----------|--------|
+| `startDate` | Required. Format DD/MM/YYYY. Harus berupa tanggal yang valid |
+| `endDate` | Required. Format DD/MM/YYYY. Harus >= startDate. Harus <= tanggal hari ini |
 | `consolidateCurrency` | Boolean. Default false. Checkbox untuk konsolidasi semua valuta |
-| `currencyCode` | Conditional required (if consolidateCurrency = false). Must be valid currency code: IDR, USD, EUR, SGD |
+| `currencyCode` | Conditional required (jika consolidateCurrency = false). Harus valid: IDR, USD, EUR, SGD |
 | `consolidateBranch` | Boolean. Default false. Checkbox untuk konsolidasi semua cabang |
-| `branchCode` | Optional. Must be valid branch code if provided. Ignored if consolidateBranch = true |
+| `branchCode` | Optional. Harus valid jika diisi. Diabaikan jika consolidateBranch = true |
 | `showOnlyWithBalance` | Boolean. Default false |
 
 ### 7.2 Business Logic Validation
 
 **BR-001: Periode Tanggal**
-- Trial Balance uses date range (Start Date - End Date)
-- Date format: DD/MM/YYYY
-- Start Date must not be greater than End Date
-- End Date must not exceed current date
-- Both date fields are required
+- Trial Balance menggunakan rentang tanggal (Mulai Tanggal - Hingga Tanggal)
+- Format tanggal: DD/MM/YYYY
+- Mulai Tanggal tidak boleh lebih besar dari Hingga Tanggal
+- Hingga Tanggal tidak boleh melebihi tanggal hari ini
+- Kedua field tanggal wajib diisi
 
 **BR-002: Konsolidasi Valuta**
-- If "Konsolidasi Valuta" checked, system consolidates all currencies into one report (base currency = IDR)
-- If not checked, user must select specific currency
-- Currency conversion uses exchange rate valid on end date
+- Jika "Konsolidasi Valuta" dicentang, sistem mengkonsolidasikan semua valuta ke dalam satu laporan (base currency = IDR)
+- Jika tidak dicentang, user harus memilih valuta spesifik
+- Konversi valuta menggunakan kurs yang berlaku pada akhir periode (end date)
 - **Independent dari Konsolidasi Cabang**: dapat digunakan bersamaan atau terpisah
 
 **BR-003: Valuta**
-- System supports multi-currency: IDR, USD, EUR, SGD
-- Default currency is IDR (Rupiah)
-- Valuta field becomes disabled if "Konsolidasi Valuta" is checked
-- Required field jika Konsolidasi Valuta tidak dicentang
+- Sistem mendukung multi-currency: IDR, USD, EUR, SGD
+- Default currency adalah IDR (Rupiah)
+- Field Valuta menjadi disabled jika "Konsolidasi Valuta" dicentang
+- Field required jika Konsolidasi Valuta tidak dicentang
 
 **BR-004: Konsolidasi Cabang**
-- If "Konsolidasi Cabang" checked, system consolidates all branches
-- If not checked, user can select specific branch or leave empty for all branches
-- Cabang field becomes disabled if "Konsolidasi Cabang" is checked
+- Jika "Konsolidasi Cabang" dicentang, sistem mengkonsolidasikan semua cabang
+- Jika tidak dicentang, user dapat memilih cabang spesifik atau mengosongkan untuk semua cabang
+- Field Cabang menjadi disabled jika "Konsolidasi Cabang" dicentang
 - **Independent dari Konsolidasi Valuta**: dapat digunakan bersamaan atau terpisah
 
 **BR-005: Cabang**
-- User can select one or all branches
-- List of branches in dropdown according to user's branch access rights
-- Default option is "-- PILIH SEMUA --"
+- User dapat memilih satu cabang atau semua cabang
+- List cabang di dropdown sesuai dengan hak akses cabang user
+- Default option adalah "-- PILIH SEMUA --"
 
 **BR-006: Filter Saldo**
-- Checkbox "Tampilkan hanya yang memiliki saldo" is optional
-- If checked, report only shows accounts with non-zero balance (debit > 0 OR credit > 0)
-- If unchecked, report shows all accounts including zero balance
-- Default: unchecked
+- Checkbox "Tampilkan hanya yang memiliki saldo" bersifat optional
+- Jika dicentang, laporan hanya menampilkan account dengan saldo tidak nol (debit > 0 ATAU credit > 0)
+- Jika tidak dicentang, laporan menampilkan semua account termasuk yang saldo nol
+- Default: tidak dicentang
 
 **BR-007: Output Format**
-- Report generated in Excel format (.xlsx)
-- Excel file must be directly downloadable by user
+- Laporan di-generate dalam format Excel (.xlsx)
+- File Excel harus dapat langsung di-download oleh user
 
 **BR-008: Balance Equation**
-- Total Ending Debit MUST EQUAL Total Ending Credit
-- If not balanced, system returns error
+- Total Ending Debit HARUS SAMA DENGAN Total Ending Credit
+- Jika tidak balance, sistem mengembalikan error
 
 **BR-009: Kombinasi Konsolidasi**
-- System support 4 skenario konsolidasi:
-  1. **Tidak ada konsolidasi** (`is_consol_currency=F`, `is_consol_branch=F`): Report per valuta per cabang
-  2. **Konsolidasi Valuta saja** (`is_consol_currency=T`, `is_consol_branch=F`): Report dalam IDR per cabang
-  3. **Konsolidasi Cabang saja** (`is_consol_currency=F`, `is_consol_branch=T`): Report per valuta untuk semua cabang
-  4. **Konsolidasi Penuh** (`is_consol_currency=T`, `is_consol_branch=T`): Report dalam IDR untuk semua cabang (fully consolidated)
+- Sistem mendukung 4 skenario konsolidasi:
+  1. **Tidak ada konsolidasi** (`is_consol_currency=F`, `is_consol_branch=F`): Laporan per valuta per cabang
+  2. **Konsolidasi Valuta saja** (`is_consol_currency=T`, `is_consol_branch=F`): Laporan dalam IDR per cabang
+  3. **Konsolidasi Cabang saja** (`is_consol_currency=F`, `is_consol_branch=T`): Laporan per valuta untuk semua cabang
+  4. **Konsolidasi Penuh** (`is_consol_currency=T`, `is_consol_branch=T`): Laporan dalam IDR untuk semua cabang (fully consolidated)
 
 ---
 
