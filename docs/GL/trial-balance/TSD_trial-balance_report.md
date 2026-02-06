@@ -1013,25 +1013,6 @@ graph LR
    - Ambil `balancecumulative` untuk ending (END_DATE)
 4. Join dengan `kurshistory` untuk konversi currency (jika consolidate)
 
-#### 6.3.11 Important Notes
-
-> [!IMPORTANT]
-> **Key Differences dari TSD Section 6.2 Entity:**
-> 
-> 1. **Actual Implementation menggunakan `dailybalance`** (snapshot cumulative), bukan raw `journalitem` aggregation
-> 2. **`balancecumulative`** adalah saldo kumulatif dari awal waktu, efficient untuk query
-> 3. **Daily movements** (`debit`, `credit`) juga tersimpan di `dailybalance` untuk period calculation
-> 4. **P&L accounts** menggunakan separate table `dailyprojectbalance` untuk project tracking
-> 5. **Today's journal** handling untuk real-time reporting (transaksi yang belum posting)
-
-> [!WARNING]
-> **Multi-Currency Handling:**
-> 
-> - Setiap field ada versi `_ekuiv` (equivalent dalam IDR)
-> - `nilai_kurs` dari `journal` table digunakan untuk konversi real-time
-> - `kurshistory` digunakan untuk konversi historical balance
-> - Konsolidasi currency pakai `balancecumulative_ekuiv`, bukan convert post-aggregation
-
 ---
 
 ## 7. Validation Rules
