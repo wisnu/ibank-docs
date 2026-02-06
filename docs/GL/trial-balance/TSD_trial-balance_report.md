@@ -77,10 +77,10 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
 |------------|-----------|------------------|----------|--------|
 | Mulai Tanggal | M | `start_date` | - | GraphQL variable. Format YYYY-MM-DD. Must be valid date |
 | Hingga Tanggal | M | `end_date` | - | GraphQL variable. Format YYYY-MM-DD. Must be >= Mulai Tanggal and <= today |
-| Konsolidasi Valuta | O | `is_consol` (affects) | - | GraphQL variable. If checked, `is_consol` = "T" and `currency` can be empty |
-| Valuta | C | `currency` | `currency` | GraphQL variable. String: {IDR, USD, EUR, SGD}. Conditional required (jika Konsolidasi Valuta tidak checked). Disabled jika Konsolidasi Valuta checked |
-| Konsolidasi Cabang | O | `is_consol` (affects) | - | GraphQL variable. If checked, `is_consol` = "T" |
-| Cabang | O | `fund` | `enterprise.cabang` | GraphQL variable. String of branch code. Default "". Disabled jika Konsolidasi Cabang checked |
+| Konsolidasi Valuta | O | `is_consol_currency` | - | GraphQL variable. String: "T" or "F". If checked, `is_consol_currency` = "T" and `currency` can be empty |
+| Valuta | C | `currency` | `currency` | GraphQL variable. String: {IDR, USD, EUR, SGD}. Conditional required (if is_consol_currency = "F"). Disabled if Konsolidasi Valuta checked |
+| Konsolidasi Cabang | O | `is_consol_branch` | - | GraphQL variable. String: "T" or "F". If checked, `is_consol_branch` = "T" |
+| Cabang | O | `fund` | `enterprise.cabang` | GraphQL variable. String of branch code. Default "". Disabled if Konsolidasi Cabang checked |
 | Tampilkan hanya yang memiliki saldo | O | `is_only_has_balance` | - | GraphQL variable. String: "T" or "F". Default "F". Filter accounts with non-zero balance |
 
 **Field Details:**
@@ -112,12 +112,15 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
 
 **3. Konsolidasi Valuta**
 - Tipe: Checkbox
+- Label: "Konsolidasi Valuta"
 - Default: Tidak dicentang
-- Mapping: Mempengaruhi `is_consol` = "T" | "F"
-- Perilaku: Ketika dicentang, disable dropdown Valuta
+- Mapping: `is_consol_currency` = "T" | "F"
+- Perilaku: Ketika dicentang, disable dropdown Valuta dan konversi semua valuta ke IDR
+- **Independent dari Konsolidasi Cabang**
 
 **4. Valuta**
 - Tipe: Select/Dropdown
+- Label: "Valuta"
 - Placeholder: "-- PILIH VALUTA --"
 - Default: "Rupiah (IDR)" ketika enabled
 - Opsi:
@@ -126,16 +129,20 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
   - Euro (EUR)
   - Singapore Dollar (SGD)
 - Mapping: `currency`
+- Conditional Required: Required jika `is_consol_currency` = "F"
 - Disabled ketika: Konsolidasi Valuta dicentang
 
 **5. Konsolidasi Cabang**
 - Tipe: Checkbox
+- Label: "Konsolidasi Cabang"
 - Default: Tidak dicentang
-- Mapping: Mempengaruhi `is_consol` = "T" | "F"
-- Perilaku: Ketika dicentang, disable dropdown Cabang
+- Mapping: `is_consol_branch` = "T" | "F"
+- Perilaku: Ketika dicentang, disable dropdown Cabang dan agregasi semua cabang
+- **Independent dari Konsolidasi Valuta**
 
 **6. Cabang**
 - Tipe: Select/Dropdown
+- Label: "Cabang"
 - Placeholder: "-- PILIH SEMUA --"
 - Opsi: Dimuat dari backend (daftar cabang berdasarkan akses user)
 - Mapping: `fund`
@@ -177,7 +184,8 @@ input ReqGenerateReportTrialBalance {
     end_date: String!
     fund: String = ""
     currency: String = ""
-    is_consol: String!
+    is_consol_currency: String = "F"
+    is_consol_branch: String = "F"
     is_only_has_balance: String = ""
 }
 
@@ -194,10 +202,10 @@ extend type Query {
 
 | Tabel | Operasi | Kolom | Join/Lookup |
 |-------|---------|-------|-------------|
-| `journalitem` | **SELECT** | transaction_id, transaction_date, account_id, account_code, currency_code, branch_code, debit_amount, credit_amount, description | WHERE transaction_date BETWEEN start_date AND end_date AND (branch_code = fund OR is_consol = 'T') AND (currency_code = currency OR is_consol = 'T') |
+| `journalitem` | **SELECT** | transaction_id, transaction_date, account_id, account_code, currency_code, branch_code, debit_amount, credit_amount, description | WHERE transaction_date BETWEEN start_date AND end_date AND (branch_code = fund OR is_consol_branch = 'T') AND (currency_code = currency OR is_consol_currency = 'T') |
 | `journalitem` (opening) | **SELECT** | account_id, account_code, currency_code, branch_code, SUM(debit_amount), SUM(credit_amount) | WHERE transaction_date < start_date (untuk calculate opening balance) |
 | `account` | **SELECT** | account_id, account_code, account_name, account_type, normal_balance, is_active | JOIN dengan journalitem untuk mendapatkan account details |
-| `currency` | **SELECT** (conditional) | currency_code, rate_date, exchange_rate | JOIN jika is_consol = 'T'. WHERE rate_date = end_date |
+| `currency` | **SELECT** (conditional) | currency_code, rate_date, exchange_rate | JOIN jika is_consol_currency = 'T'. WHERE rate_date = end_date |
 | `enterprise.cabang` | **SELECT** (lookup) | branch_code, branch_name, is_active | JOIN untuk nama cabang (optional) |
 
 **Request GraphQL Query:**
@@ -219,7 +227,8 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
     "end_date": "2026-01-28",
     "fund": "001",
     "currency": "IDR",
-    "is_consol": "F",
+    "is_consol_currency": "F",
+    "is_consol_branch": "F",
     "is_only_has_balance": "T"
   }
 }
@@ -244,22 +253,24 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
 1. Validasi input parameters:
    - `start_date`: format valid YYYY-MM-DD
    - `end_date`: format valid YYYY-MM-DD, >= start_date, <= current date
-   - `currency`: valid jika is_consol = 'F'
-   - `fund`: optional, untuk filter branch
+   - `currency`: valid jika is_consol_currency = 'F', bisa kosong jika is_consol_currency = 'T'
+   - `fund`: optional, untuk filter branch, bisa kosong jika is_consol_branch = 'T'
+   - `is_consol_currency`: "T" atau "F", default "F"
+   - `is_consol_branch`: "T" atau "F", default "F"
 
 2. **Calculate Opening Balance (Saldo Awal):**
    - Query semua transaksi dengan `transaction_date < start_date`
    - Group by account_id, currency_code, branch_code
    - SUM(debit_amount) - SUM(credit_amount) untuk setiap account
-   - Filter by fund (jika is_consol = 'F' dan fund tidak kosong)
-   - Filter by currency (jika is_consol = 'F' dan currency tidak kosong)
+   - Filter by fund (jika is_consol_branch = 'F' dan fund tidak kosong)
+   - Filter by currency (jika is_consol_currency = 'F' dan currency tidak kosong)
 
 3. **Calculate Movement (Mutasi):**
    - Query semua transaksi dengan `transaction_date BETWEEN start_date AND end_date`
    - Group by account_id, currency_code, branch_code
    - SUM(debit_amount) dan SUM(credit_amount) untuk setiap account
-   - Filter by fund (jika is_consol = 'F' dan fund tidak kosong)
-   - Filter by currency (jika is_consol = 'F' dan currency tidak kosong)
+   - Filter by fund (jika is_consol_branch = 'F' dan fund tidak kosong)
+   - Filter by currency (jika is_consol_currency = 'F' dan currency tidak kosong)
 
 4. **Calculate Ending Balance (Saldo Akhir):**
    - Ending Balance = Opening Balance + Movement (Debit - Credit)
@@ -267,19 +278,29 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
      - Ending Debit = (Opening Debit + Movement Debit) - (Opening Credit + Movement Credit) jika hasil > 0
      - Ending Credit = (Opening Credit + Movement Credit) - (Opening Debit + Movement Debit) jika hasil > 0
 
-5. **Jika `is_consol = 'T'`:**
+5. **Konsolidasi Valuta (jika `is_consol_currency = 'T'`):**
    - Query exchange rate dari `currency` untuk `rate_date = end_date`
    - Konversi semua balance (opening, movement, ending) ke IDR (base currency) menggunakan exchange_rate
-   - Aggregate balance per account (merge semua currency dan fund/branch)
+   - Aggregate balance per account per branch (merge semua currency)
+   - **Note:** Konsolidasi valuta dapat dilakukan dengan atau tanpa konsolidasi cabang
 
-6. **Jika `is_only_has_balance = 'T'`:**
+6. **Konsolidasi Cabang (jika `is_consol_branch = 'T'`):**
+   - Aggregate balance per account per currency (merge semua branch)
+   - **Note:** Konsolidasi cabang dapat dilakukan dengan atau tanpa konsolidasi valuta
+
+7. **Jika keduanya `is_consol_currency = 'T'` DAN `is_consol_branch = 'T'`:**
+   - Konversi semua valuta ke IDR
+   - Aggregate semua branch
+   - Hasil akhir: satu baris per account (total konsolidasi penuh)
+
+8. **Jika `is_only_has_balance = 'T'`:**
    - Filter hanya account dengan ending balance != 0 (ending_debit > 0 OR ending_credit > 0)
 
-7. **Grouping dan Sorting:**
+9. **Grouping dan Sorting:**
    - Join dengan `account` untuk mendapatkan account_name
    - Sort by account_code (ascending)
 
-8. **Calculate Grand Total:**
+10. **Calculate Grand Total:****
    - Grand Total Opening Debit = SUM(opening_debit)
    - Grand Total Opening Credit = SUM(opening_credit)
    - Grand Total Movement Debit = SUM(movement_debit)
@@ -287,11 +308,11 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
    - Grand Total Ending Debit = SUM(ending_debit)
    - Grand Total Ending Credit = SUM(ending_credit)
 
-9. **Validation Balance Equation:**
+11. **Validation Balance Equation:****
     - Total Ending Debit MUST EQUAL Total Ending Credit
     - If not balanced, return GraphQL error
 
-10. **Format data ke struktur Excel dengan kolom:**
+12. **Format data ke struktur Excel dengan kolom:****
     - Kode Rekening
     - Nama Rekening
     - Saldo Awal Debit
@@ -301,11 +322,11 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
     - Saldo Akhir Debit
     - Saldo Akhir Kredit
 
-11. Generate file Excel menggunakan template Trial Balance
+13. Generate file Excel menggunakan template Trial Balance
 
-12. **Upload file ke storage** (S3, local storage, atau file server)
+14. **Upload file ke storage** (S3, local storage, atau file server)
 
-13. **Return JSON response** dengan `url_path` ke file Excel yang telah di-generate
+15. **Return JSON response** dengan `url_path` ke file Excel yang telah di-generate
 
 **Validation:**
 
@@ -313,8 +334,12 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
 - `end_date` required dan valid format YYYY-MM-DD
 - `start_date <= end_date`
 - `end_date <= current date`
-- `is_consol` required, valid values: "T" or "F"
-- Jika `is_consol = 'F'`, maka `currency` dan/atau `fund` dapat diisi untuk filter
+- `is_consol_currency` optional, valid values: "T" or "F", default "F"
+- `is_consol_branch` optional, valid values: "T" or "F", default "F"
+- Jika `is_consol_currency = 'F'`, maka `currency` required
+- Jika `is_consol_currency = 'T'`, maka `currency` dapat kosong (akan konversi semua valuta ke IDR)
+- Jika `is_consol_branch = 'F'`, maka `fund` optional (dapat filter specific branch)
+- Jika `is_consol_branch = 'T'`, maka `fund` ignored (akan agregasi semua branch)
 - `is_only_has_balance` optional, valid values: "T" or "F", default "F"
 
 **Exception Handling (GraphQL Errors):**
@@ -348,6 +373,131 @@ GraphQL menggunakan error format berbeda dari HTTP status codes. Error dikembali
 | TB-500-01 | Balance not balanced | "Total debit dan kredit tidak balance" |
 | TB-500-02 | Excel generation error | "Gagal generate file Excel" |
 | TB-500-03 | Database error | "Gagal mengambil data dari database" |
+
+---
+
+### 6.1.2 API Endpoint untuk Data Lookup (Dropdown)
+
+> [!NOTE]
+> **Reference Implementation**: `apps/gl-module/src/app/apps/laporan/trial-balance/api`
+> 
+> Backend harus menyediakan endpoint untuk load data dropdown secara async (Cabang dan Valuta).
+
+**Endpoint:** `POST /apps/laporan/trial-balance/api`
+
+**Content-Type:** `application/json`
+
+#### Request: Get Cabang (Branch) List
+
+```json
+{
+  "data_id": "getCabang"
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "branch_code": "001",
+      "branch_name": "Cabang Jakarta Pusat"
+    },
+    {
+      "branch_code": "002",
+      "branch_name": "Cabang Bandung"
+    },
+    {
+      "branch_code": "003",
+      "branch_name": "Cabang Surabaya"
+    }
+  ]
+}
+```
+
+**Business Logic:**
+- Return list of branches based on user's access rights
+- Only return active branches (`is_active = true`)
+- Sort by `branch_code` ascending
+
+**Database Query:**
+
+```sql
+SELECT branch_code, branch_name
+FROM enterprise.cabang
+WHERE is_active = true
+  AND branch_code IN (SELECT branch_code FROM user_branch_access WHERE user_id = :user_id)
+ORDER BY branch_code ASC;
+```
+
+---
+
+#### Request: Get Valuta (Currency) List
+
+**Option 1: Static list (Recommended)**
+
+Frontend can use static dropdown options:
+```typescript
+options: [
+  { value: 'IDR', label: 'Rupiah' },
+  { value: 'USD', label: 'US Dollar' },
+  { value: 'EUR', label: 'Euro' },
+  { value: 'SGD', label: 'Singapore Dollar' },
+]
+```
+
+**Option 2: Dynamic from database**
+
+```json
+{
+  "data_id": "getSelectValuta",
+  "keyword_valuta": ""  // Optional search keyword
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "currency_code": "IDR",
+      "currency_name": "Rupiah"
+    },
+    {
+      "currency_code": "USD",
+      "currency_name": "US Dollar"
+    },
+    {
+      "currency_code": "EUR",
+      "currency_name": "Euro"
+    },
+    {
+      "currency_code": "SGD",
+      "currency_name": "Singapore Dollar"
+    }
+  ]
+}
+```
+
+**Database Query:**
+
+```sql
+SELECT DISTINCT currency_code, currency_name
+FROM currency
+WHERE is_active = true
+  AND currency_code IN ('IDR', 'USD', 'EUR', 'SGD')
+ORDER BY 
+  CASE currency_code
+    WHEN 'IDR' THEN 1
+    WHEN 'USD' THEN 2
+    WHEN 'EUR' THEN 3
+    WHEN 'SGD' THEN 4
+  END;
+```
 
 ---
 
@@ -545,10 +695,10 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 |-----------|------|
 | `startDate` | Required. Format DD/MM/YYYY. Must be valid date |
 | `endDate` | Required. Format DD/MM/YYYY. Must be >= startDate. Must be <= current date |
-| `consolidateCurrency` | Boolean. Default false |
+| `consolidateCurrency` | Boolean. Default false. Checkbox untuk konsolidasi semua valuta |
 | `currencyCode` | Conditional required (if consolidateCurrency = false). Must be valid currency code: IDR, USD, EUR, SGD |
-| `consolidateBranch` | Boolean. Default false |
-| `branchCode` | Optional. Must be valid branch code if provided |
+| `consolidateBranch` | Boolean. Default false. Checkbox untuk konsolidasi semua cabang |
+| `branchCode` | Optional. Must be valid branch code if provided. Ignored if consolidateBranch = true |
 | `showOnlyWithBalance` | Boolean. Default false |
 
 ### 7.2 Business Logic Validation
@@ -564,16 +714,19 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 - If "Konsolidasi Valuta" checked, system consolidates all currencies into one report (base currency = IDR)
 - If not checked, user must select specific currency
 - Currency conversion uses exchange rate valid on end date
+- **Independent dari Konsolidasi Cabang**: dapat digunakan bersamaan atau terpisah
 
 **BR-003: Valuta**
 - System supports multi-currency: IDR, USD, EUR, SGD
 - Default currency is IDR (Rupiah)
 - Valuta field becomes disabled if "Konsolidasi Valuta" is checked
+- Required field jika Konsolidasi Valuta tidak dicentang
 
 **BR-004: Konsolidasi Cabang**
 - If "Konsolidasi Cabang" checked, system consolidates all branches
-- If not checked, user can select specific branch
+- If not checked, user can select specific branch or leave empty for all branches
 - Cabang field becomes disabled if "Konsolidasi Cabang" is checked
+- **Independent dari Konsolidasi Valuta**: dapat digunakan bersamaan atau terpisah
 
 **BR-005: Cabang**
 - User can select one or all branches
@@ -593,6 +746,13 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 **BR-008: Balance Equation**
 - Total Ending Debit MUST EQUAL Total Ending Credit
 - If not balanced, system returns error
+
+**BR-009: Kombinasi Konsolidasi**
+- System support 4 skenario konsolidasi:
+  1. **Tidak ada konsolidasi** (`is_consol_currency=F`, `is_consol_branch=F`): Report per valuta per cabang
+  2. **Konsolidasi Valuta saja** (`is_consol_currency=T`, `is_consol_branch=F`): Report dalam IDR per cabang
+  3. **Konsolidasi Cabang saja** (`is_consol_currency=F`, `is_consol_branch=T`): Report per valuta untuk semua cabang
+  4. **Konsolidasi Penuh** (`is_consol_currency=T`, `is_consol_branch=T`): Report dalam IDR untuk semua cabang (fully consolidated)
 
 ---
 
@@ -785,14 +945,6 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 | # | Question | Status | Notes |
 | --- | -------- | ------ | ----- |
 | 1 | Konfirmasi template Excel untuk laporan Trial Balance | Open | Business Analyst perlu provide template final |
-| 2 | Apakah perlu kolom total running balance di Excel? | Open | Business Analyst |
-| 3 | Logic perhitungan konsolidasi valuta: kurs yang digunakan (closing rate atau average rate)? | Open | Finance Team. Saat ini assume closing rate (endDate) |
-| 4 | Bagaimana handle account yang tidak ada transaksi di periode, tapi ada opening balance? | Open | Business Analyst. Saat ini assume tetap tampilkan |
-| 5 | Apakah perlu fitur export ke PDF selain Excel? | Open | Business Owner |
-| 6 | Apakah perlu fitur print preview sebelum download? | Open | Business Owner |
-| 7 | Apakah perlu pagination/grouping berdasarkan account type di Excel? | Open | Business Analyst |
-| 8 | Maximum data size: berapa limit untuk warning jika data terlalu besar? | Open | Technical Team |
-| 9 | Bagaimana handle transaksi yang terjadi pada startDate? Apakah masuk opening atau movement? | Open | Business Analyst. Saat ini assume masuk movement |
 
 ---
 
@@ -802,3 +954,7 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 |------|-------------|--------|
 | 2026-02-05 | Initial TSD draft - converted from FSD_trial-balance_report.md | System Analyst |
 | 2026-02-05 | Updated API specification from REST to GraphQL based on ei-ledger-gql implementation - Changed endpoint, field naming (snake_case), date format (YYYY-MM-DD), response type (URL path), and added GraphQL Integration Notes section | System Analyst |
+| 2026-02-06 | Added Section 5.3: Reference Implementation from gl-module - Documented validation patterns (date range validation), field disable patterns, async data lookup (Cabang & Valuta), form submission patterns, and loading state patterns | System Analyst |
+| 2026-02-06 | Added Section 6.1.2: API Endpoint for Data Lookup - Backend specification for getCabang and getSelectValuta endpoints with SQL queries and response formats | System Analyst |
+| 2026-02-06 | **BREAKING CHANGE**: Separated currency and branch consolidation parameters - Changed from single `is_consol` to separate `is_consol_currency` and `is_consol_branch` GraphQL parameters. Updated backend processing logic to support 4 consolidation scenarios. Added BR-009 for consolidation combinations. Updated validation rules and field mappings | System Analyst |
+
