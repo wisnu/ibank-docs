@@ -468,10 +468,9 @@ GET /api/gl/reports/lookup/branches
 ```sql
 SELECT kode_cabang, nama_cabang
 FROM enterprise.cabang
-WHERE is_active = true
-  AND branch_code IN (
+WHERE kode_cabang IN (
     SELECT kode_cabang 
-    FROM user_branch_access 
+    FROM enterprise.listcabangdiizinkan 
     WHERE user_id = :user_id
   )
 ORDER BY kode_cabang ASC;

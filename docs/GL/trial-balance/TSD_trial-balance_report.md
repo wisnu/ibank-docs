@@ -28,8 +28,8 @@ Dokumen ini menjabarkan spesifikasi teknis implementasi modul **Laporan Trial Ba
 
 - Data transaksi GL sudah tersedia di `journalitem` untuk periode yang diminta.
 - Master account tersedia di `account`.
-- Exchange rate tersedia di `currency` untuk konversi valuta.
-- Master branch tersedia di `enterprise.cabang`.
+- Exchange rate tersedia di `kurshistory` untuk konversi valuta.
+- Master cabang tersedia di `enterprise.cabang`.
 - User sudah login dan memiliki hak akses sesuai role.
 - File Excel template untuk Trial Balance sudah tersedia.
 
@@ -51,15 +51,15 @@ Dokumen ini menjabarkan spesifikasi teknis implementasi modul **Laporan Trial Ba
 ### 4.1 Entity Utama
 
 - `journalitem` (Transaksi GL)
-  - PK: `transaction_id`
-- `account` (Master Account)
+  - PK: `journalitem_id`
+- `accountinstance` (Instance Account per Cabang)
+  - PK: `accountinstance_id`
+- `account` (Master Chart of Account)
   - PK: `account_id`
-- `currency` (Kurs Valuta)
-  - PK: composite (currency_code, kurs_tengah_bi)
-- `kurshistory` (History Kurs)
-  - PK: composite (histry_id, history_date, currency_code, kurs_tengah_bi)
+- `kurshistory` (History Kurs Valuta)
+  - PK: `kurshistory_id`
 - `enterprise.cabang` (Master Cabang)
-  - PK: `branch_code`
+  - PK: `kode_cabang`
 
 ---
 
@@ -78,7 +78,7 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
 | Mulai Tanggal | M | `start_date` | - | GraphQL variable. Format YYYY-MM-DD. Must be valid date |
 | Hingga Tanggal | M | `end_date` | - | GraphQL variable. Format YYYY-MM-DD. Must be >= Mulai Tanggal and <= today |
 | Konsolidasi Valuta | O | `is_consol_currency` | - | GraphQL variable. String: "T" or "F". If checked, `is_consol_currency` = "T" and `currency` can be empty |
-| Valuta | C | `currency` | `currency` | GraphQL variable. String: {IDR, USD, EUR, SGD}. Conditional required (if is_consol_currency = "F"). Disabled if Konsolidasi Valuta checked |
+| Valuta | C | `currency` | `kurshistory` | GraphQL variable. String: {IDR, USD, EUR, SGD}. Conditional required (if is_consol_currency = "F"). Disabled if Konsolidasi Valuta checked |
 | Konsolidasi Cabang | O | `is_consol_branch` | - | GraphQL variable. String: "T" or "F". If checked, `is_consol_branch` = "T" |
 | Cabang | O | `fund` | `enterprise.cabang` | GraphQL variable. String of branch code. Default "". Disabled if Konsolidasi Cabang checked |
 | Tampilkan hanya yang memiliki saldo | O | `is_only_has_balance` | - | GraphQL variable. String: "T" or "F". Default "F". Filter accounts with non-zero balance |
@@ -202,11 +202,12 @@ extend type Query {
 
 | Tabel | Operasi | Kolom | Join/Lookup |
 |-------|---------|-------|-------------|
-| `journalitem` | **SELECT** | transaction_id, transaction_date, account_id, account_code, currency_code, branch_code, debit_amount, credit_amount, description | WHERE transaction_date BETWEEN start_date AND end_date AND (branch_code = fund OR is_consol_branch = 'T') AND (currency_code = currency OR is_consol_currency = 'T') |
-| `journalitem` (opening) | **SELECT** | account_id, account_code, currency_code, branch_code, SUM(debit_amount), SUM(credit_amount) | WHERE transaction_date < start_date (untuk calculate opening balance) |
-| `account` | **SELECT** | account_id, account_code, account_name, account_type, normal_balance, is_active | JOIN dengan journalitem untuk mendapatkan account details |
-| `currency` | **SELECT** (conditional) | currency_code, rate_date, exchange_rate | JOIN jika is_consol_currency = 'T'. WHERE rate_date = end_date |
-| `enterprise.cabang` | **SELECT** (lookup) | branch_code, branch_name, is_active | JOIN untuk nama cabang (optional) |
+| `journalitem` | **SELECT** | journalitem_id, transaction_date, accountinstance_id, debit_amount, credit_amount, description | WHERE transaction_date BETWEEN start_date AND end_date |
+| `journalitem` (opening) | **SELECT** | journalitem_id, accountinstance_id, debit_amount, credit_amount | WHERE transaction_date < start_date (untuk calculate opening balance) |
+| `accountinstance` | **SELECT** | accountinstance_id, account_id, kode_cabang, currency_code | JOIN journalitem. Filter by kode_cabang (jika is_consol_branch = 'F'), currency_code (jika is_consol_currency = 'F') |
+| `account` | **SELECT** | account_id, account_code, account_name, account_type, normal_balance, is_active | JOIN accountinstance untuk mendapatkan account details |
+| `kurshistory` | **SELECT** (conditional) | currency_code, history_date, kurs_tengah_bi | JOIN jika is_consol_currency = 'T'. WHERE history_date = end_date |
+| `enterprise.cabang` | **SELECT** (lookup) | kode_cabang, nama_cabang, is_active | JOIN untuk nama cabang (optional) |
 
 **Request GraphQL Query:**
 
@@ -279,9 +280,9 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
      - Ending Credit = (Opening Credit + Movement Credit) - (Opening Debit + Movement Debit) jika hasil > 0
 
 5. **Konsolidasi Valuta (jika `is_consol_currency = 'T'`):**
-   - Query exchange rate dari `currency` untuk `rate_date = end_date`
-   - Konversi semua balance (opening, movement, ending) ke IDR (base currency) menggunakan exchange_rate
-   - Aggregate balance per account per branch (merge semua currency)
+   - Query exchange rate dari `kurshistory` untuk `history_date = end_date`
+   - Konversi semua balance (opening, movement, ending) ke IDR (base currency) menggunakan kurs_tengah_bi
+   - Aggregate balance per account per cabang (merge semua currency)
    - **Note:** Konsolidasi valuta dapat dilakukan dengan atau tanpa konsolidasi cabang
 
 6. **Konsolidasi Cabang (jika `is_consol_branch = 'T'`):**
@@ -425,11 +426,14 @@ GraphQL menggunakan error format berbeda dari HTTP status codes. Error dikembali
 **Database Query:**
 
 ```sql
-SELECT branch_code, branch_name
+SELECT kode_cabang, nama_cabang
 FROM enterprise.cabang
-WHERE is_active = true
-  AND branch_code IN (SELECT branch_code FROM user_branch_access WHERE user_id = :user_id)
-ORDER BY branch_code ASC;
+WHERE kode_cabang IN (
+    SELECT kode_cabang 
+    FROM enterprise.listcabangdiizinkan 
+    WHERE user_id = :user_id
+  )
+ORDER BY kode_cabang ASC;
 ```
 
 ---
@@ -487,9 +491,9 @@ options: [
 
 ```sql
 SELECT DISTINCT currency_code, currency_name
-FROM currency
-WHERE is_active = true
-  AND currency_code IN ('IDR', 'USD', 'EUR', 'SGD')
+FROM kurshistory
+WHERE currency_code IN ('IDR', 'USD', 'EUR', 'SGD')
+  AND history_date = (SELECT MAX(history_date) FROM kurshistory)
 ORDER BY 
   CASE currency_code
     WHEN 'IDR' THEN 1
@@ -615,25 +619,46 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 
 #### Entity: `journalitem` (Transaksi GL)
 
-**Primary Key:** `transaction_id`
+**Primary Key:** `journalitem_id`
 
 **Kolom yang Relevan:**
 
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
-| `transaction_id` | varchar(50) | ID transaksi (PK) |
+| `journalitem_id` | bigint | ID transaksi (PK) |
 | `transaction_date` | date | Tanggal transaksi |
-| `account_id` | varchar(20) | ID rekening GL (FK ke account) |
-| `account_code` | varchar(20) | Kode rekening |
-| `currency_code` | varchar(3) | Kode valuta (IDR, USD, EUR, SGD) |
-| `branch_code` | varchar(10) | Kode cabang |
+| `accountinstance_id` | bigint | ID instance account (FK ke accountinstance) |
 | `debit_amount` | decimal(18,2) | Jumlah debit |
 | `credit_amount` | decimal(18,2) | Jumlah kredit |
 | `description` | varchar(500) | Deskripsi transaksi |
 
+**Join Relationships:**
+- `accountinstance` → untuk mendapatkan account details, cabang, dan currency
+- Filter by `transaction_date` untuk opening balance dan movement
+
 **Index Requirements:**
-- Index pada (transaction_date, branch_code, currency_code) untuk performa query
-- Index pada (account_code, transaction_date) untuk grouping
+- Index pada (transaction_date, accountinstance_id) untuk performa query
+- Index pada (accountinstance_id, transaction_date) untuk grouping
+
+---
+
+#### Entity: `accountinstance` (Account Instance per Cabang)
+
+**Primary Key:** `accountinstance_id`
+
+**Kolom yang Relevan:**
+
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| `accountinstance_id` | bigint | ID instance (PK) |
+| `account_id` | bigint | ID account (FK ke account) |
+| `kode_cabang` | varchar(10) | Kode cabang (FK ke enterprise.cabang) |
+| `currency_code` | varchar(3) | Kode valuta untuk instance ini |
+| `is_active` | boolean | Status aktif |
+
+**Purpose:**
+- Memetakan account ke specific cabang dan currency
+- Satu account bisa punya multiple instances (per cabang, per currency)
 
 ---
 
@@ -654,36 +679,40 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 
 ---
 
-#### Entity: `currency` (Exchange Rate)
+#### Entity: `kurshistory` (Exchange Rate History)
 
-**Primary Key:** Composite (currency_code, rate_date)
+**Primary Key:** `kurshistory_id`
 
 **Kolom yang Relevan:**
 
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
+| `kurshistory_id` | bigint | ID kurs record (PK) |
 | `currency_code` | varchar(3) | Kode valuta (USD, EUR, SGD) |
-| `currency_name` | varchar(100) | Nama valuta |
-| `rate_date` | date | Tanggal kurs |
-| `exchange_rate` | decimal(18,6) | Kurs terhadap IDR (1 foreign currency = X IDR) |
+| `history_date` | date | Tanggal kurs |
+| `kurs_tengah_bi` | decimal(18,6) | Kurs tengah BI terhadap IDR |
 
 **Logic Konversi:**
-- Balance dalam IDR = Balance dalam foreign currency × exchange_rate
+- Balance dalam IDR = Balance dalam foreign currency × kurs_tengah_bi
 - Contoh: 100 USD × 15,000 = 1,500,000 IDR
+- Query kurs pada `history_date = end_date` untuk konsolidasi valuta
 
 ---
 
 #### Entity: `enterprise.cabang` (Master Cabang)
 
-**Primary Key:** `branch_code`
+**Primary Key:** `kode_cabang`
 
 **Kolom yang Relevan:**
 
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
-| `branch_code` | varchar(10) | Kode cabang (PK) |
-| `branch_name` | varchar(255) | Nama cabang |
+| `kode_cabang` | varchar(10) | Kode cabang (PK) |
+| `nama_cabang` | varchar(255) | Nama cabang |
 | `is_active` | boolean | Status aktif |
+
+**Access Control:**
+- User access rights managed via `enterprise.listcabangdiizinkan` table
 
 ---
 
@@ -887,8 +916,9 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 ### 12.1 Query Optimization
 
 - **Indexes:**
-  - Index pada `journalitem` untuk kolom: (transaction_date, account_code, branch_code, currency_code)
-  - Index pada `journalitem` untuk kolom: (account_code, transaction_date, currency_code, branch_code)
+  - Index pada `journalitem` untuk kolom: (transaction_date, accountinstance_id)
+  - Index pada `accountinstance` untuk kolom: (account_id, kode_cabang, currency_code)
+  - Index pada `kurshistory` untuk kolom: (history_date, currency_code)
   - Composite index untuk performa optimal saat filter dan grouping
 
 - **Query Strategy:**
