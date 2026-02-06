@@ -25,9 +25,9 @@ Dokumen ini menjabarkan spesifikasi teknis implementasi modul **Laporan Neraca d
 
 ## 2. Asumsi & Ketergantungan
 
-- Data transaksi GL sudah tersedia di `gl_account_balance` untuk periode yang diminta.
-- Exchange rate tersedia di `currency_exchange_rate` untuk konversi valuta.
-- Master branch tersedia di `branch`.
+- Data balance GL sudah tersedia di `dailybalance` untuk periode yang diminta.
+- Exchange rate tersedia di `kurshistory` untuk konversi valuta.
+- Master cabang tersedia di `enterprise.cabang`.
 - User sudah login dan memiliki hak akses sesuai role.
 - File Excel template untuk Neraca dan Laba Rugi sudah tersedia.
 
@@ -45,12 +45,17 @@ Dokumen ini menjabarkan spesifikasi teknis implementasi modul **Laporan Neraca d
 
 ### 4.1 Entity Utama
 
-- `gl_account_balance` (Balance Rekening GL)
-  - PK: composite (account_id, balance_date, currency_code, branch_code)
-- `currency_exchange_rate` (Kurs Valuta)
-  - PK: composite (currency_code, rate_date)
-- `branch` (Master Cabang)
-  - PK: `branch_code`
+- `dailybalance` (Balance Rekening GL)
+  - PK: `dailybalance_id`
+  - Unique: (datevalue, accountinstance_id)
+- `accountinstance` (Instance Account per Cabang)
+  - PK: `accountinstance_id`
+- `account` (Master Chart of Account)
+  - PK: `account_id`
+- `kurshistory` (History Kurs Valuta)
+  - PK: `kurshistory_id`
+- `enterprise.cabang` (Master Cabang)
+  - PK: `kode_cabang`
 
 ---
 
@@ -69,9 +74,9 @@ Link mockup UI: [neraca.html](./assets/neraca.html)
 | Jenis Laporan | M | `reportType` | - | Parameter API. Dropdown: {Neraca, Laba Rugi} |
 | Per Tanggal | M | `asOfDate` | - | Parameter API. Format DD/MM/YYYY. Max = today |
 | Konsolidasi Valuta | O | `consolidateCurrency` | - | Parameter API. Checkbox. Default unchecked |
-| Valuta | C | `currencyCode` | `currency_exchange_rate` | Parameter API. Dropdown: {IDR, USD, EUR, SGD, JPY, CNY}. Conditional required (jika Konsolidasi Valuta tidak checked). Disabled jika Konsolidasi Valuta checked |
+| Valuta | C | `currencyCode` | `kurshistory` | Parameter API. Dropdown: {IDR, USD, EUR, SGD, JPY, CNY}. Conditional required (jika Konsolidasi Valuta tidak checked). Disabled jika Konsolidasi Valuta checked |
 | Konsolidasi Cabang | O | `consolidateBranch` | - | Parameter API. Checkbox. Default unchecked |
-| Cabang | O | `branchCode` | `branch` | Parameter API. Dropdown: list of branches. Default "-- PILIH SEMUA --". Disabled jika Konsolidasi Cabang checked |
+| Cabang | O | `branchCode` | `enterprise.cabang` | Parameter API. Dropdown: list of branches. Default "-- PILIH SEMUA --". Disabled jika Konsolidasi Cabang checked |
 
 **Field Details:**
 
@@ -148,9 +153,11 @@ Base path (contoh): `/api/gl/reports`
 
 | Tabel | Operasi | Kolom | Join/Lookup |
 |-------|---------|-------|-------------|
-| `gl_account_balance` | **SELECT** | account_id, account_code, account_name, account_type, currency_code, branch_code, balance_date, debit_balance, credit_balance, balance_amount | WHERE balance_date = asOfDate AND (branch_code = branchCode OR consolidateBranch = true) AND (currency_code = currencyCode OR consolidateCurrency = true) AND account_type IN ('Asset', 'Liability', 'Equity') |
-| `currency_exchange_rate` | **SELECT** (conditional) | currency_code, rate_date, exchange_rate | JOIN jika consolidateCurrency = true. WHERE rate_date = asOfDate |
-| `branch` | **SELECT** (lookup) | branch_code, branch_name, is_active | JOIN untuk nama cabang (optional) |
+| `dailybalance` | **SELECT** | dailybalance_id, datevalue, accountinstance_id, debit, credit, balance | WHERE datevalue = asOfDate |
+| `accountinstance` | **SELECT** | accountinstance_id, account_id, kode_cabang, currency_code | JOIN dailybalance ON accountinstance_id. Filter by kode_cabang (jika consolidateBranch = false), currency_code (jika consolidateCurrency = false) |
+| `account` | **SELECT** | account_id, account_code, account_name, account_type, normal_balance, is_active | JOIN accountinstance ON account_id. WHERE account_type IN ('Asset', 'Liability', 'Equity') |
+| `kurshistory` | **SELECT** (conditional) | currency_code, history_date, kurs_tengah_bi | JOIN jika consolidateCurrency = true. WHERE history_date = asOfDate |
+| `enterprise.cabang` | **SELECT** (lookup) | kode_cabang, nama_cabang, is_active | JOIN untuk nama cabang (optional) |
 
 **Request**
 
@@ -173,16 +180,17 @@ Base path (contoh): `/api/gl/reports`
    - `asOfDate`: format valid DD/MM/YYYY, tidak boleh > current date
    - `currencyCode`: valid jika consolidateCurrency = false
    - `branchCode`: valid jika consolidateBranch = false
-2. Query data dari `gl_account_balance`:
-   - Filter by `balance_date = asOfDate`
-   - Filter by `account_type IN ('Asset', 'Liability', 'Equity')`
-   - Filter by `branch_code` (jika consolidateBranch = false)
-   - Filter by `currency_code` (jika consolidateCurrency = false)
+2. **Query data balance**:
+   - Query dari `dailybalance`  JOIN `accountinstance` JOIN `account` JOIN `enterprise.cabang`
+   - Filter by `datevalue = asOfDate`
+   - Filter by `account_type IN ('Asset', 'Liability', 'Equity')` (untuk Neraca)
+   - Filter by `kode_cabang` via accountinstance (jika consolidateBranch = false)
+   - Filter by `currency_code` via accountinstance (jika consolidateCurrency = false)
 3. **Konsolidasi Valuta** (jika `consolidateCurrency = true`):
-   - Query exchange rate dari `currency_exchange_rate` untuk `rate_date = asOfDate`
-   - Konversi semua balance (debit_balance, credit_balance) ke IDR (base currency) menggunakan exchange_rate
-   - Formula: `amount_idr = amount_foreign_currency × exchange_rate`
-   - Aggregate balance per account per branch (merge semua currency)
+   - Query exchange rate dari `kurshistory` untuk `history_date = asOfDate`
+   - Konversi semua balance ke IDR (base currency) menggunakan kurs_tengah_bi
+   - Formula: `amount_idr = amount_foreign_currency × kurs_tengah_bi`
+   - Aggregate balance per account per cabang (merge semua currency)
    - **Note:** Konsolidasi valuta dapat dilakukan dengan atau tanpa konsolidasi cabang
 4. **Konsolidasi Cabang** (jika `consolidateBranch = true`):
    - Aggregate balance per account per currency (merge semua branch)
@@ -243,9 +251,11 @@ Base path (contoh): `/api/gl/reports`
 
 | Tabel | Operasi | Kolom | Join/Lookup |
 |-------|---------|-------|-------------|
-| `gl_account_balance` | **SELECT** | account_id, account_code, account_name, account_type, currency_code, branch_code, balance_date, debit_balance, credit_balance, balance_amount | WHERE balance_date <= asOfDate AND balance_date >= start_of_fiscal_year AND (branch_code = branchCode OR consolidateBranch = true) AND (currency_code = currencyCode OR consolidateCurrency = true) AND account_type IN ('Income', 'Expense') |
-| `currency_exchange_rate` | **SELECT** (conditional) | currency_code, rate_date, exchange_rate | JOIN jika consolidateCurrency = true. WHERE rate_date = asOfDate |
-| `branch` | **SELECT** (lookup) | branch_code, branch_name, is_active | JOIN untuk nama cabang (optional) |
+| `dailybalance` | **SELECT** | dailybalance_id, datevalue, accountinstance_id, debit, credit, balance | WHERE datevalue <= asOfDate |
+| `accountinstance` | **SELECT** | accountinstance_id, account_id, kode_cabang, currency_code | JOIN dailybalance ON accountinstance_id. Filter by kode_cabang (jika consolidateBranch = false), currency_code (jika consolidateCurrency = false) |
+| `account` | **SELECT** | account_id, account_code, account_name, account_type, normal_balance, is_active | JOIN accountinstance ON account_id. WHERE account_type IN ('Income', 'Expense') |
+| `kurshistory` | **SELECT** (conditional) | currency_code, history_date, kurs_tengah_bi | JOIN jika consolidateCurrency = true. WHERE history_date = asOfDate |
+| `enterprise.cabang` | **SELECT** (lookup) | kode_cabang, nama_cabang, is_active | JOIN untuk nama cabang (optional) |
 
 **Request**
 
@@ -263,16 +273,17 @@ Base path (contoh): `/api/gl/reports`
 **Proses Backend:**
 
 1. Validasi input parameters (sama seperti Neraca)
-2. Query data dari `gl_account_balance`:
-   - Filter by `balance_date <= asOfDate` AND `balance_date >= start_of_fiscal_year` (period-to-date)
-   - Filter by `account_type IN ('Income', 'Expense')`
-   - Filter by `branch_code` (jika consolidateBranch = false)
-   - Filter by `currency_code` (jika consolidateCurrency = false)
+2. **Query data balance**:
+   - Query dari `dailybalance` JOIN `accountinstance` JOIN `account` JOIN `enterprise.cabang`
+   - Filter by `datevalue <= asOfDate` (period-to-date dari awal tahun buku)
+   - Filter by `account_type IN ('Income', 'Expense')` (untuk Laba Rugi)
+   - Filter by `kode_cabang` via accountinstance (jika consolidateBranch = false)
+   - Filter by `currency_code` via accountinstance (jika consolidateCurrency = false)
 3. **Konsolidasi Valuta** (jika `consolidateCurrency = true`):
-   - Query exchange rate dari `currency_exchange_rate` untuk `rate_date = asOfDate`
-   - Konversi semua balance (debit_balance, credit_balance) ke IDR (base currency)
-   - Formula: `amount_idr = amount_foreign_currency × exchange_rate`
-   - Aggregate balance per account per branch (merge semua currency)
+   - Query exchange rate dari `kurshistory` untuk `history_date = asOfDate`
+   - Konversi semua balance ke IDR (base currency)
+   - Formula: `amount_idr = amount_foreign_currency × kurs_tengah_bi`
+   - Aggregate balance per account per cabang (merge semua currency)
 4. **Konsolidasi Cabang** (jika `consolidateBranch = true`):
    - Aggregate balance per account per currency (merge semua branch)
    - SUM(debit_balance) dan SUM(credit_balance) untuk setiap account
@@ -380,8 +391,9 @@ query GetCurrencyList {
 
 ```sql
 SELECT currency_code, currency_name
-FROM currency_exchange_rate
+FROM kurshistory
 WHERE currency_code IN ('IDR', 'USD', 'EUR', 'SGD', 'JPY', 'CNY')
+  AND history_date = (SELECT MAX(history_date) FROM kurshistory)
   AND is_active = true
 ORDER BY 
   CASE currency_code
@@ -454,15 +466,15 @@ GET /api/gl/reports/lookup/branches
 **Database Query:**
 
 ```sql
-SELECT branch_code, branch_name
-FROM branch
+SELECT kode_cabang, nama_cabang
+FROM enterprise.cabang
 WHERE is_active = true
   AND branch_code IN (
-    SELECT branch_code 
+    SELECT kode_cabang 
     FROM user_branch_access 
     WHERE user_id = :user_id
   )
-ORDER BY branch_code ASC;
+ORDER BY kode_cabang ASC;
 ```
 
 **Error Handling:**
@@ -476,57 +488,101 @@ ORDER BY branch_code ASC;
 
 ### 6.2 Backend Data Requirements
 
-#### Entity: `gl_account_balance` (Account Balance)
+#### Entity: `dailybalance` (Daily Account Balance)
 
-**Primary Key:** Composite (account_id, balance_date, currency_code, branch_code)
+**Primary Key:** `dailybalance_id`
+
+**Unique Constraint:** (datevalue, accountinstance_id)
 
 **Kolom yang Relevan:**
 
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
-| `account_id` | varchar(20) | ID rekening GL |
+| `dailybalance_id` | bigint | ID balance record (PK) |
+| `datevalue` | date | Tanggal balance |
+| `accountinstance_id` | bigint | ID instance account (FK ke accountinstance) |
+| `debit` | decimal(18,2) | Saldo debit |
+| `credit` | decimal(18,2) | Saldo kredit |
+| `balance` | decimal(18,2) | Saldo bersih (debit - credit) |
+
+**Join Relationships:**
+- `accountinstance` → untuk mendapatkan account details dan cabang
+- Filter by `datevalue = asOfDate` untuk Neraca
+- Filter by `datevalue <= asOfDate` untuk Laba Rugi (period-to-date)
+
+---
+
+#### Entity: `accountinstance` (Account Instance per Cabang)
+
+**Primary Key:** `accountinstance_id`
+
+**Kolom yang Relevan:**
+
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| `accountinstance_id` | bigint | ID instance (PK) |
+| `account_id` | bigint | ID account (FK ke account) |
+| `kode_cabang` | varchar(10) | Kode cabang (FK ke enterprise.cabang) |
+| `currency_code` | varchar(3) | Kode valuta untuk instance ini |
+| `is_active` | boolean | Status aktif |
+
+**Purpose:**
+- Memetakan account ke specific cabang dan currency
+- Satu account bisa punya multiple instances (per cabang, per currency)
+
+---
+
+#### Entity: `account` (Master Chart of Account)
+
+**Primary Key:** `account_id`
+
+**Kolom yang Relevan:**
+
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| `account_id` | bigint | ID account (PK) |
 | `account_code` | varchar(20) | Kode rekening |
 | `account_name` | varchar(255) | Nama rekening |
 | `account_type` | varchar(50) | Tipe rekening (Asset, Liability, Equity, Income, Expense) |
-| `currency_code` | varchar(3) | Kode valuta (IDR, USD, EUR, SGD, JPY, CNY) |
-| `branch_code` | varchar(10) | Kode cabang |
-| `balance_date` | date | Tanggal balance |
-| `debit_balance` | decimal(18,2) | Saldo debit |
-| `credit_balance` | decimal(18,2) | Saldo kredit |
-| `balance_amount` | decimal(18,2) | Saldo bersih |
+| `normal_balance` | varchar(10) | Saldo normal (Debit/Credit) |
+| `is_active` | boolean | Status aktif |
 
 ---
 
-#### Entity: `currency_exchange_rate` (Exchange Rate)
+#### Entity: `kurshistory` (Exchange Rate History)
 
-**Primary Key:** Composite (currency_code, rate_date)
+**Primary Key:** `kurshistory_id`
 
 **Kolom yang Relevan:**
 
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
+| `kurshistory_id` | bigint | ID kurs record (PK) |
 | `currency_code` | varchar(3) | Kode valuta (USD, EUR, SGD, JPY, CNY) |
-| `currency_name` | varchar(100) | Nama valuta |
-| `rate_date` | date | Tanggal kurs |
-| `exchange_rate` | decimal(18,6) | Kurs terhadap IDR (1 foreign currency = X IDR) |
+| `history_date` | date | Tanggal kurs |
+| `kurs_tengah_bi` | decimal(18,6) | Kurs tengah BI terhadap IDR |
 
 **Logic Konversi:**
-- Balance dalam IDR = Balance dalam foreign currency × exchange_rate
+- Balance dalam IDR = Balance dalam foreign currency × kurs_tengah_bi
 - Contoh: 100 USD × 15,000 = 1,500,000 IDR
+- Untuk konsolidasi valuta, query kurs pada `history_date = asOfDate`
 
 ---
 
-#### Entity: `branch` (Master Cabang)
+#### Entity: `enterprise.cabang` (Master Cabang)
 
-**Primary Key:** `branch_code`
+**Primary Key:** `kode_cabang`
 
 **Kolom yang Relevan:**
 
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
-| `branch_code` | varchar(10) | Kode cabang (PK) |
-| `branch_name` | varchar(255) | Nama cabang |
+| `kode_cabang` | varchar(10) | Kode cabang (PK) |
+| `nama_cabang` | varchar(255) | Nama cabang |
 | `is_active` | boolean | Status aktif |
+
+**Access Control:**
+- User hanya bisa akses cabang sesuai with user_branch_access mapping
 
 ---
 
@@ -702,8 +758,9 @@ LABA/RUGI BERSIH                    XXX,XXX.XX
 
 ### 11.1 Query Optimization
 
-- Index pada `gl_account_balance` untuk kolom: (balance_date, account_type, branch_code, currency_code)
-- Index pada `currency_exchange_rate` untuk kolom: (rate_date, currency_code)
+- Index pada `dailybalance` untuk kolom: (datevalue, accountinstance_id)
+- Index pada `accountinstance` untuk kolom: (account_id, kode_cabang, currency_code)
+- Index pada `kurshistory` untuk kolom: (history_date, currency_code)
 - Use prepared statements untuk query
 - Limit result set jika data terlalu besar (warning ke user)
 
