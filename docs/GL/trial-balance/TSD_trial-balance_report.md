@@ -716,6 +716,324 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 
 ---
 
+### 6.3 SQL Query Examples
+
+> Query examples ini menunjukkan implementasi aktual dari perhitungan Trial Balance menggunakan `dailybalance` table.
+
+#### 6.3.1 Query Parameters
+
+**Parameter yang digunakan dalam Query:**
+
+| Parameter | Format | Keterangan |
+|-----------|--------|------------|
+| `:BEGIN_DATE` | DD-MM-YYYY | Tanggal awal periode (dari input `start_date`) |
+| `:END_DATE` | DD-MM-YYYY | Tanggal akhir periode (dari input `end_date`) |
+| `:BALANCE_DATE` | DD-MM-YYYY | Tanggal untuk saldo awal (:BEGIN_DATE - 1 hari) |
+| `:TODAY` | DD-MM-YYYY | Tanggal hari ini (untuk jurnal yang belum posting) |
+| `:BRANCH_CODE` | varchar | Kode cabang (optional filter) |
+| `:CURRENCY_CODE` | varchar | Kode mata uang (optional filter) |
+
+#### 6.3.2 Account Type Classification
+
+**Klasifikasi Tipe Account:**
+
+- **A** = Asset (Aktiva)
+- **L** = Liability (Kewajiban)
+- **E** = Equity (Ekuitas)
+- **M** = Administratif
+- **I** = Income (Pendapatan)
+- **X** = Expense (Beban)
+
+**Handling:**
+- Account neraca (A, L, E, M): query dari `dailybalance`
+- Account laba rugi (I, X): query dari `dailyprojectbalance` (breakdown per project)
+
+#### 6.3.3 Query untuk Saldo Awal (Opening Balance)
+
+**Menggunakan `dailybalance.balancecumulative`** - saldo kumulatif s/d tanggal tertentu:
+
+```sql
+-- Saldo Awal: ambil saldo kumulatif terakhir <= BALANCE_DATE
+SELECT d1.accountinstance_id,
+       d1.balancecumulative AS begin_balance,
+       d1.balancecumulative_ekuiv AS begin_balance_ekuiv
+FROM dailybalance d1
+INNER JOIN (
+    SELECT d.accountinstance_id,
+           MAX(d.datevalue) AS maxdate
+    FROM dailybalance d
+    INNER JOIN accountinstance ai
+        ON ai.accountinstance_id = d.accountinstance_id
+    WHERE d.datevalue <= TO_DATE(:BALANCE_DATE, 'DD-MM-YYYY')
+      AND ai.branch_code = :BRANCH_CODE  -- Optional filter cabang
+      AND ai.currency_code = :CURRENCY_CODE  -- Optional filter currency
+    GROUP BY d.accountinstance_id
+) d2 ON d1.accountinstance_id = d2.accountinstance_id
+    AND d1.datevalue = d2.maxdate
+```
+
+**Key Points:**
+- `balancecumulative` = saldo kumulatif dari awal waktu sampai `datevalue`
+- Ambil record dengan `MAX(datevalue)` yang `<= BALANCE_DATE`
+- Ini adalah **snapshot balance**, bukan sum of transactions
+- `balancecumulative_ekuiv` = equivalent dalam IDR untuk multi-currency
+
+#### 6.3.4 Query untuk Mutasi Periode (Movement)
+
+**Menggunakan `dailybalance.debit` dan `dailybalance.credit`** - mutasi harian:
+
+```sql
+-- Mutasi periode: sum debit/credit dari BEGIN_DATE s/d END_DATE
+SELECT
+    d.accountinstance_id,
+    SUM(d.debit) AS debit,
+    SUM(d.debit_ekuiv) AS debit_ekuiv,
+    SUM(d.credit) AS credit,
+    SUM(d.credit_ekuiv) AS credit_ekuiv,
+    SUM(d.balance) AS balance,
+    SUM(d.balance_ekuiv) AS balance_ekuiv
+FROM dailybalance d
+INNER JOIN accountinstance ai
+    ON ai.accountinstance_id = d.accountinstance_id
+WHERE d.datevalue >= TO_DATE(:BEGIN_DATE, 'DD-MM-YYYY')
+  AND d.datevalue <= TO_DATE(:END_DATE, 'DD-MM-YYYY')
+  AND ai.branch_code = :BRANCH_CODE  -- Optional filter cabang
+  AND ai.currency_code = :CURRENCY_CODE  -- Optional filter currency
+GROUP BY d.accountinstance_id
+```
+
+**Key Points:**
+- `debit` = total debit untuk tanggal tersebut (daily movement)
+- `credit` = total credit untuk tanggal tersebut (daily movement)
+- `balance` = net movement (credit - debit) × balance_sign
+- Sum untuk semua tanggal dalam periode = total mutasi
+
+#### 6.3.5 Query untuk Saldo Akhir (Ending Balance)
+
+**Menggunakan `dailybalance.balancecumulative`** - saldo kumulatif s/d end date:
+
+```sql
+-- Saldo Akhir: ambil saldo kumulatif terakhir <= END_DATE
+SELECT d1.accountinstance_id,
+       d1.balancecumulative AS end_balance,
+       d1.balancecumulative_ekuiv AS end_balance_ekuiv
+FROM dailybalance d1
+INNER JOIN (
+    SELECT d.accountinstance_id,
+           MAX(d.datevalue) AS maxdate
+    FROM dailybalance d
+    INNER JOIN accountinstance ai
+        ON ai.accountinstance_id = d.accountinstance_id
+    WHERE d.datevalue <= TO_DATE(:END_DATE, 'DD-MM-YYYY')
+      AND ai.branch_code = :BRANCH_CODE  -- Optional filter cabang
+      AND ai.currency_code = :CURRENCY_CODE  -- Optional filter currency
+    GROUP BY d.accountinstance_id
+) d2 ON d1.accountinstance_id = d2.accountinstance_id
+    AND d1.datevalue = d2.maxdate
+```
+
+**Verification Formula:**
+```
+end_balance = begin_balance + (movement_debit - movement_credit)
+```
+
+#### 6.3.6 Query untuk Jurnal Hari Ini (Today's Journal)
+
+**Menangani transaksi yang belum ter-posting ke `dailybalance`:**
+
+```sql
+-- Jurnal hari ini: untuk transaksi yang belum masuk dailybalance
+SELECT
+    ai.accountinstance_id,
+    SUM(ji.amount_debit) AS debit,
+    SUM(ji.amount_credit) AS credit,
+    SUM((ji.amount_credit - ji.amount_debit) * ai.balance_sign) AS balance,
+    SUM(ji.amount_debit * j.nilai_kurs) AS debit_ekuiv,
+    SUM(ji.amount_credit * j.nilai_kurs) AS credit_ekuiv,
+    SUM((ji.amount_credit - ji.amount_debit) * j.nilai_kurs * ai.balance_sign) AS balance_ekuiv
+FROM journal j
+INNER JOIN journalitem ji ON j.journal_no = ji.fl_journal
+INNER JOIN accountinstance ai ON ai.accountinstance_id = ji.accountinstance_id
+WHERE j.journal_date = TO_DATE(:TODAY, 'DD-MM-YYYY')
+  AND ai.branch_code = :BRANCH_CODE  -- Optional filter cabang
+GROUP BY ai.accountinstance_id
+```
+
+**Use Case:**
+- Jika `END_DATE = TODAY` dan ada jurnal yang baru di-input hari ini
+- Jurnal tersebut mungkin belum ter-proses ke `dailybalance` table
+- Query ini memastikan data paling update untuk laporan real-time
+
+#### 6.3.7 Konsolidasi Cabang (CPA - Contra Per Account)
+
+**Handling konsolidasi antar cabang:**
+
+```sql
+-- Jurnal ke akun CPA (Contra Per Account) - untuk konsolidasi antar cabang
+SELECT
+    ai2.accountinstance_id,
+    SUM(ji.amount_debit) AS debit,
+    SUM(ji.amount_credit) AS credit,
+    SUM((ji.amount_credit - ji.amount_debit) * ai1.balance_sign) AS balance,
+    SUM(ji.amount_debit * j.nilai_kurs) AS debit_ekuiv,
+    SUM(ji.amount_credit * j.nilai_kurs) AS credit_ekuiv,
+    SUM((ji.amount_credit - ji.amount_debit) * j.nilai_kurs * ai1.balance_sign) AS balance_ekuiv
+FROM journal j
+INNER JOIN journalitem ji ON j.journal_no = ji.fl_journal
+INNER JOIN accountinstance ai1 ON ai1.accountinstance_id = ji.accountinstance_id
+INNER JOIN accountinstance ai2 ON ai2.accountinstance_id = ai1.fl_cpa_accountinstance
+WHERE j.journal_date = TO_DATE(:TODAY, 'DD-MM-YYYY')
+  AND ai2.branch_code = :BRANCH_CODE  -- Filter cabang target
+GROUP BY ai2.accountinstance_id
+```
+
+**Concept:**
+- `fl_cpa_accountinstance` = link ke account instance di cabang lain
+- Digunakan untuk konsolidasi multi-branch
+- Jurnal di satu cabang bisa affect account di cabang lain via CPA
+
+#### 6.3.8 Complete Query untuk Balance Sheet Accounts
+
+**Query lengkap untuk account neraca (A, L, E, M):**
+
+```sql
+SELECT
+    ac.account_code,
+    ac.account_name,
+    ac.account_type,
+    etype.enum_description AS account_type_desc,
+    ai.branch_code,
+    ai.currency_code,
+    
+    -- Saldo Awal
+    NVL(db_begin.balancecumulative, 0.0) AS begin_balance,
+    NVL(db_begin.balancecumulative_ekuiv, 0.0) AS begin_balance_ekuiv,
+    
+    -- Mutasi periode
+    NVL(mut.debit, 0.0) AS debit,
+    NVL(mut.debit_ekuiv, 0.0) AS debit_ekuiv,
+    NVL(mut.credit, 0.0) AS credit,
+    NVL(mut.credit_ekuiv, 0.0) AS credit_ekuiv,
+    
+    -- Saldo Akhir
+    NVL(db_end.balancecumulative, 0.0) AS end_balance,
+    NVL(db_end.balancecumulative_ekuiv, 0.0) AS end_balance_ekuiv
+
+FROM account ac
+INNER JOIN accountinstance ai
+    ON ai.account_code = ac.account_code
+LEFT OUTER JOIN enum_varchar etype
+    ON etype.enum_value = ac.account_type
+    AND etype.enum_name = 'eAccountType'
+    
+-- Join to subqueries for begin_balance, mut, end_balance (see sections 6.3.3-6.3.5)
+LEFT OUTER JOIN (...) db_begin ON ai.accountinstance_id = db_begin.accountinstance_id
+LEFT OUTER JOIN (...) mut ON ai.accountinstance_id = mut.accountinstance_id
+LEFT OUTER JOIN (...) db_end ON ai.accountinstance_id = db_end.accountinstance_id
+
+WHERE ac.is_detail = 'T'
+  AND ac.account_type IN ('A', 'L', 'E', 'M')
+  AND ai.branch_code = :BRANCH_CODE      -- Optional: Uncomment jika filter cabang
+  AND ai.currency_code = :CURRENCY_CODE  -- Optional: Uncomment jika filter mata uang
+  
+ORDER BY ai.branch_code, ai.currency_code, ac.account_code;
+```
+
+#### 6.3.9 Query untuk P&L Accounts (dengan Project Breakdown)
+
+**Account laba rugi (I, X) memerlukan breakdown per project:**
+
+```sql
+SELECT
+    ac.account_code,
+    ac.account_name,
+    ac.account_type,
+    ai.branch_code,
+    ai.currency_code,
+    p.project_no,  -- Tambahan untuk laba rugi
+    
+    -- Saldo dari dailyprojectbalance (bukan dailybalance)
+    NVL(db_begin.balancecumulative, 0.0) AS begin_balance,
+    NVL(mut.debit, 0.0) AS debit,
+    NVL(mut.credit, 0.0) AS credit,
+    NVL(db_end.balancecumulative, 0.0) AS end_balance
+
+FROM account ac
+INNER JOIN accountinstance ai ON ai.account_code = ac.account_code
+INNER JOIN project p ON 1 = 1  -- Cross join untuk semua kombinasi account-project
+
+-- Join ke dailyprojectbalance (bukan dailybalance)
+LEFT OUTER JOIN dailyprojectbalance db_begin 
+    ON ai.accountinstance_id = db_begin.accountinstance_id
+    AND p.project_no = db_begin.project_no
+    AND db_begin.datevalue <= :BALANCE_DATE
+    
+LEFT OUTER JOIN dailyprojectbalance db_end
+    ON ai.accountinstance_id = db_end.accountinstance_id
+    AND p.project_no = db_end.project_no
+    AND db_end.datevalue <= :END_DATE
+
+WHERE ac.is_detail = 'T'
+  AND ac.account_type IN ('I', 'X')
+  -- Filter: hanya tampilkan jika project = '0000' atau ada nilai
+  AND (
+      p.project_no = '0000'
+      OR NVL(db_begin.balancecumulative, 0) <> 0
+      OR NVL(db_end.balancecumulative, 0) <> 0
+  )
+  
+ORDER BY ai.branch_code, ai.currency_code, ac.account_code, p.project_no;
+```
+
+**Key Differences:**
+- Menggunakan `dailyprojectbalance` table (bukan `dailybalance`)
+- Ada kolom `project_no` untuk breakdown
+- Cross join dengan `project` table
+- Filter untuk hanya show project dengan nilai (atau project '0000' = default)
+
+#### 6.3.10 Data Flow Summary
+
+```mermaid
+graph LR
+    A[journal + journalitem] -->|Daily Posting| B[dailybalance]
+    A -->|Daily Posting| C[dailyprojectbalance]
+    B -->|Balance Sheet Accounts| D[Trial Balance Report]
+    C -->|P&L Accounts| D
+    E[accountinstance] -->|Join| D
+    F[account] -->|Join| D
+    G[kurshistory] -->|Currency Conversion| D
+```
+
+**Flow:**
+1. Transaksi masuk via `journal` + `journalitem`
+2. Proses EOD posting ke `dailybalance` (untuk A,L,E,M) dan `dailyprojectbalance` (untuk I,X)
+3. Trial Balance query:
+   - Ambil `balancecumulative` untuk opening (BALANCE_DATE)
+   - Sum `debit`/`credit` untuk movement (BEGIN_DATE to END_DATE)
+   - Ambil `balancecumulative` untuk ending (END_DATE)
+4. Join dengan `kurshistory` untuk konversi currency (jika consolidate)
+
+#### 6.3.11 Important Notes
+
+> [!IMPORTANT]
+> **Key Differences dari TSD Section 6.2 Entity:**
+> 
+> 1. **Actual Implementation menggunakan `dailybalance`** (snapshot cumulative), bukan raw `journalitem` aggregation
+> 2. **`balancecumulative`** adalah saldo kumulatif dari awal waktu, efficient untuk query
+> 3. **Daily movements** (`debit`, `credit`) juga tersimpan di `dailybalance` untuk period calculation
+> 4. **P&L accounts** menggunakan separate table `dailyprojectbalance` untuk project tracking
+> 5. **Today's journal** handling untuk real-time reporting (transaksi yang belum posting)
+
+> [!WARNING]
+> **Multi-Currency Handling:**
+> 
+> - Setiap field ada versi `_ekuiv` (equivalent dalam IDR)
+> - `nilai_kurs` dari `journal` table digunakan untuk konversi real-time
+> - `kurshistory` digunakan untuk konversi historical balance
+> - Konsolidasi currency pakai `balancecumulative_ekuiv`, bukan convert post-aggregation
+
+---
+
 ## 7. Validation Rules
 
 ### 7.1 Input Validation
@@ -983,8 +1301,9 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 | Date | Description | Author |
 |------|-------------|--------|
 | 2026-02-05 | Initial TSD draft - converted from FSD_trial-balance_report.md | System Analyst |
-| 2026-02-05 | Updated API specification from REST to GraphQL based on ei-ledger-gql implementation - Changed endpoint, field naming (snake_case), date format (YYYY-MM-DD), response type (URL path), and added GraphQL Integration Notes section | System Analyst |
+| 2026-02-05 | Updated API specification from REST to GraphQL based on ei-ledger-gql implementation - Changed endpoint, field naming (snake_case), date format (YYYY-MM-YYYY), response type (URL path), and added GraphQL Integration Notes section | System Analyst |
 | 2026-02-06 | Added Section 5.3: Reference Implementation from gl-module - Documented validation patterns (date range validation), field disable patterns, async data lookup (Cabang & Valuta), form submission patterns, and loading state patterns | System Analyst |
 | 2026-02-06 | Added Section 6.1.2: API Endpoint for Data Lookup - Backend specification for getCabang and getSelectValuta endpoints with SQL queries and response formats | System Analyst |
 | 2026-02-06 | **BREAKING CHANGE**: Separated currency and branch consolidation parameters - Changed from single `is_consol` to separate `is_consol_currency` and `is_consol_branch` GraphQL parameters. Updated backend processing logic to support 4 consolidation scenarios. Added BR-009 for consolidation combinations. Updated validation rules and field mappings | System Analyst |
-
+| 2026-02-06 | Updated Entity Utama schema - Changed table references from old schema to actual gl-module implementation: `journalitem` with `accountinstance` relationship, `kurshistory`, `enterprise.cabang`, and `enterprise.listcabangdiizinkan` | System Analyst |
+| 2026-02-06 | Added Section 6.3: SQL Query Examples - Comprehensive SQL reference showing actual implementation using `dailybalance` table for balance sheet accounts and `dailyprojectbalance` for P&L accounts. Documented opening balance, movement, ending balance calculations, today's journal handling, CPA consolidation, and multi-currency conversion patterns | System Analyst |
