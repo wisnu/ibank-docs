@@ -273,6 +273,174 @@ Same as Neraca (section 6.1.1)
 
 ---
 
+#### 6.1.3 API Endpoint untuk Data Lookup (Dropdown)
+
+> [!NOTE]
+> Backend harus menyediakan endpoint untuk load data dropdown secara dynamic (Currency dan Cabang).
+
+**Base Endpoint:** `/api/gl/reports/lookup`
+
+##### Get Currency List
+
+**Endpoint:** `GET /api/gl/reports/lookup/currencies` atau menggunakan GraphQL query `GetCurrencyList`
+
+**Query Type:** `GetCurrencyList`
+
+**Purpose:** Load daftar valuta untuk dropdown "Valuta"
+
+**Request:**
+
+```http
+GET /api/gl/reports/lookup/currencies
+```
+
+Atau via GraphQL:
+```graphql
+query GetCurrencyList {
+  GetCurrencyList {
+    currency_code
+    currency_name
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "currency_code": "IDR",
+      "currency_name": "Rupiah"
+    },
+    {
+      "currency_code": "USD",
+      "currency_name": "US Dollar"
+    },
+    {
+      "currency_code": "EUR",
+      "currency_name": "Euro"
+    },
+    {
+      "currency_code": "SGD",
+      "currency_name": "Singapore Dollar"
+    },
+    {
+      "currency_code": "JPY",
+      "currency_name": "Japanese Yen"
+    },
+    {
+      "currency_code": "CNY",
+      "currency_name": "Chinese Yuan"
+    }
+  ]
+}
+```
+
+**Business Logic:**
+- Return list of supported currencies for balance sheet reporting
+- Only return active currencies
+- Sort by standard order: IDR first, then alphabetically
+
+**Database Query:**
+
+```sql
+SELECT currency_code, currency_name
+FROM currency_exchange_rate
+WHERE currency_code IN ('IDR', 'USD', 'EUR', 'SGD', 'JPY', 'CNY')
+  AND is_active = true
+ORDER BY 
+  CASE currency_code
+    WHEN 'IDR' THEN 1
+    WHEN 'USD' THEN 2
+    WHEN 'EUR' THEN 3
+    WHEN 'SGD' THEN 4
+    WHEN 'JPY' THEN 5
+    WHEN 'CNY' THEN 6
+  END;
+```
+
+**Alternative: Static Dropdown (Recommended)**
+
+Frontend dapat menggunakan static dropdown options karena daftar currency fixed:
+
+```typescript
+const CURRENCY_OPTIONS = [
+  { value: 'IDR', label: 'Rupiah (IDR)' },
+  { value: 'USD', label: 'US Dollar (USD)' },
+  { value: 'EUR', label: 'Euro (EUR)' },
+  { value: 'SGD', label: 'Singapore Dollar (SGD)' },
+  { value: 'JPY', label: 'Japanese Yen (JPY)' },
+  { value: 'CNY', label: 'Chinese Yuan (CNY)' },
+];
+```
+
+---
+
+##### Get Branch List
+
+**Endpoint:** `GET /api/gl/reports/lookup/branches`
+
+**Purpose:** Load daftar cabang untuk dropdown "Cabang" berdasarkan user access rights
+
+**Request:**
+
+```http
+GET /api/gl/reports/lookup/branches
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "branch_code": "001",
+      "branch_name": "Cabang Jakarta Pusat"
+    },
+    {
+      "branch_code": "002",
+      "branch_name": "Cabang Bandung"
+    },
+    {
+      "branch_code": "003",
+      "branch_name": "Cabang Surabaya"
+    }
+  ]
+}
+```
+
+**Business Logic:**
+- Return list of branches based on user's access rights (dari JWT token atau session)
+- Only return active branches (`is_active = true`)
+- Sort by `branch_code` ascending
+- If user has access to all branches, return all active branches
+
+**Database Query:**
+
+```sql
+SELECT branch_code, branch_name
+FROM branch
+WHERE is_active = true
+  AND branch_code IN (
+    SELECT branch_code 
+    FROM user_branch_access 
+    WHERE user_id = :user_id
+  )
+ORDER BY branch_code ASC;
+```
+
+**Error Handling:**
+
+| Scenario | HTTP | Message |
+|----------|------|---------|
+| No branch access | 403 | "User tidak memiliki akses ke cabang manapun" |
+| Database error | 500 | "Gagal mengambil data cabang" |
+
+---
+
 ### 6.2 Backend Data Requirements
 
 #### Entity: `gl_account_balance` (Account Balance)
