@@ -28,7 +28,7 @@ Dokumen ini menjabarkan spesifikasi teknis implementasi modul **Laporan Trial Ba
 
 - Data transaksi GL sudah tersedia di `journalitem` untuk periode yang diminta.
 - Master account tersedia di `account`.
-- Exchange rate tersedia di `kurshistory` untuk konversi valuta.
+- Data kurs tersedia di `kurshistory` untuk kebutuhan lookup valuta dan fallback konversi saat data ekuivalen tidak tersedia.
 - Master cabang tersedia di `enterprise.cabang`.
 - User sudah login dan memiliki hak akses sesuai role.
 - File Excel template untuk Trial Balance sudah tersedia.
@@ -56,6 +56,8 @@ Dokumen ini menjabarkan spesifikasi teknis implementasi modul **Laporan Trial Ba
   - PK: `accountinstance_id`
 - `account` (Master Chart of Account)
   - PK: `account_code`
+- `currency` (Master Valuta)
+  - PK: `currency_code`
 - `kurshistory` (History Kurs Valuta)
   - PK: `kurshistory_id`
 - `enterprise.cabang` (Master Cabang)
@@ -78,7 +80,7 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
 | Mulai Tanggal | M | `start_date` | - | GraphQL variable. Format YYYY-MM-DD. Must be valid date |
 | Hingga Tanggal | M | `end_date` | - | GraphQL variable. Format YYYY-MM-DD. Must be >= Mulai Tanggal and <= today |
 | Konsolidasi Valuta | O | `is_consol_currency` | - | GraphQL variable. String: "T" or "F". If checked, `is_consol_currency` = "T" and `currency` can be empty |
-| Valuta | C | `currency` | `kurshistory` | GraphQL variable. String: {IDR, USD, EUR, SGD}. Conditional required (if is_consol_currency = "F"). Disabled if Konsolidasi Valuta checked |
+| Valuta | C | `currency` | `currency` | GraphQL variable. String: {IDR, USD, EUR, SGD}. Conditional required (if is_consol_currency = "F"). Disabled if Konsolidasi Valuta checked |
 | Konsolidasi Cabang | O | `is_consol_branch` | - | GraphQL variable. String: "T" or "F". If checked, `is_consol_branch` = "T" |
 | Cabang | O | `branch_code` | `enterprise.cabang` | GraphQL variable. String of branch code. Default "". Disabled if Konsolidasi Cabang checked |
 | Tampilkan hanya yang memiliki saldo | O | `is_only_has_balance` | - | GraphQL variable. String: "T" or "F". Default "F". Filter accounts with non-zero balance |
@@ -207,7 +209,8 @@ extend type Query {
 | `journal` + `journalitem` | **SELECT** (conditional) | journal_date, journal_no, nilai_kurs, amount_debit, amount_credit, fl_journal, accountinstance_id, rc_code | Untuk jurnal hari ini yang belum ter-posting ke `dailybalance` |
 | `accountinstance` | **SELECT** | accountinstance_id, account_code, branch_code, currency_code, balance_sign, fl_cpa_accountinstance | Join ke source balance + filter cabang/valuta |
 | `account` | **SELECT** | account_code, account_name, account_type, is_detail, account_level | Join account master dan sorting |
-| `kurshistory` | **SELECT** (conditional) | currency_code, history_date, kurs_tengah_bi | JOIN jika is_consol_currency = 'T'. WHERE history_date = end_date |
+| `currency` | **SELECT** (lookup) | currency_code, currency_name, is_active | Source dropdown valuta |
+| `kurshistory` | **SELECT** (conditional) | currency_code, history_date, kurs_tengah_bi | Lookup/fallback saat konsolidasi valuta (prioritas gunakan kolom `*_ekuiv`) |
 | `enterprise.cabang` | **SELECT** (lookup) | branch_code/kode_cabang, nama_cabang, is_active | JOIN untuk nama cabang (optional) |
 
 **Request GraphQL Query:**
@@ -284,8 +287,9 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
    - Untuk account I/X, mapping project menggunakan `journalitem.rc_code`
 
 6. **Konsolidasi Valuta (jika `is_consol_currency = 'T'`):**
-   - Query exchange rate dari `kurshistory` untuk `history_date = end_date`
-   - Konversi semua balance (opening, movement, ending) ke IDR (base currency) menggunakan kurs_tengah_bi
+   - Prioritas gunakan nilai ekuivalen IDR (`*_ekuiv`) dari `dailybalance`/`dailyprojectbalance`/jurnal
+   - Jika nilai ekuivalen tidak tersedia, gunakan fallback kurs dari `kurshistory` pada `history_date = end_date`
+   - Konversi semua balance (opening, movement, ending) ke IDR (base currency)
    - Aggregate balance per account per cabang (merge semua currency)
    - **Note:** Konsolidasi valuta dapat dilakukan dengan atau tanpa konsolidasi cabang
 
@@ -444,7 +448,7 @@ ORDER BY kode_cabang ASC;
 
 #### Request: Get Valuta (Currency) List
 
-**Option 1: Static list (Recommended)**
+**Option 1: Static list**
 
 Frontend can use static dropdown options:
 ```typescript
@@ -456,7 +460,7 @@ options: [
 ]
 ```
 
-**Option 2: Dynamic from database**
+**Option 2: Dynamic from database (Recommended)**
 
 ```json
 {
@@ -494,10 +498,10 @@ options: [
 **Database Query:**
 
 ```sql
-SELECT DISTINCT currency_code, currency_name
-FROM kurshistory
-WHERE currency_code IN ('IDR', 'USD', 'EUR', 'SGD')
-  AND history_date = (SELECT MAX(history_date) FROM kurshistory)
+SELECT currency_code, currency_name
+FROM currency
+WHERE is_active = true
+  AND currency_code IN ('IDR', 'USD', 'EUR', 'SGD')
 ORDER BY 
   CASE currency_code
     WHEN 'IDR' THEN 1
@@ -688,6 +692,24 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 
 ---
 
+#### Entity: `currency` (Master Valuta)
+
+**Primary Key:** `currency_code`
+
+**Kolom yang Relevan:**
+
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| `currency_code` | varchar(3) | Kode valuta (PK) |
+| `currency_name` | varchar(100) | Nama valuta |
+| `is_active` | boolean | Status aktif |
+
+**Usage:**
+- Source data dropdown valuta (`getSelectValuta`)
+- Filter kode valuta aktif yang dapat dipilih user
+
+---
+
 #### Entity: `kurshistory` (Exchange Rate History)
 
 **Primary Key:** `kurshistory_id`
@@ -702,9 +724,10 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 | `kurs_tengah_bi` | decimal(18,6) | Kurs tengah BI terhadap IDR |
 
 **Logic Konversi:**
-- Balance dalam IDR = Balance dalam foreign currency × kurs_tengah_bi
-- Contoh: 100 USD × 15,000 = 1,500,000 IDR
-- Query kurs pada `history_date = end_date` untuk konsolidasi valuta
+- Sumber utama nilai IDR untuk reporting adalah kolom ekuivalen (`*_ekuiv`) pada tabel balance dan jurnal
+- Jika kolom ekuivalen tidak tersedia/invalid, fallback konversi: Balance dalam IDR = Balance dalam foreign currency × kurs_tengah_bi
+- Contoh fallback: 100 USD × 15,000 = 1,500,000 IDR
+- Kurs fallback diambil pada `history_date = end_date`
 
 ---
 
@@ -1021,7 +1044,7 @@ graph LR
     C -->|P&L Accounts| D
     E[accountinstance] -->|Join| D
     F[account] -->|Join| D
-    G[kurshistory] -->|Currency Conversion| D
+    G[kurshistory] -->|Lookup/Fallback Kurs| D
 ```
 
 **Flow:**
@@ -1031,7 +1054,7 @@ graph LR
    - Ambil `balancecumulative` untuk opening (BALANCE_DATE)
    - Sum `debit`/`credit` untuk movement (BEGIN_DATE to END_DATE)
    - Ambil `balancecumulative` untuk ending (END_DATE)
-4. Join dengan `kurshistory` untuk konversi currency (jika consolidate)
+4. Gunakan nilai ekuivalen (`*_ekuiv`) sebagai sumber utama; `kurshistory` dipakai untuk lookup/fallback kurs saat diperlukan
 
 ---
 
@@ -1061,7 +1084,7 @@ graph LR
 **BR-002: Konsolidasi Valuta**
 - Jika "Konsolidasi Valuta" dicentang, sistem mengkonsolidasikan semua valuta ke dalam satu laporan (base currency = IDR)
 - Jika tidak dicentang, user harus memilih valuta spesifik
-- Konversi valuta menggunakan kurs yang berlaku pada akhir periode (end date)
+- Prioritas konversi menggunakan nilai ekuivalen (`*_ekuiv`); jika tidak tersedia gunakan kurs akhir periode (`end_date`) dari `kurshistory`
 - **Independent dari Konsolidasi Cabang**: dapat digunakan bersamaan atau terpisah
 
 **BR-003: Valuta**
@@ -1292,7 +1315,7 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 |---------|-------------|
 | FR-TB-R01 | Semua laporan Trial Balance harus menggunakan **format Excel (.xlsx)** |
 | FR-TB-R02 | Periode tanggal harus valid: **start_date <= end_date <= current date** |
-| FR-TB-R03 | Konversi valuta menggunakan **kurs pada akhir periode (`end_date`)** |
+| FR-TB-R03 | Konversi valuta menggunakan **nilai ekuivalen (`*_ekuiv`) sebagai sumber utama**, dan **kurs akhir periode (`end_date`)** dari `kurshistory` sebagai fallback |
 | FR-TB-R04 | Trial Balance menampilkan **3 kolom saldo: Awal, Mutasi, Akhir** |
 | FR-TB-R05 | **Total Debit MUST EQUAL Total Kredit** untuk setiap kolom saldo |
 | FR-TB-R06 | Jika data tidak ditemukan, sistem harus memberikan **error message yang jelas** |
@@ -1320,3 +1343,4 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 | 2026-02-06 | **PERUBAHAN BREAKING**: Memisahkan parameter konsolidasi valuta dan cabang - dari satu parameter `is_consol` menjadi `is_consol_currency` dan `is_consol_branch` pada GraphQL. Memperbarui logika proses backend untuk mendukung 4 skenario konsolidasi. Menambahkan BR-009 untuk kombinasi konsolidasi. Memperbarui aturan validasi dan pemetaan field | System Analyst |
 | 2026-02-06 | Memperbarui skema Entitas Utama - mengubah referensi tabel dari skema lama ke implementasi aktual `gl-module`: relasi `journalitem` dengan `accountinstance`, `kurshistory`, `enterprise.cabang`, dan `enterprise.listcabangdiizinkan` | System Analyst |
 | 2026-02-06 | Menambahkan Bagian 6.3: Contoh Query SQL - referensi SQL komprehensif yang menunjukkan implementasi aktual menggunakan tabel `dailybalance` untuk akun neraca dan `dailyprojectbalance` untuk akun laba rugi. Mendokumentasikan perhitungan saldo awal, mutasi, saldo akhir, penanganan jurnal hari ini, konsolidasi CPA, dan pola konversi multi-valuta | System Analyst |
+| 2026-02-09 | Memperbarui sumber dropdown valuta dari `kurshistory` menjadi `currency` (master valuta). Menyesuaikan field mapping, tabel akses backend, query `getSelectValuta`, dan menambahkan entitas `currency` pada data requirements | System Analyst |
