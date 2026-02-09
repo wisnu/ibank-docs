@@ -55,7 +55,7 @@ Dokumen ini menjabarkan spesifikasi teknis implementasi modul **Laporan Trial Ba
 - `accountinstance` (Instance Account per Cabang)
   - PK: `accountinstance_id`
 - `account` (Master Chart of Account)
-  - PK: `account_id`
+  - PK: `account_code`
 - `kurshistory` (History Kurs Valuta)
   - PK: `kurshistory_id`
 - `enterprise.cabang` (Master Cabang)
@@ -186,7 +186,7 @@ input ReqGenerateReportTrialBalance {
     currency: String = ""
     is_consol_currency: String = "F"
     is_consol_branch: String = "F"
-    is_only_has_balance: String = ""
+    is_only_has_balance: String = "F"
 }
 
 type RespGenerateReportTrialBalance {
@@ -202,12 +202,13 @@ extend type Query {
 
 | Tabel | Operasi | Kolom | Join/Lookup |
 |-------|---------|-------|-------------|
-| `journalitem` | **SELECT** | journalitem_id, transaction_date, accountinstance_id, debit_amount, credit_amount, description | WHERE transaction_date BETWEEN start_date AND end_date |
-| `journalitem` (opening) | **SELECT** | journalitem_id, accountinstance_id, debit_amount, credit_amount | WHERE transaction_date < start_date (untuk calculate opening balance) |
-| `accountinstance` | **SELECT** | accountinstance_id, account_id, kode_cabang, currency_code | JOIN journalitem. Filter by kode_cabang (jika is_consol_branch = 'F'), currency_code (jika is_consol_currency = 'F') |
-| `account` | **SELECT** | account_id, account_code, account_name, account_type, normal_balance, is_active | JOIN accountinstance untuk mendapatkan account details |
+| `dailybalance` | **SELECT** | accountinstance_id, datevalue, debit, credit, balance, balancecumulative, debit_ekuiv, credit_ekuiv, balance_ekuiv, balancecumulative_ekuiv | Source utama untuk account type A/L/E/M (opening, movement, ending) |
+| `dailyprojectbalance` | **SELECT** | accountinstance_id, project_no, datevalue, debit, credit, balance, balancecumulative, debit_ekuiv, credit_ekuiv, balance_ekuiv, balancecumulative_ekuiv | Source utama untuk account type I/X (dengan breakdown project) |
+| `journal` + `journalitem` | **SELECT** (conditional) | journal_date, journal_no, nilai_kurs, amount_debit, amount_credit, fl_journal, accountinstance_id, rc_code | Untuk jurnal hari ini yang belum ter-posting ke `dailybalance` |
+| `accountinstance` | **SELECT** | accountinstance_id, account_code, branch_code, currency_code, balance_sign, fl_cpa_accountinstance | Join ke source balance + filter cabang/valuta |
+| `account` | **SELECT** | account_code, account_name, account_type, is_detail, account_level | Join account master dan sorting |
 | `kurshistory` | **SELECT** (conditional) | currency_code, history_date, kurs_tengah_bi | JOIN jika is_consol_currency = 'T'. WHERE history_date = end_date |
-| `enterprise.cabang` | **SELECT** (lookup) | kode_cabang, nama_cabang, is_active | JOIN untuk nama cabang (optional) |
+| `enterprise.cabang` | **SELECT** (lookup) | branch_code/kode_cabang, nama_cabang, is_active | JOIN untuk nama cabang (optional) |
 
 **Request GraphQL Query:**
 
@@ -260,48 +261,51 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
    - `is_consol_branch`: "T" atau "F", default "F"
 
 2. **Calculate Opening Balance (Saldo Awal):**
-   - Query semua transaksi dengan `transaction_date < start_date`
-   - Group by account_id, currency_code, branch_code
-   - SUM(debit_amount) - SUM(credit_amount) untuk setiap account
+   - Untuk account type A/L/E/M: ambil `balancecumulative` terakhir dari `dailybalance` dengan `datevalue <= BALANCE_DATE` (`BALANCE_DATE = start_date - 1 hari`)
+   - Untuk account type I/X: ambil `balancecumulative` terakhir dari `dailyprojectbalance` dengan `datevalue <= BALANCE_DATE`
+   - Group by accountinstance (dan `project_no` untuk I/X)
    - Filter by branch_code (jika is_consol_branch = 'F' dan branch_code tidak kosong)
    - Filter by currency (jika is_consol_currency = 'F' dan currency tidak kosong)
 
 3. **Calculate Movement (Mutasi):**
-   - Query semua transaksi dengan `transaction_date BETWEEN start_date AND end_date`
-   - Group by account_id, currency_code, branch_code
-   - SUM(debit_amount) dan SUM(credit_amount) untuk setiap account
+   - Untuk account type A/L/E/M: SUM `debit`/`credit` dari `dailybalance` pada rentang `BEGIN_DATE` s/d `END_DATE`
+   - Untuk account type I/X: SUM `debit`/`credit` dari `dailyprojectbalance` pada rentang `BEGIN_DATE` s/d `END_DATE`
+   - Group by accountinstance (dan `project_no` untuk I/X)
    - Filter by branch_code (jika is_consol_branch = 'F' dan branch_code tidak kosong)
    - Filter by currency (jika is_consol_currency = 'F' dan currency tidak kosong)
 
 4. **Calculate Ending Balance (Saldo Akhir):**
-   - Ending Balance = Opening Balance + Movement (Debit - Credit)
-   - Untuk setiap account, calculate:
-     - Ending Debit = (Opening Debit + Movement Debit) - (Opening Credit + Movement Credit) jika hasil > 0
-     - Ending Credit = (Opening Credit + Movement Credit) - (Opening Debit + Movement Debit) jika hasil > 0
+   - Untuk account type A/L/E/M: ambil `balancecumulative` terakhir dari `dailybalance` dengan `datevalue <= END_DATE`
+   - Untuk account type I/X: ambil `balancecumulative` terakhir dari `dailyprojectbalance` dengan `datevalue <= END_DATE`
 
-5. **Konsolidasi Valuta (jika `is_consol_currency = 'T'`):**
+5. **Handle Jurnal Hari Ini (Unposted Daily Balance):**
+   - Jika `END_DATE = TODAY`, tambahkan mutasi dari `journal` + `journalitem` untuk transaksi yang belum ter-posting ke `dailybalance`
+   - Include jurnal ke akun langsung dan jurnal CPA (`fl_cpa_accountinstance`) untuk konsolidasi cabang
+   - Untuk account I/X, mapping project menggunakan `journalitem.rc_code`
+
+6. **Konsolidasi Valuta (jika `is_consol_currency = 'T'`):**
    - Query exchange rate dari `kurshistory` untuk `history_date = end_date`
    - Konversi semua balance (opening, movement, ending) ke IDR (base currency) menggunakan kurs_tengah_bi
    - Aggregate balance per account per cabang (merge semua currency)
    - **Note:** Konsolidasi valuta dapat dilakukan dengan atau tanpa konsolidasi cabang
 
-6. **Konsolidasi Cabang (jika `is_consol_branch = 'T'`):**
+7. **Konsolidasi Cabang (jika `is_consol_branch = 'T'`):**
    - Aggregate balance per account per currency (merge semua branch)
    - **Note:** Konsolidasi cabang dapat dilakukan dengan atau tanpa konsolidasi valuta
 
-7. **Jika keduanya `is_consol_currency = 'T'` DAN `is_consol_branch = 'T'`:**
+8. **Jika keduanya `is_consol_currency = 'T'` DAN `is_consol_branch = 'T'`:**
    - Konversi semua valuta ke IDR
    - Aggregate semua branch
    - Hasil akhir: satu baris per account (total konsolidasi penuh)
 
-8. **Jika `is_only_has_balance = 'T'`:**
+9. **Jika `is_only_has_balance = 'T'`:**
    - Filter hanya account dengan ending balance != 0 (ending_debit > 0 OR ending_credit > 0)
 
-9. **Grouping dan Sorting:**
+10. **Grouping dan Sorting:**
    - Join dengan `account` untuk mendapatkan account_name
    - Sort by account_code (ascending)
 
-10. **Calculate Grand Total:****
+11. **Calculate Grand Total:****
    - Grand Total Opening Debit = SUM(opening_debit)
    - Grand Total Opening Credit = SUM(opening_credit)
    - Grand Total Movement Debit = SUM(movement_debit)
@@ -309,11 +313,11 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
    - Grand Total Ending Debit = SUM(ending_debit)
    - Grand Total Ending Credit = SUM(ending_credit)
 
-11. **Validation Balance Equation:****
+12. **Validation Balance Equation:****
     - Total Ending Debit MUST EQUAL Total Ending Credit
     - If not balanced, return GraphQL error
 
-12. **Format data ke struktur Excel dengan kolom:****
+13. **Format data ke struktur Excel dengan kolom:****
     - Kode Rekening
     - Nama Rekening
     - Saldo Awal Debit
@@ -323,11 +327,11 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
     - Saldo Akhir Debit
     - Saldo Akhir Kredit
 
-13. Generate file Excel menggunakan template Trial Balance
+14. Generate file Excel menggunakan template Trial Balance
 
-14. **Upload file ke storage** (S3, local storage, atau file server)
+15. **Upload file ke storage** (S3, local storage, atau file server)
 
-15. **Return JSON response** dengan `url_path` ke file Excel yang telah di-generate
+16. **Return JSON response** dengan `url_path` ke file Excel yang telah di-generate
 
 **Validation:**
 
@@ -583,7 +587,8 @@ const response = await graphqlClient.query({
       end_date: "2026-01-28",
       branch_code: "001",
       currency: "IDR",
-      is_consol: "F",
+      is_consol_currency: "F",
+      is_consol_branch: "F",
       is_only_has_balance: "T"
     }
   }
@@ -626,19 +631,20 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
 | `journalitem_id` | bigint | ID transaksi (PK) |
-| `transaction_date` | date | Tanggal transaksi |
+| `fl_journal` | varchar | FK ke `journal.journal_no` |
 | `accountinstance_id` | bigint | ID instance account (FK ke accountinstance) |
-| `debit_amount` | decimal(18,2) | Jumlah debit |
-| `credit_amount` | decimal(18,2) | Jumlah kredit |
+| `amount_debit` | decimal(18,2) | Jumlah debit |
+| `amount_credit` | decimal(18,2) | Jumlah kredit |
+| `rc_code` | varchar | Kode project/reference code (untuk akun I/X) |
 | `description` | varchar(500) | Deskripsi transaksi |
 
 **Join Relationships:**
-- `accountinstance` → untuk mendapatkan account details, cabang, dan currency
-- Filter by `transaction_date` untuk opening balance dan movement
+- Join ke `accountinstance` untuk mendapatkan account details, cabang, currency, `balance_sign`, dan relasi CPA
+- Digunakan terutama untuk jurnal hari ini (`journal_date = TODAY`) yang belum ter-posting ke `dailybalance`
 
 **Index Requirements:**
-- Index pada (transaction_date, accountinstance_id) untuk performa query
-- Index pada (accountinstance_id, transaction_date) untuk grouping
+- Index pada (`fl_journal`, `accountinstance_id`)
+- Index pada (`accountinstance_id`, `rc_code`)
 
 ---
 
@@ -651,9 +657,11 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
 | `accountinstance_id` | bigint | ID instance (PK) |
-| `account_id` | bigint | ID account (FK ke account) |
-| `kode_cabang` | varchar(10) | Kode cabang (FK ke enterprise.cabang) |
+| `account_code` | varchar(20) | Kode account (FK ke account) |
+| `branch_code` | varchar(10) | Kode cabang (FK ke enterprise.cabang) |
 | `currency_code` | varchar(3) | Kode valuta untuk instance ini |
+| `balance_sign` | number | Tanda saldo normal untuk hitung net balance |
+| `fl_cpa_accountinstance` | bigint | Relasi ke accountinstance CPA (konsolidasi antar cabang) |
 | `is_active` | boolean | Status aktif |
 
 **Purpose:**
@@ -664,16 +672,17 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 
 #### Entity: `account` (Master Account)
 
-**Primary Key:** `account_id`
+**Primary Key:** `account_code`
 
 **Kolom yang Relevan:**
 
 | Kolom | Tipe | Keterangan |
 |-------|------|------------|
-| `account_id` | varchar(20) | ID rekening (PK) |
 | `account_code` | varchar(20) | Kode rekening |
 | `account_name` | varchar(255) | Nama rekening |
 | `account_type` | varchar(50) | Tipe rekening (Asset, Liability, Equity, Income, Expense) |
+| `is_detail` | varchar(1) | Penanda account detail (`T`/`F`) |
+| `account_level` | number | Level hirarki account |
 | `normal_balance` | varchar(10) | Saldo normal (Debit/Credit) |
 | `is_active` | boolean | Status aktif |
 
@@ -978,8 +987,17 @@ WHERE ac.is_detail = 'T'
   -- Filter: hanya tampilkan jika project = '0000' atau ada nilai
   AND (
       p.project_no = '0000'
-      OR NVL(db_begin.balancecumulative, 0) <> 0
-      OR NVL(db_end.balancecumulative, 0) <> 0
+      OR (
+          p.project_no <> '0000'
+          AND (
+              NVL(db_begin.balancecumulative, 0) <> 0
+              OR NVL(db_end.balancecumulative, 0) <> 0
+              OR NVL(mut.debit, 0) <> 0
+              OR NVL(mut.credit, 0) <> 0
+              OR NVL(j_today.debit, 0) <> 0
+              OR NVL(j_today.credit, 0) <> 0
+          )
+      )
   )
   
 ORDER BY ai.branch_code, ai.currency_code, ac.account_code, p.project_no;
@@ -1021,19 +1039,19 @@ graph LR
 
 | Parameter | Aturan |
 |-----------|--------|
-| `startDate` | Required. Format DD/MM/YYYY. Harus berupa tanggal yang valid |
-| `endDate` | Required. Format DD/MM/YYYY. Harus >= startDate. Harus <= tanggal hari ini |
-| `consolidateCurrency` | Boolean. Default false. Checkbox untuk konsolidasi semua valuta |
-| `currencyCode` | Conditional required (jika consolidateCurrency = false). Harus valid: IDR, USD, EUR, SGD |
-| `consolidateBranch` | Boolean. Default false. Checkbox untuk konsolidasi semua cabang |
-| `branchCode` | Optional. Harus valid jika diisi. Diabaikan jika consolidateBranch = true |
-| `showOnlyWithBalance` | Boolean. Default false |
+| `start_date` | Required. Format `YYYY-MM-DD`. Harus berupa tanggal valid |
+| `end_date` | Required. Format `YYYY-MM-DD`. Harus `>= start_date` dan `<= tanggal hari ini` |
+| `is_consol_currency` | Optional. Nilai: `"T"`/`"F"`. Default `"F"` |
+| `currency` | Conditional required (jika `is_consol_currency = "F"`). Nilai valid: IDR, USD, EUR, SGD |
+| `is_consol_branch` | Optional. Nilai: `"T"`/`"F"`. Default `"F"` |
+| `branch_code` | Optional. Harus valid jika diisi. Diabaikan jika `is_consol_branch = "T"` |
+| `is_only_has_balance` | Optional. Nilai: `"T"`/`"F"`. Default `"F"` |
 
 ### 7.2 Business Logic Validation
 
 **BR-001: Periode Tanggal**
 - Trial Balance menggunakan rentang tanggal (Mulai Tanggal - Hingga Tanggal)
-- Format tanggal: DD/MM/YYYY
+- Format parameter API: `YYYY-MM-DD` (format display UI tetap `DD/MM/YYYY`)
 - Mulai Tanggal tidak boleh lebih besar dari Hingga Tanggal
 - Hingga Tanggal tidak boleh melebihi tanggal hari ini
 - Kedua field tanggal wajib diisi
@@ -1134,35 +1152,45 @@ Cabang: [Branch] / Konsolidasi
 
 ```
 For each account:
-  Opening_Debit = SUM(debit_amount WHERE transaction_date < startDate)
-  Opening_Credit = SUM(credit_amount WHERE transaction_date < startDate)
+  For A/L/E/M:
+    opening_balance = latest dailybalance.balancecumulative where datevalue <= BALANCE_DATE
+  For I/X:
+    opening_balance = latest dailyprojectbalance.balancecumulative where datevalue <= BALANCE_DATE (per project)
   
-  Net_Opening = Opening_Debit - Opening_Credit
-  
-  IF Net_Opening > 0 THEN
-    Display: Opening_Debit = Net_Opening, Opening_Credit = 0
+  IF opening_balance > 0 THEN
+    Display: Opening_Debit = opening_balance, Opening_Credit = 0
   ELSE
-    Display: Opening_Debit = 0, Opening_Credit = ABS(Net_Opening)
+    Display: Opening_Debit = 0, Opening_Credit = ABS(opening_balance)
 ```
 
 ### 9.2 Movement (Mutasi)
 
 ```
 For each account:
-  Movement_Debit = SUM(debit_amount WHERE transaction_date BETWEEN startDate AND endDate)
-  Movement_Credit = SUM(credit_amount WHERE transaction_date BETWEEN startDate AND endDate)
+  For A/L/E/M:
+    Movement_Debit = SUM(dailybalance.debit WHERE datevalue BETWEEN BEGIN_DATE AND END_DATE)
+    Movement_Credit = SUM(dailybalance.credit WHERE datevalue BETWEEN BEGIN_DATE AND END_DATE)
+  For I/X:
+    Movement_Debit = SUM(dailyprojectbalance.debit WHERE datevalue BETWEEN BEGIN_DATE AND END_DATE)
+    Movement_Credit = SUM(dailyprojectbalance.credit WHERE datevalue BETWEEN BEGIN_DATE AND END_DATE)
+
+  If END_DATE = TODAY:
+    add unposted movement from journal + journalitem
 ```
 
 ### 9.3 Ending Balance
 
 ```
 For each account:
-  Net_Ending = (Opening_Debit - Opening_Credit) + (Movement_Debit - Movement_Credit)
+  For A/L/E/M:
+    ending_balance = latest dailybalance.balancecumulative where datevalue <= END_DATE
+  For I/X:
+    ending_balance = latest dailyprojectbalance.balancecumulative where datevalue <= END_DATE (per project)
   
-  IF Net_Ending > 0 THEN
-    Display: Ending_Debit = Net_Ending, Ending_Credit = 0
+  IF ending_balance > 0 THEN
+    Display: Ending_Debit = ending_balance, Ending_Credit = 0
   ELSE
-    Display: Ending_Debit = 0, Ending_Credit = ABS(Net_Ending)
+    Display: Ending_Debit = 0, Ending_Credit = ABS(ending_balance)
 ```
 
 ### 9.4 Validation
@@ -1179,19 +1207,19 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 
 ## 10. Error Handling
 
-| Code | Scenario | HTTP | Message |
-| ---- | -------- | ---- | ------- |
-| TB-400-01 | Invalid date format | 400 | "Format tanggal tidak valid" |
-| TB-400-02 | startDate > endDate | 400 | "Mulai tanggal tidak boleh lebih besar dari hingga tanggal" |
-| TB-400-03 | endDate > current date | 400 | "Hingga tanggal tidak boleh melebihi hari ini" |
-| TB-400-04 | Invalid currency code | 400 | "Kode valuta tidak valid" |
-| TB-400-05 | Invalid branch code | 400 | "Kode cabang tidak valid" |
-| TB-400-06 | Missing required parameter | 400 | "Parameter [nama] wajib diisi" |
-| TB-404-01 | No data found | 404 | "Data tidak ditemukan untuk periode yang diminta" |
-| TB-404-02 | Exchange rate not found | 404 | "Kurs tidak tersedia untuk tanggal [date]" |
-| TB-500-01 | Balance not balanced | 500 | "Total debit dan kredit tidak balance" |
-| TB-500-02 | Excel generation error | 500 | "Gagal generate file Excel" |
-| TB-500-03 | Database error | 500 | "Gagal mengambil data dari database" |
+| Code | Scenario | GraphQL Message |
+| ---- | -------- | --------------- |
+| TB-400-01 | Invalid date format | "Format tanggal tidak valid" |
+| TB-400-02 | `start_date > end_date` | "Mulai tanggal tidak boleh lebih besar dari hingga tanggal" |
+| TB-400-03 | `end_date > current date` | "Hingga tanggal tidak boleh melebihi hari ini" |
+| TB-400-04 | Invalid currency code | "Kode valuta tidak valid" |
+| TB-400-05 | Invalid branch code | "Kode cabang tidak valid" |
+| TB-400-06 | Missing required parameter | "Parameter [nama] wajib diisi" |
+| TB-404-01 | No data found | "Data tidak ditemukan untuk periode yang diminta" |
+| TB-404-02 | Exchange rate not found | "Kurs tidak tersedia untuk tanggal [date]" |
+| TB-500-01 | Balance not balanced | "Total debit dan kredit tidak balance" |
+| TB-500-02 | Excel generation error | "Gagal generate file Excel" |
+| TB-500-03 | Database error | "Gagal mengambil data dari database" |
 
 ---
 
@@ -1200,7 +1228,7 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 - Log setiap request generate laporan dengan detail:
   - User ID
   - Timestamp
-  - Parameters (startDate, endDate, currency, branch, consolidation flags, showOnlyWithBalance)
+  - Parameters (`start_date`, `end_date`, `currency`, `branch_code`, `is_consol_currency`, `is_consol_branch`, `is_only_has_balance`)
   - Result (success / error code)
 - Log performance metrics:
   - Query execution time (opening, movement, ending calculations)
@@ -1215,8 +1243,10 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 ### 12.1 Query Optimization
 
 - **Indexes:**
-  - Index pada `journalitem` untuk kolom: (transaction_date, accountinstance_id)
-  - Index pada `accountinstance` untuk kolom: (account_id, kode_cabang, currency_code)
+  - Index pada `dailybalance` untuk kolom: (`accountinstance_id`, `datevalue`)
+  - Index pada `dailyprojectbalance` untuk kolom: (`accountinstance_id`, `project_no`, `datevalue`)
+  - Index pada `journalitem` untuk kolom: (`fl_journal`, `accountinstance_id`, `rc_code`)
+  - Index pada `accountinstance` untuk kolom: (`account_code`, `branch_code`, `currency_code`)
   - Index pada `kurshistory` untuk kolom: (history_date, currency_code)
   - Composite index untuk performa optimal saat filter dan grouping
 
@@ -1259,8 +1289,8 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 | Rule ID | Description |
 |---------|-------------|
 | FR-TB-R01 | Semua laporan Trial Balance harus menggunakan **format Excel (.xlsx)** |
-| FR-TB-R02 | Periode tanggal harus valid: **startDate <= endDate <= current date** |
-| FR-TB-R03 | Konversi valuta menggunakan **kurs pada akhir periode (endDate)** |
+| FR-TB-R02 | Periode tanggal harus valid: **start_date <= end_date <= current date** |
+| FR-TB-R03 | Konversi valuta menggunakan **kurs pada akhir periode (`end_date`)** |
 | FR-TB-R04 | Trial Balance menampilkan **3 kolom saldo: Awal, Mutasi, Akhir** |
 | FR-TB-R05 | **Total Debit MUST EQUAL Total Kredit** untuk setiap kolom saldo |
 | FR-TB-R06 | Jika data tidak ditemukan, sistem harus memberikan **error message yang jelas** |
@@ -1279,12 +1309,12 @@ IF Total_Ending_Debit != Total_Ending_Credit THEN
 
 ## 16. Change Log
 
-| Date | Description | Author |
-|------|-------------|--------|
-| 2026-02-05 | Initial TSD draft - converted from FSD_trial-balance_report.md | System Analyst |
-| 2026-02-05 | Updated API specification from REST to GraphQL based on ei-ledger-gql implementation - Changed endpoint, field naming (snake_case), date format (YYYY-MM-YYYY), response type (URL path), and added GraphQL Integration Notes section | System Analyst |
-| 2026-02-06 | Added Section 5.3: Reference Implementation from gl-module - Documented validation patterns (date range validation), field disable patterns, async data lookup (Cabang & Valuta), form submission patterns, and loading state patterns | System Analyst |
-| 2026-02-06 | Added Section 6.1.2: API Endpoint for Data Lookup - Backend specification for getCabang and getSelectValuta endpoints with SQL queries and response formats | System Analyst |
-| 2026-02-06 | **BREAKING CHANGE**: Separated currency and branch consolidation parameters - Changed from single `is_consol` to separate `is_consol_currency` and `is_consol_branch` GraphQL parameters. Updated backend processing logic to support 4 consolidation scenarios. Added BR-009 for consolidation combinations. Updated validation rules and field mappings | System Analyst |
-| 2026-02-06 | Updated Entity Utama schema - Changed table references from old schema to actual gl-module implementation: `journalitem` with `accountinstance` relationship, `kurshistory`, `enterprise.cabang`, and `enterprise.listcabangdiizinkan` | System Analyst |
-| 2026-02-06 | Added Section 6.3: SQL Query Examples - Comprehensive SQL reference showing actual implementation using `dailybalance` table for balance sheet accounts and `dailyprojectbalance` for P&L accounts. Documented opening balance, movement, ending balance calculations, today's journal handling, CPA consolidation, and multi-currency conversion patterns | System Analyst |
+| Tanggal | Deskripsi | Author |
+|---------|-----------|--------|
+| 2026-02-05 | Draft awal TSD - dikonversi dari `FSD_trial-balance_report.md` | System Analyst |
+| 2026-02-05 | Memperbarui spesifikasi API dari REST ke GraphQL berdasarkan implementasi `ei-ledger-gql` - mengubah endpoint, penamaan field (`snake_case`), format tanggal (`YYYY-MM-DD`), tipe respons (`url_path`), dan menambahkan bagian Catatan Integrasi GraphQL | System Analyst |
+| 2026-02-06 | Menambahkan Bagian 5.3: Referensi Implementasi dari `gl-module` - mendokumentasikan pola validasi (rentang tanggal), pola disable field, lookup data async (Cabang & Valuta), pola submit form, dan pola loading state | System Analyst |
+| 2026-02-06 | Menambahkan Bagian 6.1.2: Endpoint API untuk Data Lookup - spesifikasi backend untuk endpoint `getCabang` dan `getSelectValuta` beserta query SQL dan format respons | System Analyst |
+| 2026-02-06 | **PERUBAHAN BREAKING**: Memisahkan parameter konsolidasi valuta dan cabang - dari satu parameter `is_consol` menjadi `is_consol_currency` dan `is_consol_branch` pada GraphQL. Memperbarui logika proses backend untuk mendukung 4 skenario konsolidasi. Menambahkan BR-009 untuk kombinasi konsolidasi. Memperbarui aturan validasi dan pemetaan field | System Analyst |
+| 2026-02-06 | Memperbarui skema Entitas Utama - mengubah referensi tabel dari skema lama ke implementasi aktual `gl-module`: relasi `journalitem` dengan `accountinstance`, `kurshistory`, `enterprise.cabang`, dan `enterprise.listcabangdiizinkan` | System Analyst |
+| 2026-02-06 | Menambahkan Bagian 6.3: Contoh Query SQL - referensi SQL komprehensif yang menunjukkan implementasi aktual menggunakan tabel `dailybalance` untuk akun neraca dan `dailyprojectbalance` untuk akun laba rugi. Mendokumentasikan perhitungan saldo awal, mutasi, saldo akhir, penanganan jurnal hari ini, konsolidasi CPA, dan pola konversi multi-valuta | System Analyst |
