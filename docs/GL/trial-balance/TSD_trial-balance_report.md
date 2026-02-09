@@ -728,6 +728,8 @@ window.open(urlPath, '_blank'); // atau menggunakan fetch/axios untuk download
 ### 6.3 SQL Query Examples
 
 > Query examples ini menunjukkan implementasi aktual dari perhitungan Trial Balance menggunakan `dailybalance` table.
+>
+> Referensi utama query: [TrialBalance_DataGuide.sql](./assets/TrialBalance_DataGuide.sql)
 
 #### 6.3.1 Query Parameters
 
