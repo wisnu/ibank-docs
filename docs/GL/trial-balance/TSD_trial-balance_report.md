@@ -80,7 +80,7 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
 | Konsolidasi Valuta | O | `is_consol_currency` | - | GraphQL variable. String: "T" or "F". If checked, `is_consol_currency` = "T" and `currency` can be empty |
 | Valuta | C | `currency` | `kurshistory` | GraphQL variable. String: {IDR, USD, EUR, SGD}. Conditional required (if is_consol_currency = "F"). Disabled if Konsolidasi Valuta checked |
 | Konsolidasi Cabang | O | `is_consol_branch` | - | GraphQL variable. String: "T" or "F". If checked, `is_consol_branch` = "T" |
-| Cabang | O | `fund` | `enterprise.cabang` | GraphQL variable. String of branch code. Default "". Disabled if Konsolidasi Cabang checked |
+| Cabang | O | `branch_code` | `enterprise.cabang` | GraphQL variable. String of branch code. Default "". Disabled if Konsolidasi Cabang checked |
 | Tampilkan hanya yang memiliki saldo | O | `is_only_has_balance` | - | GraphQL variable. String: "T" or "F". Default "F". Filter accounts with non-zero balance |
 
 **Field Details:**
@@ -145,7 +145,7 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
 - Label: "Cabang"
 - Placeholder: "-- PILIH SEMUA --"
 - Opsi: Dimuat dari backend (daftar cabang berdasarkan akses user)
-- Mapping: `fund`
+- Mapping: `branch_code`
 - Disabled ketika: Konsolidasi Cabang dicentang
 
 **7. Tampilkan hanya yang memiliki saldo**
@@ -182,7 +182,7 @@ Link mockup UI: [trial-balance.html](./assets/trial-balance.html)
 input ReqGenerateReportTrialBalance {
     start_date: String!
     end_date: String!
-    fund: String = ""
+    branch_code: String = ""
     currency: String = ""
     is_consol_currency: String = "F"
     is_consol_branch: String = "F"
@@ -226,7 +226,7 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
   "input": {
     "start_date": "2026-01-01",
     "end_date": "2026-01-28",
-    "fund": "001",
+    "branch_code": "001",
     "currency": "IDR",
     "is_consol_currency": "F",
     "is_consol_branch": "F",
@@ -255,7 +255,7 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
    - `start_date`: format valid YYYY-MM-DD
    - `end_date`: format valid YYYY-MM-DD, >= start_date, <= current date
    - `currency`: valid jika is_consol_currency = 'F', bisa kosong jika is_consol_currency = 'T'
-   - `fund`: optional, untuk filter branch, bisa kosong jika is_consol_branch = 'T'
+   - `branch_code`: optional, untuk filter branch, bisa kosong jika is_consol_branch = 'T'
    - `is_consol_currency`: "T" atau "F", default "F"
    - `is_consol_branch`: "T" atau "F", default "F"
 
@@ -263,14 +263,14 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
    - Query semua transaksi dengan `transaction_date < start_date`
    - Group by account_id, currency_code, branch_code
    - SUM(debit_amount) - SUM(credit_amount) untuk setiap account
-   - Filter by fund (jika is_consol_branch = 'F' dan fund tidak kosong)
+   - Filter by branch_code (jika is_consol_branch = 'F' dan branch_code tidak kosong)
    - Filter by currency (jika is_consol_currency = 'F' dan currency tidak kosong)
 
 3. **Calculate Movement (Mutasi):**
    - Query semua transaksi dengan `transaction_date BETWEEN start_date AND end_date`
    - Group by account_id, currency_code, branch_code
    - SUM(debit_amount) dan SUM(credit_amount) untuk setiap account
-   - Filter by fund (jika is_consol_branch = 'F' dan fund tidak kosong)
+   - Filter by branch_code (jika is_consol_branch = 'F' dan branch_code tidak kosong)
    - Filter by currency (jika is_consol_currency = 'F' dan currency tidak kosong)
 
 4. **Calculate Ending Balance (Saldo Akhir):**
@@ -339,8 +339,8 @@ query GetReportTrialBalance($input: ReqGenerateReportTrialBalance) {
 - `is_consol_branch` optional, valid values: "T" or "F", default "F"
 - Jika `is_consol_currency = 'F'`, maka `currency` required
 - Jika `is_consol_currency = 'T'`, maka `currency` dapat kosong (akan konversi semua valuta ke IDR)
-- Jika `is_consol_branch = 'F'`, maka `fund` optional (dapat filter specific branch)
-- Jika `is_consol_branch = 'T'`, maka `fund` ignored (akan agregasi semua branch)
+- Jika `is_consol_branch = 'F'`, maka `branch_code` optional (dapat filter specific branch)
+- Jika `is_consol_branch = 'T'`, maka `branch_code` ignored (akan agregasi semua branch)
 - `is_only_has_balance` optional, valid values: "T" or "F", default "F"
 
 **Exception Handling (GraphQL Errors):**
@@ -581,7 +581,7 @@ const response = await graphqlClient.query({
     input: {
       start_date: "2026-01-01",
       end_date: "2026-01-28",
-      fund: "001",
+      branch_code: "001",
       currency: "IDR",
       is_consol: "F",
       is_only_has_balance: "T"
