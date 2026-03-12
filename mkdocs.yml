@@ -33,32 +33,33 @@ theme:
 nav:
   - Home: index.md
 
-  - General Ledger:
-      - Chart of Account:
-          - PRD - Chart of Account: GL/chart-of-account/PRD_COA_Main.md
-          - FSD - Chart of Account: GL/chart-of-account/FSD_COA_Main.md
-          - COA List:
-              - FSD - COA List: GL/chart-of-account/list/FSD_COA_List.md
-          - COA Create:
-              - FSD - COA Create: GL/chart-of-account/create/FSD_COA_Create.md
-          - COA Edit:
-              - FSD - COA Edit: GL/chart-of-account/edit/FSD_COA_Edit.md
-              - TSD - COA Edit: GL/chart-of-account/edit/TSD_COA_Edit.md
-              - TEST - COA Edit: GL/chart-of-account/edit/TEST_COA_Edit.md
+  - iBank:
+      - General Ledger:
+          - TSD Architecture: ibank/GL/TSD Architecture.md
+          - Chart of Account:
+              - PRD - Chart of Account: ibank/GL/chart-of-account/PRD_COA_Main.md
+              - FSD - Chart of Account: ibank/GL/chart-of-account/FSD_COA_Main.md
+              - COA List:
+                  - FSD - COA List: ibank/GL/chart-of-account/list/FSD_COA_List.md
+              - COA Create:
+                  - FSD - COA Create: ibank/GL/chart-of-account/create/FSD_COA_Create.md
+              - COA Edit:
+                  - FSD - COA Edit: ibank/GL/chart-of-account/edit/FSD_COA_Edit.md
+                  - TSD - COA Edit: ibank/GL/chart-of-account/edit/TSD_COA_Edit.md
+                  - TEST - COA Edit: ibank/GL/chart-of-account/edit/TEST_COA_Edit.md
+                  - Referensi: ibank/GL/chart-of-account/edit/referensi.md
+          - Neraca / Laba Rugi:
+              - FSD - Neraca / Laba Rugi: ibank/GL/balance-sheet/FSD_balance-sheet_report.md
+              - TSD - Neraca / Laba Rugi: ibank/GL/balance-sheet/TSD_balance-sheet_report.md
+          - Trial Balance:
+              - FSD - Trial Balance: ibank/GL/trial-balance/FSD_trial-balance_report.md
+              - TSD - Trial Balance: ibank/GL/trial-balance/TSD_trial-balance_report.md
+          - Buku Besar:
+              - Coming Soon: ibank/GL/ledger/placeholder.md
 
-      - Neraca / Laba Rugi:
-          - FSD - Neraca / Laba Rugi: GL/balance-sheet/FSD_balance-sheet_report.md
-          - TSD - Neraca / Laba Rugi: GL/balance-sheet/TSD_balance-sheet_report.md
-
-      - Trial Balance:
-          - FSD - Trial Balance: GL/trial-balance/FSD_trial-balance_report.md
-          - TSD - Trial Balance: GL/trial-balance/TSD_trial-balance_report.md
-
-      - Buku Besar:
-          - Coming Soon: GL/ledger/placeholder.md
-
-  - Fingerscan:
-      - FSD - Fingerscan Biometrik: Fingerscan/FSD_Fingerscan_Biometrik.md
+  - BJBS:
+      - Fingerscan:
+          - FSD - Fingerscan Biometrik: bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md
 
 markdown_extensions:
   - pymdownx.superfences:
