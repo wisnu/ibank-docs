@@ -4,6 +4,7 @@ site_url: https://wisnu.github.io/ibank-docs/
 
 theme:
   name: material
+  custom_dir: overrides
   language: id
   palette:
     - scheme: default
