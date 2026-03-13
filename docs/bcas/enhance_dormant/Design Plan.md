@@ -455,3 +455,58 @@ WHERE rl.nomor_rekening = sg.nomor_rekening;
 | `CEK_MUTASI` | Cek mutasi / histori transaksi | ATM, MOBILE, IB |
 | `CETAK_PASSBOOK` | Cetak passbook | TELLER |
 | `CETAK_SALDO` | Cetak saldo passbook | TELLER |
+
+---
+
+## 9. Matriks Status Rekening Berdasarkan Aktivitas dan Jenis Transaksi
+
+Dokumen ini berisi matriks status rekening berdasarkan aturan praktik perbankan yang merujuk pada ketentuan OJK terkait rekening aktif, tidak aktif, dan dormant.
+
+### 9.1 Matriks Status Rekening vs Jumlah Hari Tanpa Aktivitas
+
+| Status Rekening | Jumlah Hari Tanpa Aktivitas | Deskripsi |
+|---|---|---|
+| Aktif | ≤ 360 hari | Rekening masih memiliki aktivitas nasabah |
+| Tidak Aktif | > 360 hari – ≤ 1.800 hari | Tidak ada aktivitas nasabah lebih dari 1 tahun |
+| Dormant | > 1.800 hari | Tidak ada aktivitas lebih dari 5 tahun |
+
+Catatan:
+- Aktivitas meliputi transaksi finansial maupun non finansial oleh nasabah.
+- Biaya admin otomatis biasanya tidak dihitung sebagai aktivitas.
+
+### 9.2 Matriks Status Rekening vs Jenis Transaksi (Ringkas)
+
+| Status Rekening | Kredit | Debit | Keterangan |
+|---|---|---|---|
+| Aktif | ✅ Boleh | ✅ Boleh | Operasional normal |
+| Tidak Aktif | ✅ Boleh | ⚠️ Terbatas | Beberapa bank membatasi debit |
+| Dormant | ❌ Tidak boleh | ❌ Tidak boleh | Harus reaktivasi |
+
+### 9.3 Matriks Detail Status Rekening vs Jenis Transaksi
+
+| Jenis Transaksi | Aktif | Tidak Aktif | Dormant | Keterangan |
+|---|---|---|---|---|
+| Setor Tunai (Teller) | ✅ | ✅ | ❌ | Biasanya boleh untuk reaktivasi |
+| Tarik Tunai (Teller) | ✅ | ❌ | ❌ | Harus aktivasi dulu |
+| Transfer Masuk | ✅ | ✅ | ❌ | Umumnya masih diperbolehkan |
+| Transfer Keluar | ✅ | ❌ | ❌ | Debit biasanya dibatasi |
+| Pindah Buku (Rekening Kredit) | ✅ | ✅ | ❌ | Sebagai rekening penerima dana |
+| Pindah Buku (Rekening Debet) | ✅ | ❌ | ❌ | Sebagai rekening sumber dana |
+| Setor Tunai via ATM/CDM | ✅ | ❌ | ❌ | Tergantung kebijakan bank |
+| Tarik Tunai ATM | ✅ | ❌ | ❌ | Umumnya diblok |
+| Pembayaran (bill payment) | ✅ | ❌ | ❌ | Debit transaksi |
+| Autodebit | ✅ | ❌ | ❌ | Biasanya dihentikan jika dormant |
+| BI-FAST / Online Transfer | ✅ | ❌ | ❌ | Termasuk debit |
+| Debet Kredit Umum (Rekening Kredit) | ✅ | ✅ | ⚠️ | Sebagai rekening penerima dana boleh dengan override |
+| Debet Kredit Umum (Rekening Debet) | ✅ | ⚠️ | ⚠️ | Sebagai rekening sumber dana boleh dengan override |
+| Transaksi Umum (Rekening Kredit) | ✅ | ✅ | ⚠️ | Sebagai rekening penerima dana boleh dengan override |
+| Transaksi Umum (Rekening Debet) | ✅ | ⚠️ | ⚠️ | Sebagai rekening sumber dana boleh dengan override |
+| Cek Saldo / Inquiry | ✅ | ✅ | ❌ | Kadang digunakan untuk reaktivasi |
+
+Keterangan simbol:
+
+| Simbol | Arti |
+|---|---|
+| ✅ | Diperbolehkan |
+| ⚠️ | Terbatas / tergantung kebijakan bank |
+| ❌ | Tidak diperbolehkan |
