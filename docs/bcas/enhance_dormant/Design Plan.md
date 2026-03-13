@@ -165,7 +165,7 @@ CREATE TABLE ibcore.rekening_aktivitas_nonfin (
     id                  bigserial    NOT NULL,
     nomor_rekening      varchar(20)  NOT NULL,
     tanggal_aktivitas   timestamp    NOT NULL,
-    kode_aktivitas     varchar(20)  NOT NULL,  -- CEK_SALDO | CEK_MUTASI | LOGIN_MB | LOGIN_IB | LOGIN_ATM
+    kode_aktivitas     varchar(20)  NOT NULL,  -- CEK_SALDO | CEK_MUTASI | CETAK_PASSBOOK | CETAK_SALDO
     kode_channel             varchar(10)  NULL,       -- ATM | MOBILE | IB | TELLER | API
     nomor_referensi     varchar(50)  NULL,
     user_input          varchar(20)  NULL,
@@ -452,8 +452,6 @@ WHERE rl.nomor_rekening = sg.nomor_rekening;
 | Kode `kode_aktivitas` | Deskripsi | Channel |
 |---|---|---|
 | `CEK_SALDO` | Cek saldo | ATM, MOBILE, IB, TELLER |
-| `CEK_MUTASI` | Cek mutasi / histori transaksi | ATM, MOBILE, IB, TELLER |
-| `LOGIN_MB` | Login Mobile Banking | MOBILE |
-| `LOGIN_IB` | Login Internet Banking | IB |
-| `LOGIN_ATM` | Akses menu ATM (tanpa transaksi) | ATM |
-| `TRX` | Transaksi finansial (diisi oleh Alur A) | semua |
+| `CEK_MUTASI` | Cek mutasi / histori transaksi | ATM, MOBILE, IB |
+| `CETAK_PASSBOOK` | Cetak passbook | TELLER |
+| `CETAK_SALDO` | Cetak saldo passbook | TELLER |
