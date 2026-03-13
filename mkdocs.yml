@@ -61,6 +61,10 @@ nav:
       - Fingerscan:
           - FSD - Fingerscan Biometrik: bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md
 
+  - BCAS:
+      - Enhance Dormant:
+          - Design Plan: bcas/enhance_dormant/Design Plan.md
+
 markdown_extensions:
   - pymdownx.superfences:
       custom_fences:
