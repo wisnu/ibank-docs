@@ -6,26 +6,100 @@
 
 ## 1. Status Rekening — Alur Transisi
 
+### Diagram A — Status Tidak Aktif & Dormant
+
 ```mermaid
 stateDiagram-v2
     [*] --> AKTIF : Rekening dibuka
 
     AKTIF --> TIDAK_AKTIF : hari_tidak_aktif >= jumlah_hari_jadi_tidak_aktif
     TIDAK_AKTIF --> DORMANT : hari_tidak_aktif >= jumlah_hari_jadi_dormant
-    DORMANT --> TUTUP : hari_tidak_aktif >= jumlah_hari_tutup_otomatis\n& is_tutup_otomatis_dormant = T
 
-    TIDAK_AKTIF --> AKTIF : ada aktivitas nasabah\n(transaksi / inquiry)
-    DORMANT --> AKTIF : ada aktivitas nasabah\n(transaksi / inquiry)
+    TIDAK_AKTIF --> AKTIF : reaktivasi oleh user Cabang\nvia menu Ubah Rekening Tidak Aktif/Dormant\n(perlu approval)
+    DORMANT --> AKTIF : reaktivasi oleh user Cabang\nvia menu Ubah Rekening Tidak Aktif/Dormant\n(perlu approval)
+```
+
+### Diagram B — Tutup Otomatis Saldo Nol
+
+```mermaid
+stateDiagram-v2
+    AKTIF --> TUTUP : saldo = 0 selama >= jumlah_hari_tutup_otomatis\n& is_exc_tutupnol ≠ T
+    TIDAK_AKTIF --> TUTUP : saldo = 0 selama >= jumlah_hari_tutup_otomatis\n& is_exc_tutupnol ≠ T
+    DORMANT --> TUTUP : saldo = 0 selama >= jumlah_hari_tutup_otomatis\n& is_exc_tutupnol ≠ T
 
     TUTUP --> [*]
 ```
 
-| Status | Kode | Keterangan |
+> Tutup otomatis berlaku untuk semua status rekening, tidak bergantung pada status aktif/tidak aktif/dormant.
+
+| Status | Enum `rekeningtransaksi` | Keterangan |
 |---|---|---|
-| Aktif | `A` | Ada aktivitas dalam threshold |
-| Tidak Aktif | **`T`** *(baru)* | Melewati `jumlah_hari_jadi_tidak_aktif`, belum dormant |
-| Dormant | `D` | Melewati `jumlah_hari_jadi_dormant` |
-| Tutup | `C` | Rekening ditutup |
+| Aktif | `1` | Ada aktivitas dalam threshold |
+| Tidak Aktif *(baru)* | **`7`** *(baru)* | Melewati `jumlah_hari_jadi_tidak_aktif`, belum dormant |
+| Dormant | `2` | Melewati `jumlah_hari_jadi_dormant` |
+| Tutup | `3` | Rekening ditutup |
+
+> **Mapping Enum `status_rekening` di `rekeningtransaksi`:**
+> - `1` = Aktif
+> - `2` = Dormant
+> - `3` = Tutup
+> - **`7` = Tidak Aktif** *(baru — ditambahkan untuk enhancement ini)*
+
+---
+
+## 1b. Hierarki Parameter — Tidak Aktif, Dormant & Tutup Otomatis
+
+Setiap fase dikontrol oleh 3 layer parameter dengan urutan prioritas berikut:
+
+```
+Prioritas (tinggi → rendah)
+┌─────────────────────────────────────────────────────────────┐
+│  [1] PENGECUALIAN  — fase tidak berlaku sama sekali         │
+│      flag is_exc_* / is_tidak_dormant di tabel produk       │
+├─────────────────────────────────────────────────────────────┤
+│  [2] OVERRIDE PRODUK  — nilai kustom per produk             │
+│      aktif jika is_custom_* = 'T' di tabel produk           │
+├─────────────────────────────────────────────────────────────┤
+│  [3] DEFAULT GLOBAL  — fallback jika tidak ada override     │
+│      dibaca dari tabel ParameterGlobal                      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Fase 1 — Tidak Aktif
+
+| Layer | Berlaku Jika | Field / Parameter | Keterangan |
+|---|---|---|---|
+| **[1] Pengecualian** | `produk.is_exc_tidakaktif = 'T'` | — | Rekening produk ini tidak pernah masuk status Tidak Aktif |
+| **[2] Override Produk** | `produk.is_custom_tidak_aktif = 'T'` | `produk.jumlah_hari_jadi_tidak_aktif` | Threshold hari kustom |
+| | | `produk.biaya_rekening_tidak_aktif` | Nominal biaya kustom |
+| | | `produk.is_biaya_rekening_tidak_aktif` | Flag apakah dikenakan biaya |
+| **[3] Default Global** | *(fallback)* | `ParameterGlobal.TAKT_HARI` | Default threshold hari (360) |
+| | | `ParameterGlobal.TAKT_BIAYA` | Default biaya (0 = tidak ada biaya) |
+
+### Fase 2 — Dormant
+
+| Layer | Berlaku Jika | Field / Parameter | Keterangan |
+|---|---|---|---|
+| **[1] Pengecualian** | `produk.is_tidak_dormant = 'T'` | — | Semua rekening produk ini tidak pernah dormant |
+| | `rekeningliabilitas.is_tidak_dormant = 'T'` | — | Rekening spesifik dikecualikan (override per rekening) |
+| **[2] Override Produk** | `produk.is_custom_dormant = 'T'` | `produk.jumlah_hari_jadi_dormant` | Threshold hari kustom |
+| | | `produk.biaya_rekening_dormant` | Nominal biaya kustom |
+| | | `produk.is_biaya_rekening_dormant` | Flag apakah dikenakan biaya |
+| **[3] Default Global** | *(fallback)* | `ParameterGlobal.DORM_HARI` | Default threshold hari (1800) |
+| | | `ParameterGlobal.DORM_BIAYA` | Default biaya (10000) |
+
+### Fase 3 — Tutup Otomatis Saldo Nol
+
+| Layer | Berlaku Jika | Field / Parameter | Keterangan |
+|---|---|---|---|
+| **[1] Pengecualian** | `produk.is_exc_tutupnol = 'T'` | — | Rekening produk ini tidak pernah ditutup otomatis |
+| **[2] Override Produk** | `produk.is_custom_tutup_oto = 'T'` | `produk.jumlah_hari_tutup_otomatis` | Threshold hari saldo nol kustom |
+| **[3] Default Global** | *(fallback)* | `ParameterGlobal.TUTUP_NOL_HARI` | Default threshold hari (730) |
+
+> **Catatan:**
+> - Pengecualian di layer [1] bersifat mutlak — jika flag aktif, sistem EOD tidak akan memproses rekening tersebut untuk fase itu.
+> - `is_tidak_dormant` di `rekeningliabilitas` adalah satu-satunya pengecualian yang bisa dikonfigurasi **per rekening** (bukan per produk).
+> - Fase Tutup Otomatis tidak bergantung pada status dormant/tidak aktif rekening.
 
 ---
 
@@ -45,6 +119,8 @@ stateDiagram-v2
 | produk | **`is_custom_tidak_aktif`** *(baru)* | `T` = produk pakai threshold & biaya tidak aktif sendiri, bukan dari ParameterGlobal | **ADD COLUMN** |
 | produk | **`is_custom_dormant`** *(baru)* | `T` = produk pakai threshold & biaya dormant sendiri, bukan dari ParameterGlobal | **ADD COLUMN** |
 | produk | **`is_custom_tutup_oto`** *(baru)* | `T` = produk pakai threshold tutup otomatis sendiri, bukan dari ParameterGlobal | **ADD COLUMN** |
+| produk | **`is_exc_tidakaktif`** *(baru)* | `T` = rekening produk ini tidak akan pernah masuk status Tidak Aktif | **ADD COLUMN** |
+| produk | **`is_exc_tutupnol`** *(baru)* | `T` = rekening produk ini tidak akan ditutup otomatis saat saldo nol | **ADD COLUMN** |
 | produk | **`jumlah_hari_jadi_dormant`** *(baru)* | Override threshold hari dormant — dibaca hanya jika `is_custom_dormant = 'T'` | **ADD COLUMN** |
 | produk | **`jumlah_hari_jadi_tidak_aktif`** *(sudah ada, ubah semantik)* | Override threshold hari tidak aktif — dibaca hanya jika `is_custom_tidak_aktif = 'T'` | **UBAH SEMANTIK** |
 | produk | **`biaya_rekening_tidak_aktif`** *(baru)* | Override nominal biaya tidak aktif — dibaca hanya jika `is_custom_tidak_aktif = 'T'` | **ADD COLUMN** |
@@ -71,7 +147,7 @@ stateDiagram-v2
 > **Kesimpulan:**
 > - **1 kolom baru** di `parameterglobal`: `kode_group` varchar(30) — untuk pengelompokan parameter per fitur/modul
 > - **5 data baru** di `parameterglobal` (`kode_group='REKENING_DORMANT'`) — konfigurasi terpusat hari & biaya dormant/tidak aktif
-> - **6 kolom baru** di `produk`: 3 flag eksplisit (`is_custom_tidak_aktif`, `is_custom_dormant`, `is_custom_tutup_oto`) + 3 field nilai override
+> - **8 kolom baru** di `produk`: 3 flag override (`is_custom_tidak_aktif`, `is_custom_dormant`, `is_custom_tutup_oto`) + 2 flag pengecualian (`is_exc_tidakaktif`, `is_exc_tutupnol`) + 3 field nilai override
 > - **3 kolom ubah semantik** di `produk` (existing field → hanya dibaca jika flag custom aktif)
 > - **1 kolom baru** di `rekeningliabilitas` (`tgl_aktivitas_terakhir`)
 > - **1 kolom baru** di `parametertransaksiumum` (flag exclude aktivitas)
@@ -95,6 +171,8 @@ stateDiagram-v2
 - `ADD COLUMN is_custom_tidak_aktif` di `produk` — flag eksplisit override fase tidak aktif
 - `ADD COLUMN is_custom_dormant` di `produk` — flag eksplisit override fase dormant
 - `ADD COLUMN is_custom_tutup_oto` di `produk` — flag eksplisit override fase tutup otomatis
+- `ADD COLUMN is_exc_tidakaktif` di `produk` — pengecualian: rekening produk ini tidak pernah masuk status Tidak Aktif
+- `ADD COLUMN is_exc_tutupnol` di `produk` — pengecualian: rekening produk ini tidak pernah ditutup otomatis saldo nol
 - `ADD COLUMN jumlah_hari_jadi_dormant` di `produk` *(dibaca hanya jika `is_custom_dormant='T'`)*
 - `ADD COLUMN biaya_rekening_tidak_aktif` di `produk` *(dibaca hanya jika `is_custom_tidak_aktif='T'`)*
 - `ADD COLUMN is_biaya_rekening_tidak_aktif` di `produk` *(dibaca hanya jika `is_custom_tidak_aktif='T'`)*
@@ -121,11 +199,13 @@ stateDiagram-v2
 ### ① ALTER TABLE produk — Tambah Flag Custom & Kolom Override
 
 ```sql
--- Tambah 3 flag eksplisit override per fase + kolom nilai baru
+-- Tambah flag override per fase, flag pengecualian, dan kolom nilai baru
 ALTER TABLE ibankcore.produk ADD (
-  is_custom_tidak_aktif         VARCHAR2(1),
-  is_custom_dormant             VARCHAR2(1),
-  is_custom_tutup_oto           VARCHAR2(1),
+  is_custom_tidak_aktif         VARCHAR2(1),   -- override threshold & biaya tidak aktif
+  is_custom_dormant             VARCHAR2(1),   -- override threshold & biaya dormant
+  is_custom_tutup_oto           VARCHAR2(1),   -- override threshold tutup otomatis
+  is_exc_tidakaktif             VARCHAR2(1),   -- pengecualian: tidak pernah jadi tidak aktif
+  is_exc_tutupnol               VARCHAR2(1),   -- pengecualian: tidak pernah ditutup otomatis
   jumlah_hari_jadi_dormant      NUMBER,
   biaya_rekening_tidak_aktif    NUMBER(20, 8),
   is_biaya_rekening_tidak_aktif VARCHAR2(1)
@@ -137,6 +217,10 @@ COMMENT ON COLUMN ibankcore.produk.is_custom_dormant IS
   'T = produk pakai threshold & biaya dormant sendiri (baca dari field produk), F/NULL = ikut ParameterGlobal';
 COMMENT ON COLUMN ibankcore.produk.is_custom_tutup_oto IS
   'T = produk pakai threshold tutup otomatis sendiri (baca dari field produk), F/NULL = ikut ParameterGlobal';
+COMMENT ON COLUMN ibankcore.produk.is_exc_tidakaktif IS
+  'T = rekening produk ini dikecualikan dari status Tidak Aktif, tidak akan pernah masuk fase tidak aktif';
+COMMENT ON COLUMN ibankcore.produk.is_exc_tutupnol IS
+  'T = rekening produk ini dikecualikan dari tutup otomatis saldo nol';
 COMMENT ON COLUMN ibankcore.produk.jumlah_hari_jadi_dormant IS
   'Threshold hari dormant — hanya digunakan jika is_custom_dormant = T';
 COMMENT ON COLUMN ibankcore.produk.biaya_rekening_tidak_aktif IS
@@ -145,7 +229,7 @@ COMMENT ON COLUMN ibankcore.produk.is_biaya_rekening_tidak_aktif IS
   'Flag pengenaan biaya tidak aktif: T = Ya, F = Tidak — hanya digunakan jika is_custom_tidak_aktif = T';
 
 -- Default: semua produk ikut ParameterGlobal (flag NULL = ikut global)
--- Isi hanya untuk produk yang memang perlu override
+-- Isi hanya untuk produk yang memang perlu override atau pengecualian
 ```
 
 ### ② ALTER TABLE rekeningliabilitas — Tambah Kolom Baru
@@ -303,6 +387,38 @@ EOD berjalan (urutan wajib):
 ```
 
 > ⚠️ **Urutan Step 1 → 2 → 3 wajib dijaga.** Step 2 dan 3 HARUS jalan setelah `tgl_aktivitas_terakhir` selesai diupdate oleh Step 1.
+
+### Alur E — Reaktivasi Manual (Menu Cabang)
+
+```
+User Cabang membuka menu "Ubah Rekening Tidak Aktif/Dormant"
+  → Pilih/cari rekening dengan status TIDAK AKTIF atau DORMANT
+  → Input alasan reaktivasi
+  → Submit → status berubah menjadi PENDING APPROVAL
+
+Supervisor/Pejabat Cabang membuka antrian approval
+  → Review data rekening + alasan reaktivasi
+  → Approve / Reject
+
+  Jika Approve:
+    → status_rekening diubah ke AKTIF ('A')
+    → tgl_aktivitas_terakhir di-reset ke SYSDATE
+    → LOG: catat user input, user approval, tanggal, alasan
+    → Notifikasi ke user Cabang
+
+  Jika Reject:
+    → Status rekening tetap (TIDAK AKTIF / DORMANT)
+    → LOG: catat alasan reject
+    → Notifikasi ke user Cabang
+```
+
+> **Catatan:**
+> - Aktivitas nasabah (transaksi, inquiry, login) **tidak** mengubah status rekening kembali ke AKTIF secara otomatis.
+> - Rekening TIDAK AKTIF dan DORMANT menggunakan alur reaktivasi yang sama (belum ada perbedaan prosedur).
+> - Perlu form baru: `fUbahRekeningTidakAktifDormant` (dialog di modul Funding / Cabang).
+> - Perlu tabel/log: `rekening_reaktivasi_log` atau reuse log existing (`rekening_aktivitas_nonfin` dengan `kode_aktivitas = 'REAKTIVASI'`).
+
+---
 
 ### Alur D — EOM (End of Month) — Biaya Rekening
 ```
@@ -706,7 +822,7 @@ Catatan:
 | Debet Kredit Umum (Rekening Debet) | ✅ | ⚠️ | ⚠️ | Sebagai rekening sumber dana boleh dengan override |
 | Transaksi Umum (Rekening Kredit) | ✅ | ✅ | ⚠️ | Sebagai rekening penerima dana boleh dengan override |
 | Transaksi Umum (Rekening Debet) | ✅ | ⚠️ | ⚠️ | Sebagai rekening sumber dana boleh dengan override |
-| Cek Saldo / Inquiry | ✅ | ✅ | ❌ | Kadang digunakan untuk reaktivasi |
+| Cek Saldo / Inquiry | ✅ | ✅ | ❌ | Tidak dapat digunakan untuk reaktivasi; reaktivasi hanya via menu Ubah Rekening Tidak Aktif/Dormant oleh user Cabang |
 
 Keterangan simbol:
 
