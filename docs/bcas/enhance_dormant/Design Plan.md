@@ -185,7 +185,7 @@ flowchart TD
 
 ### Tidak Diubah
 - Tabel `transaksi`, `detiltransaksi`, `rekeningtransaksi`
-- Field `tgl_trans_terakhir`, `tgl_trans_cabang_terakhir`, `tgl_trans_echannel_terakhir`
+- Field `tgl_transaksi_terakhir`, `tgl_trans_cabang_terakhir`, `tgl_trans_echannel_terakhir`
 - Field `is_tidak_dormant`, `is_biaya_rekening_dormant`
 - Semua index existing
 
@@ -206,11 +206,11 @@ flowchart TD
 - `ADD INDEX` pada kolom baru
 - `CREATE TABLE rekeningaktivitasnonfin`
 - `CREATE TABLE report.rekening_tidak_aktif` *(tabel report baru untuk log status tidak aktif)*
-- One-time migration: isi `tgl_aktivitas_terakhir` dari `tgl_trans_terakhir`
+- One-time migration: isi `tgl_aktivitas_terakhir` dari `tgl_transaksi_terakhir`
 
-### Mengapa tidak mengganti `tgl_trans_terakhir`?
+### Mengapa tidak mengganti `tgl_transaksi_terakhir`?
 
-| Aspek | tgl_trans_terakhir (existing) | tgl_aktivitas_terakhir (baru) |
+| Aspek | tgl_transaksi_terakhir (existing) | tgl_aktivitas_terakhir (baru) |
 |---|---|---|
 | Isi | Hanya transaksi finansial | Transaksi + inquiry + login |
 | Diupdate oleh | Proses posting transaksi | Posting + modul inquiry |
@@ -267,8 +267,8 @@ CREATE INDEX idx_rekliab_tglakt ON ibankcore.rekeningliabilitas (tgl_aktivitas_t
 
 -- One-time migration
 UPDATE ibankcore.rekeningliabilitas
-SET tgl_aktivitas_terakhir = tgl_trans_terakhir
-WHERE tgl_trans_terakhir IS NOT NULL;
+SET tgl_aktivitas_terakhir = tgl_transaksi_terakhir
+WHERE tgl_transaksi_terakhir IS NOT NULL;
 ```
 
 ### ③ ALTER TABLE parametertransaksiumum — Tambah Flag Exclude Aktivitas
@@ -355,9 +355,44 @@ ALTER TABLE ibankrep.rekening_dorman
 
 COMMENT ON COLUMN ibankrep.rekening_dorman.tgl_aktivitas_terakhir IS
     'Tanggal aktivitas terakhir nasabah (gabungan transaksi + non-finansial) saat rekening ditetapkan dormant';
+```
 
-### ⑦ Penyesuaian Tabel Staging & Laporan
-- **Tabel Staging Tutup Otomatis**: `ibanktmp.autoclose_zerobalance_candidate` ditambah kolom `param_hari_tutup_oto` (NUMBER) dan `tgl_saldo_nol` (TIMESTAMP), serta index `idx_autoclose_cand_norek` dan `idx_autoclose_cand_tgl`.
+### ⑦ ALTER TABLE ibankrep.rekening_tutupotomatis — Tambah Kolom Audit Trail
+
+```sql
+ALTER TABLE ibankrep.rekening_tutupotomatis ADD (
+    tgl_saldo_nol       TIMESTAMP,
+    param_hari_tutup_oto NUMBER
+);
+
+COMMENT ON COLUMN ibankrep.rekening_tutupotomatis.tgl_saldo_nol IS
+    'Tanggal rekening terakhir tercatat saldo nol di DailyBalanceRekening — audit trail kapan saldo mulai nol';
+COMMENT ON COLUMN ibankrep.rekening_tutupotomatis.param_hari_tutup_oto IS
+    'Threshold hari efektif yang digunakan saat rekening ditutup otomatis (dari produk atau ParameterGlobal)';
+```
+
+### ⑧ ALTER TABLE ibanktmp.autoclose_zerobalance_candidate — Tambah Kolom
+
+```sql
+ALTER TABLE ibanktmp.autoclose_zerobalance_candidate ADD (
+    tgl_saldo_nol        TIMESTAMP,
+    param_hari_tutup_oto NUMBER
+);
+```
+
+> Kedua kolom ini diisi saat `AC_SelectZeroBalance`:
+> - `tgl_saldo_nol` — subquery `MAX(balance_date) WHERE balance < 0.01` dari `DailyBalanceRekening`
+> - `param_hari_tutup_oto` — `COALESCE(CASE WHEN is_custom_tutup_oto = 'T' THEN jumlah_hari_tutup_otomatis ELSE NULL END, TUTUP_NOL_HARI)`
+>
+> Kemudian disalin ke `rekening_tutupotomatis` saat `AC_SaveReportAll`.
+
+### ⑨ Penyesuaian Tabel Staging & Laporan
+- **Tabel Staging Tutup Otomatis**: `ibanktmp.autoclose_zerobalance_candidate` ditambah 2 kolom:
+  - `tgl_saldo_nol` TIMESTAMP — diisi dari `MAX(balance_date)` di `DailyBalanceRekening` where `balance < 0.01` untuk rekening tersebut *(untuk audit trail, bukan untuk logika threshold)*
+  - `param_hari_tutup_oto` NUMBER — threshold hari efektif yang digunakan (dari produk atau ParameterGlobal)
+- **Tabel Report Tutup Otomatis**: `ibankrep.rekening_tutupotomatis` ditambah 2 kolom audit trail:
+  - `tgl_saldo_nol` TIMESTAMP — disalin dari staging saat insert report
+  - `param_hari_tutup_oto` NUMBER — disalin dari staging saat insert report
 - **Tabel Staging Status**: Pemisahan tabel menjadi `ibanktmp.rekening_dorman_candidate` dan `ibanktmp.rekening_tidak_aktif_candidate`.
 - **Report Dormant**: Kolom `kode_status` tidak lagi disertakan dalam insert laporan dormant.
 ```
@@ -371,7 +406,7 @@ COMMENT ON COLUMN ibankrep.rekening_dorman.tgl_aktivitas_terakhir IS
 ```
 Transaksi masuk (Teller/ATM/Mobile)
   → Proses existing: INSERT transaksi, detiltransaksi  ← tidak diubah sama sekali
-  → tgl_trans_terakhir akan diupdate saat EOD          ← sudah existing, tidak diubah
+  → tgl_transaksi_terakhir akan diupdate saat EOD          ← sudah existing, tidak diubah
 ```
 > Tidak ada perubahan apapun pada path transaksi. Optimasi performa tetap terjaga.
 
@@ -391,13 +426,13 @@ EOD berjalan (urutan wajib):
 
   Step 1 — [BARU] Update tanggal aktivitas terakhir
            Script: batchprocess/update_account_lasttxdate.py
-           Update `tgl_trans_terakhir` (dari transaksi nasabah) dan `tgl_aktivitas_terakhir`
+           Update `tgl_transaksi_terakhir` (dari transaksi nasabah) dan `tgl_aktivitas_terakhir`
            (gabungan: transaksi nasabah + aktivitas non-finansial dari `rekeningaktivitasnonfin`)
 
   Step 2 — [EXISTING, DIMODIFIKASI] Batch Dormant
            Script: batchprocess/update_dormant_account.py
            Yang dimodifikasi:
-           a. Ganti referensi `tgl_trans_terakhir` → `tgl_aktivitas_terakhir`
+           a. Ganti referensi `tgl_transaksi_terakhir` → `tgl_aktivitas_terakhir`
            b. Baca threshold efektif dari produk (jika `is_custom_tidak_aktif`/`is_custom_dormant = 'T'`)
               atau fallback ke ParameterGlobal (`TAKT_HARI`, `DORM_HARI`)
            c. Update status rekening ke TIDAK_AKTIF atau DORMANT sesuai threshold
@@ -405,7 +440,7 @@ EOD berjalan (urutan wajib):
   Step 3 — [EXISTING, DIMODIFIKASI] Batch Tutup Otomatis
            Script: batchprocess/saving_auto_close.py
            Yang dimodifikasi:
-           a. Pemisahan query menjadi 2 tahap: pembuatan kandidat `tmp_autoclose_zerobalance_candidate` (saldo 0 & bukan tutup, dengan `param_hari_tutup_oto` dan `tgl_saldo_nol`) lalu validasi durasi saldo 0 dari `DailyBalanceRekening`.
+           a. Pemisahan query menjadi 2 tahap: (1) `AC_SelectZeroBalance` — isi kandidat ke `tmp_autoclose_zerobalance_candidate` termasuk `tgl_saldo_nol` (dari `MAX(balance_date WHERE balance < 0.01)` di `DailyBalanceRekening`) dan `param_hari_tutup_oto` (threshold efektif), (2) `AC_SelectAccount` — validasi durasi saldo 0 menggunakan logika `MAX(balance_date)` dari `DailyBalanceRekening`.
            b. Penilaian status\_rekening diubah menjadi `<> 3` (tidak melihat indikator aktif/dormant).
            c. Tambah fallback ke ParameterGlobal `TUTUP_NOL_HARI` jika `is_custom_tutup_oto ≠ 'T'`
            d. Query kandidat tutup menggunakan threshold efektif (produk atau global)
@@ -475,14 +510,14 @@ EOM berjalan (akhir bulan):
 SELECT
     rl.nomor_rekening,
     rl.nomor_nasabah,
-    rl.tgl_trans_terakhir,
-    TRUNC(SYSDATE) - TRUNC(rl.tgl_trans_terakhir) AS hari_tidak_aktif
+    rl.tgl_transaksi_terakhir,
+    TRUNC(SYSDATE) - TRUNC(rl.tgl_transaksi_terakhir) AS hari_tidak_aktif
 FROM ibankcore.rekeningliabilitas rl
 WHERE
     rl.is_tidak_dormant = 'N'
     AND (
-        rl.tgl_trans_terakhir IS NULL
-        OR rl.tgl_trans_terakhir < TRUNC(SYSDATE) - 180
+        rl.tgl_transaksi_terakhir IS NULL
+        OR rl.tgl_transaksi_terakhir < TRUNC(SYSDATE) - 180
     );
 ```
 
@@ -491,7 +526,7 @@ WHERE
 SELECT
     rl.nomor_rekening,
     rl.nomor_nasabah,
-    rl.tgl_trans_terakhir,                        -- tetap ada untuk referensi
+    rl.tgl_transaksi_terakhir,                        -- tetap ada untuk referensi
     rl.tgl_aktivitas_terakhir,                    -- ← field baru, penentu dormant
     rl.kode_aktivitas_terakhir,                  -- ← untuk audit/laporan
     TRUNC(SYSDATE) - TRUNC(rl.tgl_aktivitas_terakhir) AS hari_tidak_aktif
@@ -510,14 +545,14 @@ WHERE
 SELECT
     rl.nomor_rekening,
     rl.nomor_nasabah,
-    rl.tgl_trans_terakhir,
+    rl.tgl_transaksi_terakhir,
     rl.tgl_aktivitas_terakhir,
     rl.kode_aktivitas_terakhir,
-    TRUNC(SYSDATE) - TRUNC(rl.tgl_trans_terakhir)     AS hari_sejak_trx,
+    TRUNC(SYSDATE) - TRUNC(rl.tgl_transaksi_terakhir)     AS hari_sejak_trx,
     TRUNC(SYSDATE) - TRUNC(rl.tgl_aktivitas_terakhir) AS hari_sejak_aktivitas
 FROM ibankcore.rekeningliabilitas rl
 WHERE
-    rl.tgl_trans_terakhir         < TRUNC(SYSDATE) - 180
+    rl.tgl_transaksi_terakhir         < TRUNC(SYSDATE) - 180
     AND rl.tgl_aktivitas_terakhir >= TRUNC(SYSDATE) - 180
     AND rl.is_tidak_dormant = 'N';
 ```
