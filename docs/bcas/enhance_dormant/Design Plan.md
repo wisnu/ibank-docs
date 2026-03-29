@@ -6,7 +6,9 @@
 
 ## 1. Status Rekening — Alur Transisi
 
-### Diagram A — Status Tidak Aktif & Dormant
+### 1.1 Diagram Transisi
+
+#### Diagram A — Status Tidak Aktif & Dormant
 
 ```mermaid
 stateDiagram-v2
@@ -19,7 +21,7 @@ stateDiagram-v2
     DORMANT --> AKTIF : reaktivasi oleh user Cabang\nvia menu Ubah Rekening Tidak Aktif/Dormant\n(perlu approval)
 ```
 
-### Diagram B — Tutup Otomatis Saldo Nol
+#### Diagram B — Tutup Otomatis Saldo Nol
 
 ```mermaid
 stateDiagram-v2
@@ -47,59 +49,82 @@ stateDiagram-v2
 
 ---
 
-## 1b. Hierarki Parameter — Tidak Aktif, Dormant & Tutup Otomatis
+### 1.2 Hierarki Parameter — Tidak Aktif, Dormant & Tutup Otomatis
 
-Setiap fase dikontrol oleh 3 layer parameter dengan urutan prioritas berikut:
-
-```
-Prioritas (tinggi → rendah)
-┌─────────────────────────────────────────────────────────────┐
-│  [1] PENGECUALIAN  — fase tidak berlaku sama sekali         │
-│      flag is_exc_* / is_tidak_dormant di tabel produk       │
-├─────────────────────────────────────────────────────────────┤
-│  [2] OVERRIDE PRODUK  — nilai kustom per produk             │
-│      aktif jika is_custom_* = 'T' di tabel produk           │
-├─────────────────────────────────────────────────────────────┤
-│  [3] DEFAULT GLOBAL  — fallback jika tidak ada override     │
-│      dibaca dari tabel ParameterGlobal                      │
-└─────────────────────────────────────────────────────────────┘
-```
+Setiap fase dikontrol oleh 3 layer parameter: **Pengecualian → Override Produk → Default Global**.
 
 ### Fase 1 — Tidak Aktif
 
-| Layer | Berlaku Jika | Field / Parameter | Keterangan |
-|---|---|---|---|
-| **[1] Pengecualian** | `produk.is_exc_tidakaktif = 'T'` | — | Rekening produk ini tidak pernah masuk status Tidak Aktif |
-| **[2] Override Produk** | `produk.is_custom_tidak_aktif = 'T'` | `produk.jumlah_hari_jadi_tidak_aktif` | Threshold hari kustom |
-| | | `produk.biaya_rekening_tidak_aktif` | Nominal biaya kustom |
-| | | `produk.is_biaya_rekening_tidak_aktif` | Flag apakah dikenakan biaya |
-| **[3] Default Global** | *(fallback)* | `ParameterGlobal.TAKT_HARI` | Default threshold hari (360) |
-| | | `ParameterGlobal.TAKT_BIAYA` | Default biaya (0 = tidak ada biaya) |
+```mermaid
+flowchart TD
+    START([Rekening masuk proses EOD\nfase: Tidak Aktif]) --> CHK1
+
+    CHK1{"produk.is_exc_tidakaktif = T ?"}
+    CHK1 -->|Ya| EXC["Fase Tidak Aktif tidak berlaku\n— rekening di-skip —"]
+    CHK1 -->|Tidak| CHK2
+
+    CHK2{"produk.is_custom_tidak_aktif = T ?"}
+    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_jadi_tidak_aktif\nbiaya_rekening_tidak_aktif\nis_biaya_rekening_tidak_aktif"]
+    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nTAKT_HARI (default: 360 hari)\nTAKT_BIAYA (default: 0)"]
+
+    EXC:::skip
+    OVR:::produk
+    DEF:::global
+
+    classDef skip   fill:#fde8e8,stroke:#e53e3e,color:#742a2a
+    classDef produk fill:#fefcbf,stroke:#d69e2e,color:#744210
+    classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
+```
 
 ### Fase 2 — Dormant
 
-| Layer | Berlaku Jika | Field / Parameter | Keterangan |
-|---|---|---|---|
-| **[1] Pengecualian** | `produk.is_tidak_dormant = 'T'` | — | Semua rekening produk ini tidak pernah dormant |
-| | `rekeningliabilitas.is_tidak_dormant = 'T'` | — | Rekening spesifik dikecualikan (override per rekening) |
-| **[2] Override Produk** | `produk.is_custom_dormant = 'T'` | `produk.jumlah_hari_jadi_dormant` | Threshold hari kustom |
-| | | `produk.biaya_rekening_dormant` | Nominal biaya kustom |
-| | | `produk.is_biaya_rekening_dormant` | Flag apakah dikenakan biaya |
-| **[3] Default Global** | *(fallback)* | `ParameterGlobal.DORM_HARI` | Default threshold hari (1800) |
-| | | `ParameterGlobal.DORM_BIAYA` | Default biaya (10000) |
+```mermaid
+flowchart TD
+    START([Rekening masuk proses EOD\nfase: Dormant]) --> CHK1
+
+    CHK1{"produk.is_tidak_dormant = T ?\natau rekeningliabilitas.is_tidak_dormant = T ?"}
+    CHK1 -->|Ya| EXC["Fase Dormant tidak berlaku\n— rekening di-skip —"]
+    CHK1 -->|Tidak| CHK2
+
+    CHK2{"produk.is_custom_dormant = T ?"}
+    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_jadi_dormant\nbiaya_rekening_dormant\nis_biaya_rekening_dormant"]
+    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nDORM_HARI (default: 1800 hari)\nDORM_BIAYA (default: 10.000)"]
+
+    EXC:::skip
+    OVR:::produk
+    DEF:::global
+
+    classDef skip   fill:#fde8e8,stroke:#e53e3e,color:#742a2a
+    classDef produk fill:#fefcbf,stroke:#d69e2e,color:#744210
+    classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
+```
+
+> `is_tidak_dormant` di `rekeningliabilitas` adalah satu-satunya pengecualian yang bisa dikonfigurasi **per rekening** (bukan per produk).
 
 ### Fase 3 — Tutup Otomatis Saldo Nol
 
-| Layer | Berlaku Jika | Field / Parameter | Keterangan |
-|---|---|---|---|
-| **[1] Pengecualian** | `produk.is_exc_tutupnol = 'T'` | — | Rekening produk ini tidak pernah ditutup otomatis |
-| **[2] Override Produk** | `produk.is_custom_tutup_oto = 'T'` | `produk.jumlah_hari_tutup_otomatis` | Threshold hari saldo nol kustom |
-| **[3] Default Global** | *(fallback)* | `ParameterGlobal.TUTUP_NOL_HARI` | Default threshold hari (730) |
+```mermaid
+flowchart TD
+    START([Rekening masuk proses EOD\nfase: Tutup Otomatis]) --> CHK1
 
-> **Catatan:**
-> - Pengecualian di layer [1] bersifat mutlak — jika flag aktif, sistem EOD tidak akan memproses rekening tersebut untuk fase itu.
-> - `is_tidak_dormant` di `rekeningliabilitas` adalah satu-satunya pengecualian yang bisa dikonfigurasi **per rekening** (bukan per produk).
-> - Fase Tutup Otomatis tidak bergantung pada status dormant/tidak aktif rekening.
+    CHK1{"produk.is_exc_tutupnol = T ?"}
+    CHK1 -->|Ya| EXC["Tutup Otomatis tidak berlaku\n— rekening di-skip —"]
+    CHK1 -->|Tidak| CHK2
+
+    CHK2{"produk.is_custom_tutup_oto = T ?"}
+    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_tutup_otomatis"]
+    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nTUTUP_NOL_HARI (default: 730 hari)"]
+
+    EXC:::skip
+    OVR:::produk
+    DEF:::global
+
+    classDef skip   fill:#fde8e8,stroke:#e53e3e,color:#742a2a
+    classDef produk fill:#fefcbf,stroke:#d69e2e,color:#744210
+    classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
+```
+
+> Fase Tutup Otomatis tidak bergantung pada status dormant/tidak aktif rekening — berlaku untuk semua status selama saldo = 0 dan melebihi threshold.
 
 ---
 
