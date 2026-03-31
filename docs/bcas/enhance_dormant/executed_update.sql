@@ -79,6 +79,7 @@ CREATE TABLE ibankrep.rekening_tidak_aktif (
     nomor_rekening         VARCHAR2(20)    NOT NULL,
     tanggal_proses         DATE            NOT NULL,
     tgl_aktivitas_terakhir TIMESTAMP       NULL,
+    param_hari_tidak_aktif NUMBER          NULL,
     saldo                  NUMBER(36, 10)  NULL,
 
     CONSTRAINT rekening_tidak_aktif_pkey PRIMARY KEY (id_report)
@@ -99,7 +100,7 @@ INSERT ALL
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
     VALUES ('DORM_HARI',      'N', 1800,  'Hari default jadi dormant',           'T', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('TUTUP_NOL_HARI', 'N', 730,   'Hari default tutup otomatis dormant', 'T', 'REKENING_DORMANT')
+    VALUES ('TUTUP_NOL_HARI', 'N', 180,   'Hari default tutup otomatis dormant', 'T', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
     VALUES ('TAKT_BIAYA',     'N', 0,     'Biaya default rekening tidak aktif',  'T', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
@@ -153,3 +154,13 @@ CREATE TABLE IBANKTMP.rekening_tidak_aktif_candidate
     , PROCESS_STATUS                  NUMBER
     , PRIMARY KEY (NOMOR_REKENING)
 );
+
+INSERT INTO IBANKCORE.REPORT (KODE_REPORT, NAMA_REPORT, TEMPLATE_NAME, SCRIPT_NAME, TAG_REPORT, IS_EOD_EXECUTE, RECIPIENT, RETENSI, IS_SHOW_BDS, KODE_REPORT_TM) 
+VALUES('R041', 'Laporan Rekening Aktif jadi Tidak Aktif', 'tplRekeningTidakAktifOtomatis', 'rekening_tidakaktif_otomatis', 'GENERAL', 'F', 'C', '1B/6B/12B', NULL, NULL);
+
+INSERT INTO ibankcore.reportgroupaccess 
+(accessid, id_peran,kode_report,accessflag)
+SELECT ibankcore.seq_reportgroupaccess.nextval, ID_PERAN , 'R041',accessflag 
+FROM ibankcore.reportgroupaccess WHERE KODE_REPORT ='R029';
+
+ALTER TABLE ibankrep.REKENING_TIDAK_AKTIF ADD param_hari_tidak_aktif  NUMBER;
