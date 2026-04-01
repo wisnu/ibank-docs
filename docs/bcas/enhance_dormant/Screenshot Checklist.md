@@ -1,8 +1,4 @@
 # Screenshot Checklist — Enhance Dormant
-
-> Daftar layar/menu yang perlu di-screenshot untuk keperluan dokumentasi dan demonstrasi ke klien.
-> Centang setiap item setelah screenshot diambil.
-
 ---
 
 ## 1. Konfigurasi Parameter
@@ -125,5 +121,3 @@
 ![EODLIAB02 - Tutup Otomatis](assets/dorman_eod_03.png) 
 
 ---
-
-*Dokumen ini dibuat berdasarkan Use Case Rekening Dormant.*

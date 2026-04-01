@@ -1,8 +1,4 @@
 # Use Case — Pengelolaan Rekening Tidak Aktif & Dormant
-
-> Dokumen ini menjelaskan skenario penggunaan sistem pengelolaan rekening tidak aktif dan dormant.
-> Disiapkan untuk kebutuhan review dan validasi bersama.
-
 ---
 
 ## Diagram A — Alur Status Rekening (Tidak Aktif & Dormant)
@@ -275,6 +271,3 @@ Semua parameter hari dan biaya dapat dikonfigurasikan oleh administrator sistem 
 > **Parameter di atas dapat di-*override* per jenis produk.** Artinya, produk tertentu (mis. TabunganKu, Giro Korporat) dapat memiliki batas hari dan biaya yang berbeda dari nilai default global.
 
 ---
-
-*Dokumen ini dibuat berdasarkan Design Plan Enhancement Rekening Dormant.*
-*Terakhir diperbarui: 31 Maret 2026*
