@@ -1,4 +1,11 @@
 # Use Case — Pengelolaan Rekening Tidak Aktif & Dormant
+
+| | |
+|---|---|
+| **Versi** | 1.0 |
+| **Tanggal** | 1 April 2026 |
+| **Status** | Draft |
+
 ---
 
 ## Diagram A — Alur Status Rekening (Tidak Aktif & Dormant)
@@ -50,6 +57,123 @@ stateDiagram-v2
 
 ---
 
+
+<div style="page-break-before: always;"></div>
+
+## Matriks Transaksi Berdasarkan Status Rekening
+
+| Jenis Transaksi | Aktif | Tidak Aktif | Dormant |
+|---|:---:|:---:|:---:|
+| Setor Tunai (Teller) | ✅ | ✅ | ❌ |
+| Tarik Tunai (Teller) | ✅ | ❌ | ❌ |
+| Transfer Masuk | ✅ | ✅ | ❌ |
+| Transfer Keluar | ✅ | ❌ | ❌ |
+| Autodebit | ✅ | ❌ | ❌ |
+| Cek Saldo / Inquiry | ✅ | ✅ | ❌ |
+| Tarik Tunai ATM | ✅ | ❌ | ❌ |
+
+| Simbol | Arti |
+|:---:|---|
+| ✅ | Diperbolehkan |
+| ⚠️ | Terbatas (tergantung kebijakan bank) |
+| ❌ | Tidak diperbolehkan |
+
+---
+
+<div style="page-break-before: always;"></div>
+
+## Konfigurasi Parameter
+
+Semua parameter hari dan biaya dapat dikonfigurasikan oleh administrator sistem melalui menu **Parameter Global**, tanpa perlu mengubah konfigurasi di setiap produk secara satu per satu.
+
+| Parameter | Nilai Default | Keterangan |
+|---|---|---|
+| Batas hari menjadi Tidak Aktif | 360 hari (± 1 tahun) | Sesuai ketentuan OJK. Dapat disesuaikan kebijakan bank |
+| Batas hari menjadi Dormant | 1.800 hari (± 5 tahun) | Sesuai ketentuan OJK. Dapat disesuaikan kebijakan bank |
+| Batas hari tutup otomatis (saldo nol) | 180 hari | Dapat disesuaikan kebijakan bank |
+| Biaya rekening Tidak Aktif | Rp 0 | Default tidak ada biaya |
+| Biaya rekening Dormant | Rp 10.000 | Dapat disesuaikan kebijakan bank |
+
+> **Parameter di atas dapat di-*override* per jenis produk.** Artinya, produk tertentu (mis. TabunganKu, Giro Korporat) dapat memiliki batas hari dan biaya yang berbeda dari nilai default global.
+
+### Hierarki Parameter — Cara Kerja
+
+Sistem menggunakan **3 layer** untuk menentukan threshold dan biaya setiap rekening:
+
+> **Pengecualian → Override Produk → Default Global**
+
+**Fase 1 — Tidak Aktif**
+
+```mermaid
+flowchart TD
+    START([Rekening masuk proses EOD\nfase: Tidak Aktif]) --> CHK1
+
+    CHK1{"produk.is_exc_tidakaktif = T ?"}
+    CHK1 -->|Ya| EXC["Fase Tidak Aktif tidak berlaku\n— rekening di-skip —"]
+    CHK1 -->|Tidak| CHK2
+
+    CHK2{"produk.is_custom_tidak_aktif = T ?"}
+    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_jadi_tidak_aktif\nbiaya_rekening_tidak_aktif\nis_biaya_rekening_tidak_aktif"]
+    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nTAKT_HARI (default: 360 hari)\nTAKT_BIAYA (default: 0)"]
+
+    EXC:::skip
+    OVR:::produk
+    DEF:::global
+
+    classDef skip   fill:#fde8e8,stroke:#e53e3e,color:#742a2a
+    classDef produk fill:#fefcbf,stroke:#d69e2e,color:#744210
+    classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
+```
+
+**Fase 2 — Dormant**
+
+```mermaid
+flowchart TD
+    START([Rekening masuk proses EOD\nfase: Dormant]) --> CHK1
+
+    CHK1{"produk.is_tidak_dormant = T ?\natau rekeningliabilitas.is_tidak_dormant = T ?"}
+    CHK1 -->|Ya| EXC["Fase Dormant tidak berlaku\n— rekening di-skip —"]
+    CHK1 -->|Tidak| CHK2
+
+    CHK2{"produk.is_custom_dormant = T ?"}
+    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_jadi_dormant\nbiaya_rekening_dormant\nis_biaya_rekening_dormant"]
+    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nDORM_HARI (default: 1800 hari)\nDORM_BIAYA (default: 10.000)"]
+
+    EXC:::skip
+    OVR:::produk
+    DEF:::global
+
+    classDef skip   fill:#fde8e8,stroke:#e53e3e,color:#742a2a
+    classDef produk fill:#fefcbf,stroke:#d69e2e,color:#744210
+    classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
+```
+
+> `is_tidak_dormant` di `rekeningliabilitas` adalah satu-satunya pengecualian yang bisa dikonfigurasi **per rekening** (bukan per produk).
+
+**Fase 3 — Tutup Otomatis Saldo Nol**
+
+```mermaid
+flowchart TD
+    START([Rekening masuk proses EOD\nfase: Tutup Otomatis]) --> CHK1
+
+    CHK1{"produk.is_exc_tutupnol = T ?"}
+    CHK1 -->|Ya| EXC["Tutup Otomatis tidak berlaku\n— rekening di-skip —"]
+    CHK1 -->|Tidak| CHK2
+
+    CHK2{"produk.is_custom_tutup_oto = T ?"}
+    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_tutup_otomatis"]
+    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nTUTUP_NOL_HARI (default: 180 hari)"]
+
+    EXC:::skip
+    OVR:::produk
+    DEF:::global
+
+    classDef skip   fill:#fde8e8,stroke:#e53e3e,color:#742a2a
+    classDef produk fill:#fefcbf,stroke:#d69e2e,color:#744210
+    classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
+```
+
+---
 <div style="page-break-before: always;"></div>
 
 ## UC-01 — Rekening Berubah Menjadi Tidak Aktif
@@ -176,18 +300,17 @@ Tidak semua transaksi finansial dihitung sebagai aktivitas nasabah. Transaksi ya
 ```mermaid
 flowchart TD
     A([Petugas Cabang\nBuka Menu Reaktivasi]) --> B[Cari rekening\nTidak Aktif / Dormant]
-    B --> C[Input alasan reaktivasi]
-    C --> D[Submit → status: Menunggu Persetujuan]
+    B --> D[Submit → status: Menunggu Persetujuan]
     D --> E([Supervisor membuka\nantrian persetujuan])
     E --> F{Keputusan}
-    F -->|Setuju| G[Status rekening → AKTIF\nTanggal aktivitas di-reset ke hari ini\nLog disimpan\nNotifikasi ke Petugas]
-    F -->|Tolak| H[Status rekening tetap\nLog alasan penolakan disimpan\nNotifikasi ke Petugas]
+    F -->|Setuju| G[- Status rekening → AKTIF\n- Tanggal aktivitas di-reset ke hari ini\n- Log disimpan\n- Notifikasi ke Petugas]
+    F -->|Tolak| H[- Status rekening tetap\n- Log disimpan\n- Notifikasi ke Petugas]
 ```
 
 | | Keterangan |
 |---|---|
 | **Given** | Rekening nasabah berstatus **Tidak Aktif** atau **Dormant**, dan petugas cabang membuka menu reaktivasi rekening |
-| **When** | Petugas cabang mencari rekening, mengisi alasan reaktivasi, dan mengajukan permohonan reaktivasi |
+| **When** | Petugas cabang mencari rekening dan mengajukan permohonan reaktivasi |
 | **Then** | Permohonan masuk ke antrian persetujuan Supervisor/pejabat cabang |
 
 ### Skenario: Permohonan Disetujui
@@ -204,7 +327,7 @@ flowchart TD
 |---|---|
 | **Given** | Permohonan reaktivasi sudah diajukan oleh petugas cabang dan menunggu persetujuan |
 | **When** | Supervisor/pejabat cabang menolak permohonan |
-| **Then** | Status rekening **tidak berubah** (tetap Tidak Aktif / Dormant), alasan penolakan dicatat dalam log, dan notifikasi dikirimkan ke petugas cabang |
+| **Then** | Status rekening **tidak berubah** (tetap Tidak Aktif / Dormant), log disimpan, dan notifikasi dikirimkan ke petugas cabang |
 
 > **Catatan Penting:** Aktivitas nasabah sendiri (seperti cek saldo, login, atau transaksi) **tidak** secara otomatis mengubah status rekening kembali menjadi Aktif. Reaktivasi hanya bisa dilakukan oleh petugas cabang melalui menu khusus dengan persetujuan atasan.
 
@@ -229,45 +352,5 @@ flowchart TD
 | **Biaya dari konfigurasi produk** | Produk memiliki konfigurasi biaya sendiri yang berbeda dari standar global | Proses akhir bulan berjalan | Sistem menggunakan nominal biaya dari konfigurasi produk |
 | **Biaya dari konfigurasi global** | Produk tidak memiliki konfigurasi biaya khusus | Proses akhir bulan berjalan | Sistem menggunakan nominal biaya dari pengaturan global (default) |
 | **Produk tanpa biaya tidak aktif** | Produk dikonfigurasi dengan biaya tidak aktif = Rp 0 (mis. TabunganKu) | Proses akhir bulan berjalan | Tidak ada biaya yang dikenakan, rekening tetap pada statusnya |
-
----
-
-<div style="page-break-before: always;"></div>
-
-## Matriks Transaksi Berdasarkan Status Rekening
-
-| Jenis Transaksi | Aktif | Tidak Aktif | Dormant |
-|---|:---:|:---:|:---:|
-| Setor Tunai (Teller) | ✅ | ✅ | ❌ |
-| Tarik Tunai (Teller) | ✅ | ❌ | ❌ |
-| Transfer Masuk | ✅ | ✅ | ❌ |
-| Transfer Keluar | ✅ | ❌ | ❌ |
-| Autodebit | ✅ | ❌ | ❌ |
-| Cek Saldo / Inquiry | ✅ | ✅ | ❌ |
-| Tarik Tunai ATM | ✅ | ❌ | ❌ |
-
-| Simbol | Arti |
-|:---:|---|
-| ✅ | Diperbolehkan |
-| ⚠️ | Terbatas (tergantung kebijakan bank) |
-| ❌ | Tidak diperbolehkan |
-
----
-
-<div style="page-break-before: always;"></div>
-
-## Konfigurasi Parameter
-
-Semua parameter hari dan biaya dapat dikonfigurasikan oleh administrator sistem melalui menu **Parameter Global**, tanpa perlu mengubah konfigurasi di setiap produk secara satu per satu.
-
-| Parameter | Nilai Default | Keterangan |
-|---|---|---|
-| Batas hari menjadi Tidak Aktif | 360 hari (± 1 tahun) | Sesuai ketentuan OJK. Dapat disesuaikan kebijakan bank |
-| Batas hari menjadi Dormant | 1.800 hari (± 5 tahun) | Sesuai ketentuan OJK. Dapat disesuaikan kebijakan bank |
-| Batas hari tutup otomatis (saldo nol) | 180 hari | Dapat disesuaikan kebijakan bank |
-| Biaya rekening Tidak Aktif | Rp 0 | Default tidak ada biaya |
-| Biaya rekening Dormant | Rp 10.000 | Dapat disesuaikan kebijakan bank |
-
-> **Parameter di atas dapat di-*override* per jenis produk.** Artinya, produk tertentu (mis. TabunganKu, Giro Korporat) dapat memiliki batas hari dan biaya yang berbeda dari nilai default global.
 
 ---

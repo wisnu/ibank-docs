@@ -1,4 +1,11 @@
 # Screenshot Checklist — Enhance Dormant
+
+| | |
+|---|---|
+| **Versi** | 1.0 |
+| **Tanggal** | 1 April 2026 |
+| **Status** | Draft |
+
 ---
 
 ## 1. Konfigurasi Parameter
@@ -34,11 +41,28 @@
 ### 1.3 Parameter Produk
 - Menu: **Parameter → List Produk Tabungan** (atau Giro)
 
-![Menu List Produk Tabungan](assets/d   orman_produk_01.png)
+![Menu List Produk Tabungan](assets/dorman_produk_01.png)
 
 - Form : Ubah Produk — Penyesuaian Field Parameter Tidak Aktif, Dormant dan Tutup Otomatis Saldo Nol
 
 ![Form Ubah Produk - Parameter Dormant](assets/dorman_produk_02.png)
+
+
+**Ringkasan field produk yang terlibat:**
+
+| Caption di Form | Fungsi |
+|---|---|
+| **Custom Param Tidak Aktif** | ☑ = gunakan threshold & biaya tidak aktif dari produk, bukan global |
+| **Pengecualian Tidak Aktif** | ☑ = rekening produk ini tidak akan pernah masuk status Tidak Aktif |
+| **Durasi Hari Tidak Aktif** | Override threshold hari tidak aktif *(aktif jika Custom Param dicentang)* |
+| **Biaya Tdk Aktif** | Override nominal biaya tidak aktif *(aktif jika Custom Param dicentang)* |
+| **Custom Param Dormant** | ☑ = gunakan threshold & biaya dormant dari produk, bukan global |
+| **Pengecualian Dormant** | ☑ = rekening produk ini tidak akan pernah masuk status Dormant |
+| **Durasi Hari Dormant** | Override threshold hari dormant *(aktif jika Custom Param dicentang)* |
+| **Biaya Dormant** | Override nominal biaya dormant *(aktif jika Custom Param dicentang)* |
+| **Custom Param Tutup Saldo Nol** | ☑ = gunakan threshold tutup otomatis dari produk, bukan global |
+| **Pengecualian Tutup Saldo Nol** | ☑ = rekening produk ini tidak akan ditutup otomatis saat saldo nol |
+| **Durasi Hari Tutup Saldo Nol** | Override threshold hari tutup otomatis *(aktif jika Custom Param dicentang)* |
 
 ---
 
@@ -60,9 +84,6 @@
 - Informasi Rekening → Info Histori Tgl Aktivitas Nonfin Terakhir
 ![Info Histori Tgl Aktivitas Nonfin Terakhir](assets/dorman_inforekening_02.png) 
 
-
-
-
 - Informasi Rekening - Info Saldo Nol
 ![alt text](assets/dorman_inforekening_03.png)
 
@@ -70,7 +91,39 @@
 
 <div style="page-break-before: always;"></div>
 
-## 3. Reaktivasi Rekening (UC-05)
+## 3. Transaksi Berdasarkan Status Rekening
+
+> Menunjukkan perbedaan perilaku sistem saat transaksi dilakukan pada rekening dengan status berbeda.
+
+
+### 3.1 Transaksi pada Rekening Tidak Aktif
+- Transaksi debet tidak **diperbolehkan** (contoh: pindah buku)
+
+![Transaksi Diperbolehkan - Rekening Tidak Aktif](assets/dorman_transaksi_02.png)
+*Contoh transaksi pada rekening Tidak Aktif*
+
+### 3.2 Transaksi pada Rekening Dormant
+- Transaksi **diblokir** — pesan penolakan bahwa rekening berstatus Dormant
+
+![Penolakan Transaksi - Rekening Dormant](assets/dorman_transaksi_01.png)
+*Pesan penolakan transaksi pada rekening Dormant*
+
+> **Catatan:** Matriks lengkap transaksi yang diperbolehkan per status rekening:
+>
+> | Jenis Transaksi | Aktif | Tidak Aktif | Dormant |
+> |---|:---:|:---:|:---:|
+> | Setor Tunai (Teller) | ✅ | ✅ | ❌ |
+> | Tarik Tunai (Teller) | ✅ | ❌ | ❌ |
+> | Transfer Masuk | ✅ | ✅ | ❌ |
+> | Transfer Keluar | ✅ | ❌ | ❌ |
+> | Cek Saldo / Inquiry | ✅ | ✅ | ❌ |
+> | Tarik Tunai ATM | ✅ | ❌ | ❌ |
+
+---
+
+<div style="page-break-before: always;"></div>
+
+## 4. Reaktivasi Rekening (UC-05)
 
 - Menu: **Rekening → Ubah Rekening Tidak Aktif / Dormant**
 ![Menu Reaktivasi Rekening Dormant atau Tidak Atif](assets/dorman_reaktivasi_01.png) 
@@ -82,23 +135,23 @@
 
 <div style="page-break-before: always;"></div>
 
-## 4. Laporan
+## 5. Laporan
 
-### 4.1 Laporan Rekening Tidak Aktif (R041)
+### 5.1 Laporan Rekening Tidak Aktif (R041)
 - Menu: **Laporan → Rekening Aktif jadi Tidak Aktif**
 ![Laporan Tidak aktif 1](assets/dorman_laporan_tidakaktif_01.png) 
 
 - Result : **Laporan Rekening Aktif jadi Tidak Aktif**
 ![Laporan Tidak aktif 2](assets/dorman_laporan_tidakaktif_02.png)
 
-### 4.2 Laporan Rekening Dormant (R029)
+### 5.2 Laporan Rekening Dormant (R029)
 - Menu: **Laporan → Rekening Dormant**
 ![Laporan Dormant 1](assets/dorman_laporan_dormant_01.png) 
 
 - Result: **Laporan Rekening Dormant**
 ![Laporan Dormant 2](assets/dorman_laporan_dormant_02.png)
 
-### 4.3 Laporan Tutup Otomatis (R030)
+### 5.3 Laporan Tutup Otomatis (R030)
 - Menu: **Laporan → Rekening Tutup Otomatis**
 ![Laporan Tutup Otomatis 1](assets/dorman_laporan_tutup_01.png) 
 
@@ -109,7 +162,7 @@
 
 <div style="page-break-before: always;"></div>
 
-## 5. Batch EOD 
+## 6. Batch EOD 
 
 - EODLIAB01 - UPDATE ACCOUNT LAST TRX DATE (urutan 145)
 ![EODLIAB01 - UPDATE ACCOUNT LAST TRX DATE](assets/dorman_eod_01.png) 
