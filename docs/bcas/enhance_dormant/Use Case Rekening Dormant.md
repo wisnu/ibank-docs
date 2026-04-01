@@ -7,6 +7,7 @@
 | **Status** | Draft |
 
 ---
+<div style="page-break-before: always;"></div>
 
 ## Diagram A — Alur Status Rekening (Tidak Aktif & Dormant)
 
