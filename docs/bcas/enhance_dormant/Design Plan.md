@@ -806,15 +806,15 @@ ALTER TABLE ibankcore.parameterglobal
 -- Sesuaikan nilai_parameter dengan kebijakan bank
 INSERT ALL
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('TAKT_HARI',      'N', 360,   'Hari default jadi tidak aktif',       'T', 'REKENING_DORMANT')
+    VALUES ('TAKT_HARI',      'N', 360,   'Hari default jadi tidak aktif',       'F', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('DORM_HARI',      'N', 1800,  'Hari default jadi dormant',           'T', 'REKENING_DORMANT')
+    VALUES ('DORM_HARI',      'N', 1800,  'Hari default jadi dormant',           'F', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('TUTUP_NOL_HARI', 'N', 180,   'Hari default tutup otomatis dormant', 'T', 'REKENING_DORMANT')
+    VALUES ('TUTUP_NOL_HARI', 'N', 180,   'Hari default tutup otomatis dormant', 'F', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('TAKT_BIAYA',     'N', 0,     'Biaya default rekening tidak aktif',  'T', 'REKENING_DORMANT')
+    VALUES ('TAKT_BIAYA',     'N', 0,     'Biaya default rekening tidak aktif',  'F', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('DORM_BIAYA',     'N', 10000, 'Biaya default rekening dormant',      'T', 'REKENING_DORMANT')
+    VALUES ('DORM_BIAYA',     'N', 10000, 'Biaya default rekening dormant',      'F', 'REKENING_DORMANT')
 SELECT 1 FROM DUAL;
 ```
 

@@ -44,7 +44,7 @@ stateDiagram-v2
 | Status | Kondisi | Keterangan |
 |---|---|---|
 | **Aktif** | Ada aktivitas dalam 360 hari terakhir | Operasional normal |
-| **Tidak Aktif** | Tidak ada aktivitas > 360 hari s.d. ≤ 1.800 hari | Beberapa transaksi dibatasi |
+| **Tidak Aktif** | Tidak ada aktivitas > 360 hari s.d. ≤ 1.800 hari | Beberapa transaksi dibatasi — perlu reaktivasi |
 | **Dormant** | Tidak ada aktivitas > 1.800 hari | Transaksi diblokir — perlu reaktivasi |
 | **Tutup** | Saldo Rp 0 melebihi batas hari tutup otomatis *(dari status apapun)* | Rekening ditutup permanen |
 
@@ -161,14 +161,14 @@ Tidak semua transaksi finansial dihitung sebagai aktivitas nasabah. Transaksi ya
 
 ## UC-05 — Reaktivasi Rekening oleh Petugas Cabang
 
-**Aktor:** Petugas Cabang (User), Penyelia/Pejabat Cabang (Approver)
+**Aktor:** Petugas Cabang (User), Supervisor/Pejabat Cabang (Approver)
 
 ```mermaid
 flowchart TD
     A([Petugas Cabang\nBuka Menu Reaktivasi]) --> B[Cari rekening\nTidak Aktif / Dormant]
     B --> C[Input alasan reaktivasi]
     C --> D[Submit → status: Menunggu Persetujuan]
-    D --> E([Penyelia membuka\nantrian persetujuan])
+    D --> E([Supervisor membuka\nantrian persetujuan])
     E --> F{Keputusan}
     F -->|Setuju| G[Status rekening → AKTIF\nTanggal aktivitas di-reset ke hari ini\nLog disimpan\nNotifikasi ke Petugas]
     F -->|Tolak| H[Status rekening tetap\nLog alasan penolakan disimpan\nNotifikasi ke Petugas]
@@ -178,14 +178,14 @@ flowchart TD
 |---|---|
 | **Given** | Rekening nasabah berstatus **Tidak Aktif** atau **Dormant**, dan petugas cabang membuka menu reaktivasi rekening |
 | **When** | Petugas cabang mencari rekening, mengisi alasan reaktivasi, dan mengajukan permohonan reaktivasi |
-| **Then** | Permohonan masuk ke antrian persetujuan penyelia/pejabat cabang |
+| **Then** | Permohonan masuk ke antrian persetujuan Supervisor/pejabat cabang |
 
 ### Skenario: Permohonan Disetujui
 
 | | Keterangan |
 |---|---|
 | **Given** | Permohonan reaktivasi sudah diajukan oleh petugas cabang dan menunggu persetujuan |
-| **When** | Penyelia/pejabat cabang menyetujui permohonan |
+| **When** | Supervisor/pejabat cabang menyetujui permohonan |
 | **Then** | Status rekening berubah menjadi **Aktif**, tanggal aktivitas terakhir di-reset ke hari ini, aktivitas dicatat dalam log, dan notifikasi dikirimkan ke petugas cabang |
 
 ### Skenario: Permohonan Ditolak
@@ -193,7 +193,7 @@ flowchart TD
 | | Keterangan |
 |---|---|
 | **Given** | Permohonan reaktivasi sudah diajukan oleh petugas cabang dan menunggu persetujuan |
-| **When** | Penyelia/pejabat cabang menolak permohonan |
+| **When** | Supervisor/pejabat cabang menolak permohonan |
 | **Then** | Status rekening **tidak berubah** (tetap Tidak Aktif / Dormant), alasan penolakan dicatat dalam log, dan notifikasi dikirimkan ke petugas cabang |
 
 > **Catatan Penting:** Aktivitas nasabah sendiri (seperti cek saldo, login, atau transaksi) **tidak** secara otomatis mengubah status rekening kembali menjadi Aktif. Reaktivasi hanya bisa dilakukan oleh petugas cabang melalui menu khusus dengan persetujuan atasan.
