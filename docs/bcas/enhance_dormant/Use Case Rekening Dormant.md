@@ -22,6 +22,8 @@ stateDiagram-v2
 
 > Perubahan status **Tidak Aktif** dan **Dormant** ditentukan berdasarkan lamanya waktu tanpa aktivitas nasabah — dihitung setiap hari oleh sistem.
 
+<div style="page-break-before: always;"></div>
+
 ## Diagram B — Tutup Otomatis Saldo Nol (Independen)
 
 ```mermaid
@@ -39,6 +41,8 @@ stateDiagram-v2
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## Ringkasan Status Rekening
 
 | Status | Kondisi | Keterangan |
@@ -49,6 +53,8 @@ stateDiagram-v2
 | **Tutup** | Saldo Rp 0 melebihi batas hari tutup otomatis *(dari status apapun)* | Rekening ditutup permanen |
 
 ---
+
+<div style="page-break-before: always;"></div>
 
 ## UC-01 — Rekening Berubah Menjadi Tidak Aktif
 
@@ -70,6 +76,8 @@ stateDiagram-v2
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## UC-02 — Rekening Berubah Menjadi Dormant
 
 **Aktor:** Sistem (proses otomatis harian / EOD)
@@ -89,6 +97,8 @@ stateDiagram-v2
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## UC-03 — Rekening Ditutup Otomatis (Saldo Nol)
 
 **Aktor:** Sistem (proses otomatis harian / EOD)
@@ -107,6 +117,8 @@ stateDiagram-v2
 | **Saldo kembali ada sebelum batas** | Rekening memiliki saldo Rp 0, kemudian ada setoran sebelum melewati batas hari | Proses harian berjalan | Hitungan hari saldo nol di-reset, rekening tidak ditutup |
 
 ---
+
+<div style="page-break-before: always;"></div>
 
 ## UC-04 — Pencatatan Aktivitas Nasabah
 
@@ -159,6 +171,8 @@ Tidak semua transaksi finansial dihitung sebagai aktivitas nasabah. Transaksi ya
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## UC-05 — Reaktivasi Rekening oleh Petugas Cabang
 
 **Aktor:** Petugas Cabang (User), Supervisor/Pejabat Cabang (Approver)
@@ -200,6 +214,8 @@ flowchart TD
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## UC-06 — Pengenaan Biaya Rekening Tidak Aktif & Dormant
 
 **Aktor:** Sistem (proses otomatis bulanan / EOM)
@@ -220,6 +236,8 @@ flowchart TD
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## Matriks Transaksi Berdasarkan Status Rekening
 
 | Jenis Transaksi | Aktif | Tidak Aktif | Dormant |
@@ -239,6 +257,8 @@ flowchart TD
 | ❌ | Tidak diperbolehkan |
 
 ---
+
+<div style="page-break-before: always;"></div>
 
 ## Konfigurasi Parameter
 

@@ -46,6 +46,8 @@
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## 2. Informasi Rekening Nasabah
 
 - Informasi Rekening → Info Tgl Aktivitas Terakhir
@@ -70,6 +72,8 @@
 
 ---
 
+<div style="page-break-before: always;"></div>
+
 ## 3. Reaktivasi Rekening (UC-05)
 
 - Menu: **Rekening → Ubah Rekening Tidak Aktif / Dormant**
@@ -79,6 +83,8 @@
 ![Form Reaktivasi Rekening Dormant atau Tidak Atif](assets/dorman_reaktivasi_02.png)
 
 ---
+
+<div style="page-break-before: always;"></div>
 
 ## 4. Laporan
 
@@ -104,6 +110,8 @@
 ![Laporan Tutup Otomatis 2](assets/dorman_laporan_tutup_02.png)
 
 ---
+
+<div style="page-break-before: always;"></div>
 
 ## 5. Batch EOD 
 
