@@ -65,6 +65,7 @@ nav:
       - Enhance Dormant:
           - Design Plan: bcas/enhance_dormant/Design Plan.md
           - Use Case: bcas/enhance_dormant/Use Case Rekening Dormant.md
+          - Screenshot Checklist: bcas/enhance_dormant/Screenshot Checklist.md
 
 markdown_extensions:
   - pymdownx.superfences:
