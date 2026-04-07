@@ -1,10 +1,17 @@
-# Screenshot Checklist — Enhance Dormant
+# Screenshot — Enhance Dormant
 
 | | |
 |---|---|
-| **Versi** | 1.0 |
-| **Tanggal** | 1 April 2026 |
+| **Versi** | 2.0 |
+| **Tanggal** | 7 April 2026 |
 | **Status** | Draft |
+
+### Version Log
+
+| Versi | Tanggal | Keterangan |
+|---|---|---|
+| 1.0 | 1 April 2026 | Draft awal — parameter global, parameter produk, informasi rekening, batch proses dormant |
+| 2.0 | 7 April 2026 | Penambahan field parameter transaksi umum (Kategori Aktivitas Nasabah, Transaksi Sistem, Izinkan Rekening Tidak Aktif, Izinkan Rekening Dormant) |
 
 ---
 <div style="page-break-before: always;"></div>
