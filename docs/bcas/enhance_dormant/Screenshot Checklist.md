@@ -37,7 +37,16 @@
 
 ![Form Detail Parameter Transaksi](assets/dorman_parametertransaksi_03.png)
 
-> **Catatan:** Contoh kode yang di-exclude: SD, PD, SC, SCD, SDP, SDZ, SI (tampilkan flag = T)
+**Ringkasan field parameter transaksi yang ditambahkan (kotak merah):**
+
+| Caption di Form | Field | Nilai | Fungsi |
+|---|---|---|---|
+| **Transaksi Sistem** | `is_transaksi_sistem` | `T` / `F` (default `F`) | Menandai transaksi yang berasal dari sistem (misal posting bagi hasil), sehingga bisa diabaikan untuk logika tertentu seperti auto-dormant |
+| **Kategori Aktivitas Nasabah** | `tipe_exclude_aktivitas_nasabah` | `F` / `DC` / `D` / `C` (default `F`) | `F` = hitung sebagai aktivitas nasabah, `DC` = exclude dari aktivitas nasabah, `D` = exclude debit, `C` = exclude kredit |
+| **Izinkan Rekening Tidak Aktif** | `allow_rekening_tidak_aktif` | `F` / `DC` / `D` / `C` (default `F`) | `F` = Tolak Debet/Kredit, `DC` = Izinkan Debet/Kredit, `D` = Hanya Debet, `C` = Hanya Kredit |
+| **Izinkan Rekening Dormant** | `allow_rekening_dormant` | `F` / `DC` / `D` / `C` (default `F`) | `F` = Tolak Debet/Kredit, `DC` = Izinkan Debet/Kredit, `D` = Hanya Debet, `C` = Hanya Kredit |
+
+> **Catatan:** Jika kode transaksi tidak terdapat di parameter ini, maka secara default dianggap sebagai aktivitas nasabah (`tipe_exclude_aktivitas_nasabah = 'F'`), bukan transaksi sistem, dan tidak boleh untuk rekening tidak aktif maupun dormant. Contoh kode yang di-exclude: SD, PD, SC, SCD, SDP, SDZ, SI.
 
 ### 1.3 Parameter Produk
 - Menu: **Parameter → List Produk Tabungan** (atau Giro)
