@@ -163,7 +163,7 @@ graph TB
 
 **Keterangan:**
 
-Fitur Saku Valas utamanya berjalan di **Tought Machine (TM)**. **Modul Funding** pada Aplikasi Core Banking BCAS (CBS) berperan sebagai sistem penerima yang mengolah data yang dikirim oleh TM melalui dua endpoint REST API. Modul ini terdiri dari tujuh menu: Manajemen Kurs, Laporan LBV, Laporan Trial Balance, Laporan Neraca, Buku Besar, Simulasi GDR, dan Eksekusi EOM. Seluruh menu membaca dan menyimpan data ke **Core DB**.
+Fitur Saku Valas utamanya berjalan di **Tought Machine (TM)**. **Modul Core** pada Aplikasi Core Banking BCAS (CBS) berperan sebagai sistem penerima yang mengolah data yang dikirim oleh TM melalui dua endpoint REST API. Modul ini terdiri dari tujuh menu: Manajemen Kurs, Laporan LBV, Laporan Trial Balance, Laporan Neraca, Buku Besar, Simulasi GDR, dan Eksekusi EOM. Seluruh menu membaca dan menyimpan data ke **Core DB**.
 
 Integrasi dari **TM ke Core Banking** dilakukan melalui dua endpoint REST API:
 - **REST Report** — TM mengirimkan saldo harian valas (setiap akhir hari kerja) dan saldo rata-rata valas (setiap akhir bulan) ke Core Banking, digunakan untuk LBV dan perhitungan GDR.
