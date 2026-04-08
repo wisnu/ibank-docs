@@ -674,10 +674,9 @@ flowchart TD
     TM2(["TM (Sistem External)"]) -->|"Jurnal Valas via REST GL"| DB
     DB --> A["[System Admin] Eksekusi EOM Script"]
     A --> B["Ambil Saldo Harian Valas\n(seluruh hari dalam bulan)"]
-    B --> C["Hitung GDR per Valuta\nGDR = Σ(Saldo Harian × Jumlah Hari) / Total Hari"]
-    C --> D["Konversi GDR ke IDR (kurs tengah EOM)"]
-    D --> E["Simpan Hasil GDR ke Core DB"]
-    E --> F["Generate Laporan GDR"]
+    B --> C["Hitung GDR"]
+    C --> D["Simpan Hasil GDR ke Core DB"]
+    D --> E["Generate Laporan GDR"]
 ```
 
 #### 6.2.2. Keterangan Alur Proses
@@ -685,47 +684,25 @@ flowchart TD
 | **Deskripsi** | : | Proses eksekusi EOM resmi untuk menghitung Gross Distribution Rate (GDR) dari data saldo valas harian dan jurnal valas yang diterima dari TM |
 |---|---|---|
 | **User** | : | System Administrator |
-| **Pre kondisi** | : | 1. TM telah mengirimkan saldo rata-rata via REST Report ke Core DB. 2. TM telah mengirimkan seluruh jurnal valas bulan berjalan via REST GL ke Core DB. 3. Kurs tengah EOM telah dikonfirmasi dan tersimpan di sistem. |
-| **Alur** | : | 1. System Administrator mengeksekusi EOM Script. 2. Sistem mengambil saldo harian valas dari Core DB untuk setiap hari dalam bulan. 3. Sistem menghitung GDR per valuta: GDR = Σ(Saldo Harian × Jumlah Hari Saldo Berlaku) / Total Hari Dalam Bulan. 4. Sistem mengkonversi GDR ke IDR menggunakan kurs tengah EOM. 5. Hasil GDR disimpan ke Core DB. 6. Sistem menghasilkan laporan GDR. |
+| **Pre kondisi** | : | 1. TM telah mengirimkan saldo rata-rata via REST Report ke Core DB. 2. TM telah mengirimkan seluruh jurnal valas bulan berjalan via REST GL ke Core DB. |
+| **Alur** | : | 1. System Administrator mengeksekusi EOM Script. 2. Sistem mengambil saldo harian valas dari Core DB untuk setiap hari dalam bulan. 3. Sistem menghitung GDR. 4. Hasil GDR disimpan ke Core DB. 5. Sistem menghasilkan laporan GDR. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Eksekusi EOM |
-| **Post kondisi** | : | GDR seluruh valuta berhasil dihitung, disimpan di Core DB, dan laporan GDR tersedia untuk diakses. |
+| **Post kondisi** | : | GDR berhasil dihitung, disimpan di Core DB, dan laporan GDR tersedia untuk diakses. |
 
 #### 6.2.3. Use Case
 
-| **Given** | : | TM telah mengirimkan saldo harian dan jurnal valas ke Core DB, dan kurs tengah EOM telah tersedia |
+| **Given** | : | TM telah mengirimkan saldo harian dan jurnal valas ke Core DB |
 |---|---|---|
 | **When** | : | System Administrator mengeksekusi EOM Script |
-| **Then** | : | Sistem menghitung GDR per valuta, mengkonversi ke IDR menggunakan kurs tengah EOM, menyimpan hasil ke Core DB, dan menghasilkan laporan GDR. |
+| **Then** | : | Sistem menghitung GDR, menyimpan hasil ke Core DB, dan menghasilkan laporan GDR. |
 
-#### 6.2.4. Field Description — Eksekusi EOM GDR
-
-| **Nama Field** | **Deskripsi** | **Data Type** | **Mandatory (M/O/C)** | **Sumber Data** |
-|---|---|---|---|---|
-| Bulan/Tahun Proses | Periode EOM yang diproses | VARCHAR | M | System |
-| Kode Valuta | Kode mata uang yang dihitung GDR-nya | VARCHAR | M | Core |
-| Total Hari Bulan | Jumlah hari dalam bulan yang diproses | INTEGER | - | Calculated |
-| Saldo Rata-rata | Rata-rata saldo harian dalam valuta asli | DECIMAL(18,4) | - | Calculated |
-| GDR Valuta | Gross Distribution Rate dalam valuta asli | DECIMAL(18,4) | - | Calculated |
-| Kurs Tengah EOM | Kurs tengah yang digunakan untuk konversi ke IDR | DECIMAL(18,4) | - | Core |
-| GDR IDR | Nilai GDR setelah dikonversi ke IDR | DECIMAL(18,4) | - | Calculated |
-
-#### 6.2.5. Action — Eksekusi EOM GDR
+#### 6.2.4. Action — Eksekusi EOM GDR
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
 | Run EOM GDR | Sistem mengeksekusi perhitungan GDR seluruh valuta untuk periode EOM, menyimpan hasil, dan menghasilkan laporan GDR | Hanya dapat dijalankan oleh System Administrator |
 | Export Laporan GDR | File Excel berisi hasil GDR EOM terunduh | - |
 
-#### 6.2.6. Tabel Validasi — Eksekusi EOM GDR
-
-| **Case** | **Result** |
-|---|---|
-| Data saldo rata-rata dari TM (REST Report) belum tersedia di Core DB | "Data saldo rata-rata valas untuk periode [bulan/tahun] belum tersedia. Pastikan TM telah mengirimkan data melalui REST Report." |
-| Data jurnal valas dari TM (REST GL) belum lengkap | "Jurnal valas dari TM untuk periode [bulan/tahun] belum lengkap. Harap konfirmasi dengan TM." |
-| Terdapat hari dalam bulan yang tidak memiliki data saldo | "Terdapat [N] hari tanpa data saldo pada bulan [bulan/tahun]. Proses GDR tidak dapat dilanjutkan." |
-| Kurs tengah EOM belum tersedia | "Kurs tengah EOM untuk periode [bulan/tahun] belum dikonfirmasi. Harap input kurs tengah EOM sebelum eksekusi." |
-| Proses EOM GDR sudah pernah dieksekusi pada periode yang sama | "GDR periode [bulan/tahun] sudah diproses dan tidak dapat dijalankan ulang. Hubungi administrator untuk pembatalan." |
-| Script EOM timeout atau error database | "Proses EOM GDR gagal karena kesalahan sistem. Kode Error: [kode]. Hubungi administrator." |
 
 ---
 
@@ -740,10 +717,8 @@ Pengaturan umum pada aplikasi Saku Valas adalah sebagai berikut:
 | Single Session | Jika ada user yang sedang login kemudian ada user lain yang menggunakan credential yang sama, maka user lama akan dikeluarkan dari sesi aktifnya. |
 | Idle Timeout | Sistem akan logout secara otomatis apabila tidak ada interaksi atau proses selama 10 menit. |
 | Audit Trail | Seluruh aktivitas pengguna pada fitur Saku Valas (input kurs, approval, generate laporan, eksekusi EOM) tercatat di log audit trail beserta timestamp dan ID user. |
-| Scheduled Job LBV | Proses LBV dijalankan secara otomatis setiap hari kerja pada pukul 18.00 WIB setelah proses EOD selesai. Jadwal dapat dikonfigurasi oleh System Administrator. |
 | Scheduled Job EOM | Proses EOM GDR dijalankan secara otomatis pada hari kerja pertama setelah akhir bulan pukul 08.00 WIB. Dapat dipicu manual jika diperlukan. |
 | Approval Workflow | Setiap perubahan data kurs (penambahan valuta dan update kurs) wajib melalui proses approval dua tingkat (maker-checker) sebelum data efektif di sistem. |
-| Notifikasi | Sistem mengirimkan notifikasi (in-app dan/atau email) kepada Supervisor ketika terdapat data yang menunggu approval, dan kepada Finance Staff ketika proses LBV/EOM selesai dijalankan. |
 | Retensi Data Histori Kurs | Histori perubahan kurs disimpan dalam sistem selama minimal 5 tahun sesuai ketentuan regulasi OJK. |
 
 ---
