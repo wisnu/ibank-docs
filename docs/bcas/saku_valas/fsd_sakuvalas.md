@@ -552,7 +552,7 @@ flowchart TD
 
 ---
 
-## 5. LBV (Loan Balance Verification)
+## 5. LBV (Ledger Balance Verification)
 
 ### 5.1. Laporan Proofing Saldo Produk vs GL (LBV)
 
@@ -563,7 +563,7 @@ flowchart TD
     A["[Finance Staff] Akses Menu Laporan >\nLaporan Proofing Saldo Produk vs GL"] --> B["Sistem menampilkan form 'Proofing Saldo'"]
     B --> C["Input Parameter\n(Tanggal, Cabang, Valuta)"]
     C --> D["Klik Proses — Sistem generate laporan LBV"]
-    D --> E["Output: File Excel 'Loan Balance Verification\n(Nominative vs GL)'"]
+    D --> E["Output: File Excel 'Ledger Balance Verification\n(Nominative vs GL)'"]
     E --> F{"Terdapat Selisih?"}
     F -->|Tidak| G["Nominative Balance = GL Balance"]
     F -->|Ya| H["[Finance Staff] Investigasi Selisih\nberdasarkan detail per GL dan Valuta"]
@@ -575,7 +575,7 @@ flowchart TD
 |---|---|---|
 | **User** | : | Finance & Accounting Staff |
 | **Pre kondisi** | : | 1. TM telah mengirimkan data saldo nominatif produk ke Core DB via REST Report. 2. Data saldo GL tersedia di Core DB untuk tanggal yang diminta. |
-| **Alur** | : | 1. Finance Staff mengakses menu Laporan > Laporan Proofing Saldo Produk vs GL. 2. Sistem menampilkan form "Proofing Saldo". 3. Staff mengisi Tanggal, memilih Cabang (atau centang "Seluruh Cabang"), dan memilih Valuta (atau centang "Seluruh Valuta"). 4. Staff menekan tombol "Proses". 5. Sistem menghasilkan laporan Excel "Loan Balance Verification (Nominative vs GL)". 6. Staff memeriksa kolom SELISIH untuk mendeteksi discrepancy per akun GL dan valuta. |
+| **Alur** | : | 1. Finance Staff mengakses menu Laporan > Laporan Proofing Saldo Produk vs GL. 2. Sistem menampilkan form "Proofing Saldo". 3. Staff mengisi Tanggal, memilih Cabang (atau centang "Seluruh Cabang"), dan memilih Valuta (atau centang "Seluruh Valuta"). 4. Staff menekan tombol "Proses". 5. Sistem menghasilkan laporan Excel "Ledger Balance Verification (Nominative vs GL)". 6. Staff memeriksa kolom SELISIH untuk mendeteksi discrepancy per akun GL dan valuta. |
 | **Error Handling** | : | Sistem menampilkan pesan error jika data tidak tersedia |
 | **Post kondisi** | : | Laporan LBV berhasil digenerate dan Finance Staff dapat mengidentifikasi selisih saldo nominatif vs GL. |
 
@@ -596,7 +596,7 @@ Berikut adalah tabel field description untuk parameter input form **Proofing Sal
 | Cabang | Kode cabang; centang "Seluruh Cabang" untuk semua cabang | VARCHAR | O | Manual Input / Checkbox |
 | Valuta | Kode valuta; centang "Seluruh Valuta" untuk semua valuta | VARCHAR | O | Manual Input / Checkbox |
 
-Berikut adalah kolom output pada file Excel laporan **Loan Balance Verification (Nominative vs GL)**:
+Berikut adalah kolom output pada file Excel laporan **Ledger Balance Verification (Nominative vs GL)**:
 
 | **Nama Field** | **Deskripsi** | **Sumber Data** |
 |---|---|---|
