@@ -79,7 +79,7 @@ Berikut ini adalah tujuan pengembangan fitur Saku Valas pada sistem BCAS:
 
 - Menyediakan fungsi manajemen kurs yang memungkinkan penambahan valuta baru dan pembaruan nilai kurs secara real-time.
 - Menghasilkan laporan valas yang akurat, meliputi Trial Balance, Buku Besar, dan Neraca Valas.
-- Meningkatkan integrasi saldo harian valas dengan sistem Treasury Management (TM) melalui mekanisme LBV.
+- Meningkatkan integrasi saldo harian valas dengan sistem Tought Machine (TM) melalui mekanisme LBV.
 - Mengotomatisasi proses EOM untuk penghitungan GDR dari saldo valas dan saldo rata-rata yang terintegrasi dengan TM.
 
 ### 1.3. Ruang Lingkup
@@ -98,7 +98,7 @@ Berikut adalah definisi dari beberapa istilah yang ada pada proses Saku Valas:
 - **Valas (Valuta Asing):** Mata uang asing selain Rupiah yang digunakan dalam transaksi perbankan internasional.
 - **Kurs:** Nilai tukar suatu mata uang terhadap mata uang lainnya (umumnya terhadap IDR).
 - **GDR (Gross Daily Rate):** Nilai rata-rata kotor harian yang dihitung dari saldo valas selama periode tertentu.
-- **TM (Treasury Management):** Sistem manajemen kas dan investasi yang digunakan oleh BCAS untuk mengelola posisi likuiditas dan valas.
+- **TM (Tought Machine):** Sistem core banking yang digunakan oleh BCAS sebagai sumber data saldo valas dan jurnal valas.
 - **LBV (Ledger Balance Verification):** Proses verifikasi antara saldo buku besar di sistem core banking dengan saldo yang tercatat di sistem TM.
 - **EOM (End of Month):** Proses penutupan akhir bulan yang mencakup rekalkulasi saldo, GDR, dan rekonsiliasi valas.
 - **Trial Balance Valas:** Laporan yang menampilkan saldo debet dan kredit dari seluruh akun valas pada periode tertentu.
@@ -163,7 +163,7 @@ graph TB
 
 Sistem Saku Valas berjalan di dalam **Modul Funding** pada Aplikasi Core Banking BCAS. Modul ini terdiri dari tujuh menu utama: Manajemen Kurs, Laporan LBV, Laporan Trial Balance, Laporan Neraca, Buku Besar, Simulasi GDR, dan Eksekusi EOM. Seluruh menu berinteraksi dengan **Core DB** sebagai sumber data terpusat.
 
-Integrasi dengan sistem eksternal **Treasury Management (TM)** dilakukan melalui dua endpoint REST API:
+Integrasi dengan sistem **Tought Machine (TM)** dilakukan melalui dua endpoint REST API:
 - **REST Report** — menerima data saldo harian dan saldo rata-rata dari TM untuk keperluan LBV dan perhitungan GDR.
 - **REST GL** — menerima data jurnal valas dari TM untuk keperluan pencatatan buku besar valas.
 
