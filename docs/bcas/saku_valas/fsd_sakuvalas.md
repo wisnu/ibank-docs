@@ -613,7 +613,7 @@ flowchart TD
     TM1(["TM (Sistem External)"]) -->|"Saldo Rata-rata via REST Report"| DB[("Core DB")]
     DB --> A["[Treasury Officer] Akses Menu Simulasi GDR"]
     A --> B["Klik Hitung Simulasi"]
-    B --> C["Sistem Hitung GDR\nGDR = Σ(Saldo Harian × Jumlah Hari) / Total Hari"]
+    B --> C["Sistem Hitung GDR"]
     C --> D["Konversi GDR ke IDR"]
     D --> E["Tampilkan Hasil Simulasi"]
     E --> F["Opsi: Export Hasil Simulasi (Excel)"]
@@ -625,7 +625,7 @@ flowchart TD
 |---|---|---|
 | **User** | : | Treasury Officer |
 | **Pre kondisi** | : | 1. TM telah mengirimkan data saldo rata-rata bulan berjalan ke endpoint REST Report. 2. Data saldo harian valas tersedia di Core DB. |
-| **Alur** | : | 1. Treasury Officer mengakses menu Simulasi GDR. 2. Treasury Officer menekan tombol "Hitung Simulasi". 3. Sistem mengambil data saldo rata-rata valas dari Core DB (hasil kiriman TM via REST Report). 4. Sistem menghitung GDR per valuta menggunakan formula: GDR = Σ(Saldo Harian × Jumlah Hari Saldo Berlaku) / Total Hari Dalam Bulan. 5. Sistem menampilkan hasil simulasi dalam valuta asli dan ekuivalen IDR. 6. Treasury Officer dapat mengeksport hasil simulasi ke Excel untuk keperluan review. |
+| **Alur** | : | 1. Treasury Officer mengakses menu Simulasi GDR. 2. Treasury Officer menekan tombol "Hitung Simulasi". 3. Sistem mengambil data saldo rata-rata valas dari Core DB (hasil kiriman TM via REST Report). 4. Sistem menghitung GDR. 5. Sistem menampilkan hasil simulasi. 6. Treasury Officer dapat mengeksport hasil simulasi ke Excel untuk keperluan review. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi EOM GDR |
 | **Post kondisi** | : | Hasil simulasi GDR ditampilkan dan dapat dieksport. Data simulasi tidak tersimpan ke database dan tidak memicu proses Eksekusi EOM. |
 
@@ -636,31 +636,12 @@ flowchart TD
 | **When** | : | Treasury Officer mengakses menu Simulasi GDR dan menekan tombol "Hitung Simulasi" |
 | **Then** | : | Sistem menghitung dan menampilkan hasil simulasi GDR per valuta, meliputi: saldo rata-rata dalam valuta asli dan nilai GDR dalam IDR. Treasury Officer dapat mengeksport hasilnya ke Excel. Hasil simulasi tidak tersimpan ke database dan tidak dikirimkan ke TM. |
 
-#### 6.1.4. Field Description — Output Simulasi GDR
-
-Berikut adalah kolom output yang ditampilkan setelah proses Hitung Simulasi:
-
-| **Nama Field** | **Deskripsi** | **Data Type** | **Mandatory (M/O/C)** | **Sumber Data** |
-|---|---|---|---|---|
-| Kode Valuta | Kode mata uang yang dihitung | VARCHAR | - | Core DB |
-| Saldo Rata-rata | Rata-rata saldo harian dalam valuta asli | DECIMAL(18,4) | - | Core DB |
-| Total Hari Bulan | Jumlah hari dalam bulan yang dihitung | INTEGER | - | Calculated |
-| GDR Valuta | Hasil simulasi GDR dalam valuta asli | DECIMAL(18,4) | - | Calculated |
-| GDR IDR | Hasil simulasi GDR setelah dikonversi ke IDR | DECIMAL(18,4) | - | Calculated |
-
-#### 6.1.5. Action — Simulasi GDR
+#### 6.1.4. Action — Simulasi GDR
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
 | Hitung Simulasi | Sistem menghitung dan menampilkan hasil simulasi GDR per valuta | Tidak menyimpan data ke database, hanya untuk preview |
 | Export Hasil Simulasi | File Excel berisi hasil simulasi GDR terunduh | - |
-
-#### 6.1.6. Tabel Validasi — Simulasi GDR
-
-| **Case** | **Result** |
-|---|---|
-| Data saldo rata-rata dari TM belum tersedia untuk periode berjalan | Sistem menggunakan data saldo rata-rata terakhir yang tersedia di Core DB dan menampilkan notifikasi: "Data saldo rata-rata terbaru belum tersedia. Simulasi menggunakan data terakhir per [tanggal]." |
-| Terdapat hari dalam bulan tanpa data saldo harian | "Terdapat [N] hari tanpa data saldo. Hasil simulasi mungkin tidak akurat." |
 
 ---
 
@@ -670,10 +651,10 @@ Berikut adalah kolom output yang ditampilkan setelah proses Hitung Simulasi:
 
 ```mermaid
 flowchart TD
-    TM1(["TM (Sistem External)"]) -->|"Saldo Rata-rata via REST Report"| DB[("Core DB")]
+    TM1(["TM (Sistem External)"]) -->|"Saldo Rata-rata Final\n(per Produk, Valuta, Nisbah)\nvia REST Report"| DB[("Core DB")]
     TM2(["TM (Sistem External)"]) -->|"Jurnal Valas via REST GL"| DB
     DB --> A["[System Admin] Eksekusi EOM Script"]
-    A --> B["Ambil Saldo Harian Valas\n(seluruh hari dalam bulan)"]
+    A --> B["Ambil Data Saldo Rata-rata dari Core DB\n(per Produk, Valuta, Nisbah)"]
     B --> C["Hitung GDR"]
     C --> D["Simpan Hasil GDR ke Core DB"]
     D --> E["Generate Laporan GDR"]
@@ -681,20 +662,20 @@ flowchart TD
 
 #### 6.2.2. Keterangan Alur Proses
 
-| **Deskripsi** | : | Proses eksekusi EOM resmi untuk menghitung Gross Distribution Rate (GDR) dari data saldo valas harian dan jurnal valas yang diterima dari TM |
+| **Deskripsi** | : | Proses eksekusi EOM resmi untuk menghitung Gross Distribution Rate (GDR) berdasarkan data saldo rata-rata final yang dikirim oleh TM dan jurnal valas yang diterima dari TM |
 |---|---|---|
 | **User** | : | System Administrator |
-| **Pre kondisi** | : | 1. TM telah mengirimkan saldo rata-rata via REST Report ke Core DB. 2. TM telah mengirimkan seluruh jurnal valas bulan berjalan via REST GL ke Core DB. |
-| **Alur** | : | 1. System Administrator mengeksekusi EOM Script. 2. Sistem mengambil saldo harian valas dari Core DB untuk setiap hari dalam bulan. 3. Sistem menghitung GDR. 4. Hasil GDR disimpan ke Core DB. 5. Sistem menghasilkan laporan GDR. |
+| **Pre kondisi** | : | 1. TM telah mengirimkan data saldo rata-rata final (dikelompokkan per produk, valuta, dan nisbah) via REST Report ke Core DB. 2. TM telah mengirimkan seluruh jurnal valas bulan berjalan via REST GL ke Core DB. |
+| **Alur** | : | 1. System Administrator mengeksekusi EOM Script. 2. Sistem mengambil data saldo rata-rata dari Core DB yang telah dikirim oleh TM, dikelompokkan per produk, valuta, dan nisbah. 3. Sistem menghitung GDR. 4. Hasil GDR disimpan ke Core DB. 5. Sistem menghasilkan laporan GDR. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Eksekusi EOM |
 | **Post kondisi** | : | GDR berhasil dihitung, disimpan di Core DB, dan laporan GDR tersedia untuk diakses. |
 
 #### 6.2.3. Use Case
 
-| **Given** | : | TM telah mengirimkan saldo harian dan jurnal valas ke Core DB |
+| **Given** | : | TM telah mengirimkan data saldo rata-rata final (per produk, valuta, nisbah) dan jurnal valas ke Core DB |
 |---|---|---|
 | **When** | : | System Administrator mengeksekusi EOM Script |
-| **Then** | : | Sistem menghitung GDR, menyimpan hasil ke Core DB, dan menghasilkan laporan GDR. |
+| **Then** | : | Sistem mengambil data saldo rata-rata dari Core DB, menghitung GDR, menyimpan hasil ke Core DB, dan menghasilkan laporan GDR. |
 
 #### 6.2.4. Action — Eksekusi EOM GDR
 
