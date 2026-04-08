@@ -71,25 +71,25 @@ Ruko Surapati Core C-7 Bandung
 
 ### 1.1. Latar Belakang
 
-Dalam rangka mendukung pertumbuhan layanan perbankan syariah berbasis valuta asing, BCA Syariah (BCAS) memerlukan pengembangan fitur Saku Valas pada sistem perbankan inti. Fitur ini mencakup pengelolaan kurs valuta asing, penyediaan laporan valas yang komprehensif, verifikasi saldo buku besar (LBV), serta proses End of Month (EOM) untuk penghitungan Gross Daily Rate (GDR). Pengembangan ini bertujuan untuk meningkatkan efisiensi operasional, akurasi data valas, serta kepatuhan terhadap regulasi pelaporan keuangan yang berlaku.
+Dalam rangka mendukung pertumbuhan layanan perbankan syariah berbasis valuta asing, BCA Syariah (BCAS) menggunakan **Tought Machine (TM)** sebagai sistem utama yang menjalankan fitur Saku Valas. Pengembangan ini mencakup penguatan integrasi antara TM dengan sistem Core Banking BCAS (iBank), sehingga data jurnal valas serta saldo harian dan saldo rata-rata valas yang dihasilkan TM dapat diterima, diolah, dan dilaporkan secara akurat di sisi Core Banking. Cakupan pengembangan meliputi pengelolaan kurs valuta asing, penyediaan laporan valas yang komprehensif, verifikasi saldo buku besar (LBV), serta proses End of Month (EOM) untuk penghitungan Gross Daily Rate (GDR). Pengembangan ini bertujuan untuk meningkatkan efisiensi operasional, akurasi data valas, serta kepatuhan terhadap regulasi pelaporan keuangan yang berlaku.
 
 ### 1.2. Tujuan
 
 Berikut ini adalah tujuan pengembangan fitur Saku Valas pada sistem BCAS:
 
-- Menyediakan fungsi manajemen kurs yang memungkinkan penambahan valuta baru dan pembaruan nilai kurs secara real-time.
-- Menghasilkan laporan valas yang akurat, meliputi Trial Balance, Buku Besar, dan Neraca Valas.
-- Meningkatkan integrasi saldo harian valas dengan sistem Tought Machine (TM) melalui mekanisme LBV.
-- Mengotomatisasi proses EOM untuk penghitungan GDR dari saldo valas dan saldo rata-rata yang terintegrasi dengan TM.
+- Menyediakan fungsi manajemen kurs yang memungkinkan penambahan valuta baru dan pembaruan nilai kurs secara real-time di Core Banking.
+- Menghasilkan laporan valas yang akurat di Core Banking, meliputi Trial Balance, Buku Besar, dan Neraca Valas, berdasarkan data yang diterima dari TM.
+- Meningkatkan integrasi penerimaan saldo harian valas dari TM ke Core Banking melalui mekanisme LBV.
+- Mengotomatisasi proses EOM di Core Banking untuk penghitungan GDR berdasarkan saldo valas dan saldo rata-rata yang dikirim oleh TM.
 
 ### 1.3. Ruang Lingkup
 
 Ruang lingkup pengembangan fitur Saku Valas pada sistem BCAS adalah sebagai berikut:
 
-- **Manajemen Kurs:** Penambahan valuta baru dan perubahan nilai kurs per valuta.
-- **Laporan Valas:** Laporan Trial Balance Valas, Laporan Buku Besar Valas, dan Laporan Neraca Valas.
-- **LBV (Ledger Balance Verification):** Enhance integrasi saldo harian dengan sistem TM.
-- **EOM Hitung GDR:** Enhance integrasi saldo rata-rata dengan TM dan enhance script EOM untuk penghitungan GDR dari saldo valas.
+- **Manajemen Kurs:** Penambahan valuta baru dan perubahan nilai kurs per valuta di Core Banking.
+- **Laporan Valas:** Laporan Trial Balance Valas, Laporan Buku Besar Valas, dan Laporan Neraca Valas di Core Banking berdasarkan data jurnal valas yang diterima dari TM.
+- **LBV (Ledger Balance Verification):** Enhance penerimaan dan verifikasi saldo harian valas yang dikirim TM ke Core Banking.
+- **EOM Hitung GDR:** Enhance penerimaan saldo rata-rata valas dari TM dan enhance script EOM di Core Banking untuk penghitungan GDR dari data yang dikirim TM.
 
 ### 1.4. Definisi
 
@@ -98,8 +98,8 @@ Berikut adalah definisi dari beberapa istilah yang ada pada proses Saku Valas:
 - **Valas (Valuta Asing):** Mata uang asing selain Rupiah yang digunakan dalam transaksi perbankan internasional.
 - **Kurs:** Nilai tukar suatu mata uang terhadap mata uang lainnya (umumnya terhadap IDR).
 - **GDR (Gross Daily Rate):** Nilai rata-rata kotor harian yang dihitung dari saldo valas selama periode tertentu.
-- **TM (Tought Machine):** Sistem core banking yang digunakan oleh BCAS sebagai sumber data saldo valas dan jurnal valas.
-- **LBV (Ledger Balance Verification):** Proses verifikasi antara saldo buku besar di sistem core banking dengan saldo yang tercatat di sistem TM.
+- **TM (Tought Machine):** Sistem utama (core banking) tempat fitur Saku Valas berjalan. TM mengirimkan jurnal valas, saldo harian, dan saldo rata-rata valas ke Core Banking BCAS melalui REST API.
+- **LBV (Ledger Balance Verification):** Proses verifikasi antara saldo valas yang diterima Core Banking dari TM dengan saldo yang tercatat di Core DB BCAS.
 - **EOM (End of Month):** Proses penutupan akhir bulan yang mencakup rekalkulasi saldo, GDR, dan rekonsiliasi valas.
 - **Trial Balance Valas:** Laporan yang menampilkan saldo debet dan kredit dari seluruh akun valas pada periode tertentu.
 - **Buku Besar Valas:** Catatan lengkap seluruh transaksi valas yang dikelompokkan per akun.
@@ -135,7 +135,12 @@ Berikut ini adalah arsitektur sistem dari fitur Saku Valas BCAS:
 
 ```mermaid
 graph TB
-    subgraph CORE["Aplikasi Core Banking"]
+    subgraph TM["TM / Tought Machine (Sistem Utama Saku Valas)"]
+        RREPORT{{"REST Report\n(Saldo Harian & Saldo Rata-rata)"}}
+        RGL{{"REST GL\n(Jurnal Valas)"}}
+    end
+
+    subgraph CORE["Aplikasi Core Banking BCAS (iBank)"]
         subgraph FUNDING["Modul Funding"]
             MK["Manajemen Kurs"]
             LLBV["Laporan LBV"]
@@ -148,24 +153,18 @@ graph TB
         DB[("Core DB")]
     end
 
-    RREPORT{{"REST Report"}}
-    RGL{{"REST GL"}}
-    TM(["TM\n(Sistem External)"])
-
     MK & LLBV & LTB & LN & BB & SGDR & EOM --- DB
-    TM -->|"Saldo Harian &\nSaldo Rata-rata"| RREPORT
-    TM -->|"Jurnal Valas"| RGL
-    RREPORT --> DB
-    RGL --> DB
+    RREPORT -->|"Saldo Harian &\nSaldo Rata-rata"| DB
+    RGL -->|"Jurnal Valas"| DB
 ```
 
 **Keterangan:**
 
-Sistem Saku Valas berjalan di dalam **Modul Funding** pada Aplikasi Core Banking BCAS. Modul ini terdiri dari tujuh menu utama: Manajemen Kurs, Laporan LBV, Laporan Trial Balance, Laporan Neraca, Buku Besar, Simulasi GDR, dan Eksekusi EOM. Seluruh menu berinteraksi dengan **Core DB** sebagai sumber data terpusat.
+Fitur Saku Valas utamanya berjalan di **Tought Machine (TM)**. **Modul Funding** pada Aplikasi Core Banking BCAS (iBank) berperan sebagai sistem penerima yang mengolah data yang dikirim oleh TM melalui dua endpoint REST API. Modul ini terdiri dari tujuh menu: Manajemen Kurs, Laporan LBV, Laporan Trial Balance, Laporan Neraca, Buku Besar, Simulasi GDR, dan Eksekusi EOM. Seluruh menu membaca dan menyimpan data ke **Core DB**.
 
-Integrasi dengan sistem **Tought Machine (TM)** dilakukan melalui dua endpoint REST API:
-- **REST Report** — menerima data saldo harian dan saldo rata-rata dari TM untuk keperluan LBV dan perhitungan GDR.
-- **REST GL** — menerima data jurnal valas dari TM untuk keperluan pencatatan buku besar valas.
+Integrasi dari **TM ke Core Banking** dilakukan melalui dua endpoint REST API:
+- **REST Report** — TM mengirimkan saldo harian valas (setiap akhir hari kerja) dan saldo rata-rata valas (setiap akhir bulan) ke Core Banking, digunakan untuk LBV dan perhitungan GDR.
+- **REST GL** — TM mengirimkan jurnal valas (setiap ada jurnal yang dikonfirmasi) ke Core Banking, digunakan untuk pencatatan Buku Besar, Trial Balance, dan Neraca Valas.
 
 ---
 
