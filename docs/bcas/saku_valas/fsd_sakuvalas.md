@@ -612,41 +612,39 @@ Berikut adalah kolom output pada file Excel laporan **Ledger Balance Verificatio
 flowchart TD
     TM1(["TM (Sistem External)"]) -->|"Saldo Rata-rata via REST Report"| DB[("Core DB")]
     DB --> A["[Treasury Officer] Akses Menu Simulasi GDR"]
-    A --> B["Input Parameter Simulasi\n(Periode, Kode Valuta, Kurs Tengah)"]
-    B --> C["Sistem Hitung GDR Sementara\nGDR = Σ(Saldo Harian × Jumlah Hari) / Total Hari"]
-    C --> D["Konversi GDR ke IDR (kurs tengah input)"]
+    A --> B["Klik Hitung Simulasi"]
+    B --> C["Sistem Hitung GDR\nGDR = Σ(Saldo Harian × Jumlah Hari) / Total Hari"]
+    C --> D["Konversi GDR ke IDR"]
     D --> E["Tampilkan Hasil Simulasi"]
-    E --> F{"Hasil Sesuai?"}
-    F -->|Ya| G["[Treasury Supervisor] Konfirmasi untuk Eksekusi EOM"]
-    F -->|Tidak| B
+    E --> F["Opsi: Export Hasil Simulasi (Excel)"]
 ```
 
 #### 6.1.2. Keterangan Alur Proses
 
-| **Deskripsi** | : | Proses simulasi perhitungan GDR sebelum eksekusi EOM resmi, menggunakan data saldo rata-rata yang diterima dari TM melalui REST Report |
+| **Deskripsi** | : | Proses simulasi perhitungan GDR menggunakan data saldo rata-rata yang diterima dari TM melalui REST Report. Treasury Officer cukup mengklik tombol "Hitung Simulasi" tanpa perlu menginput parameter apapun. Simulasi bersifat preview saja dan tidak terhubung ke proses Eksekusi EOM. |
 |---|---|---|
-| **User** | : | Treasury Officer (simulasi), Treasury Supervisor (konfirmasi) |
-| **Pre kondisi** | : | 1. TM telah mengirimkan data saldo rata-rata bulan berjalan ke endpoint REST Report. 2. Data saldo harian valas tersedia di Core DB. 3. Kurs tengah estimasi tersedia untuk diinput. |
-| **Alur** | : | 1. Treasury Officer mengakses menu Simulasi GDR. 2. Sistem mengambil data saldo rata-rata valas dari Core DB (hasil kiriman TM via REST Report). 3. Treasury Officer mengisi parameter simulasi: periode dan kurs tengah estimasi. 4. Sistem menghitung GDR sementara per valuta menggunakan formula: GDR = Σ(Saldo Harian × Jumlah Hari Saldo Berlaku) / Total Hari Dalam Bulan. 5. Sistem menampilkan hasil simulasi dalam valuta asli dan ekuivalen IDR. 6. Treasury Officer atau Supervisor mengevaluasi hasil simulasi. 7. Jika hasil sesuai, Supervisor mengkonfirmasi untuk dilanjutkan ke Eksekusi EOM. |
+| **User** | : | Treasury Officer |
+| **Pre kondisi** | : | 1. TM telah mengirimkan data saldo rata-rata bulan berjalan ke endpoint REST Report. 2. Data saldo harian valas tersedia di Core DB. |
+| **Alur** | : | 1. Treasury Officer mengakses menu Simulasi GDR. 2. Treasury Officer menekan tombol "Hitung Simulasi". 3. Sistem mengambil data saldo rata-rata valas dari Core DB (hasil kiriman TM via REST Report). 4. Sistem menghitung GDR per valuta menggunakan formula: GDR = Σ(Saldo Harian × Jumlah Hari Saldo Berlaku) / Total Hari Dalam Bulan. 5. Sistem menampilkan hasil simulasi dalam valuta asli dan ekuivalen IDR. 6. Treasury Officer dapat mengeksport hasil simulasi ke Excel untuk keperluan review. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi EOM GDR |
-| **Post kondisi** | : | Hasil simulasi GDR ditampilkan dan dapat dijadikan acuan sebelum eksekusi EOM resmi. |
+| **Post kondisi** | : | Hasil simulasi GDR ditampilkan dan dapat dieksport. Data simulasi tidak tersimpan ke database dan tidak memicu proses Eksekusi EOM. |
 
 #### 6.1.3. Use Case
 
 | **Given** | : | Data saldo rata-rata valas dari TM telah tersimpan di Core DB |
 |---|---|---|
-| **When** | : | Treasury Officer mengakses menu Simulasi GDR dan mengisi parameter periode serta kurs tengah estimasi |
-| **Then** | : | Sistem menampilkan hasil simulasi GDR per valuta, meliputi: saldo rata-rata dalam valuta asli, kurs tengah yang digunakan, dan nilai GDR dalam IDR. Hasil simulasi tidak tersimpan ke database utama dan tidak dikirimkan ke TM. |
+| **When** | : | Treasury Officer mengakses menu Simulasi GDR dan menekan tombol "Hitung Simulasi" |
+| **Then** | : | Sistem menghitung dan menampilkan hasil simulasi GDR per valuta, meliputi: saldo rata-rata dalam valuta asli dan nilai GDR dalam IDR. Treasury Officer dapat mengeksport hasilnya ke Excel. Hasil simulasi tidak tersimpan ke database dan tidak dikirimkan ke TM. |
 
-#### 6.1.4. Field Description — Simulasi GDR
+#### 6.1.4. Field Description — Output Simulasi GDR
+
+Berikut adalah kolom output yang ditampilkan setelah proses Hitung Simulasi:
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|
-| Periode Bulan/Tahun | Periode bulan yang disimulasikan | VARCHAR | M | Manual Input |
-| Kode Valuta | Filter kode valuta yang disimulasikan | VARCHAR | O | Dropdown |
-| Kurs Tengah Estimasi | Kurs tengah yang digunakan dalam simulasi | DECIMAL(18,4) | M | Manual Input |
-| Saldo Rata-rata | Rata-rata saldo harian dalam valuta asli (dari Core DB) | DECIMAL(18,4) | - | Core DB |
-| Total Hari Bulan | Jumlah hari dalam bulan yang disimulasikan | INTEGER | - | Calculated |
+| Kode Valuta | Kode mata uang yang dihitung | VARCHAR | - | Core DB |
+| Saldo Rata-rata | Rata-rata saldo harian dalam valuta asli | DECIMAL(18,4) | - | Core DB |
+| Total Hari Bulan | Jumlah hari dalam bulan yang dihitung | INTEGER | - | Calculated |
 | GDR Valuta | Hasil simulasi GDR dalam valuta asli | DECIMAL(18,4) | - | Calculated |
 | GDR IDR | Hasil simulasi GDR setelah dikonversi ke IDR | DECIMAL(18,4) | - | Calculated |
 
@@ -654,17 +652,15 @@ flowchart TD
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
-| Hitung Simulasi | Sistem menampilkan hasil simulasi GDR per valuta | Tidak menyimpan data ke database, hanya untuk preview |
-| Reset | Parameter simulasi dikosongkan | - |
-| Export Hasil Simulasi | File Excel berisi hasil simulasi GDR terunduh | Untuk keperluan review sebelum eksekusi EOM |
+| Hitung Simulasi | Sistem menghitung dan menampilkan hasil simulasi GDR per valuta | Tidak menyimpan data ke database, hanya untuk preview |
+| Export Hasil Simulasi | File Excel berisi hasil simulasi GDR terunduh | - |
 
 #### 6.1.6. Tabel Validasi — Simulasi GDR
 
 | **Case** | **Result** |
 |---|---|
-| Data saldo rata-rata dari TM belum tersedia di Core DB | "Data saldo rata-rata valas untuk periode [bulan/tahun] belum tersedia. Pastikan TM telah mengirimkan data melalui REST Report." |
-| Terdapat hari dalam bulan tanpa data saldo harian | "Terdapat [N] hari tanpa data saldo pada bulan [bulan/tahun]. Hasil simulasi mungkin tidak akurat." |
-| Kurs tengah estimasi bernilai 0 atau negatif | "Kurs tengah harus lebih besar dari 0." |
+| Data saldo rata-rata dari TM belum tersedia di Core DB | "Data saldo rata-rata valas belum tersedia. Pastikan TM telah mengirimkan data melalui REST Report." |
+| Terdapat hari dalam bulan tanpa data saldo harian | "Terdapat [N] hari tanpa data saldo. Hasil simulasi mungkin tidak akurat." |
 
 ---
 
