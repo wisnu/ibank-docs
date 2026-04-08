@@ -66,6 +66,8 @@ nav:
           - Design Plan: bcas/enhance_dormant/Design Plan.md
           - Use Case: bcas/enhance_dormant/Use Case Rekening Dormant.md
           - Screenshot Checklist: bcas/enhance_dormant/Screenshot Checklist.md
+      - Saku Valas:
+          - FSD - Saku Valas: bcas/saku_valas/fsd_sakuvalas.md
 
 markdown_extensions:
   - pymdownx.superfences:
