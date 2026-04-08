@@ -71,7 +71,7 @@ Ruko Surapati Core C-7 Bandung
 
 ### 1.1. Latar Belakang
 
-Dalam rangka mendukung pertumbuhan layanan perbankan syariah berbasis valuta asing, BCA Syariah (BCAS) menggunakan **Tought Machine (TM)** sebagai sistem utama yang menjalankan fitur Saku Valas. Pengembangan ini mencakup penguatan integrasi antara TM dengan sistem Core Banking BCAS (iBank), sehingga data jurnal valas serta saldo harian dan saldo rata-rata valas yang dihasilkan TM dapat diterima, diolah, dan dilaporkan secara akurat di sisi Core Banking. Cakupan pengembangan meliputi pengelolaan kurs valuta asing, penyediaan laporan valas yang komprehensif, verifikasi saldo buku besar (LBV), serta proses End of Month (EOM) untuk penghitungan Gross Daily Rate (GDR). Pengembangan ini bertujuan untuk meningkatkan efisiensi operasional, akurasi data valas, serta kepatuhan terhadap regulasi pelaporan keuangan yang berlaku.
+Dalam rangka mendukung pertumbuhan layanan perbankan syariah berbasis valuta asing, BCA Syariah (BCAS) menggunakan **Tought Machine (TM)** sebagai sistem utama yang menjalankan fitur Saku Valas. Pengembangan ini mencakup penguatan integrasi antara TM dengan sistem Core Banking BCAS (CBS), sehingga data jurnal valas serta saldo harian dan saldo rata-rata valas yang dihasilkan TM dapat diterima, diolah, dan dilaporkan secara akurat di sisi Core Banking. Cakupan pengembangan meliputi pengelolaan kurs valuta asing, penyediaan laporan valas yang komprehensif, verifikasi saldo buku besar (LBV), serta proses End of Month (EOM) untuk penghitungan Gross Daily Rate (GDR). Pengembangan ini bertujuan untuk meningkatkan efisiensi operasional, akurasi data valas, serta kepatuhan terhadap regulasi pelaporan keuangan yang berlaku.
 
 ### 1.2. Tujuan
 
@@ -137,13 +137,10 @@ Berikut ini adalah arsitektur sistem dari fitur Saku Valas BCAS:
 
 ```mermaid
 graph TB
-    subgraph TM["TM / Tought Machine (Sistem Utama Saku Valas)"]
-        RREPORT{{"REST Report\n(Saldo Harian & Saldo Rata-rata)"}}
-        RGL{{"REST GL\n(Jurnal Valas)"}}
-    end
+    TM(["TM / Tought Machine\n(Sistem Utama Saku Valas)"])
 
-    subgraph CORE["Aplikasi Core Banking BCAS (iBank)"]
-        subgraph FUNDING["Modul Funding"]
+    subgraph CORE["Aplikasi Core Banking BCAS (CBS)"]
+        subgraph FUNDING["Modul Core"]
             MK["Manajemen Kurs"]
             LLBV["Laporan LBV"]
             LTB["Laporan Trial Balance"]
@@ -152,17 +149,21 @@ graph TB
             SGDR["Simulasi GDR"]
             EOM["Eksekusi EOM"]
         end
+        RREPORT{{"REST Report\n(Saldo Harian & Saldo Rata-rata)"}}
+        RGL{{"REST GL\n(Jurnal Valas)"}}
         DB[("Core DB")]
     end
 
+    TM -->|"Saldo Harian &\nSaldo Rata-rata"| RREPORT
+    TM -->|"Jurnal Valas"| RGL
+    RREPORT --> DB
+    RGL --> DB
     MK & LLBV & LTB & LN & BB & SGDR & EOM --- DB
-    RREPORT -->|"Saldo Harian &\nSaldo Rata-rata"| DB
-    RGL -->|"Jurnal Valas"| DB
 ```
 
 **Keterangan:**
 
-Fitur Saku Valas utamanya berjalan di **Tought Machine (TM)**. **Modul Funding** pada Aplikasi Core Banking BCAS (iBank) berperan sebagai sistem penerima yang mengolah data yang dikirim oleh TM melalui dua endpoint REST API. Modul ini terdiri dari tujuh menu: Manajemen Kurs, Laporan LBV, Laporan Trial Balance, Laporan Neraca, Buku Besar, Simulasi GDR, dan Eksekusi EOM. Seluruh menu membaca dan menyimpan data ke **Core DB**.
+Fitur Saku Valas utamanya berjalan di **Tought Machine (TM)**. **Modul Funding** pada Aplikasi Core Banking BCAS (CBS) berperan sebagai sistem penerima yang mengolah data yang dikirim oleh TM melalui dua endpoint REST API. Modul ini terdiri dari tujuh menu: Manajemen Kurs, Laporan LBV, Laporan Trial Balance, Laporan Neraca, Buku Besar, Simulasi GDR, dan Eksekusi EOM. Seluruh menu membaca dan menyimpan data ke **Core DB**.
 
 Integrasi dari **TM ke Core Banking** dilakukan melalui dua endpoint REST API:
 - **REST Report** — TM mengirimkan saldo harian valas (setiap akhir hari kerja) dan saldo rata-rata valas (setiap akhir bulan) ke Core Banking, digunakan untuk LBV dan perhitungan GDR.
@@ -278,26 +279,16 @@ Keterangan pilihan pada field dropdown:
 Alur proses perubahan nilai kurs untuk valuta yang sudah terdaftar.
 
 ```mermaid
-block-beta
-    columns 3
-    space:3
-    block:header:3
-        col1["Accounting Officer"] col2["Sistem"] col3["Accounting Supervisor"]
-    end
-    space:3
-    A["Akses Menu\nManajemen Kurs"]:1 space:2
-    B["Pilih Valuta\ndari Daftar"]:1 space:2
-    C["Pilih 'Ubah Kurs'"]:1 space:2
-    D["Input Nilai\nKurs Baru"]:1 space:2
-    space:1 E{"Validasi Input"}:1 space:1
-    F["Submit untuk\nApproval"]:1 space:2
-    space:2 G["Review & Approve"]:1
-    space:1 H["Update Nilai Kurs"]:1 space:1
-    space:1 I["Histori Perubahan\nKurs Tersimpan"]:1 space:1
-    space:1 J["Konfirmasi Berhasil"]:1 space:1
-
-    A --> B --> C --> D --> E
-    E -->|"Valid"| F --> G --> H --> I --> J
+flowchart TD
+    A["[Accounting Officer] Akses Menu Manajemen Kurs"] --> B["Pilih Valuta dari Daftar"]
+    B --> C["Klik 'Buat Perubahan Kurs Baru'"]
+    C --> D["Sistem menampilkan Kurs Lama sebagai referensi"]
+    D --> E["Input Nilai Kurs Baru\n(kurs tengah, beli banknote, jual banknote,\nbeli transfer, jual transfer)"]
+    E --> F{"Validasi Input (Sistem)"}
+    F -->|Valid| G["Klik Simpan — Submit untuk Approval"]
+    G --> H["[Accounting Supervisor] Review & Approve"]
+    H --> I["Sistem update nilai kurs & simpan histori perubahan"]
+    F -->|Tidak Valid| E
 ```
 
 #### 3.2.2. Keterangan Alur Proses
