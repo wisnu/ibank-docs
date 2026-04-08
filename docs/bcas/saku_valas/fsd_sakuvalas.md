@@ -67,13 +67,13 @@ Ruko Surapati Core C-7 Bandung
 
 ---
 
-# 1. Gambaran Umum
+## 1. Gambaran Umum
 
-## 1.1. Latar Belakang
+### 1.1. Latar Belakang
 
 Dalam rangka mendukung pertumbuhan layanan perbankan syariah berbasis valuta asing, BCA Syariah (BCAS) memerlukan pengembangan fitur Saku Valas pada sistem perbankan inti. Fitur ini mencakup pengelolaan kurs valuta asing, penyediaan laporan valas yang komprehensif, verifikasi saldo buku besar (LBV), serta proses End of Month (EOM) untuk penghitungan Gross Daily Rate (GDR). Pengembangan ini bertujuan untuk meningkatkan efisiensi operasional, akurasi data valas, serta kepatuhan terhadap regulasi pelaporan keuangan yang berlaku.
 
-## 1.2. Tujuan
+### 1.2. Tujuan
 
 Berikut ini adalah tujuan pengembangan fitur Saku Valas pada sistem BCAS:
 
@@ -82,7 +82,7 @@ Berikut ini adalah tujuan pengembangan fitur Saku Valas pada sistem BCAS:
 - Meningkatkan integrasi saldo harian valas dengan sistem Treasury Management (TM) melalui mekanisme LBV.
 - Mengotomatisasi proses EOM untuk penghitungan GDR dari saldo valas dan saldo rata-rata yang terintegrasi dengan TM.
 
-## 1.3. Ruang Lingkup
+### 1.3. Ruang Lingkup
 
 Ruang lingkup pengembangan fitur Saku Valas pada sistem BCAS adalah sebagai berikut:
 
@@ -91,7 +91,7 @@ Ruang lingkup pengembangan fitur Saku Valas pada sistem BCAS adalah sebagai beri
 - **LBV (Ledger Balance Verification):** Enhance integrasi saldo harian dengan sistem TM.
 - **EOM Hitung GDR:** Enhance integrasi saldo rata-rata dengan TM dan enhance script EOM untuk penghitungan GDR dari saldo valas.
 
-## 1.4. Definisi
+### 1.4. Definisi
 
 Berikut adalah definisi dari beberapa istilah yang ada pada proses Saku Valas:
 
@@ -106,7 +106,7 @@ Berikut adalah definisi dari beberapa istilah yang ada pada proses Saku Valas:
 - **Neraca Valas:** Laporan posisi keuangan yang menyajikan aset, liabilitas, dan ekuitas dalam denominasi valas.
 - **CIF:** Customer Information File — nomor identifikasi unik nasabah di sistem core banking.
 
-## 1.5. Objektif
+### 1.5. Objektif
 
 - Dokumen ini disusun agar setiap pengguna dan pihak yang terlibat dalam proyek dapat memahami secara menyeluruh detail terkait fitur Saku Valas.
 - Seluruh ilustrasi/gambar pada dokumen ini digunakan semata-mata sebagai alat bantu untuk memudahkan pemahaman terhadap deskripsi field maupun alur proses/event.
@@ -114,7 +114,7 @@ Berikut adalah definisi dari beberapa istilah yang ada pada proses Saku Valas:
 - Dokumen ini merupakan dokumen fungsional yang dihasilkan dari proses pengumpulan kebutuhan bisnis (business requirement gathering) antara tim vendor (ISI) dan tim BCAS.
 - Dokumen ini akan terus diperbarui sesuai kebutuhan, dan setiap perubahan harus disetujui oleh setiap pihak (vendor dan BCAS) melalui tanda tangan perwakilan resmi dari masing-masing pihak.
 
-## 1.6. Pengguna
+### 1.6. Pengguna
 
 Berikut adalah pengguna fitur Saku Valas:
 
@@ -127,9 +127,9 @@ Berikut adalah pengguna fitur Saku Valas:
 
 ---
 
-# 2. Arsitektur Sistem
+## 2. Arsitektur Sistem
 
-## 2.1. Arsitektur Sistem
+### 2.1. Arsitektur Sistem
 
 Berikut ini adalah arsitektur sistem dari fitur Saku Valas BCAS:
 
@@ -169,9 +169,9 @@ Integrasi dengan sistem eksternal **Treasury Management (TM)** dilakukan melalui
 
 ---
 
-## 2.2. Spesifikasi Integrasi REST API
+### 2.2. Spesifikasi Integrasi REST API
 
-### 2.2.1. REST Report
+#### 2.2.1. REST Report
 
 | **Atribut** | **Keterangan** |
 |---|---|
@@ -182,7 +182,7 @@ Integrasi dengan sistem eksternal **Treasury Management (TM)** dilakukan melalui
 | **Format** | JSON |
 | **Digunakan Oleh** | Laporan LBV, Simulasi GDR, Eksekusi EOM |
 
-### 2.2.2. REST GL
+#### 2.2.2. REST GL
 
 | **Atribut** | **Keterangan** |
 |---|---|
@@ -195,11 +195,11 @@ Integrasi dengan sistem eksternal **Treasury Management (TM)** dilakukan melalui
 
 ---
 
-# 3. Manajemen Kurs
+## 3. Manajemen Kurs
 
-## 3.1. Penambahan Valuta Baru
+### 3.1. Penambahan Valuta Baru
 
-### 3.1.1. Alur Proses
+#### 3.1.1. Alur Proses
 
 Alur proses penambahan valuta baru pada fitur Manajemen Kurs.
 
@@ -214,7 +214,7 @@ flowchart TD
     G --> H["Konfirmasi Berhasil"]
 ```
 
-### 3.1.2. Keterangan Alur Proses
+#### 3.1.2. Keterangan Alur Proses
 
 | **Deskripsi** | : | Proses penambahan data valuta baru ke dalam sistem Saku Valas |
 |---|---|---|
@@ -224,20 +224,20 @@ flowchart TD
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai dengan Tabel Validasi Manajemen Kurs |
 | **Post kondisi** | : | Valuta baru berhasil tersimpan di database dan dapat digunakan dalam transaksi valas. |
 
-### 3.1.3. Use Case
+#### 3.1.3. Use Case
 
 | **Given** | : | User sudah berada pada halaman **Manajemen Kurs** |
 |---|---|---|
 | **When** | : | User menekan tombol "Tambah Valuta" dan mengisi form data valuta baru, kemudian menekan tombol "Submit". |
 | **Then** | : | Sistem memvalidasi seluruh input. Jika semua field valid, sistem mengirimkan data ke antrian approval. Jika ada field yang tidak valid, sistem menampilkan pesan error yang relevan dan tidak melanjutkan proses. Setelah approval dari Supervisor, data valuta baru tersimpan dan muncul pada daftar valuta aktif. |
 
-### 3.1.4. Mockup Penambahan Valuta Baru
+#### 3.1.4. Mockup Penambahan Valuta Baru
 
 {Lampirkan UI mockup form penambahan valuta baru}
 
 *Keterangan: Halaman ini menampilkan form input untuk mendaftarkan kode valuta baru beserta nilai kurs awal.*
 
-### 3.1.5. Field Description — Form Tambah Valuta Baru
+#### 3.1.5. Field Description — Form Tambah Valuta Baru
 
 Berikut adalah tabel field description pada halaman **Tambah Valuta Baru**:
 
@@ -258,7 +258,7 @@ Keterangan pilihan pada field dropdown:
 |---|---|
 | Status | Aktif, Nonaktif |
 
-### 3.1.6. Action — Penambahan Valuta Baru
+#### 3.1.6. Action — Penambahan Valuta Baru
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
@@ -267,7 +267,7 @@ Keterangan pilihan pada field dropdown:
 | Approve (Supervisor) | Valuta baru tersimpan di database dan muncul pada daftar valuta aktif | Hanya dapat dilakukan oleh user dengan role Treasury Supervisor |
 | Reject (Supervisor) | Data tidak tersimpan; sistem mengirimkan notifikasi penolakan ke Treasury Officer | Supervisor wajib mengisi alasan penolakan |
 
-### 3.1.7. Tabel Validasi — Penambahan Valuta Baru
+#### 3.1.7. Tabel Validasi — Penambahan Valuta Baru
 
 | **Case** | **Result** |
 |---|---|
@@ -281,9 +281,9 @@ Keterangan pilihan pada field dropdown:
 
 ---
 
-## 3.2. Perubahan Nilai Kurs
+### 3.2. Perubahan Nilai Kurs
 
-### 3.2.1. Alur Proses
+#### 3.2.1. Alur Proses
 
 Alur proses perubahan nilai kurs untuk valuta yang sudah terdaftar.
 
@@ -310,7 +310,7 @@ block-beta
     E -->|"Valid"| F --> G --> H --> I --> J
 ```
 
-### 3.2.2. Keterangan Alur Proses
+#### 3.2.2. Keterangan Alur Proses
 
 | **Deskripsi** | : | Proses pembaruan nilai kurs untuk valuta yang sudah terdaftar dalam sistem |
 |---|---|---|
@@ -320,20 +320,20 @@ block-beta
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai dengan Tabel Validasi Perubahan Kurs |
 | **Post kondisi** | : | Nilai kurs valuta berhasil diperbarui. Histori perubahan kurs tersimpan dan dapat diaudit. |
 
-### 3.2.3. Use Case
+#### 3.2.3. Use Case
 
 | **Given** | : | User sudah berada pada halaman **Manajemen Kurs** dan memilih salah satu valuta aktif |
 |---|---|---|
 | **When** | : | User menekan tombol "Ubah Kurs", mengisi nilai kurs baru, dan menekan tombol "Submit" |
 | **Then** | : | Sistem memvalidasi nilai kurs baru. Jika valid, sistem mengirim request approval ke Supervisor. Setelah disetujui, nilai kurs pada sistem diperbarui sesuai tanggal efektif yang ditentukan, dan data kurs lama tersimpan sebagai histori. |
 
-### 3.2.4. Mockup Perubahan Nilai Kurs
+#### 3.2.4. Mockup Perubahan Nilai Kurs
 
 {Lampirkan UI mockup form perubahan nilai kurs}
 
 *Keterangan: Halaman ini menampilkan daftar valuta aktif dan form untuk memperbarui nilai kurs beli, jual, dan tengah.*
 
-### 3.2.5. Field Description — Form Perubahan Kurs
+#### 3.2.5. Field Description — Form Perubahan Kurs
 
 Berikut adalah tabel field description pada halaman **Ubah Nilai Kurs**:
 
@@ -349,7 +349,7 @@ Berikut adalah tabel field description pada halaman **Ubah Nilai Kurs**:
 | Tanggal Efektif | Tanggal mulai berlakunya kurs baru | DATE | - | M | Manual Input / Date Picker |
 | Alasan Perubahan | Keterangan alasan perubahan kurs | VARCHAR | 200 | M | Manual Input |
 
-### 3.2.6. Action — Perubahan Nilai Kurs
+#### 3.2.6. Action — Perubahan Nilai Kurs
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
@@ -358,7 +358,7 @@ Berikut adalah tabel field description pada halaman **Ubah Nilai Kurs**:
 | Approve (Supervisor) | Nilai kurs diperbarui; histori kurs lama tersimpan di log | Hanya dapat dilakukan oleh user dengan role Treasury Supervisor |
 | Reject (Supervisor) | Nilai kurs tidak berubah; notifikasi dikirim ke Treasury Officer | Supervisor wajib mengisi alasan penolakan |
 
-### 3.2.7. Tabel Validasi — Perubahan Nilai Kurs
+#### 3.2.7. Tabel Validasi — Perubahan Nilai Kurs
 
 | **Case** | **Result** |
 |---|---|
@@ -371,11 +371,11 @@ Berikut adalah tabel field description pada halaman **Ubah Nilai Kurs**:
 
 ---
 
-# 4. Laporan Valas
+## 4. Laporan Valas
 
-## 4.1. Laporan Trial Balance Valas
+### 4.1. Laporan Trial Balance Valas
 
-### 4.1.1. Alur Proses
+#### 4.1.1. Alur Proses
 
 ```mermaid
 flowchart TD
@@ -386,7 +386,7 @@ flowchart TD
     E --> F["Opsi: Cetak / Export (PDF/Excel)"]
 ```
 
-### 4.1.2. Keterangan Alur Proses
+#### 4.1.2. Keterangan Alur Proses
 
 | **Deskripsi** | : | Proses pembuatan laporan Trial Balance Valas yang menampilkan saldo debet dan kredit seluruh akun valas pada periode tertentu |
 |---|---|---|
@@ -396,7 +396,7 @@ flowchart TD
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Laporan Valas |
 | **Post kondisi** | : | Laporan Trial Balance Valas berhasil ditampilkan dan/atau dieksport. |
 
-### 4.1.3. Field Description — Parameter & Output Trial Balance Valas
+#### 4.1.3. Field Description — Parameter & Output Trial Balance Valas
 
 Berikut adalah tabel field description untuk parameter input laporan **Trial Balance Valas**:
 
@@ -422,7 +422,7 @@ Berikut adalah kolom output yang ditampilkan pada laporan **Trial Balance Valas*
 | Saldo Akhir Kredit | Saldo kredit akhir periode | Calculated |
 | Ekuivalen IDR | Nilai ekuivalen dalam IDR berdasarkan kurs tengah | Calculated |
 
-### 4.1.4. Action — Trial Balance Valas
+#### 4.1.4. Action — Trial Balance Valas
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
@@ -431,7 +431,7 @@ Berikut adalah kolom output yang ditampilkan pada laporan **Trial Balance Valas*
 | Export Excel | File Excel (.xlsx) laporan Trial Balance Valas terunduh | Memuat seluruh data tanpa paginasi |
 | Reset | Seluruh parameter dikosongkan | Mengembalikan form ke kondisi awal |
 
-### 4.1.5. Tabel Validasi — Trial Balance Valas
+#### 4.1.5. Tabel Validasi — Trial Balance Valas
 
 | **Case** | **Result** |
 |---|---|
@@ -441,9 +441,9 @@ Berikut adalah kolom output yang ditampilkan pada laporan **Trial Balance Valas*
 
 ---
 
-## 4.2. Laporan Buku Besar Valas
+### 4.2. Laporan Buku Besar Valas
 
-### 4.2.1. Alur Proses
+#### 4.2.1. Alur Proses
 
 ```mermaid
 flowchart TD
@@ -454,7 +454,7 @@ flowchart TD
     E --> F["Opsi: Cetak / Export (PDF/Excel)"]
 ```
 
-### 4.2.2. Keterangan Alur Proses
+#### 4.2.2. Keterangan Alur Proses
 
 | **Deskripsi** | : | Proses pembuatan laporan Buku Besar Valas yang menampilkan detail seluruh transaksi valas per akun dalam suatu periode |
 |---|---|---|
@@ -464,7 +464,7 @@ flowchart TD
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Laporan Valas |
 | **Post kondisi** | : | Laporan Buku Besar Valas ditampilkan dengan detail transaksi dan saldo berjalan per akun. |
 
-### 4.2.3. Field Description — Parameter & Output Buku Besar Valas
+#### 4.2.3. Field Description — Parameter & Output Buku Besar Valas
 
 Berikut adalah tabel field description untuk parameter input laporan **Buku Besar Valas**:
 
@@ -487,7 +487,7 @@ Berikut adalah kolom output yang ditampilkan pada laporan **Buku Besar Valas**:
 | Saldo Berjalan | Saldo kumulatif setelah setiap transaksi | Calculated |
 | Ekuivalen IDR | Nilai ekuivalen IDR pada tanggal transaksi | Calculated |
 
-### 4.2.4. Action — Buku Besar Valas
+#### 4.2.4. Action — Buku Besar Valas
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
@@ -496,7 +496,7 @@ Berikut adalah kolom output yang ditampilkan pada laporan **Buku Besar Valas**:
 | Export Excel | File Excel laporan Buku Besar Valas terunduh | - |
 | Reset | Parameter dikosongkan ke kondisi awal | - |
 
-### 4.2.5. Tabel Validasi — Buku Besar Valas
+#### 4.2.5. Tabel Validasi — Buku Besar Valas
 
 | **Case** | **Result** |
 |---|---|
@@ -506,9 +506,9 @@ Berikut adalah kolom output yang ditampilkan pada laporan **Buku Besar Valas**:
 
 ---
 
-## 4.3. Laporan Neraca Valas
+### 4.3. Laporan Neraca Valas
 
-### 4.3.1. Alur Proses
+#### 4.3.1. Alur Proses
 
 ```mermaid
 flowchart TD
@@ -519,7 +519,7 @@ flowchart TD
     E --> F["Opsi: Cetak / Export (PDF/Excel)"]
 ```
 
-### 4.3.2. Keterangan Alur Proses
+#### 4.3.2. Keterangan Alur Proses
 
 | **Deskripsi** | : | Proses pembuatan Laporan Neraca Valas yang menampilkan posisi keuangan (aset, liabilitas, ekuitas) dalam denominasi valas pada tanggal tertentu |
 |---|---|---|
@@ -529,14 +529,14 @@ flowchart TD
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Laporan Valas |
 | **Post kondisi** | : | Laporan Neraca Valas berhasil ditampilkan dalam format yang terstruktur. |
 
-### 4.3.3. Field Description — Parameter & Output Neraca Valas
+#### 4.3.3. Field Description — Parameter & Output Neraca Valas
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Length** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|---|
 | Tanggal Posisi | Tanggal posisi neraca | DATE | - | M | Manual Input / Date Picker |
 | Kode Valuta | Filter berdasarkan valuta atau semua valuta | VARCHAR | 3 | O | Dropdown |
 
-### 4.3.4. Action — Neraca Valas
+#### 4.3.4. Action — Neraca Valas
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
@@ -545,7 +545,7 @@ flowchart TD
 | Export Excel | File Excel Neraca Valas terunduh | - |
 | Reset | Parameter dikosongkan | - |
 
-### 4.3.5. Tabel Validasi — Neraca Valas
+#### 4.3.5. Tabel Validasi — Neraca Valas
 
 | **Case** | **Result** |
 |---|---|
@@ -554,11 +554,11 @@ flowchart TD
 
 ---
 
-# 5. LBV (Ledger Balance Verification)
+## 5. LBV (Ledger Balance Verification)
 
-## 5.1. Laporan LBV
+### 5.1. Laporan LBV
 
-### 5.1.1. Alur Proses
+#### 5.1.1. Alur Proses
 
 ```mermaid
 flowchart TD
@@ -570,7 +570,7 @@ flowchart TD
     D --> E["[Finance Staff] Investigasi & Resolusi"]
 ```
 
-### 5.1.2. Keterangan Alur Proses
+#### 5.1.2. Keterangan Alur Proses
 
 | **Deskripsi** | : | Proses verifikasi saldo harian valas yang diterima dari TM melalui REST Report, dibandingkan dengan saldo pada Core DB |
 |---|---|---|
@@ -580,14 +580,14 @@ flowchart TD
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi LBV |
 | **Post kondisi** | : | Saldo harian valas berhasil diverifikasi dan status integrasi dengan TM tercatat di sistem. |
 
-### 5.1.3. Use Case
+#### 5.1.3. Use Case
 
 | **Given** | : | Proses LBV terjadwal telah dieksekusi dan terdapat perbedaan saldo antara Core Banking dan TM |
 |---|---|---|
 | **When** | : | Finance Staff mengakses dashboard LBV dan memilih record yang berstatus "Selisih" |
 | **Then** | : | Sistem menampilkan detail discrepancy per akun dan per valuta, termasuk nilai saldo di Core Banking, nilai saldo di TM, dan selisihnya. Finance Staff dapat melakukan flag untuk investigasi lebih lanjut atau eskalasi kepada Supervisor. |
 
-### 5.1.4. Field Description — Dashboard LBV
+#### 5.1.4. Field Description — Dashboard LBV
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|
@@ -600,7 +600,7 @@ flowchart TD
 | Waktu Proses | Timestamp eksekusi proses LBV | DATETIME | - | System |
 | Keterangan Error | Pesan error jika proses gagal | VARCHAR | O | System |
 
-### 5.1.5. Action — LBV
+#### 5.1.5. Action — LBV
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
@@ -609,7 +609,7 @@ flowchart TD
 | Export Laporan LBV | File Excel berisi hasil verifikasi saldo harian terunduh | - |
 | Flag Investigasi | Record discrepancy ditandai untuk ditindaklanjuti | Dikirimkan notifikasi ke Supervisor |
 
-### 5.1.6. Tabel Validasi — LBV
+#### 5.1.6. Tabel Validasi — LBV
 
 | **Case** | **Result** |
 |---|---|
@@ -620,11 +620,11 @@ flowchart TD
 
 ---
 
-# 6. EOM Hitung GDR
+## 6. EOM Hitung GDR
 
-## 6.1. Simulasi GDR
+### 6.1. Simulasi GDR
 
-### 6.1.1. Alur Proses
+#### 6.1.1. Alur Proses
 
 ```mermaid
 flowchart TD
@@ -639,7 +639,7 @@ flowchart TD
     F -->|Tidak| B
 ```
 
-### 6.1.2. Keterangan Alur Proses
+#### 6.1.2. Keterangan Alur Proses
 
 | **Deskripsi** | : | Proses simulasi perhitungan GDR sebelum eksekusi EOM resmi, menggunakan data saldo rata-rata yang diterima dari TM melalui REST Report |
 |---|---|---|
@@ -649,14 +649,14 @@ flowchart TD
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi EOM GDR |
 | **Post kondisi** | : | Hasil simulasi GDR ditampilkan dan dapat dijadikan acuan sebelum eksekusi EOM resmi. |
 
-### 6.1.3. Use Case
+#### 6.1.3. Use Case
 
 | **Given** | : | Data saldo rata-rata valas dari TM telah tersimpan di Core DB |
 |---|---|---|
 | **When** | : | Treasury Officer mengakses menu Simulasi GDR dan mengisi parameter periode serta kurs tengah estimasi |
 | **Then** | : | Sistem menampilkan hasil simulasi GDR per valuta, meliputi: saldo rata-rata dalam valuta asli, kurs tengah yang digunakan, dan nilai GDR dalam IDR. Hasil simulasi tidak tersimpan ke database utama dan tidak dikirimkan ke TM. |
 
-### 6.1.4. Field Description — Simulasi GDR
+#### 6.1.4. Field Description — Simulasi GDR
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|
@@ -668,7 +668,7 @@ flowchart TD
 | GDR Valuta | Hasil simulasi GDR dalam valuta asli | DECIMAL(18,4) | - | Calculated |
 | GDR IDR | Hasil simulasi GDR setelah dikonversi ke IDR | DECIMAL(18,4) | - | Calculated |
 
-### 6.1.5. Action — Simulasi GDR
+#### 6.1.5. Action — Simulasi GDR
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
@@ -676,7 +676,7 @@ flowchart TD
 | Reset | Parameter simulasi dikosongkan | - |
 | Export Hasil Simulasi | File Excel berisi hasil simulasi GDR terunduh | Untuk keperluan review sebelum eksekusi EOM |
 
-### 6.1.6. Tabel Validasi — Simulasi GDR
+#### 6.1.6. Tabel Validasi — Simulasi GDR
 
 | **Case** | **Result** |
 |---|---|
@@ -686,9 +686,9 @@ flowchart TD
 
 ---
 
-## 6.2. Eksekusi EOM
+### 6.2. Eksekusi EOM
 
-### 6.2.1. Alur Proses
+#### 6.2.1. Alur Proses
 
 ```mermaid
 flowchart TD
@@ -706,7 +706,7 @@ flowchart TD
     I --> A
 ```
 
-### 6.2.2. Keterangan Alur Proses
+#### 6.2.2. Keterangan Alur Proses
 
 | **Deskripsi** | : | Proses eksekusi EOM resmi untuk menghitung Gross Daily Rate (GDR) dari data saldo valas harian dan jurnal valas yang diterima dari TM |
 |---|---|---|
@@ -716,14 +716,14 @@ flowchart TD
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Eksekusi EOM |
 | **Post kondisi** | : | GDR seluruh valuta berhasil dihitung, disetujui, disimpan di Core DB, dan laporan GDR tersedia untuk diakses. |
 
-### 6.2.3. Use Case
+#### 6.2.3. Use Case
 
 | **Given** | : | EOM Script telah dieksekusi dan hasil perhitungan GDR tersedia di Core DB |
 |---|---|---|
 | **When** | : | Treasury Supervisor mengakses halaman Review GDR EOM |
 | **Then** | : | Sistem menampilkan ringkasan GDR per valuta, mencakup: saldo rata-rata dalam valuta asli, kurs tengah EOM yang digunakan, nilai GDR dalam IDR. Supervisor dapat menyetujui atau meminta recalculation jika terdapat data yang perlu dikoreksi. |
 
-### 6.2.4. Field Description — Eksekusi EOM GDR
+#### 6.2.4. Field Description — Eksekusi EOM GDR
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|
@@ -736,7 +736,7 @@ flowchart TD
 | GDR IDR | Nilai GDR setelah dikonversi ke IDR | DECIMAL(18,4) | - | Calculated |
 | Status Approval | Status persetujuan Supervisor | VARCHAR | - | System |
 
-### 6.2.5. Action — Eksekusi EOM GDR
+#### 6.2.5. Action — Eksekusi EOM GDR
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
@@ -746,7 +746,7 @@ flowchart TD
 | Recalculate | Sistem menjalankan ulang perhitungan GDR | Digunakan jika terdapat koreksi data saldo harian |
 | Export Laporan GDR | File Excel berisi hasil GDR EOM terunduh | - |
 
-### 6.2.6. Tabel Validasi — Eksekusi EOM GDR
+#### 6.2.6. Tabel Validasi — Eksekusi EOM GDR
 
 | **Case** | **Result** |
 |---|---|
@@ -759,9 +759,9 @@ flowchart TD
 
 ---
 
-# 7. Pengaturan Umum
+## 7. Pengaturan Umum
 
-## 7.1. Pengaturan
+### 7.1. Pengaturan
 
 Pengaturan umum pada aplikasi Saku Valas adalah sebagai berikut:
 
@@ -778,9 +778,9 @@ Pengaturan umum pada aplikasi Saku Valas adalah sebagai berikut:
 
 ---
 
-# 8. Persetujuan Dokumen
+## 8. Persetujuan Dokumen
 
-## Persetujuan Dokumen BCA Syariah
+### Persetujuan Dokumen BCA Syariah
 
 | **PT Bank BCA Syariah** | | |
 |---|---|---|
@@ -789,7 +789,7 @@ Pengaturan umum pada aplikasi Saku Valas adalah sebagai berikut:
 | {Role/Jabatan} | {Role/Jabatan} | {Role/Jabatan} |
 | {DD/MM/YYYY} | {DD/MM/YYYY} | {DD/MM/YYYY} |
 
-## Persetujuan Dokumen ISI
+### Persetujuan Dokumen ISI
 
 | **PT Ihsan Solusi Informatika** | | |
 |---|---|---|
@@ -800,66 +800,66 @@ Pengaturan umum pada aplikasi Saku Valas adalah sebagai berikut:
 
 ---
 
-# 9. Lampiran
+## 9. Lampiran
 
-## Lampiran A. Screenshot Manajemen Kurs
+### Lampiran A. Screenshot Manajemen Kurs
 
-### A.1. Menu Navigasi Daftar Valuta
+#### A.1. Menu Navigasi Daftar Valuta
 
 ![Menu navigasi menuju Daftar Valuta pada Data Master Accounting](assets/fsd_sakuvalas_kurs_01.png)
 
-### A.2. Halaman Daftar Valuta
+#### A.2. Halaman Daftar Valuta
 
 ![Halaman daftar valuta aktif beserta kode, nama singkat, nama lengkap, dan keterangan](assets/fsd_sakuvalas_kurs_02.png)
 
-### A.3. Form Ubah Data Valuta
+#### A.3. Form Ubah Data Valuta
 
 ![Form Ubah Data Valuta untuk mengubah detail informasi valuta yang terdaftar](assets/fsd_sakuvalas_kurs_03.png)
 
-### A.4. Form Buat Perubahan Kurs Baru
+#### A.4. Form Buat Perubahan Kurs Baru
 
 ![Form Buat Perubahan Kurs Baru menampilkan kurs lama sebagai referensi dan kolom input kurs baru](assets/fsd_sakuvalas_kurs_04.png)
 
 ---
 
-## Lampiran B. Screenshot Laporan Valas
+### Lampiran B. Screenshot Laporan Valas
 
-### B.1. Form Parameter Laporan Trial Balance
+#### B.1. Form Parameter Laporan Trial Balance
 
 ![Form parameter input Laporan Trial Balance Jurnal dengan filter periode, valuta, dan cabang](assets/fsd_sakuvalas_trialbalance_01.png)
 
-### B.2. Output Laporan Trial Balance
+#### B.2. Output Laporan Trial Balance
 
 ![Output laporan Trial Balance menampilkan saldo, debet, kredit, dan kurs revaluasi per akun valas](assets/fsd_sakuvalas_trialbalance_02.png)
 
-### B.3. Halaman Buku Besar Valas
+#### B.3. Halaman Buku Besar Valas
 
 ![Halaman Buku Besar dengan filter valuta, cabang, kode GL, dan periode, serta tombol Export XLS](assets/fsd_sakuvalas_bukubesar_01.png)
 
-### B.4. Form Parameter Laporan Neraca Valas
+#### B.4. Form Parameter Laporan Neraca Valas
 
 ![Form Download Data Neraca / Laba Rugi dengan filter jenis laporan, tanggal, cabang, dan valuta](assets/fsd_sakuvalas_neraca_01.png)
 
 ---
 
-## Lampiran C. Screenshot Ledger Balance Verification (LBV)
+### Lampiran C. Screenshot Ledger Balance Verification (LBV)
 
-### C.1. Menu Akses Ledger Balance Verification (LBV)
+#### C.1. Menu Akses Ledger Balance Verification (LBV)
 
 ![Menu Laporan menampilkan pilihan Laporan Proofing Saldo Produk vs GL](assets/fsd_sakuvalas_LBV_05.png)
 
-### C.2. Form Ledger Balance Verification
+#### C.2. Form Ledger Balance Verification
 
 ![Form Proofing Saldo dengan parameter tanggal, cabang, dan valuta](assets/fsd_sakuvalas_LBV_06.png)
 
-### C.3. Output Hasil Ledger Balance Verification
+#### C.3. Output Hasil Ledger Balance Verification
 
 ![Output LBV dalam format Excel menampilkan perbandingan Nominative Balance vs GL Balance beserta selisih per GL dan valuta](assets/fsd_sakuvalas_LBV_07.png)
 
 ---
 
-## Lampiran D. Screenshot Simulasi GDR & Eksekusi EOM
+### Lampiran D. Screenshot Simulasi GDR & Eksekusi EOM
 
-### D.1. Halaman Simulasi GDR dan Daftar Bagi Hasil
+#### D.1. Halaman Simulasi GDR dan Daftar Bagi Hasil
 
 ![Halaman Simulasi GDR menampilkan ringkasan saldo rata-rata, GDR, dan daftar bagi hasil per produk valas](assets/fsd_sakuvalas_simulasi_gdr_01.png)
