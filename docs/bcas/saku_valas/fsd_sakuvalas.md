@@ -614,9 +614,8 @@ flowchart TD
     DB --> A["[Treasury Officer] Akses Menu Simulasi GDR"]
     A --> B["Klik Hitung Simulasi"]
     B --> C["Sistem Hitung GDR"]
-    C --> D["Konversi GDR ke IDR"]
-    D --> E["Tampilkan Hasil Simulasi"]
-    E --> F["Opsi: Export Hasil Simulasi (Excel)"]
+    C --> D["Tampilkan Hasil Simulasi"]
+    D --> E["Opsi: Export Hasil Simulasi (Excel)"]
 ```
 
 #### 6.1.2. Keterangan Alur Proses
@@ -624,7 +623,7 @@ flowchart TD
 | **Deskripsi** | : | Proses simulasi perhitungan GDR menggunakan data saldo rata-rata yang diterima dari TM melalui REST Report. Treasury Officer cukup mengklik tombol "Hitung Simulasi" tanpa perlu menginput parameter apapun. Simulasi bersifat preview saja dan tidak terhubung ke proses Eksekusi EOM. |
 |---|---|---|
 | **User** | : | Treasury Officer |
-| **Pre kondisi** | : | 1. TM telah mengirimkan data saldo rata-rata bulan berjalan ke endpoint REST Report. 2. Data saldo harian valas tersedia di Core DB. |
+| **Pre kondisi** | : | TM telah mengirimkan data saldo rata-rata bulan berjalan ke endpoint REST Report dan tersimpan di Core DB. |
 | **Alur** | : | 1. Treasury Officer mengakses menu Simulasi GDR. 2. Treasury Officer menekan tombol "Hitung Simulasi". 3. Sistem mengambil data saldo rata-rata valas dari Core DB (hasil kiriman TM via REST Report). 4. Sistem menghitung GDR. 5. Sistem menampilkan hasil simulasi. 6. Treasury Officer dapat mengeksport hasil simulasi ke Excel untuk keperluan review. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi EOM GDR |
 | **Post kondisi** | : | Hasil simulasi GDR ditampilkan dan dapat dieksport. Data simulasi tidak tersimpan ke database dan tidak memicu proses Eksekusi EOM. |
