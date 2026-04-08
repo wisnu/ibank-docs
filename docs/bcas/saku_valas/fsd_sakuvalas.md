@@ -234,39 +234,32 @@ flowchart TD
 
 #### 3.1.4. Mockup Penambahan Valuta Baru
 
-{Lampirkan UI mockup form penambahan valuta baru}
-
-*Keterangan: Halaman ini menampilkan form input untuk mendaftarkan kode valuta baru beserta nilai kurs awal.*
+*Lihat screenshot terkait pada [Lampiran — Screenshot Manajemen Kurs](#9-lampiran).*
 
 #### 3.1.5. Field Description — Form Tambah Valuta Baru
 
-Berikut adalah tabel field description pada halaman **Tambah Valuta Baru**:
+Berikut adalah tabel field description pada form **Tambah / Ubah Data Valuta**:
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Length** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|---|
-| Kode Valuta | Kode ISO 4217 mata uang (contoh: USD, SGD, MYR) | VARCHAR | 3 | M | Manual Input |
-| Nama Valuta | Nama lengkap mata uang (contoh: US Dollar) | VARCHAR | 50 | M | Manual Input |
-| Kurs Beli | Nilai kurs beli terhadap IDR | DECIMAL(18,4) | - | M | Manual Input |
-| Kurs Jual | Nilai kurs jual terhadap IDR | DECIMAL(18,4) | - | M | Manual Input |
-| Kurs Tengah | Nilai kurs tengah, dihitung otomatis: (Kurs Beli + Kurs Jual) / 2 | DECIMAL(18,4) | - | - | Auto-calculate |
-| Tanggal Efektif | Tanggal mulai berlakunya kurs | DATE | - | M | Manual Input / Date Picker |
-| Status | Status aktif/nonaktif valuta | VARCHAR | 10 | M | Dropdown |
-| Keterangan | Catatan tambahan terkait valuta | VARCHAR | 200 | O | Manual Input |
+| Kode Valuta | Kode ISO 4217 mata uang (contoh: USD, AUD, EUR) | VARCHAR | 3 | M | Manual Input (read-only saat ubah) |
+| Valuta Default | Menandai apakah valuta ini adalah valuta default sistem | BOOLEAN | - | M | Dropdown (True / False) |
+| Nama Singkat | Nama singkat valuta (contoh: AUD, USD) | VARCHAR | 10 | M | Manual Input |
+| Nama Lengkap | Nama lengkap valuta (contoh: AUSTRALIAN DOLLAR) | VARCHAR | 100 | M | Manual Input |
+| Keterangan | Keterangan tambahan terkait valuta | VARCHAR | 200 | O | Manual Input |
 
 Keterangan pilihan pada field dropdown:
 
 | **Field** | **Option Dropdown** |
 |---|---|
-| Status | Aktif, Nonaktif |
+| Valuta Default | True, False |
 
 #### 3.1.6. Action — Penambahan Valuta Baru
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
-| Submit | Sistem mengirimkan data ke antrian approval Supervisor | Tombol aktif setelah seluruh field mandatory terisi dan valid |
-| Reset | Seluruh field dikosongkan kembali ke kondisi awal | Membatalkan input tanpa menyimpan data |
-| Approve (Supervisor) | Valuta baru tersimpan di database dan muncul pada daftar valuta aktif | Hanya dapat dilakukan oleh user dengan role Accounting Supervisor |
-| Reject (Supervisor) | Data tidak tersimpan; sistem mengirimkan notifikasi penolakan ke Accounting Officer | Supervisor wajib mengisi alasan penolakan |
+| Simpan | Data valuta tersimpan ke database dan muncul pada Daftar Valuta | - |
+| Batal | Form ditutup tanpa menyimpan perubahan | - |
 
 #### 3.1.7. Tabel Validasi — Penambahan Valuta Baru
 
@@ -274,11 +267,7 @@ Keterangan pilihan pada field dropdown:
 |---|---|
 | Kode valuta sudah terdaftar di sistem | "Kode valuta [XXX] sudah terdaftar. Silakan gunakan kode yang berbeda." |
 | Kode valuta tidak sesuai format ISO 4217 (bukan 3 karakter alfabetik) | "Kode valuta harus terdiri dari 3 karakter huruf (ISO 4217)." |
-| Kurs Beli atau Kurs Jual bernilai 0 atau negatif | "Nilai kurs harus lebih besar dari 0." |
-| Kurs Beli lebih besar dari Kurs Jual | "Kurs Beli tidak boleh lebih besar dari Kurs Jual." |
-| Tanggal Efektif lebih kecil dari tanggal hari ini | "Tanggal Efektif tidak boleh lebih kecil dari tanggal hari ini." |
 | Field mandatory tidak diisi | "Field [nama field] wajib diisi." |
-| Timeout koneksi ke database saat penyimpanan | "Terjadi kesalahan sistem. Silakan coba kembali atau hubungi administrator." |
 
 ---
 
@@ -317,7 +306,7 @@ block-beta
 |---|---|---|
 | **User** | : | Accounting Officer (input), Accounting Supervisor (approval) |
 | **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. User memiliki role Accounting Officer. 3. Valuta yang akan diubah kursnya sudah terdaftar dan berstatus Aktif. |
-| **Alur** | : | 1. Accounting Officer mengakses menu Manajemen Kurs. 2. Sistem menampilkan daftar valuta aktif. 3. Accounting Officer memilih valuta yang akan diubah kursnya. 4. Accounting Officer menekan tombol "Ubah Kurs". 5. Sistem menampilkan form perubahan kurs dengan nilai kurs terkini sebagai referensi. 6. Accounting Officer mengisi nilai kurs baru dan tanggal efektif. 7. Sistem melakukan validasi input. 8. Accounting Officer menekan "Submit". 9. Accounting Supervisor melakukan review dan approval. 10. Sistem memperbarui nilai kurs dan menyimpan histori perubahan. |
+| **Alur** | : | 1. Accounting Officer mengakses menu Manajemen Kurs. 2. Sistem menampilkan daftar valuta aktif. 3. Accounting Officer memilih valuta yang akan diubah kursnya. 4. Accounting Officer menekan tombol "Ubah Kurs". 5. Sistem menampilkan form perubahan kurs dengan nilai kurs terkini sebagai referensi. 6. Accounting Officer mengisi nilai kurs baru. 7. Sistem melakukan validasi input. 8. Accounting Officer menekan "Submit". 9. Accounting Supervisor melakukan review dan approval. 10. Sistem memperbarui nilai kurs dan menyimpan histori perubahan. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai dengan Tabel Validasi Perubahan Kurs |
 | **Post kondisi** | : | Nilai kurs valuta berhasil diperbarui. Histori perubahan kurs tersimpan dan dapat diaudit. |
 
@@ -347,8 +336,6 @@ Berikut adalah tabel field description pada halaman **Ubah Nilai Kurs**:
 | Kurs Beli Baru | Nilai kurs beli yang baru | DECIMAL(18,4) | - | M | Manual Input |
 | Kurs Jual Baru | Nilai kurs jual yang baru | DECIMAL(18,4) | - | M | Manual Input |
 | Kurs Tengah Baru | Nilai kurs tengah baru, dihitung otomatis | DECIMAL(18,4) | - | - | Auto-calculate |
-| Tanggal Efektif | Tanggal mulai berlakunya kurs baru | DATE | - | M | Manual Input / Date Picker |
-| Alasan Perubahan | Keterangan alasan perubahan kurs | VARCHAR | 200 | M | Manual Input |
 
 #### 3.2.6. Action — Perubahan Nilai Kurs
 
@@ -366,7 +353,6 @@ Berikut adalah tabel field description pada halaman **Ubah Nilai Kurs**:
 | Kurs Beli Baru atau Kurs Jual Baru bernilai 0 atau negatif | "Nilai kurs harus lebih besar dari 0." |
 | Kurs Beli Baru lebih besar dari Kurs Jual Baru | "Kurs Beli tidak boleh lebih besar dari Kurs Jual." |
 | Nilai kurs baru sama dengan nilai kurs yang sedang berlaku | "Nilai kurs baru tidak boleh sama dengan nilai kurs yang sedang berlaku." |
-| Tanggal Efektif lebih kecil dari tanggal hari ini | "Tanggal Efektif tidak boleh lebih kecil dari tanggal hari ini." |
 | Field mandatory tidak diisi | "Field [nama field] wajib diisi." |
 | Valuta berstatus Nonaktif | "Kurs valuta nonaktif tidak dapat diubah." |
 
