@@ -120,8 +120,10 @@ Berikut adalah pengguna fitur Saku Valas:
 
 | **No** | **Role** | **Deskripsi** |
 |---|---|---|
-| 1 | Treasury Officer | Petugas treasury yang bertanggung jawab atas pengelolaan kurs valas, termasuk penambahan valuta baru dan pembaruan nilai kurs harian. Dapat mengakses menu Manajemen Kurs dan EOM Hitung GDR. |
-| 2 | Treasury Supervisor | Supervisor treasury yang melakukan approval atas perubahan kurs dan hasil hitung GDR. Dapat mengakses seluruh menu valas termasuk fungsi approval. |
+| 1 | Accounting Officer | Petugas accounting yang bertanggung jawab atas pengelolaan kurs valas, termasuk penambahan valuta baru dan pembaruan nilai kurs. Dapat mengakses menu Manajemen Kurs. |
+| 2 | Accounting Supervisor | Supervisor accounting yang melakukan approval atas perubahan kurs dan penambahan valuta baru. Dapat mengakses seluruh menu Manajemen Kurs termasuk fungsi approval. |
+| 3 | Treasury Officer | Petugas treasury yang bertanggung jawab atas proses EOM dan simulasi GDR valas. Dapat mengakses menu Simulasi GDR dan Eksekusi EOM. |
+| 4 | Treasury Supervisor | Supervisor treasury yang melakukan approval atas hasil hitung GDR. Dapat mengakses menu EOM Hitung GDR termasuk fungsi approval. |
 | 3 | Finance & Accounting Staff | Staf keuangan yang bertanggung jawab menghasilkan dan memverifikasi laporan valas (Trial Balance, Buku Besar, Neraca). Dapat mengakses menu Laporan Valas dan LBV. |
 | 4 | System Administrator | Administrator sistem yang mengelola konfigurasi integrasi antara core banking dan sistem TM. Dapat mengakses seluruh menu termasuk pengaturan integrasi. |
 
@@ -204,11 +206,11 @@ Alur proses penambahan valuta baru pada fitur Manajemen Kurs.
 
 ```mermaid
 flowchart TD
-    A["[Treasury Officer] Akses Menu Manajemen Kurs"] --> B["Pilih 'Tambah Valuta'"]
+    A["[Accounting Officer] Akses Menu Manajemen Kurs"] --> B["Pilih 'Tambah Valuta'"]
     B --> C["Input Data Valuta Baru"]
     C --> D{"Validasi Input (Sistem)"}
     D -->|Valid| E["Submit untuk Approval"]
-    E --> F["[Treasury Supervisor] Review & Approve"]
+    E --> F["[Accounting Supervisor] Review & Approve"]
     F --> G["Sistem Simpan Data Valuta"]
     G --> H["Konfirmasi Berhasil"]
 ```
@@ -217,9 +219,9 @@ flowchart TD
 
 | **Deskripsi** | : | Proses penambahan data valuta baru ke dalam sistem Saku Valas |
 |---|---|---|
-| **User** | : | Treasury Officer (input), Treasury Supervisor (approval) |
-| **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. User memiliki role Treasury Officer. 3. Valuta yang akan ditambahkan belum terdaftar di sistem. |
-| **Alur** | : | 1. Treasury Officer mengakses menu Manajemen Kurs. 2. Treasury Officer memilih tombol "Tambah Valuta". 3. Sistem menampilkan form input data valuta baru. 4. Treasury Officer mengisi seluruh field yang tersedia (kode valuta, nama valuta, nilai kurs beli, nilai kurs jual). 5. Sistem melakukan validasi input secara real-time. 6. Treasury Officer menekan tombol "Submit". 7. Sistem mengirimkan notifikasi kepada Treasury Supervisor untuk approval. 8. Treasury Supervisor menyetujui atau menolak penambahan valuta. 9. Jika disetujui, sistem menyimpan data valuta baru dan menampilkan konfirmasi. |
+| **User** | : | Accounting Officer (input), Accounting Supervisor (approval) |
+| **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. User memiliki role Accounting Officer. 3. Valuta yang akan ditambahkan belum terdaftar di sistem. |
+| **Alur** | : | 1. Accounting Officer mengakses menu Manajemen Kurs. 2. Accounting Officer memilih tombol "Tambah Valuta". 3. Sistem menampilkan form input data valuta baru. 4. Accounting Officer mengisi seluruh field yang tersedia (kode valuta, nama valuta, nilai kurs beli, nilai kurs jual). 5. Sistem melakukan validasi input secara real-time. 6. Accounting Officer menekan tombol "Submit". 7. Sistem mengirimkan notifikasi kepada Accounting Supervisor untuk approval. 8. Accounting Supervisor menyetujui atau menolak penambahan valuta. 9. Jika disetujui, sistem menyimpan data valuta baru dan menampilkan konfirmasi. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai dengan Tabel Validasi Manajemen Kurs |
 | **Post kondisi** | : | Valuta baru berhasil tersimpan di database dan dapat digunakan dalam transaksi valas. |
 
@@ -263,8 +265,8 @@ Keterangan pilihan pada field dropdown:
 |---|---|---|
 | Submit | Sistem mengirimkan data ke antrian approval Supervisor | Tombol aktif setelah seluruh field mandatory terisi dan valid |
 | Reset | Seluruh field dikosongkan kembali ke kondisi awal | Membatalkan input tanpa menyimpan data |
-| Approve (Supervisor) | Valuta baru tersimpan di database dan muncul pada daftar valuta aktif | Hanya dapat dilakukan oleh user dengan role Treasury Supervisor |
-| Reject (Supervisor) | Data tidak tersimpan; sistem mengirimkan notifikasi penolakan ke Treasury Officer | Supervisor wajib mengisi alasan penolakan |
+| Approve (Supervisor) | Valuta baru tersimpan di database dan muncul pada daftar valuta aktif | Hanya dapat dilakukan oleh user dengan role Accounting Supervisor |
+| Reject (Supervisor) | Data tidak tersimpan; sistem mengirimkan notifikasi penolakan ke Accounting Officer | Supervisor wajib mengisi alasan penolakan |
 
 #### 3.1.7. Tabel Validasi — Penambahan Valuta Baru
 
@@ -291,7 +293,7 @@ block-beta
     columns 3
     space:3
     block:header:3
-        col1["Treasury Officer"] col2["Sistem"] col3["Treasury Supervisor"]
+        col1["Accounting Officer"] col2["Sistem"] col3["Accounting Supervisor"]
     end
     space:3
     A["Akses Menu\nManajemen Kurs"]:1 space:2
@@ -313,9 +315,9 @@ block-beta
 
 | **Deskripsi** | : | Proses pembaruan nilai kurs untuk valuta yang sudah terdaftar dalam sistem |
 |---|---|---|
-| **User** | : | Treasury Officer (input), Treasury Supervisor (approval) |
-| **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. User memiliki role Treasury Officer. 3. Valuta yang akan diubah kursnya sudah terdaftar dan berstatus Aktif. |
-| **Alur** | : | 1. Treasury Officer mengakses menu Manajemen Kurs. 2. Sistem menampilkan daftar valuta aktif. 3. Treasury Officer memilih valuta yang akan diubah kursnya. 4. Treasury Officer menekan tombol "Ubah Kurs". 5. Sistem menampilkan form perubahan kurs dengan nilai kurs terkini sebagai referensi. 6. Treasury Officer mengisi nilai kurs baru dan tanggal efektif. 7. Sistem melakukan validasi input. 8. Treasury Officer menekan "Submit". 9. Treasury Supervisor melakukan review dan approval. 10. Sistem memperbarui nilai kurs dan menyimpan histori perubahan. |
+| **User** | : | Accounting Officer (input), Accounting Supervisor (approval) |
+| **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. User memiliki role Accounting Officer. 3. Valuta yang akan diubah kursnya sudah terdaftar dan berstatus Aktif. |
+| **Alur** | : | 1. Accounting Officer mengakses menu Manajemen Kurs. 2. Sistem menampilkan daftar valuta aktif. 3. Accounting Officer memilih valuta yang akan diubah kursnya. 4. Accounting Officer menekan tombol "Ubah Kurs". 5. Sistem menampilkan form perubahan kurs dengan nilai kurs terkini sebagai referensi. 6. Accounting Officer mengisi nilai kurs baru dan tanggal efektif. 7. Sistem melakukan validasi input. 8. Accounting Officer menekan "Submit". 9. Accounting Supervisor melakukan review dan approval. 10. Sistem memperbarui nilai kurs dan menyimpan histori perubahan. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai dengan Tabel Validasi Perubahan Kurs |
 | **Post kondisi** | : | Nilai kurs valuta berhasil diperbarui. Histori perubahan kurs tersimpan dan dapat diaudit. |
 
@@ -354,8 +356,8 @@ Berikut adalah tabel field description pada halaman **Ubah Nilai Kurs**:
 |---|---|---|
 | Submit | Sistem mengirimkan data perubahan kurs ke antrian approval Supervisor | Tombol aktif setelah seluruh field mandatory terisi dan valid |
 | Batal | Sistem kembali ke halaman daftar valuta tanpa menyimpan perubahan | Membatalkan proses perubahan kurs |
-| Approve (Supervisor) | Nilai kurs diperbarui; histori kurs lama tersimpan di log | Hanya dapat dilakukan oleh user dengan role Treasury Supervisor |
-| Reject (Supervisor) | Nilai kurs tidak berubah; notifikasi dikirim ke Treasury Officer | Supervisor wajib mengisi alasan penolakan |
+| Approve (Supervisor) | Nilai kurs diperbarui; histori kurs lama tersimpan di log | Hanya dapat dilakukan oleh user dengan role Accounting Supervisor |
+| Reject (Supervisor) | Nilai kurs tidak berubah; notifikasi dikirim ke Accounting Officer | Supervisor wajib mengisi alasan penolakan |
 
 #### 3.2.7. Tabel Validasi — Perubahan Nilai Kurs
 
@@ -372,71 +374,70 @@ Berikut adalah tabel field description pada halaman **Ubah Nilai Kurs**:
 
 ## 4. Laporan Valas
 
-### 4.1. Laporan Trial Balance Valas
+### 4.1. Laporan Trial Balance Jurnal
 
 #### 4.1.1. Alur Proses
 
 ```mermaid
 flowchart TD
-    A["[Finance Staff] Akses Menu Laporan Valas"] --> B["Pilih 'Trial Balance Valas'"]
-    B --> C["Input Parameter Laporan\n(Periode, Kode Valuta, Cabang)"]
-    C --> D["Generate Laporan (Sistem)"]
+    A["[Finance Staff] Akses Menu Laporan > Trial Balance"] --> B["Sistem menampilkan form parameter\n'Laporan Trial Balance Jurnal'"]
+    B --> C["Input Parameter\n(Mulai Tanggal, Hingga Tanggal, Valuta, Cabang)"]
+    C --> D["Klik OK — Sistem generate laporan"]
     D --> E["Tampilkan Laporan di Layar"]
-    E --> F["Opsi: Cetak / Export (PDF/Excel)"]
+    E --> F["Opsi: Export Excel"]
 ```
 
 #### 4.1.2. Keterangan Alur Proses
 
-| **Deskripsi** | : | Proses pembuatan laporan Trial Balance Valas yang menampilkan saldo debet dan kredit seluruh akun valas pada periode tertentu |
+| **Deskripsi** | : | Proses pembuatan laporan Trial Balance Jurnal yang menampilkan saldo, mutasi debet/kredit, saldo akhir, dan ekuivalen IDR per akun valas pada periode tertentu |
 |---|---|---|
 | **User** | : | Finance & Accounting Staff |
 | **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. User memiliki role Finance & Accounting Staff. 3. Data transaksi valas pada periode yang diminta tersedia di sistem. |
-| **Alur** | : | 1. User mengakses menu Laporan Valas. 2. User memilih sub-menu "Trial Balance Valas". 3. Sistem menampilkan form parameter laporan. 4. User mengisi periode laporan, kode valuta (dapat dipilih semua atau spesifik), dan kode cabang. 5. User menekan tombol "Generate". 6. Sistem mengambil data dari database dan menampilkan laporan. 7. User dapat melakukan export ke format PDF atau Excel. |
+| **Alur** | : | 1. User mengakses menu Laporan > Trial Balance. 2. Sistem menampilkan form parameter "Laporan Trial Balance Jurnal". 3. User mengisi Mulai Tanggal dan Hingga Tanggal. 4. User memilih Valuta (spesifik atau centang "Seluruh Valuta") dan Cabang (spesifik atau centang "Seluruh Cabang"). 5. User menekan tombol "OK". 6. Sistem mengambil data dari database dan menampilkan laporan. 7. User dapat melakukan export ke format Excel. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Laporan Valas |
-| **Post kondisi** | : | Laporan Trial Balance Valas berhasil ditampilkan dan/atau dieksport. |
+| **Post kondisi** | : | Laporan Trial Balance Jurnal berhasil ditampilkan dan/atau dieksport. |
 
-#### 4.1.3. Field Description — Parameter & Output Trial Balance Valas
+#### 4.1.3. Field Description — Parameter & Output Trial Balance Jurnal
 
-Berikut adalah tabel field description untuk parameter input laporan **Trial Balance Valas**:
+Berikut adalah tabel field description untuk parameter input laporan **Trial Balance Jurnal**:
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Length** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|---|
-| Periode Dari | Tanggal awal periode laporan | DATE | - | M | Manual Input / Date Picker |
-| Periode Sampai | Tanggal akhir periode laporan | DATE | - | M | Manual Input / Date Picker |
-| Kode Valuta | Filter berdasarkan kode valuta tertentu atau semua valuta | VARCHAR | 3 | O | Dropdown |
-| Kode Cabang | Filter berdasarkan cabang tertentu atau semua cabang | VARCHAR | 10 | O | Dropdown |
+| Mulai Tanggal | Tanggal awal periode laporan | DATE | - | M | Manual Input / Date Picker |
+| Hingga Tanggal | Tanggal akhir periode laporan | DATE | - | M | Manual Input / Date Picker |
+| Valuta | Filter berdasarkan kode valuta; centang "Seluruh Valuta" untuk semua valuta | VARCHAR | 3 | O | Manual Input / Checkbox |
+| Cabang | Filter berdasarkan cabang; centang "Seluruh Cabang" untuk semua cabang | VARCHAR | 10 | O | Manual Input / Checkbox |
 
-Berikut adalah kolom output yang ditampilkan pada laporan **Trial Balance Valas**:
+Berikut adalah kolom output yang ditampilkan pada laporan **Trial Balance Jurnal**:
 
 | **Nama Field** | **Deskripsi** | **Sumber Data** |
 |---|---|---|
 | Kode Akun | Kode akun buku besar | Core |
 | Nama Akun | Nama akun buku besar | Core |
-| Kode Valuta | Kode mata uang (contoh: USD, SGD) | Core |
-| Saldo Awal Debet | Saldo debet awal periode dalam valuta asli | Core |
-| Saldo Awal Kredit | Saldo kredit awal periode dalam valuta asli | Core |
-| Mutasi Debet | Total mutasi debet selama periode | Core |
-| Mutasi Kredit | Total mutasi kredit selama periode | Core |
-| Saldo Akhir Debet | Saldo debet akhir periode | Calculated |
-| Saldo Akhir Kredit | Saldo kredit akhir periode | Calculated |
-| Ekuivalen IDR | Nilai ekuivalen dalam IDR berdasarkan kurs tengah | Calculated |
+| Kode Cabang | Kode cabang | Core |
+| Kode Valuta | Kode mata uang (contoh: USD, EUR, SGD) | Core |
+| RC Code | Kode rekening/kategori akun | Core |
+| Saldo | Saldo awal pada tanggal mulai periode | Core |
+| Debet | Total mutasi debet selama periode | Core |
+| Kredit | Total mutasi kredit selama periode | Core |
+| Saldo Akhir | Saldo akhir pada tanggal akhir periode | Calculated |
+| Kurs Realisasi | Kurs realisasi yang digunakan pada tanggal akhir | Core |
+| Saldo Ekuivalen IDR | Nilai saldo akhir yang dikonversi ke IDR | Calculated |
 
-#### 4.1.4. Action — Trial Balance Valas
+#### 4.1.4. Action — Trial Balance Jurnal
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
-| Generate | Sistem mengambil data dan menampilkan laporan sesuai parameter | Memerlukan minimal parameter Periode Dari dan Periode Sampai |
-| Export PDF | File PDF laporan Trial Balance Valas terunduh | Format standar laporan BCAS |
-| Export Excel | File Excel (.xlsx) laporan Trial Balance Valas terunduh | Memuat seluruh data tanpa paginasi |
-| Reset | Seluruh parameter dikosongkan | Mengembalikan form ke kondisi awal |
+| OK | Sistem mengambil data dan menampilkan laporan sesuai parameter | Memerlukan minimal Mulai Tanggal dan Hingga Tanggal |
+| Export Excel | File Excel (.xlsx) laporan Trial Balance Jurnal terunduh | Memuat seluruh data tanpa paginasi |
+| Batal | Form ditutup tanpa generate laporan | - |
 
-#### 4.1.5. Tabel Validasi — Trial Balance Valas
+#### 4.1.5. Tabel Validasi — Trial Balance Jurnal
 
 | **Case** | **Result** |
 |---|---|
-| Periode Dari lebih besar dari Periode Sampai | "Tanggal awal periode tidak boleh lebih besar dari tanggal akhir periode." |
+| Mulai Tanggal lebih besar dari Hingga Tanggal | "Tanggal awal periode tidak boleh lebih besar dari tanggal akhir periode." |
 | Data transaksi valas pada periode yang diminta tidak tersedia | "Tidak ada data yang ditemukan untuk parameter yang dipilih." |
-| Rentang periode melebihi batas maksimum (contoh: lebih dari 1 tahun) | "Rentang periode maksimum adalah 12 bulan." |
 
 ---
 
@@ -446,22 +447,22 @@ Berikut adalah kolom output yang ditampilkan pada laporan **Trial Balance Valas*
 
 ```mermaid
 flowchart TD
-    A["[Finance Staff] Akses Menu Laporan Valas"] --> B["Pilih 'Buku Besar Valas'"]
-    B --> C["Input Parameter Laporan\n(Periode, Kode Akun, Kode Valuta)"]
-    C --> D["Generate Laporan (Sistem)"]
-    D --> E["Tampilkan Daftar Transaksi per Akun"]
-    E --> F["Opsi: Cetak / Export (PDF/Excel)"]
+    A["[Finance Staff] Akses Menu Laporan > Buku Besar"] --> B["Sistem menampilkan form Filter Data"]
+    B --> C["Input Parameter\n(Valuta*, Cabang*, Kode GL*, Kode RCC, Mulai Tanggal*)"]
+    C --> D["Klik Tampilkan — Sistem load data transaksi"]
+    D --> E["Tampilkan Saldo Awal, Saldo Akhir, dan Daftar Transaksi"]
+    E --> F["Opsi: Export List Transaksi (XLS)"]
 ```
 
 #### 4.2.2. Keterangan Alur Proses
 
-| **Deskripsi** | : | Proses pembuatan laporan Buku Besar Valas yang menampilkan detail seluruh transaksi valas per akun dalam suatu periode |
+| **Deskripsi** | : | Proses pembuatan laporan Buku Besar Valas yang menampilkan detail seluruh transaksi valas per akun GL dalam suatu periode, beserta saldo awal dan saldo akhir dalam valuta asli dan ekuivalen IDR |
 |---|---|---|
 | **User** | : | Finance & Accounting Staff |
 | **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. Data transaksi valas pada periode yang diminta tersedia. |
-| **Alur** | : | 1. User mengakses sub-menu "Buku Besar Valas". 2. User mengisi parameter: kode akun, kode valuta, dan periode laporan. 3. User menekan "Generate". 4. Sistem menampilkan detail transaksi per akun beserta saldo berjalan. 5. User dapat export ke PDF atau Excel. |
+| **Alur** | : | 1. User mengakses menu Laporan > Buku Besar. 2. Sistem menampilkan form Filter Data. 3. User mengisi Valuta, Cabang, Kode GL (wajib), serta Kode RCC (opsional) dan periode. 4. User menekan tombol "Tampilkan". 5. Sistem menampilkan saldo awal, saldo akhir, saldo awal ekuivalen, dan saldo akhir ekuivalen IDR di bagian atas, serta daftar transaksi di bawahnya. 6. User dapat export daftar transaksi ke Excel. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Laporan Valas |
-| **Post kondisi** | : | Laporan Buku Besar Valas ditampilkan dengan detail transaksi dan saldo berjalan per akun. |
+| **Post kondisi** | : | Laporan Buku Besar Valas ditampilkan dengan detail transaksi dan saldo per akun GL. |
 
 #### 4.2.3. Field Description — Parameter & Output Buku Besar Valas
 
@@ -469,38 +470,35 @@ Berikut adalah tabel field description untuk parameter input laporan **Buku Besa
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Length** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|---|
-| Kode Akun | Filter berdasarkan kode akun buku besar | VARCHAR | 20 | M | Dropdown / Manual Input |
-| Periode Dari | Tanggal awal periode laporan | DATE | - | M | Manual Input / Date Picker |
-| Periode Sampai | Tanggal akhir periode laporan | DATE | - | M | Manual Input / Date Picker |
-| Kode Valuta | Filter berdasarkan kode valuta | VARCHAR | 3 | O | Dropdown |
+| Valuta | Kode valuta yang ditampilkan | VARCHAR | 3 | M | Manual Input |
+| Cabang | Kode cabang yang ditampilkan | VARCHAR | 10 | M | Manual Input |
+| Kode GL | Kode akun General Ledger yang ditampilkan | VARCHAR | 20 | M | Manual Input |
+| Kode RCC | Filter berdasarkan kode rekening nasabah (RCC) | VARCHAR | 20 | O | Manual Input |
+| Mulai Tanggal | Tanggal awal periode laporan | DATE | - | M | Manual Input / Date Picker |
+| Hingga Tanggal | Tanggal akhir periode laporan | DATE | - | O | Manual Input / Date Picker |
 
-Berikut adalah kolom output yang ditampilkan pada laporan **Buku Besar Valas**:
+Berikut adalah field ringkasan yang ditampilkan setelah generate laporan **Buku Besar Valas**:
 
 | **Nama Field** | **Deskripsi** | **Sumber Data** |
 |---|---|---|
-| Tanggal Transaksi | Tanggal transaksi terjadi | Core |
-| Nomor Referensi | Nomor referensi/jurnal transaksi | Core |
-| Keterangan | Deskripsi transaksi | Core |
-| Debet | Nilai debet transaksi dalam valuta asli | Core |
-| Kredit | Nilai kredit transaksi dalam valuta asli | Core |
-| Saldo Berjalan | Saldo kumulatif setelah setiap transaksi | Calculated |
-| Ekuivalen IDR | Nilai ekuivalen IDR pada tanggal transaksi | Calculated |
+| Saldo Awal | Saldo akun pada tanggal mulai dalam valuta asli | Core |
+| Saldo Awal Ekuivalen | Saldo awal yang dikonversi ke IDR | Calculated |
+| Saldo Akhir | Saldo akun pada tanggal akhir dalam valuta asli | Calculated |
+| Saldo Akhir Ekuivalen | Saldo akhir yang dikonversi ke IDR | Calculated |
 
 #### 4.2.4. Action — Buku Besar Valas
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
-| Generate | Sistem menampilkan detail transaksi per akun valas | Wajib mengisi kode akun dan periode |
-| Export PDF | File PDF laporan Buku Besar Valas terunduh | - |
-| Export Excel | File Excel laporan Buku Besar Valas terunduh | - |
-| Reset | Parameter dikosongkan ke kondisi awal | - |
+| Tampilkan | Sistem menampilkan saldo ringkasan dan daftar transaksi sesuai filter | Wajib mengisi Valuta, Cabang, Kode GL, dan Mulai Tanggal |
+| Export List Transaksi (XLS) | File Excel berisi daftar transaksi Buku Besar terunduh | - |
 
 #### 4.2.5. Tabel Validasi — Buku Besar Valas
 
 | **Case** | **Result** |
 |---|---|
-| Kode akun tidak ditemukan di sistem | "Kode akun tidak terdaftar. Silakan periksa kembali." |
-| Periode Dari lebih besar dari Periode Sampai | "Tanggal awal periode tidak boleh lebih besar dari tanggal akhir." |
+| Kode GL tidak ditemukan di sistem | "Kode GL tidak terdaftar. Silakan periksa kembali." |
+| Mulai Tanggal lebih besar dari Hingga Tanggal | "Tanggal awal periode tidak boleh lebih besar dari tanggal akhir." |
 | Tidak ada transaksi pada parameter yang dipilih | "Tidak ada data transaksi yang ditemukan." |
 
 ---
@@ -511,111 +509,119 @@ Berikut adalah kolom output yang ditampilkan pada laporan **Buku Besar Valas**:
 
 ```mermaid
 flowchart TD
-    A["[Finance Staff] Akses Menu Laporan Valas"] --> B["Pilih 'Neraca Valas'"]
-    B --> C["Input Parameter\n(Tanggal Posisi, Kode Valuta)"]
-    C --> D["Generate Laporan (Sistem)"]
-    D --> E["Tampilkan Posisi Aset, Liabilitas, Ekuitas"]
-    E --> F["Opsi: Cetak / Export (PDF/Excel)"]
+    A["[Finance Staff] Akses Menu Laporan > Neraca dan Laba/Rugi"] --> B["Sistem menampilkan form\n'Download Data Neraca / Laba Rugi'"]
+    B --> C["Pilih Jenis Laporan = Neraca\nAtur opsi Konsolidasi Kantor / Valuta"]
+    C --> D["Input Per Tanggal, Cabang (opsional), Valuta (opsional)"]
+    D --> E["Klik OK — Sistem generate dan download laporan ke Excel"]
 ```
 
 #### 4.3.2. Keterangan Alur Proses
 
-| **Deskripsi** | : | Proses pembuatan Laporan Neraca Valas yang menampilkan posisi keuangan (aset, liabilitas, ekuitas) dalam denominasi valas pada tanggal tertentu |
+| **Deskripsi** | : | Proses download laporan Neraca atau Laba Rugi valas melalui form "Download Data Neraca / Laba Rugi", dengan opsi konsolidasi per kantor dan per valuta |
 |---|---|---|
 | **User** | : | Finance & Accounting Staff |
-| **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. Data saldo akun valas tersedia pada tanggal posisi yang diminta. |
-| **Alur** | : | 1. User mengakses sub-menu "Neraca Valas". 2. User mengisi tanggal posisi dan kode valuta. 3. User menekan "Generate". 4. Sistem menampilkan neraca valas dengan struktur Aset, Liabilitas, dan Ekuitas. 5. User dapat export ke PDF atau Excel. |
+| **Pre kondisi** | : | 1. User telah login ke sistem BCAS. 2. Data saldo akun valas tersedia pada tanggal yang diminta. |
+| **Alur** | : | 1. User mengakses menu Laporan > Neraca dan Laba/Rugi. 2. Sistem menampilkan form "Download Data Neraca / Laba Rugi". 3. User memilih Jenis Laporan (Neraca atau Laba Rugi). 4. User mengatur opsi Konsolidasi Kantor dan/atau Konsolidasi Valuta jika diperlukan. 5. User mengisi Per Tanggal, dan opsional Kode Cabang dan Valuta. 6. User menekan "OK". 7. Sistem generate laporan dan mendownload file Excel. |
 | **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi Laporan Valas |
-| **Post kondisi** | : | Laporan Neraca Valas berhasil ditampilkan dalam format yang terstruktur. |
+| **Post kondisi** | : | File laporan Neraca Valas berhasil terunduh dalam format Excel. |
 
-#### 4.3.3. Field Description — Parameter & Output Neraca Valas
+#### 4.3.3. Field Description — Parameter Neraca Valas
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Length** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|---|
-| Tanggal Posisi | Tanggal posisi neraca | DATE | - | M | Manual Input / Date Picker |
-| Kode Valuta | Filter berdasarkan valuta atau semua valuta | VARCHAR | 3 | O | Dropdown |
+| Jenis Laporan | Pilihan jenis laporan: Neraca atau Laba Rugi | VARCHAR | - | M | Dropdown |
+| Konsolidasi Kantor | Jika dicentang, laporan menggabungkan semua kantor/cabang | BOOLEAN | - | O | Checkbox |
+| Konsolidasi Valuta | Jika dicentang, laporan menggabungkan semua valuta ke IDR | BOOLEAN | - | O | Checkbox |
+| Per Tanggal | Tanggal posisi laporan | DATE | - | M | Manual Input / Date Picker |
+| Kode dan Nama Cabang | Filter per cabang tertentu; diabaikan jika Konsolidasi Kantor aktif | VARCHAR | 10 | O | Manual Input |
+| Valuta | Filter per valuta tertentu; diabaikan jika Konsolidasi Valuta aktif | VARCHAR | 3 | O | Manual Input |
 
 #### 4.3.4. Action — Neraca Valas
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
-| Generate | Sistem menampilkan posisi neraca valas pada tanggal yang dipilih | - |
-| Export PDF | File PDF Neraca Valas terunduh | - |
-| Export Excel | File Excel Neraca Valas terunduh | - |
-| Reset | Parameter dikosongkan | - |
+| OK | Sistem generate laporan dan mendownload file Excel Neraca Valas | - |
+| Batal | Form ditutup tanpa generate laporan | - |
 
 #### 4.3.5. Tabel Validasi — Neraca Valas
 
 | **Case** | **Result** |
 |---|---|
-| Tanggal posisi melebihi tanggal hari ini | "Tanggal posisi tidak boleh melebihi tanggal hari ini." |
+| Per Tanggal melebihi tanggal hari ini | "Tanggal posisi tidak boleh melebihi tanggal hari ini." |
 | Data saldo tidak tersedia pada tanggal yang dipilih | "Data saldo valas tidak tersedia pada tanggal tersebut." |
 
 ---
 
-## 5. LBV (Ledger Balance Verification)
+## 5. LBV (Loan Balance Verification)
 
-### 5.1. Laporan LBV
+### 5.1. Laporan Proofing Saldo Produk vs GL (LBV)
 
 #### 5.1.1. Alur Proses
 
 ```mermaid
 flowchart TD
-    TM(["TM (Sistem External)"]) -->|"Saldo Harian via REST Report"| DB[("Core DB")]
-    DB --> A["[Sistem] Proses Verifikasi LBV"]
-    A --> B{"Terdapat Selisih?"}
-    B -->|Tidak| C["Status: Sukses — Catat di Log"]
-    B -->|Ya| D["Status: Selisih — Tampilkan Detail Discrepancy"]
-    D --> E["[Finance Staff] Investigasi & Resolusi"]
+    A["[Finance Staff] Akses Menu Laporan >\nLaporan Proofing Saldo Produk vs GL"] --> B["Sistem menampilkan form 'Proofing Saldo'"]
+    B --> C["Input Parameter\n(Tanggal, Cabang, Valuta)"]
+    C --> D["Klik Proses — Sistem generate laporan LBV"]
+    D --> E["Output: File Excel 'Loan Balance Verification\n(Nominative vs GL)'"]
+    E --> F{"Terdapat Selisih?"}
+    F -->|Tidak| G["Nominative Balance = GL Balance"]
+    F -->|Ya| H["[Finance Staff] Investigasi Selisih\nberdasarkan detail per GL dan Valuta"]
 ```
 
 #### 5.1.2. Keterangan Alur Proses
 
-| **Deskripsi** | : | Proses verifikasi saldo harian valas yang diterima dari TM melalui REST Report, dibandingkan dengan saldo pada Core DB |
+| **Deskripsi** | : | Laporan on-request yang membandingkan saldo nominatif produk (dari TM) dengan saldo General Ledger (Core DB) per tanggal tertentu, untuk mendeteksi selisih (discrepancy) |
 |---|---|---|
-| **User** | : | Finance & Accounting Staff (monitoring), System Administrator (konfigurasi) |
-| **Pre kondisi** | : | 1. TM telah mengirimkan data saldo harian valas ke endpoint REST Report. 2. Konfigurasi integrasi (endpoint, credential) telah diatur oleh System Administrator. 3. Data saldo harian valas tersimpan di Core DB. |
-| **Alur** | : | 1. TM mengirimkan saldo harian valas ke Core Banking melalui REST Report. 2. Core DB menerima dan menyimpan data saldo harian. 3. Sistem secara terjadwal (atau dipicu manual) menjalankan proses verifikasi LBV. 4. Sistem membandingkan saldo yang diterima dari TM dengan saldo pada Core DB. 5. Sistem mencatat status hasil verifikasi (Sukses/Selisih). 6. Finance Staff memantau status LBV melalui halaman Laporan LBV. 7. Jika terdapat selisih (discrepancy), Finance Staff melakukan investigasi dan resolusi. |
-| **Error Handling** | : | Sistem menampilkan pesan error sesuai Tabel Validasi LBV |
-| **Post kondisi** | : | Saldo harian valas berhasil diverifikasi dan status integrasi dengan TM tercatat di sistem. |
+| **User** | : | Finance & Accounting Staff |
+| **Pre kondisi** | : | 1. TM telah mengirimkan data saldo nominatif produk ke Core DB via REST Report. 2. Data saldo GL tersedia di Core DB untuk tanggal yang diminta. |
+| **Alur** | : | 1. Finance Staff mengakses menu Laporan > Laporan Proofing Saldo Produk vs GL. 2. Sistem menampilkan form "Proofing Saldo". 3. Staff mengisi Tanggal, memilih Cabang (atau centang "Seluruh Cabang"), dan memilih Valuta (atau centang "Seluruh Valuta"). 4. Staff menekan tombol "Proses". 5. Sistem menghasilkan laporan Excel "Loan Balance Verification (Nominative vs GL)". 6. Staff memeriksa kolom SELISIH untuk mendeteksi discrepancy per akun GL dan valuta. |
+| **Error Handling** | : | Sistem menampilkan pesan error jika data tidak tersedia |
+| **Post kondisi** | : | Laporan LBV berhasil digenerate dan Finance Staff dapat mengidentifikasi selisih saldo nominatif vs GL. |
 
 #### 5.1.3. Use Case
 
-| **Given** | : | Proses LBV terjadwal telah dieksekusi dan terdapat perbedaan saldo antara Core Banking dan TM |
+| **Given** | : | Data saldo nominatif produk dari TM dan saldo GL di Core DB tersedia pada tanggal yang diminta |
 |---|---|---|
-| **When** | : | Finance Staff mengakses dashboard LBV dan memilih record yang berstatus "Selisih" |
-| **Then** | : | Sistem menampilkan detail discrepancy per akun dan per valuta, termasuk nilai saldo di Core Banking, nilai saldo di TM, dan selisihnya. Finance Staff dapat melakukan flag untuk investigasi lebih lanjut atau eskalasi kepada Supervisor. |
+| **When** | : | Finance Staff membuka form Proofing Saldo, mengisi parameter, dan menekan Proses |
+| **Then** | : | Sistem mendownload file Excel yang berisi perbandingan Nominative Balance vs GL Balance per nomor GL dan valuta, beserta nilai SELISIH. Finance Staff menggunakan laporan ini untuk investigasi jika ditemukan selisih. |
 
-#### 5.1.4. Field Description — Dashboard LBV
+#### 5.1.4. Field Description — Parameter & Output LBV
+
+Berikut adalah tabel field description untuk parameter input form **Proofing Saldo**:
 
 | **Nama Field** | **Deskripsi** | **Data Type** | **Mandatory (M/O/C)** | **Sumber Data** |
 |---|---|---|---|---|
-| Tanggal Proses | Tanggal eksekusi proses LBV | DATE | M | System |
-| Kode Valuta | Kode mata uang yang diverifikasi | VARCHAR | M | Core |
-| Saldo Core | Saldo valas pada Core Banking | DECIMAL(18,4) | - | Core |
-| Saldo TM | Saldo valas pada sistem TM | DECIMAL(18,4) | - | TM |
-| Selisih | Perbedaan antara Saldo Core dan Saldo TM | DECIMAL(18,4) | - | Calculated |
-| Status | Status integrasi: Sukses / Selisih / Gagal | VARCHAR | - | System |
-| Waktu Proses | Timestamp eksekusi proses LBV | DATETIME | - | System |
-| Keterangan Error | Pesan error jika proses gagal | VARCHAR | O | System |
+| Tanggal | Tanggal posisi verifikasi saldo | DATE | M | Manual Input / Date Picker |
+| Cabang | Kode cabang; centang "Seluruh Cabang" untuk semua cabang | VARCHAR | O | Manual Input / Checkbox |
+| Valuta | Kode valuta; centang "Seluruh Valuta" untuk semua valuta | VARCHAR | O | Manual Input / Checkbox |
+
+Berikut adalah kolom output pada file Excel laporan **Loan Balance Verification (Nominative vs GL)**:
+
+| **Nama Field** | **Deskripsi** | **Sumber Data** |
+|---|---|---|
+| NO | Nomor urut baris | System |
+| GL NO | Nomor akun General Ledger | Core |
+| GL NAME | Nama akun General Ledger | Core |
+| CABANG | Kode cabang | Core |
+| VALUTA | Kode mata uang | Core |
+| NOMINATIVE BALANCE | Saldo nominatif produk (dari TM) | TM via REST Report |
+| GL BALANCE | Saldo akun GL di Core Banking | Core |
+| SELISIH | Perbedaan antara Nominative Balance dan GL Balance | Calculated |
+| KODE SISTEM EXT | Kode identifikasi sistem eksternal (TM) | TM |
 
 #### 5.1.5. Action — LBV
 
 | **Action** | **Output** | **Keterangan** |
 |---|---|---|
-| Run LBV (Manual) | Sistem mengeksekusi proses verifikasi saldo harian valas dengan TM | Dapat dipicu manual jika scheduled job gagal |
-| Lihat Detail | Sistem menampilkan detail discrepancy per akun valas | Tersedia jika status adalah "Selisih" |
-| Export Laporan LBV | File Excel berisi hasil verifikasi saldo harian terunduh | - |
-| Flag Investigasi | Record discrepancy ditandai untuk ditindaklanjuti | Dikirimkan notifikasi ke Supervisor |
+| Proses | Sistem generate dan download file Excel laporan LBV | Parameter Tanggal wajib diisi |
 
 #### 5.1.6. Tabel Validasi — LBV
 
 | **Case** | **Result** |
 |---|---|
-| Koneksi ke sistem TM gagal (timeout/unreachable) | "Integrasi dengan TM gagal. Periksa koneksi dan coba kembali. Kode Error: [kode]" |
-| Response dari TM mengembalikan error | "TM mengembalikan error: [pesan error dari TM]." |
-| Terdapat selisih antara saldo Core dan TM | Status "Selisih" ditampilkan pada dashboard dengan nilai selisih |
-| Proses LBV sudah pernah dijalankan pada hari yang sama | "Proses LBV untuk tanggal [DD/MM/YYYY] sudah pernah dijalankan. Apakah Anda ingin menjalankan ulang?" |
+| Data nominatif produk dari TM belum tersedia pada tanggal yang diminta | "Data saldo nominatif untuk tanggal [DD/MM/YYYY] belum tersedia." |
+| Data GL tidak tersedia pada tanggal yang diminta | "Data saldo GL untuk tanggal [DD/MM/YYYY] tidak ditemukan." |
 
 ---
 
