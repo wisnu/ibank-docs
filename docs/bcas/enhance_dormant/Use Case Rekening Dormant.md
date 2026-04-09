@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Versi** | 1.0 |
+| **Versi** | 1.1 |
 | **Tanggal** | 1 April 2026 |
 | **Status** | Draft |
 
@@ -109,11 +109,11 @@ Sistem menggunakan **3 layer** untuk menentukan threshold dan biaya setiap reken
 flowchart TD
     START([Rekening masuk proses EOD\nfase: Tidak Aktif]) --> CHK1
 
-    CHK1{"produk.is_exc_tidakaktif = T ?"}
+    CHK1{"produk.is_tidak_dormant = T ?\natau rekeningliabilitas.is_tidak_dormant = T ?"}
     CHK1 -->|Ya| EXC["Fase Tidak Aktif tidak berlaku\n— rekening di-skip —"]
     CHK1 -->|Tidak| CHK2
 
-    CHK2{"produk.is_custom_tidak_aktif = T ?"}
+    CHK2{"produk.is_custom_dormant = T ?"}
     CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_jadi_tidak_aktif\nbiaya_rekening_tidak_aktif\nis_biaya_rekening_tidak_aktif"]
     CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nTAKT_HARI (default: 360 hari)\nTAKT_BIAYA (default: 0)"]
 
@@ -149,7 +149,7 @@ flowchart TD
     classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
 ```
 
-> `is_tidak_dormant` di `rekeningliabilitas` adalah satu-satunya pengecualian yang bisa dikonfigurasi **per rekening** (bukan per produk).
+> `is_tidak_dormant` berlaku untuk **kedua fase** (Tidak Aktif dan Dormant) — jika `T` di level produk atau per rekening (`rekeningliabilitas`), rekening dikecualikan dari kedua fase tersebut. Pengecualian per rekening (`rekeningliabilitas.is_tidak_dormant`) adalah satu-satunya konfigurasi yang bisa diset **per rekening** (bukan per produk).
 
 **Fase 3 — Tutup Otomatis Saldo Nol**
 
@@ -191,8 +191,8 @@ flowchart TD
 
 | Skenario | Given | When | Then |
 |---|---|---|---|
-| **Produk dikecualikan** | Rekening menggunakan produk yang dikonfigurasi untuk tidak pernah masuk status Tidak Aktif (mis. rekening khusus) | Proses harian berjalan | Rekening **tidak** berubah status — tetap Aktif |
-| **Produk dengan threshold custom** | Rekening menggunakan produk dengan batas hari tidak aktif berbeda dari standar (mis. 180 hari) | Proses harian berjalan | Sistem menggunakan batas hari dari konfigurasi produk tersebut |
+| **Produk dikecualikan** | Rekening menggunakan produk dengan `is_tidak_dormant = T` (mis. rekening deposito, rekening khusus) | Proses harian berjalan | Rekening **tidak** berubah status — tetap Aktif |
+| **Produk dengan threshold custom** | Rekening menggunakan produk dengan `is_custom_dormant = T` dan batas hari tidak aktif berbeda dari standar (mis. 180 hari) | Proses harian berjalan | Sistem menggunakan batas hari dari konfigurasi produk tersebut |
 | **Nasabah cek saldo melalui ATM** | Rekening hampir melewati batas hari tidak aktif, lalu nasabah melakukan cek saldo via ATM | Proses harian berjalan | Aktivitas cek saldo **dicatat** dan hitungan hari tidak aktif di-reset, rekening tetap Aktif |
 
 ---
@@ -213,8 +213,8 @@ flowchart TD
 
 | Skenario | Given | When | Then |
 |---|---|---|---|
-| **Rekening dikecualikan dari dormant** | Rekening dikonfigurasi untuk tidak bisa dormant (flag pengecualian aktif, mis. rekening giro korporat tertentu) | Proses harian berjalan | Rekening **tidak** berubah ke status Dormant |
-| **Produk dengan threshold dormant custom** | Produk memiliki batas hari dormant berbeda dari standar global | Proses harian berjalan | Sistem menggunakan batas hari dari konfigurasi produk |
+| **Rekening dikecualikan dari dormant** | Rekening menggunakan produk dengan `is_tidak_dormant = T`, atau rekening spesifik dengan `rekeningliabilitas.is_tidak_dormant = T` | Proses harian berjalan | Rekening **tidak** berubah ke status Dormant |
+| **Produk dengan threshold dormant custom** | Produk memiliki `is_custom_dormant = T` dan batas hari dormant berbeda dari standar global | Proses harian berjalan | Sistem menggunakan batas hari dari konfigurasi produk |
 
 ---
 

@@ -67,18 +67,38 @@
 
 **Ringkasan field produk yang terlibat:**
 
+*Parameter Global Dormant / Tidak Aktif (read-only, referensi):*
+
 | Caption di Form | Fungsi |
 |---|---|
-| **Custom Param Tidak Aktif** | ☑ = gunakan threshold & biaya tidak aktif dari produk, bukan global |
-| **Pengecualian Tidak Aktif** | ☑ = rekening produk ini tidak akan pernah masuk status Tidak Aktif |
+| **(Global) Durasi Hari Tidak Aktif** | Nilai global threshold hari tidak aktif *(read-only)* |
+| **(Global) Biaya Tidak Aktif** | Nilai global biaya tidak aktif *(read-only)* |
+| **(Global) Durasi Hari Dormant** | Nilai global threshold hari dormant *(read-only)* |
+| **(Global) Biaya Dormant** | Nilai global biaya dormant *(read-only)* |
+
+*Parameter Global Tutup Otomatis (read-only, referensi):*
+
+| Caption di Form | Fungsi |
+|---|---|
+| **(Global) Durasi Hari Tutup Saldo Nol** | Nilai global threshold hari tutup otomatis *(read-only)* |
+
+*Parameter Produk Dormant / Tidak Aktif:*
+
+| Caption di Form | Fungsi |
+|---|---|
+| **Boleh Tidak (Dormant dan Tidak Aktif)** | ☑ = rekening produk ini boleh berstatus Tidak Aktif maupun Dormant |
+| **Custom Param Dormant / Tidak Aktif** | ☑ = gunakan threshold & biaya dari produk, bukan global |
 | **Durasi Hari Tidak Aktif** | Override threshold hari tidak aktif *(aktif jika Custom Param dicentang)* |
-| **Biaya Tdk Aktif** | Override nominal biaya tidak aktif *(aktif jika Custom Param dicentang)* |
-| **Custom Param Dormant** | ☑ = gunakan threshold & biaya dormant dari produk, bukan global |
-| **Pengecualian Dormant** | ☑ = rekening produk ini tidak akan pernah masuk status Dormant |
 | **Durasi Hari Dormant** | Override threshold hari dormant *(aktif jika Custom Param dicentang)* |
+| **Biaya Tidak Aktif** | Override nominal biaya tidak aktif *(aktif jika Custom Param dicentang)* |
 | **Biaya Dormant** | Override nominal biaya dormant *(aktif jika Custom Param dicentang)* |
-| **Custom Param Tutup Saldo Nol** | ☑ = gunakan threshold tutup otomatis dari produk, bukan global |
+
+*Parameter Produk Tutup Otomatis Saldo Nol:*
+
+| Caption di Form | Fungsi |
+|---|---|
 | **Pengecualian Tutup Saldo Nol** | ☑ = rekening produk ini tidak akan ditutup otomatis saat saldo nol |
+| **Custom Param Tutup Saldo Nol** | ☑ = gunakan threshold tutup otomatis dari produk, bukan global |
 | **Durasi Hari Tutup Saldo Nol** | Override threshold hari tutup otomatis *(aktif jika Custom Param dicentang)* |
 
 ---
