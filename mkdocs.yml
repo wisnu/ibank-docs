@@ -64,8 +64,8 @@ nav:
   - BCAS:
       - Enhance Dormant:
           - Design Plan: bcas/enhance_dormant/Design Plan.md
-          - Use Case: bcas/enhance_dormant/Use Case Rekening Dormant.md
-          - Screenshot Checklist: bcas/enhance_dormant/Screenshot Checklist.md
+          - Use Case: bcas/enhance_dormant/use_Case_dormant.md
+          - Screenshot Checklist: bcas/enhance_dormant/screenshot_dormant.md
       - Saku Valas:
           - FSD - Saku Valas: bcas/saku_valas/fsd_sakuvalas.md
 
