@@ -7,7 +7,7 @@
 ## 1. Status Rekening — Alur Transisi
 
 ### 1.1 Diagram Transisi
-
+a
 #### Diagram A — Status Tidak Aktif & Dormant
 
 ```mermaid
@@ -59,11 +59,11 @@ Setiap fase dikontrol oleh 3 layer parameter: **Pengecualian → Override Produk
 flowchart TD
     START([Rekening masuk proses EOD\nfase: Tidak Aktif]) --> CHK1
 
-    CHK1{"produk.is_exc_tidakaktif = T ?"}
+    CHK1{"produk.is_tidak_dormant = T ?"}
     CHK1 -->|Ya| EXC["Fase Tidak Aktif tidak berlaku\n— rekening di-skip —"]
     CHK1 -->|Tidak| CHK2
 
-    CHK2{"produk.is_custom_tidak_aktif = T ?"}
+    CHK2{"produk.is_custom_dormant = T ?"}
     CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_jadi_tidak_aktif\nbiaya_rekening_tidak_aktif\nis_biaya_rekening_tidak_aktif"]
     CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nTAKT_HARI (default: 360 hari)\nTAKT_BIAYA (default: 0)"]
 
@@ -141,15 +141,14 @@ flowchart TD
 | produk | `biaya_rekening_dormant` | Nominal biaya rekening dormant | KEEP |
 | produk | `jumlah_hari_tutup_otomatis` | Threshold hari tutup otomatis | KEEP |
 | produk | `is_tutup_otomatis_dormant` | Flag tutup otomatis saat dormant | KEEP |
-| produk | **`is_custom_tidak_aktif`** *(baru)* | `T` = produk pakai threshold & biaya tidak aktif sendiri, bukan dari ParameterGlobal | **ADD COLUMN** |
-| produk | **`is_custom_dormant`** *(baru)* | `T` = produk pakai threshold & biaya dormant sendiri, bukan dari ParameterGlobal | **ADD COLUMN** |
+| produk | `is_tidak_dormant` | `T` = rekening produk ini dikecualikan dari status Tidak Aktif maupun Dormant *(existing, perluas cakupan ke fase Tidak Aktif)* | **UBAH SEMANTIK** |
+| produk | **`is_custom_dormant`** *(baru)* | `T` = produk pakai threshold & biaya tidak aktif + dormant sendiri, bukan dari ParameterGlobal | **ADD COLUMN** |
 | produk | **`is_custom_tutup_oto`** *(baru)* | `T` = produk pakai threshold tutup otomatis sendiri, bukan dari ParameterGlobal | **ADD COLUMN** |
-| produk | **`is_exc_tidakaktif`** *(baru)* | `T` = rekening produk ini tidak akan pernah masuk status Tidak Aktif | **ADD COLUMN** |
 | produk | **`is_exc_tutupnol`** *(baru)* | `T` = rekening produk ini tidak akan ditutup otomatis saat saldo nol | **ADD COLUMN** |
 | produk | **`jumlah_hari_jadi_dormant`** *(baru)* | Override threshold hari dormant — dibaca hanya jika `is_custom_dormant = 'T'` | **ADD COLUMN** |
-| produk | **`jumlah_hari_jadi_tidak_aktif`** *(sudah ada, ubah semantik)* | Override threshold hari tidak aktif — dibaca hanya jika `is_custom_tidak_aktif = 'T'` | **UBAH SEMANTIK** |
-| produk | **`biaya_rekening_tidak_aktif`** *(baru)* | Override nominal biaya tidak aktif — dibaca hanya jika `is_custom_tidak_aktif = 'T'` | **ADD COLUMN** |
-| produk | **`is_biaya_rekening_tidak_aktif`** *(baru)* | Override flag biaya tidak aktif — dibaca hanya jika `is_custom_tidak_aktif = 'T'` | **ADD COLUMN** |
+| produk | **`jumlah_hari_jadi_tidak_aktif`** *(sudah ada, ubah semantik)* | Override threshold hari tidak aktif — dibaca hanya jika `is_custom_dormant = 'T'` | **UBAH SEMANTIK** |
+| produk | **`biaya_rekening_tidak_aktif`** *(baru)* | Override nominal biaya tidak aktif — dibaca hanya jika `is_custom_dormant = 'T'` | **ADD COLUMN** |
+| produk | **`is_biaya_rekening_tidak_aktif`** *(baru)* | Override flag biaya tidak aktif — dibaca hanya jika `is_custom_dormant = 'T'` | **ADD COLUMN** |
 | produk | **`biaya_rekening_dormant`** *(sudah ada, ubah semantik)* | Override nominal biaya dormant — dibaca hanya jika `is_custom_dormant = 'T'` | **UBAH SEMANTIK** |
 | produk | **`is_biaya_rekening_dormant`** *(sudah ada, ubah semantik)* | Override flag biaya dormant — dibaca hanya jika `is_custom_dormant = 'T'` | **UBAH SEMANTIK** |
 | produk | **`jumlah_hari_tutup_otomatis`** *(sudah ada, ubah semantik)* | Override hari tutup otomatis — dibaca hanya jika `is_custom_tutup_oto = 'T'` | **UBAH SEMANTIK** |
@@ -172,7 +171,7 @@ flowchart TD
 > **Kesimpulan:**
 > - **1 kolom baru** di `parameterglobal`: `kode_group` varchar(30) — untuk pengelompokan parameter per fitur/modul
 > - **5 data baru** di `parameterglobal` (`kode_group='REKENING_DORMANT'`) — konfigurasi terpusat hari & biaya dormant/tidak aktif
-> - **8 kolom baru** di `produk`: 3 flag override (`is_custom_tidak_aktif`, `is_custom_dormant`, `is_custom_tutup_oto`) + 2 flag pengecualian (`is_exc_tidakaktif`, `is_exc_tutupnol`) + 3 field nilai override
+> - **6 kolom baru** di `produk`: 2 flag override (`is_custom_dormant`, `is_custom_tutup_oto`) + 1 flag pengecualian (`is_exc_tutupnol`) + 3 field nilai override; `is_tidak_dormant` existing dipakai dengan semantik baru
 > - **3 kolom ubah semantik** di `produk` (existing field → hanya dibaca jika flag custom aktif)
 > - **1 kolom baru** di `rekeningliabilitas` (`tgl_aktivitas_terakhir`)
 > - **1 kolom baru** di `parametertransaksiumum` (flag exclude aktivitas)
@@ -193,14 +192,13 @@ flowchart TD
 - **`ADD COLUMN kode_group`** di `parameterglobal` varchar(30) nullable — pengelompokan parameter per fitur (lihat Section 9)
 - **`INSERT` data baru** di `parameterglobal`: 5 kode parameter rekening status (lihat Section 9)
 - `ADD COLUMN tgl_aktivitas_terakhir` di `rekeningliabilitas`
-- `ADD COLUMN is_custom_tidak_aktif` di `produk` — flag eksplisit override fase tidak aktif
-- `ADD COLUMN is_custom_dormant` di `produk` — flag eksplisit override fase dormant
+- **Semantik berubah** `is_tidak_dormant` di `produk` — sebelumnya: hanya mengecualikan dari Dormant, sekarang: mengecualikan dari **kedua** fase (Tidak Aktif dan Dormant) *(existing field, perluas cakupan)*
+- `ADD COLUMN is_custom_dormant` di `produk` — flag eksplisit override fase tidak aktif + dormant (combined)
 - `ADD COLUMN is_custom_tutup_oto` di `produk` — flag eksplisit override fase tutup otomatis
-- `ADD COLUMN is_exc_tidakaktif` di `produk` — pengecualian: rekening produk ini tidak pernah masuk status Tidak Aktif
 - `ADD COLUMN is_exc_tutupnol` di `produk` — pengecualian: rekening produk ini tidak pernah ditutup otomatis saldo nol
 - `ADD COLUMN jumlah_hari_jadi_dormant` di `produk` *(dibaca hanya jika `is_custom_dormant='T'`)*
-- `ADD COLUMN biaya_rekening_tidak_aktif` di `produk` *(dibaca hanya jika `is_custom_tidak_aktif='T'`)*
-- `ADD COLUMN is_biaya_rekening_tidak_aktif` di `produk` *(dibaca hanya jika `is_custom_tidak_aktif='T'`)*
+- `ADD COLUMN biaya_rekening_tidak_aktif` di `produk` *(dibaca hanya jika `is_custom_dormant='T'`)*
+- `ADD COLUMN is_biaya_rekening_tidak_aktif` di `produk` *(dibaca hanya jika `is_custom_dormant='T'`)*
 - **Semantik berubah** untuk field existing `produk`: `jumlah_hari_jadi_tidak_aktif`, `biaya_rekening_dormant`, `is_biaya_rekening_dormant`, `jumlah_hari_tutup_otomatis` → hanya dibaca jika flag custom masing-masing aktif
 - `ADD COLUMN is_exclude_aktivitas_nasabah` di `parametertransaksiumum`
 - `ADD INDEX` pada kolom baru
@@ -225,25 +223,22 @@ flowchart TD
 
 ```sql
 -- Tambah flag override per fase, flag pengecualian, dan kolom nilai baru
+-- Catatan: is_tidak_dormant (existing) dipakai dengan semantik baru: T = boleh masuk Tidak Aktif/Dormant
 ALTER TABLE ibankcore.produk ADD (
-  is_custom_tidak_aktif         VARCHAR2(1),   -- override threshold & biaya tidak aktif
-  is_custom_dormant             VARCHAR2(1),   -- override threshold & biaya dormant
+  is_custom_dormant             VARCHAR2(1),   -- override threshold & biaya tidak aktif + dormant (combined)
   is_custom_tutup_oto           VARCHAR2(1),   -- override threshold tutup otomatis
-  is_exc_tidakaktif             VARCHAR2(1),   -- pengecualian: tidak pernah jadi tidak aktif
   is_exc_tutupnol               VARCHAR2(1),   -- pengecualian: tidak pernah ditutup otomatis
   jumlah_hari_jadi_dormant      NUMBER,
   biaya_rekening_tidak_aktif    NUMBER(20, 8),
   is_biaya_rekening_tidak_aktif VARCHAR2(1)
 );
 
-COMMENT ON COLUMN ibankcore.produk.is_custom_tidak_aktif IS
-  'T = produk pakai threshold & biaya tidak aktif sendiri (baca dari field produk), F/NULL = ikut ParameterGlobal';
+COMMENT ON COLUMN ibankcore.produk.is_tidak_dormant IS
+  'T = rekening produk ini dikecualikan dari status Tidak Aktif maupun Dormant (tidak akan masuk kedua fase), F/NULL = ikut proses normal. Enhancement: cakupan diperluas dari hanya Dormant menjadi Tidak Aktif + Dormant';
 COMMENT ON COLUMN ibankcore.produk.is_custom_dormant IS
-  'T = produk pakai threshold & biaya dormant sendiri (baca dari field produk), F/NULL = ikut ParameterGlobal';
+  'T = produk pakai threshold & biaya tidak aktif + dormant sendiri (baca dari field produk), F/NULL = ikut ParameterGlobal';
 COMMENT ON COLUMN ibankcore.produk.is_custom_tutup_oto IS
   'T = produk pakai threshold tutup otomatis sendiri (baca dari field produk), F/NULL = ikut ParameterGlobal';
-COMMENT ON COLUMN ibankcore.produk.is_exc_tidakaktif IS
-  'T = rekening produk ini dikecualikan dari status Tidak Aktif, tidak akan pernah masuk fase tidak aktif';
 COMMENT ON COLUMN ibankcore.produk.is_exc_tutupnol IS
   'T = rekening produk ini dikecualikan dari tutup otomatis saldo nol';
 COMMENT ON COLUMN ibankcore.produk.jumlah_hari_jadi_dormant IS
@@ -520,7 +515,7 @@ EOD berjalan (urutan wajib):
            Script: batchprocess/update_dormant_account.py
            Yang dimodifikasi:
            a. Ganti referensi `tgl_transaksi_terakhir` → `tgl_aktivitas_terakhir`
-           b. Baca threshold efektif dari produk (jika `is_custom_tidak_aktif`/`is_custom_dormant = 'T'`)
+           b. Baca threshold efektif dari produk (jika `is_custom_dormant = 'T'`)
               atau fallback ke ParameterGlobal (`TAKT_HARI`, `DORM_HARI`)
            c. Update status rekening ke TIDAK_AKTIF atau DORMANT sesuai threshold
 
@@ -575,7 +570,7 @@ EOM berjalan (akhir bulan):
            Script: batchprocess/admcost_dormant_process.py
            Yang dimodifikasi:
            a. Tambah pengenaan biaya rekening TIDAK AKTIF (saat ini hanya biaya DORMANT)
-           b. Baca nominal biaya efektif dari produk (jika `is_custom_dormant`/`is_custom_tidak_aktif = 'T'`)
+           b. Baca nominal biaya efektif dari produk (jika `is_custom_dormant = 'T'`)
               atau fallback ke ParameterGlobal (`DORM_BIAYA`, `TAKT_BIAYA`)
            c. Kode transaksi: `SCD` (dormant), tambah kode baru untuk biaya tidak aktif
 ```
@@ -825,14 +820,16 @@ SELECT 1 FROM DUAL;
 Logika resolusi nilai per fase dikontrol oleh **flag eksplisit** di tabel `produk`:
 
 ```
-if is_custom_tidak_aktif = 'T':
-    pakai jumlah_hari_jadi_tidak_aktif, biaya_rekening_tidak_aktif, is_biaya_rekening_tidak_aktif dari produk
-else:
-    pakai TAKT_HARI, TAKT_BIAYA dari ParameterGlobal
+# Cek pengecualian fase Tidak Aktif / Dormant
+if is_tidak_dormant = 'T':
+    skip fase Tidak Aktif dan Dormant
 
+# Resolusi threshold & biaya (combined untuk Tidak Aktif dan Dormant)
 if is_custom_dormant = 'T':
+    pakai jumlah_hari_jadi_tidak_aktif, biaya_rekening_tidak_aktif, is_biaya_rekening_tidak_aktif dari produk
     pakai jumlah_hari_jadi_dormant, biaya_rekening_dormant, is_biaya_rekening_dormant dari produk
 else:
+    pakai TAKT_HARI, TAKT_BIAYA dari ParameterGlobal
     pakai DORM_HARI, DORM_BIAYA dari ParameterGlobal
 
 if is_custom_tutup_oto = 'T':
@@ -843,14 +840,14 @@ else:
 
 | Flag di `produk` | Fase | Field nilai yang digunakan saat flag = `T` |
 |---|---|---|
-| `is_custom_tidak_aktif` | Tidak Aktif | `jumlah_hari_jadi_tidak_aktif`, `biaya_rekening_tidak_aktif`, `is_biaya_rekening_tidak_aktif` |
-| `is_custom_dormant` | Dormant | `jumlah_hari_jadi_dormant`, `biaya_rekening_dormant`, `is_biaya_rekening_dormant` |
+| `is_tidak_dormant` *(existing, perluas cakupan)* | Tidak Aktif + Dormant | Pengecualian kedua fase — `T` = dikecualikan/skip, `F/NULL` = ikut proses normal |
+| `is_custom_dormant` *(baru)* | Tidak Aktif + Dormant | `jumlah_hari_jadi_tidak_aktif`, `biaya_rekening_tidak_aktif`, `is_biaya_rekening_tidak_aktif`, `jumlah_hari_jadi_dormant`, `biaya_rekening_dormant`, `is_biaya_rekening_dormant` |
 | `is_custom_tutup_oto` | Tutup Otomatis | `jumlah_hari_tutup_otomatis`, `is_tutup_otomatis_dormant` |
 
 **Contoh kasus:**
-- **TabunganKu** — biaya tidak aktif beda → `is_custom_tidak_aktif = 'T'`, set `biaya_rekening_tidak_aktif = 0`, `is_biaya_rekening_tidak_aktif = 'F'`
-- **Deposito** — tidak perlu cek dormant sama sekali → `is_tidak_dormant = 'T'` (existing, tidak berubah)
-- **Giro Korporat** — threshold dormant lebih panjang → `is_custom_dormant = 'T'`, set `jumlah_hari_jadi_dormant = 180`
+- **TabunganKu** — ikut proses, biaya beda → `is_tidak_dormant = 'F'`, `is_custom_dormant = 'T'`, set `biaya_rekening_tidak_aktif = 0`, `is_biaya_rekening_tidak_aktif = 'F'`
+- **Deposito** — tidak perlu cek dormant sama sekali → `is_tidak_dormant = 'T'`
+- **Giro Korporat** — threshold dormant lebih panjang → `is_tidak_dormant = 'F'`, `is_custom_dormant = 'T'`, set `jumlah_hari_jadi_dormant = 180`
 - **TabunganKu** — tidak ada tutup otomatis → `is_custom_tutup_oto = 'T'`, `is_tutup_otomatis_dormant = 'F'`
 
 ### 9.6 Cara Baca ParameterGlobal di Kode Python (Batch EOD)
