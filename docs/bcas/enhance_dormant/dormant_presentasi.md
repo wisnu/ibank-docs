@@ -231,6 +231,149 @@ sequenceDiagram
 
 ---
 
+## Mengapa Hanya Baca Transaksi Hari Ini (H)?
+
+### Asumsi Dasar: EOD Berjalan Setiap Hari
+
+Setiap EOD berjalan, sistem memperbarui `tgl_aktivitas_terakhir` di `rekeningliabilitas`. Nilai ini adalah **akumulasi yang sudah benar per akhir hari sebelumnya (H-1)**.
+
+```mermaid
+flowchart LR
+    subgraph H1["EOD H-1 (kemarin)"]
+        A1["Baca tabel Transaksi\n(H-1 masih ada sebelum WIPE)"] --> B1[(rekeningliabilitas\ntgl_aktivitas_terakhir\n= nilai terbaru s.d. H-1)]
+    end
+
+    subgraph H["EOD H (hari ini)"]
+        A2["Baca tabel Transaksi\n(hari ini, sebelum WIPE)\n⚠️ HistTransaksi diabaikan"] --> B2{Lebih baru\ndari H-1?}
+        B2 -->|Ya| C2[UPDATE\ntgl_aktivitas_terakhir]
+        B2 -->|Tidak| D2[Biarkan —\nnilai H-1 tetap berlaku]
+    end
+
+    B1 -->|"nilai sudah tersimpan\ndi rekeningliabilitas"| H
+
+    style H1 fill:#e8f4fd,stroke:#0c5460
+    style H fill:#f0fff4,stroke:#28a745
+```
+
+> EOD hari ini membaca tabel **`Transaksi`** (transaksi hari berjalan yang belum di-WIPE) — bukan `HistTransaksi`. Transaksi lama sudah diwakili oleh nilai `tgl_aktivitas_terakhir` yang tersimpan dari EOD sebelumnya.
+
+---
+
+## Mengapa Ini Aman?
+
+### Properti "Monotonically Non-Decreasing"
+
+`tgl_aktivitas_terakhir` hanya bisa **sama atau lebih baru** — tidak pernah mundur.
+
+```mermaid
+flowchart LR
+    A["tgl_aktivitas_terakhir\nH-1 = 15 Mar"] --> CHK{"Ada aktivitas\nhari ini?"}
+
+    CHK -->|Ya, 10 Apr| UPDATE["UPDATE:\ntgl_aktivitas_terakhir = 10 Apr\n(lebih baru → pakai yang baru)"]
+    CHK -->|Tidak ada| KEEP["KEEP:\ntgl_aktivitas_terakhir tetap 15 Mar\n(tidak ada yang lebih baru)"]
+
+    style UPDATE fill:#d4edda,stroke:#28a745
+    style KEEP fill:#fff3cd,stroke:#ffc107
+```
+
+| Kondisi | Aksi EOD | Hasil |
+|---|---|---|
+| Ada aktivitas hari ini | `UPDATE` jika lebih baru dari nilai tersimpan | `tgl_aktivitas_terakhir` = hari ini |
+| Tidak ada aktivitas hari ini | Tidak ada `UPDATE` | `tgl_aktivitas_terakhir` tetap dari EOD sebelumnya |
+| Nilai tersimpan sudah lebih baru | Tidak ada `UPDATE` | Nilai lama dipertahankan |
+
+---
+
+## Ilustrasi: 3 Hari Berturut-turut
+
+```mermaid
+sequenceDiagram
+    participant EOD as EOD Harian
+    participant TBL as rekeningliabilitas\n(tgl_aktivitas_terakhir)
+    participant TRX as Transaksi\n(bukan HistTransaksi)
+    participant HIS as HistTransaksi\n(diabaikan ❌)
+
+    Note over TBL: Nilai awal: 1 Mar
+
+    Note over EOD: EOD 10 Apr
+    EOD->>TRX: SELECT MAX(tanggal_transaksi)\nWHERE tanggal_transaksi = 10 Apr
+    TRX-->>EOD: 10 Apr (ada transaksi hari ini)
+    Note over HIS: Tidak dibaca
+    EOD->>TBL: 10 Apr > 1 Mar → UPDATE ke 10 Apr
+    Note over TBL: Nilai: 10 Apr ✅
+
+    Note over EOD: EOD 11 Apr
+    EOD->>TRX: SELECT MAX(tanggal_transaksi)\nWHERE tanggal_transaksi = 11 Apr
+    TRX-->>EOD: NULL (tidak ada aktivitas hari ini)
+    Note over HIS: Tidak dibaca
+    EOD->>TBL: Tidak ada yang lebih baru → SKIP
+    Note over TBL: Nilai tetap: 10 Apr ✅
+
+    Note over EOD: EOD 12 Apr
+    EOD->>TRX: SELECT MAX(tanggal_transaksi)\nWHERE tanggal_transaksi = 12 Apr
+    TRX-->>EOD: 12 Apr (ada transaksi hari ini)
+    Note over HIS: Tidak dibaca
+    EOD->>TBL: 12 Apr > 10 Apr → UPDATE ke 12 Apr
+    Note over TBL: Nilai: 12 Apr ✅
+```
+
+> Meskipun 11 Apr tidak ada aktivitas, nilai 10 Apr tetap tersimpan dengan benar karena EOD H-1 sudah menjaganya. `HistTransaksi` **tidak perlu dibaca** — seluruh histori sudah terepresentasi oleh nilai `tgl_aktivitas_terakhir` yang tersimpan.
+
+---
+
+## Mengapa Tidak Scan Seluruh Histori Setiap Hari?
+
+```mermaid
+flowchart TD
+    subgraph SALAH["❌ Pendekatan Recalculate — Scan Semua Histori"]
+        S1["Scan tabel Transaksi +\ntabel HistTransaksi +\nrekeningaktivitasnonfin"] --> S2[MAX per rekening\ndari seluruh data]
+        S2 --> S3[(Update tgl_aktivitas_terakhir)]
+        S4["⚠️ Transaksi + HistTransaksi\nbisa ratusan juta baris\n→ performa sangat lambat\n→ EOD bisa timeout"]
+    end
+
+    subgraph BENAR["✅ Pendekatan Inkremental — Scan H Saja"]
+        B1["Scan tabel Transaksi saja\nWHERE tanggal_transaksi = HARI INI\n(HistTransaksi diabaikan ✅)"] --> B2[MAX per rekening\nhanya dari data hari ini]
+        B2 --> B3{Lebih baru\ndari tersimpan?}
+        B3 -->|Ya| B4[(UPDATE\ntgl_aktivitas_terakhir)]
+        B3 -->|Tidak| B5[Skip —\nnilai lama tetap valid]
+        B6["✅ Query ringan\n→ EOD cepat\n→ Histori dijaga oleh\nnilai tersimpan di rekeningliabilitas"]
+    end
+
+    style SALAH fill:#fff5f5,stroke:#dc3545
+    style BENAR fill:#f0fff4,stroke:#28a745
+```
+
+| | Scan Semua Histori | Scan H Saja (inkremental) |
+|---|---|---|
+| **Volume data dibaca** | Seluruh riwayat transaksi | Hanya transaksi hari ini |
+| **Performa** | Lambat — tidak skalabel | Cepat — stabil meski data tumbuh |
+| **Keakuratan** | Sama | Sama (karena nilai H-1 sudah benar) |
+| **Ketergantungan** | Tidak ada | EOD wajib berjalan setiap hari |
+
+---
+
+## Syarat Agar Pendekatan Ini Valid
+
+```mermaid
+flowchart LR
+    A["EOD berjalan\nsetiap hari\ntanpa skip"] --> B["tgl_aktivitas_terakhir\nselalu akurat\nper akhir hari"]
+    B --> C["EOD hari ini\ncukup baca H saja"]
+
+    A2["⚠️ Jika EOD skip\n1 hari"] --> B2["Aktivitas hari skip\ntidak tercatat"]
+    B2 --> C2["tgl_aktivitas_terakhir\nmundur 1 hari"]
+
+    style A fill:#d4edda,stroke:#28a745
+    style B fill:#d4edda,stroke:#28a745
+    style C fill:#d4edda,stroke:#28a745
+    style A2 fill:#f8d7da,stroke:#dc3545
+    style B2 fill:#f8d7da,stroke:#dc3545
+    style C2 fill:#f8d7da,stroke:#dc3545
+```
+
+> **Kesimpulan:** Pendekatan inkremental benar selama EOD **tidak pernah dilewati**. Jika EOD pernah skip, perlu mekanisme koreksi (scan N hari ke belakang).
+
+---
+
 ## Perbandingan Skenario: Sebelum vs Sesudah
 
 ### Skenario: Nasabah hanya cek saldo, tidak ada transaksi selama 2 tahun
