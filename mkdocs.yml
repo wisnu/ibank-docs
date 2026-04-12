@@ -60,12 +60,14 @@ nav:
   - BJBS:
       - Fingerscan:
           - FSD - Fingerscan Biometrik: bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md
+      - Enhance Dormant:
+          - Screenshot: bjbs/enhance_dormant/dormant_screenshot.md
 
   - BCAS:
       - Enhance Dormant:
           - Design Plan: bcas/enhance_dormant/dormant_design_plan.md
           - Use Case: bcas/enhance_dormant/dormant_use_case.md
-          - Screenshot Checklist: bcas/enhance_dormant/dormant_screenshot.md
+          - Screenshot: bcas/enhance_dormant/dormant_screenshot.md
           - Presentasi - Tanggal Aktivitas: bcas/enhance_dormant/dormant_presentasi.md
       - Saku Valas:
           - FSD - Saku Valas: bcas/saku_valas/fsd_sakuvalas.md
