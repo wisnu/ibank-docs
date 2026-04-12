@@ -201,13 +201,13 @@
 
 ## 6. Batch EOD 
 
-- EODLIAB01 - UPDATE ACCOUNT LAST TRX DATE (urutan 145)
+- EOD_LIAB01 - UPDATE ACCOUNT LAST TRX DATE
 ![EODLIAB01 - UPDATE ACCOUNT LAST TRX DATE](assets/dorman_eod_01.png) 
 
-- EODLIAB02 - Batch Dormant (deteksi tidak aktif → dormant)
-![EODLIAB02 - Batch Dormant](assets/dorman_eod_02.png) 
+- SOD_LIAB01 - Batch Dormant (deteksi tidak aktif → dormant)
+![SOD_LIAB01 - Batch Dormant](assets/dorman_eod_02.png) 
 
-- EODLIAB02 - Tutup Otomatis
-![EODLIAB02 - Tutup Otomatis](assets/dorman_eod_03.png) 
+- SOD_LIAB01 - Tutup Otomatis
+![SOD_LIAB01 - Tutup Otomatis](assets/dorman_eod_03.png) 
 
 ---
