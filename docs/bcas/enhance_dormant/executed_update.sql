@@ -94,17 +94,21 @@ CREATE INDEX idx_rep_tdkakt_norek ON ibankrep.rekening_tidak_aktif
 ALTER TABLE ibankcore.parameterglobal
   ADD kode_group VARCHAR2(30) NULL;
 
+alter table ibrep.rekening_tutupotomatis add tgl_saldo_nol timestamp;
+alter table ibrep.rekening_tutupotomatis add param_hari_tutup_oto integer;
+
+
 INSERT ALL
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('TAKT_HARI',      'N', 360,   'Hari default jadi tidak aktif',       'T', 'REKENING_DORMANT')
+    VALUES ('TAKT_HARI',      'N', 360,   'Hari default jadi tidak aktif',       'F', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('DORM_HARI',      'N', 1800,  'Hari default jadi dormant',           'T', 'REKENING_DORMANT')
+    VALUES ('DORM_HARI',      'N', 1800,  'Hari default jadi dormant',           'F', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('TUTUP_NOL_HARI', 'N', 180,   'Hari default tutup otomatis dormant', 'T', 'REKENING_DORMANT')
+    VALUES ('TUTUP_NOL_HARI', 'N', 180,   'Hari default tutup otomatis dormant', 'F', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('TAKT_BIAYA',     'N', 0,     'Biaya default rekening tidak aktif',  'T', 'REKENING_DORMANT')
+    VALUES ('TAKT_BIAYA',     'N', 0,     'Biaya default rekening tidak aktif',  'F', 'REKENING_DORMANT')
   INTO ibankcore.parameterglobal (kode_parameter, tipe_parameter, nilai_parameter, deskripsi, is_parameter_system, kode_group)
-    VALUES ('DORM_BIAYA',     'N', 10000, 'Biaya default rekening dormant',      'T', 'REKENING_DORMANT')
+    VALUES ('DORM_BIAYA',     'N', 10000, 'Biaya default rekening dormant',      'F', 'REKENING_DORMANT')
 SELECT 1 FROM DUAL;
 
 
@@ -119,6 +123,9 @@ ALTER TABLE ibankcore.produk ADD (
   is_exc_tutupnol varchar2(1)
 );
 
+alter table ibankcore.rekeningliabilitas
+add is_biaya_rekening_tidakaktif varchar2(1);
+
 CREATE TABLE ibanktmp.autoclose_zerobalance_candidate
 (
    Nomor_Rekening varchar2(20) primary key
@@ -127,7 +134,7 @@ CREATE TABLE ibanktmp.autoclose_zerobalance_candidate
    , kode_produk varchar2(10)
    , param_hari_tutup_oto number
    , tgl_saldo_nol timestamp
-   , saldo number(38, 8) 
+   , saldo number(38, 8)
 );
 
 CREATE INDEX idx_autoclose_cand_norek ON ibanktmp.autoclose_zerobalance_candidate(nomor_rekening);
@@ -155,12 +162,157 @@ CREATE TABLE IBANKTMP.rekening_tidak_aktif_candidate
     , PRIMARY KEY (NOMOR_REKENING)
 );
 
-INSERT INTO IBANKCORE.REPORT (KODE_REPORT, NAMA_REPORT, TEMPLATE_NAME, SCRIPT_NAME, TAG_REPORT, IS_EOD_EXECUTE, RECIPIENT, RETENSI, IS_SHOW_BDS, KODE_REPORT_TM) 
+INSERT INTO IBANKCORE.REPORT (KODE_REPORT, NAMA_REPORT, TEMPLATE_NAME, SCRIPT_NAME, TAG_REPORT, IS_EOD_EXECUTE, RECIPIENT, RETENSI, IS_SHOW_BDS, KODE_REPORT_TM)
 VALUES('R041', 'Laporan Rekening Aktif jadi Tidak Aktif', 'tplRekeningTidakAktifOtomatis', 'rekening_tidakaktif_otomatis', 'GENERAL', 'F', 'C', '1B/6B/12B', NULL, NULL);
 
-INSERT INTO ibankcore.reportgroupaccess 
+INSERT INTO ibankcore.reportgroupaccess
 (accessid, id_peran,kode_report,accessflag)
-SELECT ibankcore.seq_reportgroupaccess.nextval, ID_PERAN , 'R041',accessflag 
+SELECT ibankcore.seq_reportgroupaccess.nextval, ID_PERAN , 'R041',accessflag
 FROM ibankcore.reportgroupaccess WHERE KODE_REPORT ='R029';
 
 ALTER TABLE ibankrep.REKENING_TIDAK_AKTIF ADD param_hari_tidak_aktif  NUMBER;
+
+INSERT INTO IBANKCORE.ENUM_INT (ENUM_NAME, ENUM_VALUE, ENUM_DESCRIPTION) VALUES('eStatusRekening', 7, 'Tidak Aktif');
+
+UPDATE IBANKCORE.ENUM_INT SET ENUM_DESCRIPTION='Dormant' WHERE ENUM_NAME='eStatusRekening' AND ENUM_VALUE=2;
+
+-- enhance parametertransaksiumum
+-- Rename is_exclude_aktivitas_nasabah → tipe_exclude_aktivitas_nasabah (boolean → multi-value)
+-- Tambah is_transaksi_sistem, allow_rekening_tidak_aktif, allow_rekening_dormant
+-- tipe_exclude_aktivitas_nasabah, default 'F' ('F' = hitung sebagai aktivitas nasabah, 'DC' = exclude dari aktivitas nasabah, 'D' = exclude debit, 'C' = exclude kredit)
+-- is_transaksi_sistem ('T'/'F'), default 'F' (untuk menandai transaksi yang memang berasal dari sistem, misal posting bunga, sehingga bisa diabaikan untuk logika tertentu seperti auto-dormant)
+-- allow_rekening_tidak_aktif ('DC'/'D'/'C'/'F') , default 'F' (untuk transaksi yang diperbolehkan untuk rekening tidak aktif, DC = Boleh Debet/Kredit, D = Hanya Debet, C = Hanya Kredit, F = Tidak boleh Debet/Kredit)
+-- allow_rekening_dormant ('DC'/'D'/'C'/'F'), default 'F' (untuk transaksi yang diperbolehkan untuk rekening dormant, DC = Boleh Debet/Kredit, D = Hanya Debet, C = Hanya Kredit, F = Tidak boleh Debet/Kredit)
+-- rule tambahan , jika kode transaksi tidak terdapat di parameter ini, maka secara default dianggap sebagai aktivitas nasabah (tipe_exclude_aktivitas_nasabah = 'F'), bukan transaksi sistem, dan tidak boleh untuk rekening tidak aktif maupun dormant.
+
+ALTER TABLE ibankcore.parametertransaksiumum
+    ADD tipe_exclude_aktivitas_nasabah VARCHAR2(2) DEFAULT 'F';
+
+-- Migrasi nilai lama: 'T' (exclude semua) → 'DC', 'F' tetap 'F'
+UPDATE ibankcore.parametertransaksiumum
+SET tipe_exclude_aktivitas_nasabah = 'DC'
+WHERE kode_transaksi IN ('SD', 'PD', 'SC', 'SCD', 'SDP', 'SDZ', 'SI');
+
+ALTER TABLE ibankcore.parametertransaksiumum
+    ADD is_transaksi_sistem VARCHAR2(1) DEFAULT 'F';
+
+-- Transaksi sistem yang sudah diketahui (sama dengan yang di-exclude aktivitas)
+UPDATE ibankcore.parametertransaksiumum
+SET is_transaksi_sistem = 'T'
+WHERE kode_transaksi IN ('SD', 'PD', 'SC', 'SCD', 'SDP', 'SDZ', 'SI');
+
+ALTER TABLE ibankcore.parametertransaksiumum
+    ADD allow_rekening_tidak_aktif VARCHAR2(2) DEFAULT 'F';
+
+ALTER TABLE ibankcore.parametertransaksiumum
+    ADD allow_rekening_dormant VARCHAR2(2) DEFAULT 'F';
+
+-- Enum values untuk eTipeExcludeAktivitas
+DELETE FROM ibankcore.enum_varchar WHERE enum_name = 'eTipeExcludeAktivitas';
+INSERT INTO ibankcore.enum_varchar (enum_name, enum_value, enum_description) VALUES ('eTipeExcludeAktivitas', 'F',  'Hitung sebagai aktivitas nasabah');
+INSERT INTO ibankcore.enum_varchar (enum_name, enum_value, enum_description) VALUES ('eTipeExcludeAktivitas', 'DC', 'Exclude dari aktivitas nasabah');
+INSERT INTO ibankcore.enum_varchar (enum_name, enum_value, enum_description) VALUES ('eTipeExcludeAktivitas', 'D',  'Exclude debit');
+INSERT INTO ibankcore.enum_varchar (enum_name, enum_value, enum_description) VALUES ('eTipeExcludeAktivitas', 'C',  'Exclude kredit');
+
+-- Enum values untuk eParamAllowTrx
+DELETE FROM ibankcore.enum_varchar WHERE enum_name = 'eParamAllowTrx';
+INSERT INTO ibankcore.enum_varchar (enum_name, enum_value, enum_description) VALUES ('eParamAllowTrx', 'F',  'Tolak Debet/Kredit');
+INSERT INTO ibankcore.enum_varchar (enum_name, enum_value, enum_description) VALUES ('eParamAllowTrx', 'DC', 'Izinkan Debet/Kredit');
+INSERT INTO ibankcore.enum_varchar (enum_name, enum_value, enum_description) VALUES ('eParamAllowTrx', 'D',  'Hanya Debet');
+INSERT INTO ibankcore.enum_varchar (enum_name, enum_value, enum_description) VALUES ('eParamAllowTrx', 'C',  'Hanya Kredit');
+
+UPDATE ibankcore.parametertransaksiumum
+SET allow_rekening_dormant = 'DC'
+WHERE kode_transaksi IN ('SD', 'PD', 'SC', 'SCD', 'SDP', 'SDZ', 'SI');
+
+
+-- One-time migration
+
+-- [MIGRASI 1/3] Update tgl_transaksi_terakhir dari histtransaksi + histdetiltransaksi
+-- Mengambil MAX tanggal_transaksi per rekening dari data historis,
+-- hanya untuk kode transaksi yang dianggap aktivitas nasabah (is_exclude_aktivitas_nasabah != 'T').
+-- Menggunakan GREATEST agar tidak menimpa nilai yang sudah lebih baru.
+UPDATE ibankcore.rekeningliabilitas rl
+SET tgl_transaksi_terakhir = GREATEST(
+    COALESCE(rl.tgl_transaksi_terakhir, DATE '1900-01-01'),
+    (
+        SELECT MAX(t.tanggal_transaksi)
+        FROM   ibankcore.histdetiltransaksi d
+               INNER JOIN ibankcore.histtransaksi t
+                       ON t.id_transaksi = d.id_transaksi
+               LEFT  JOIN ibankcore.parametertransaksiumum ptu
+                       ON ptu.kode_transaksi = t.kode_transaksi
+        WHERE  d.nomor_rekening = rl.nomor_rekening
+          AND  t.status_otorisasi = 1
+          AND  COALESCE(t.is_reversed, 'F') = 'F'
+          AND  (ptu.is_exclude_aktivitas_nasabah = 'F' OR ptu.is_exclude_aktivitas_nasabah IS NULL)
+    )
+)
+WHERE EXISTS (
+    SELECT 1
+    FROM   ibankcore.histdetiltransaksi d
+           INNER JOIN ibankcore.histtransaksi t
+                   ON t.id_transaksi = d.id_transaksi
+           LEFT  JOIN ibankcore.parametertransaksiumum ptu
+                   ON ptu.kode_transaksi = t.kode_transaksi
+    WHERE  d.nomor_rekening = rl.nomor_rekening
+      AND  t.status_otorisasi = 1
+      AND  COALESCE(t.is_reversed, 'F') = 'F'
+      AND  (ptu.is_exclude_aktivitas_nasabah = 'F' OR ptu.is_exclude_aktivitas_nasabah IS NULL)
+);
+
+-- [MIGRASI 2/3] Update tgl_transaksi_terakhir dari transaksi + detiltransaksi (data H+0)
+-- Menangkap transaksi yang belum dipindahkan ke hist (hari berjalan saat migrasi dijalankan).
+-- Sama-sama mempertimbangkan flag is_exclude_aktivitas_nasabah.
+UPDATE ibankcore.rekeningliabilitas rl
+SET tgl_transaksi_terakhir = GREATEST(
+    COALESCE(rl.tgl_transaksi_terakhir, DATE '1900-01-01'),
+    (
+        SELECT MAX(t.tanggal_transaksi)
+        FROM   ibankcore.detiltransaksi d
+               INNER JOIN ibankcore.transaksi t
+                       ON t.id_transaksi = d.id_transaksi
+               LEFT  JOIN ibankcore.parametertransaksiumum ptu
+                       ON ptu.kode_transaksi = t.kode_transaksi
+        WHERE  d.nomor_rekening = rl.nomor_rekening
+          AND  t.status_otorisasi = 1
+          AND  COALESCE(t.is_reversed, 'F') = 'F'
+          AND  (ptu.is_exclude_aktivitas_nasabah = 'F' OR ptu.is_exclude_aktivitas_nasabah IS NULL)
+    )
+)
+WHERE EXISTS (
+    SELECT 1
+    FROM   ibankcore.detiltransaksi d
+           INNER JOIN ibankcore.transaksi t
+                   ON t.id_transaksi = d.id_transaksi
+           LEFT  JOIN ibankcore.parametertransaksiumum ptu
+                   ON ptu.kode_transaksi = t.kode_transaksi
+    WHERE  d.nomor_rekening = rl.nomor_rekening
+      AND  t.status_otorisasi = 1
+      AND  COALESCE(t.is_reversed, 'F') = 'F'
+      AND  (ptu.is_exclude_aktivitas_nasabah = 'F' OR ptu.is_exclude_aktivitas_nasabah IS NULL)
+);
+
+-- [MIGRASI 3/3] Salin tgl_transaksi_terakhir ke tgl_aktivitas_terakhir sebagai baseline awal
+UPDATE ibankcore.rekeningliabilitas
+SET tgl_aktivitas_terakhir = tgl_transaksi_terakhir
+WHERE tgl_transaksi_terakhir IS NOT NULL;
+
+
+
+  # -- Update Tgl_Aktivitas_Terakhir dari gabungan transaksi nasabah + aktivitas nonfin
+  # -- Hanya untuk rekening aktif (status_rekening = 1)
+  , 'ULT_UpdateTglAktivitasTerakhir': '''
+    UPDATE {RekeningLiabilitas} rl
+    SET Tgl_Aktivitas_Terakhir = {Today}
+    WHERE rl.status_rekening = 1
+      AND (
+        EXISTS (
+          SELECT 1 FROM {tmp_rek_transaksi_terakhir} t
+          WHERE t.nomor_rekening = rl.nomor_rekening
+        )
+        OR EXISTS (
+          SELECT 1 FROM {tmp_rek_aktivitas_nonfin} a
+          WHERE a.nomor_rekening = rl.nomor_rekening
+        )
+      );
