@@ -65,6 +65,7 @@ nav:
 
   - BCAS:
       - Enhance Dormant:
+          - FSD - Enhance Dormant: bcas/enhance_dormant/dormant_fsd.md
           - Design Plan: bcas/enhance_dormant/dormant_design_plan.md
           - Use Case: bcas/enhance_dormant/dormant_use_case.md
           - Screenshot: bcas/enhance_dormant/dormant_screenshot.md

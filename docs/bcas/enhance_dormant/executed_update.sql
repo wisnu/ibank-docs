@@ -202,7 +202,7 @@ SET is_transaksi_sistem = 'T'
 WHERE kode_transaksi IN ('SD', 'PD', 'SC', 'SCD', 'SDP', 'SDZ', 'SI');
 
 ALTER TABLE ibankcore.parametertransaksiumum
-    ADD allow_rekening_tidak_aktif VARCHAR2(2) DEFAULT 'F';
+    ADD allow_rekening_tidak_aktif VARCHAR2(2) DEFAULT 'C';
 
 ALTER TABLE ibankcore.parametertransaksiumum
     ADD allow_rekening_dormant VARCHAR2(2) DEFAULT 'F';
