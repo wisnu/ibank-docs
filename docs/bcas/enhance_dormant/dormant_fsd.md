@@ -42,40 +42,66 @@ Ruko Surapati Core C-7 Bandung
    - 1.4. Definisi
    - 1.5. Objektif
    - 1.6. Pengguna
-2. Alur Status Rekening
-   - 2.1. Diagram Transisi Status
-   - 2.2. Ringkasan Status Rekening
-   - 2.3. Matriks Transaksi Berdasarkan Status Rekening
-3. Konfigurasi Parameter
-   - 3.1. Parameter Global
-   - 3.2. Parameter Transaksi
-   - 3.3. Parameter Produk
-4. Pencatatan Aktivitas Nasabah
-   - 4.1. Aktivitas Non-Finansial
-   - 4.2. Transaksi Finansial — Yang Dihitung dan Yang Dikecualikan
-5. Proses EOD (End of Day)
-   - 5.1. Alur Proses EOD
-   - 5.2. Rekening Berubah Menjadi Tidak Aktif (UC-01)
-   - 5.3. Rekening Berubah Menjadi Dormant (UC-02)
-   - 5.4. Rekening Ditutup Otomatis Saldo Nol (UC-03)
-6. Transaksi Berdasarkan Status Rekening
-7. Reaktivasi Rekening (UC-05)
-8. Pengenaan Biaya Rekening (UC-06)
-9. Laporan
-   - 9.1. Laporan Rekening Tidak Aktif (R041)
-   - 9.2. Laporan Rekening Dormant (R029)
-   - 9.3. Laporan Tutup Otomatis (R030)
-10. Perubahan Database
-    - 10.1. Ringkasan Perubahan
-    - 10.2. DDL
-11. Pengaturan Umum
-12. Persetujuan Dokumen
+2. Arsitektur Sistem
+   - 2.1. Arsitektur Sistem
+3. Alur Status Rekening
+   - 3.1. Diagram Transisi Status
+   - 3.2. Ringkasan Status Rekening
+   - 3.3. Matriks Transaksi Berdasarkan Status Rekening
+4. Konfigurasi Parameter
+   - 4.1. Parameter Global
+   - 4.2. Parameter Transaksi
+   - 4.3. Parameter Produk
+5. Pencatatan Aktivitas Nasabah
+   - 5.1. Aktivitas yang Dicatat
+   - 5.2. Transaksi Finansial — Yang Dihitung dan Yang Dikecualikan
+6. Proses EOD (End of Day)
+   - 6.1. Alur Proses EOD
+   - 6.2. Rekening Berubah Menjadi Tidak Aktif (UC-01)
+   - 6.3. Rekening Berubah Menjadi Dormant (UC-02)
+   - 6.4. Rekening Ditutup Otomatis Saldo Nol (UC-03)
+7. Transaksi Berdasarkan Status Rekening
+8. Reaktivasi Rekening (UC-05)
+9. Pengenaan Biaya Rekening (UC-06)
+10. Laporan
+    - 10.1. Laporan Rekening Tidak Aktif (R041)
+    - 10.2. Laporan Rekening Dormant (R029)
+    - 10.3. Laporan Tutup Otomatis (R030)
+11. Perubahan Database
+    - 11.1. Ringkasan Perubahan
+12. Pengaturan Umum
 13. Lampiran
     - Lampiran A. Screenshot Konfigurasi Parameter
     - Lampiran B. Screenshot Informasi Rekening
     - Lampiran C. Screenshot Transaksi Berdasarkan Status Rekening
     - Lampiran D. Screenshot Reaktivasi Rekening
     - Lampiran E. Screenshot Laporan
+
+---
+
+# Persetujuan Dokumen BCA Syariah
+
+**PT Bank BCA Syariah**
+
+| | | |
+|---|---|---|
+| | | |
+| {Diisi Nama} | {Diisi Nama} | {Diisi Nama} |
+| {Role/Jabatan} | {Role/Jabatan} | {Role/Jabatan} |
+| {DD/MM/YYYY} | {DD/MM/YYYY} | {DD/MM/YYYY} |
+
+---
+
+# Persetujuan Dokumen ISI
+
+**PT Ihsan Solusi Informatika**
+
+| | | |
+|---|---|---|
+| | | |
+| {Diisi Nama} | {Diisi Nama} | {Diisi Nama} |
+| {Role/Jabatan} | {Role/Jabatan} | {Role/Jabatan} |
+| {DD/MM/YYYY} | {DD/MM/YYYY} | {DD/MM/YYYY} |
 
 ---
 
@@ -175,15 +201,17 @@ Berikut adalah definisi dari beberapa istilah yang ada pada fitur Enhance Rekeni
 
 - **Rekening Aktif:** Rekening dengan status `1` — terdapat aktivitas nasabah dalam batas hari yang dikonfigurasi (default: 360 hari).
 - **Rekening Tidak Aktif:** Status baru dengan kode `7` — rekening yang tidak memiliki aktivitas nasabah selama lebih dari batas hari tidak aktif (default: 360 hari), namun belum mencapai batas hari dormant.
-- **Rekening Dormant:** Rekening dengan status `2` — tidak ada aktivitas nasabah lebih dari batas hari dormant (default: 1.800 hari / ± 5 tahun). Seluruh transaksi diblokir.
+- **Rekening Dormant:** Rekening dengan status `2` — tidak ada aktivitas nasabah lebih dari batas hari dormant (default: 1.800 hari / ± 5 tahun). Seluruh transaksi nasabah diblokir.
 - **Rekening Tutup:** Rekening dengan status `3` — ditutup otomatis saat saldo Rp 0 secara terus-menerus melebihi batas hari tutup otomatis.
 - **Tgl Aktivitas Terakhir (`tgl_aktivitas_terakhir`):** Field baru di `RekeningLiabilitas` — gabungan dari tanggal transaksi finansial nasabah dan tanggal aktivitas non-finansial terakhir. Merupakan acuan utama perhitungan status rekening pada proses EOD.
-- **Aktivitas Non-Finansial:** Aktivitas yang tidak melibatkan pergerakan uang namun mencerminkan keaktifan nasabah, seperti cek saldo, cek mutasi, cetak buku tabungan. Dicatat di tabel `RekeningAktivitasNonfin`.
+- **Aktivitas Non-Finansial:** Aktivitas yang tidak melibatkan pergerakan uang namun mencerminkan keaktifan nasabah, seperti cek saldo dan cetak buku tabungan. Dicatat di tabel `RekeningAktivitasNonfin`.
 - **EOD (End of Day):** Proses harian otomatis yang berjalan setiap akhir hari kerja, termasuk update status rekening berdasarkan aktivitas terakhir.
 - **EOM (End of Month):** Proses otomatis akhir bulan, termasuk pengenaan biaya rekening Tidak Aktif dan Dormant.
 - **ParameterGlobal:** Tabel konfigurasi terpusat untuk threshold hari dan biaya — berlaku untuk semua produk kecuali produk yang memiliki konfigurasi override sendiri.
 - **Override Produk:** Konfigurasi threshold dan biaya khusus per produk — digunakan jika produk mengaktifkan flag `is_custom_dormant = T`.
-- **Reaktivasi:** Proses pengembalian status rekening Tidak Aktif atau Dormant menjadi Aktif, dilakukan oleh petugas cabang dengan persetujuan supervisor.
+- **Reaktivasi:** Proses pengembalian status rekening Tidak Aktif atau Dormant menjadi Aktif — dapat dilakukan oleh petugas cabang (DAF/BDS) dengan persetujuan supervisor, atau mandiri oleh nasabah via BSya.
+- **BDS (Branch Delivery System):** Aplikasi operasional cabang BCA Syariah yang digunakan petugas teller dan customer service.
+- **BSya:** Aplikasi mobile banking BCA Syariah untuk nasabah.
 
 ### 1.5. Objektif
 
@@ -206,9 +234,69 @@ Berikut adalah pengguna fitur Enhance Rekening Tidak Aktif & Dormant:
 
 ---
 
-## 2. Alur Status Rekening
+## 2. Arsitektur Sistem
 
-### 2.1. Diagram Transisi Status
+### 2.1. Arsitektur Sistem
+
+Berikut ini adalah arsitektur sistem dari fitur Enhance Rekening Tidak Aktif & Dormant BCAS:
+
+```mermaid
+graph TB
+    NASABAH(["Nasabah"])
+    BDS(["BDS\n(Branch Delivery System)"])
+    BSYA(["BSya Mobile\n(E-Channel)"])
+    ATM(["ATM / CDM"])
+
+    subgraph DAF["Core Banking BCAS (DAF Legacy)"]
+        subgraph MENU["Menu Operasional"]
+            MREK["Ubah Status Rekening\n(Reaktivasi)"]
+            MPARAM["Parameter Global\nParameter Transaksi\nParameter Produk"]
+            MINFO["Informasi Rekening"]
+        end
+        subgraph EOD_EOM["Proses Otomatis"]
+            SCRIPT1["EOD: update_account_lasttxdate\n(Update Tgl Aktivitas Terakhir)"]
+            SCRIPT2["EOD: update_dormant_account\n(Update Status Rekening)"]
+            SCRIPT3["EOD: saving_auto_close\n(Tutup Otomatis Saldo Nol)"]
+            SCRIPT4["EOM: admcost_dormant_process\n(Pengenaan Biaya)"]
+        end
+        DB[("Core DB\noracle")]
+    end
+
+    subgraph LAPORAN["Laporan"]
+        R041["R041 — Rekening Tidak Aktif"]
+        R029["R029 — Rekening Dormant"]
+        R030["R030 — Tutup Otomatis"]
+    end
+
+    NASABAH -->|"Transaksi / Cek Saldo"| ATM
+    NASABAH -->|"Transaksi / Cek Saldo"| BSYA
+    NASABAH -->|"Transaksi / Cek Saldo"| BDS
+    NASABAH -->|"Aktivasi Mandiri"| BSYA
+
+    ATM -->|"Log Aktivitas"| DAF
+    BSYA -->|"Log Aktivitas\n& Aktivasi"| DAF
+    BDS -->|"Input Reaktivasi\n& Log Aktivitas"| DAF
+
+    MENU --- DB
+    EOD_EOM --- DB
+    DB --- LAPORAN
+```
+
+**Keterangan:**
+
+Fitur ini berdampak pada tiga sistem yang saling terintegrasi:
+
+- **Core Banking BCAS (DAF Legacy)** — pusat logika bisnis. Menyimpan seluruh data rekening, parameter konfigurasi, log aktivitas, dan menjalankan proses batch EOD/EOM secara otomatis.
+- **BDS (Branch Delivery System)** — digunakan oleh petugas dan supervisor cabang untuk melihat status rekening dan melakukan proses reaktivasi (input + otorisasi). Perubahan status di BDS disinkronkan dengan DAF secara H+1 setelah EOD.
+- **E-Channel (BSya Mobile)** — digunakan langsung oleh nasabah untuk aktivasi mandiri rekening Tidak Aktif/Dormant dan menerima notifikasi perubahan status.
+
+Seluruh channel (BDS, BSya, ATM/CDM) mengirimkan log aktivitas ke Core Banking. Proses EOD berjalan setiap akhir hari kerja untuk mengupdate `tgl_aktivitas_terakhir` dan menentukan perubahan status rekening. Proses EOM berjalan setiap akhir bulan untuk pengenaan biaya rekening Tidak Aktif dan Dormant.
+
+---
+
+## 3. Alur Status Rekening
+
+### 3.1. Diagram Transisi Status
 
 #### Diagram A — Transisi Status Tidak Aktif & Dormant
 
@@ -223,31 +311,31 @@ stateDiagram-v2
     DORMANT --> AKTIF : Reaktivasi oleh Petugas Cabang / Mandiri via BSya
 ```
 
-> Perubahan status **Tidak Aktif** dan **Dormant** ditentukan berdasarkan lamanya waktu tanpa aktivitas nasabah — dihitung setiap hari oleh sistem pada proses EOD.
+> Perubahan status **Tidak Aktif** dan **Dormant** ditentukan berdasarkan lamanya waktu tanpa aktivitas nasabah — dihitung setiap hari oleh sistem pada proses EOD (efektif H+1 setelah threshold tercapai).
 
 #### Diagram B — Tutup Otomatis Saldo Nol (Independen)
 
 ```mermaid
 stateDiagram-v2
-    AKTIF --> TUTUP : Saldo Rp 0 selama\n≥ batas hari tutup otomatis
-    TIDAK_AKTIF --> TUTUP : Saldo Rp 0 selama\n≥ batas hari tutup otomatis
-    DORMANT --> TUTUP : Saldo Rp 0 selama\n≥ batas hari tutup otomatis
+    AKTIF --> TUTUP : Saldo Rp 0 selama\n≥ 180 hari berturut-turut
+    TIDAK_AKTIF --> TUTUP : Saldo Rp 0 selama\n≥ 180 hari berturut-turut
+    DORMANT --> TUTUP : Saldo Rp 0 selama\n≥ 180 hari berturut-turut
 
     TUTUP --> [*]
 ```
 
 > Tutup otomatis adalah proses **terpisah** dari alur tidak aktif/dormant. Rekening dalam status apapun — termasuk **Aktif** — dapat ditutup otomatis apabila saldonya Rp 0 secara terus-menerus melebihi batas hari yang dikonfigurasi. Rekening yang dikecualikan dari aturan ini tidak akan ditutup otomatis.
 
-### 2.2. Ringkasan Status Rekening
+### 3.2. Ringkasan Status Rekening
 
 | Status | Kode | Kondisi | Keterangan |
 |---|:---:|---|---|
 | **Aktif** | `1` | Ada aktivitas dalam batas hari yang dikonfigurasi (default: 360 hari) | Operasional normal |
-| **Tidak Aktif** | `7` *(baru)* | Tidak ada aktivitas > batas hari tidak aktif s.d. ≤ batas hari dormant | Beberapa transaksi dibatasi — perlu reaktivasi manual |
-| **Dormant** | `2` | Tidak ada aktivitas > batas hari dormant (default: 1.800 hari) | Seluruh transaksi diblokir — perlu reaktivasi manual |
+| **Tidak Aktif** | `7` *(baru)* | Tidak ada aktivitas > batas hari tidak aktif s.d. ≤ batas hari dormant | Debet nasabah dibatasi — perlu reaktivasi |
+| **Dormant** | `2` | Tidak ada aktivitas > batas hari dormant (default: 1.800 hari) | Debet & kredit nasabah diblokir — perlu reaktivasi |
 | **Tutup** | `3` | Saldo Rp 0 melebihi batas hari tutup otomatis *(dari status apapun)* | Rekening ditutup permanen |
 
-### 2.3. Matriks Transaksi Berdasarkan Status Rekening
+### 3.3. Matriks Transaksi Berdasarkan Status Rekening
 
 | Jenis Transaksi | Aktif | Tidak Aktif | Dormant |
 |---|:---:|:---:|:---:|
@@ -273,9 +361,9 @@ stateDiagram-v2
 
 ---
 
-## 3. Konfigurasi Parameter
+## 4. Konfigurasi Parameter
 
-### 3.1. Parameter Global
+### 4.1. Parameter Global
 
 Semua parameter hari dan biaya dapat dikonfigurasikan oleh administrator sistem melalui menu **Parameter → Parameter Global** (filter grup: `REKENING_DORMANT`), tanpa perlu mengubah konfigurasi di setiap produk satu per satu.
 
@@ -287,7 +375,7 @@ Semua parameter hari dan biaya dapat dikonfigurasikan oleh administrator sistem 
 | `TAKT_BIAYA` | Rp 0 | Default biaya rekening Tidak Aktif |
 | `DORM_BIAYA` | Rp 10.000 | Default biaya rekening Dormant |
 
-### 3.2. Parameter Transaksi
+### 4.2. Parameter Transaksi
 
 Menu: **Parameter → Parameter Transaksi**
 
@@ -295,12 +383,12 @@ Field baru yang ditambahkan pada `ParameterTransaksiUmum`:
 
 | Caption di Form | Field | Nilai | Fungsi |
 |---|---|---|---|
-| **Transaksi Sistem** | `is_transaksi_sistem` | `T` / `F` (default `F`) | Menandai transaksi yang berasal dari sistem (mis. posting bagi hasil), untuk keperluan audit dan logika tertentu |
-| **Kategori Aktivitas Nasabah** | `tipe_exclude_aktivitas_nasabah` | `F` / `DC` / `D` / `C` (default `F`) | `F` = hitung sebagai aktivitas nasabah; `DC` = exclude dari aktivitas nasabah; `D` = exclude debit; `C` = exclude kredit |
+| **Transaksi Sistem** | `is_transaksi_sistem` | `T` / `F` (default `F`) | Menandai transaksi yang berasal dari sistem (mis. posting bagi hasil) |
+| **Kategori Aktivitas Nasabah** | `tipe_exclude_aktivitas_nasabah` | `F` / `DC` / `D` / `C` (default `F`) | `F` = hitung sebagai aktivitas nasabah; `DC` = exclude; `D` = exclude debit; `C` = exclude kredit |
 | **Izinkan Rekening Tidak Aktif** | `allow_rekening_tidak_aktif` | `F` / `DC` / `D` / `C` (default `C`) | `F` = Tolak Debet/Kredit; `DC` = Izinkan Debet/Kredit; `D` = Hanya Debet; `C` = Hanya Kredit |
 | **Izinkan Rekening Dormant** | `allow_rekening_dormant` | `F` / `DC` / `D` / `C` (default `F`) | `F` = Tolak Debet/Kredit; `DC` = Izinkan Debet/Kredit; `D` = Hanya Debet; `C` = Hanya Kredit |
 
-> **Catatan:** Jika kode transaksi tidak terdapat di parameter ini, maka secara default dianggap sebagai aktivitas nasabah (`tipe_exclude_aktivitas_nasabah = 'F'`), dan tidak diizinkan untuk rekening Tidak Aktif maupun Dormant.
+> **Catatan:** Jika kode transaksi tidak terdapat di parameter ini, secara default dianggap sebagai aktivitas nasabah (`tipe_exclude_aktivitas_nasabah = 'F'`), dan tidak diizinkan untuk rekening Tidak Aktif maupun Dormant.
 
 **Contoh kode transaksi yang dikecualikan dari aktivitas nasabah:**
 
@@ -314,7 +402,7 @@ Field baru yang ditambahkan pada `ParameterTransaksiUmum`:
 | `SDZ` | Zakat Bagi Hasil — dibuat sistem EOD | `DC` |
 | `SI` | Auto Transfer Antar Rekening — dibuat sistem | `DC` |
 
-### 3.3. Parameter Produk
+### 4.3. Parameter Produk
 
 Menu: **Parameter → List Produk Tabungan** (atau Giro)
 
@@ -328,13 +416,13 @@ Sistem menggunakan **3 layer** untuk menentukan threshold dan biaya setiap reken
 flowchart TD
     START([Rekening masuk proses EOD\nfase: Tidak Aktif]) --> CHK1
 
-    CHK1{"produk.is_tidak_dormant = T ?\natau rekeningliabilitas.is_tidak_dormant = T ?"}
+    CHK1{"Rekening / Produk\ndikecualikan dari Tidak Aktif?"}
     CHK1 -->|Ya| EXC["Fase Tidak Aktif tidak berlaku\n— rekening di-skip —"]
     CHK1 -->|Tidak| CHK2
 
-    CHK2{"produk.is_custom_dormant = T ?"}
-    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_jadi_tidak_aktif\nbiaya_rekening_tidak_aktif\nis_biaya_rekening_tidak_aktif"]
-    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nTAKT_HARI (default: 360 hari)\nTAKT_BIAYA (default: 0)"]
+    CHK2{"Produk punya\nkonfigurasi custom?"}
+    CHK2 -->|Ya| OVR["Gunakan threshold & biaya\ndari konfigurasi produk"]
+    CHK2 -->|Tidak| DEF["Gunakan default global\nTAKT_HARI (360 hari)\nTAKT_BIAYA"]
 
     EXC:::skip
     OVR:::produk
@@ -351,13 +439,13 @@ flowchart TD
 flowchart TD
     START([Rekening masuk proses EOD\nfase: Dormant]) --> CHK1
 
-    CHK1{"produk.is_tidak_dormant = T ?\natau rekeningliabilitas.is_tidak_dormant = T ?"}
+    CHK1{"Rekening / Produk\ndikecualikan dari Dormant?"}
     CHK1 -->|Ya| EXC["Fase Dormant tidak berlaku\n— rekening di-skip —"]
     CHK1 -->|Tidak| CHK2
 
-    CHK2{"produk.is_custom_dormant = T ?"}
-    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_jadi_dormant\nbiaya_rekening_dormant\nis_biaya_rekening_dormant"]
-    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nDORM_HARI (default: 1800 hari)\nDORM_BIAYA (default: 10.000)"]
+    CHK2{"Produk punya\nkonfigurasi custom?"}
+    CHK2 -->|Ya| OVR["Gunakan threshold & biaya\ndari konfigurasi produk"]
+    CHK2 -->|Tidak| DEF["Gunakan default global\nDORM_HARI (1800 hari)\nDORM_BIAYA"]
 
     EXC:::skip
     OVR:::produk
@@ -367,8 +455,6 @@ flowchart TD
     classDef produk fill:#fefcbf,stroke:#d69e2e,color:#744210
     classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
 ```
-
-> `is_tidak_dormant` berlaku untuk **kedua fase** — jika `T` di level produk atau per rekening (`rekeningliabilitas.is_tidak_dormant`), rekening dikecualikan dari fase Tidak Aktif maupun Dormant. Pengecualian per rekening adalah satu-satunya konfigurasi yang bisa diset **per rekening** (bukan per produk).
 
 **Fase 3 — Tutup Otomatis Saldo Nol**
 
@@ -376,13 +462,13 @@ flowchart TD
 flowchart TD
     START([Rekening masuk proses EOD\nfase: Tutup Otomatis]) --> CHK1
 
-    CHK1{"produk.is_exc_tutupnol = T ?"}
+    CHK1{"Produk dikecualikan\ndari tutup otomatis?"}
     CHK1 -->|Ya| EXC["Tutup Otomatis tidak berlaku\n— rekening di-skip —"]
     CHK1 -->|Tidak| CHK2
 
-    CHK2{"produk.is_custom_tutup_oto = T ?"}
-    CHK2 -->|Ya| OVR["Baca dari tabel produk\njumlah_hari_tutup_otomatis"]
-    CHK2 -->|Tidak| DEF["Baca dari ParameterGlobal\nTUTUP_NOL_HARI (default: 180 hari)"]
+    CHK2{"Produk punya\nkonfigurasi custom?"}
+    CHK2 -->|Ya| OVR["Gunakan threshold\ndari konfigurasi produk"]
+    CHK2 -->|Tidak| DEF["Gunakan default global\nTUTUP_NOL_HARI (180 hari)"]
 
     EXC:::skip
     OVR:::produk
@@ -393,24 +479,16 @@ flowchart TD
     classDef global fill:#e6fffa,stroke:#38a169,color:#1c4532
 ```
 
+> `is_tidak_dormant` berlaku untuk **kedua fase** — jika `T` di level produk atau per rekening, rekening dikecualikan dari fase Tidak Aktif maupun Dormant.
+
 **Ringkasan field produk yang terlibat:**
 
-*Parameter Global Dormant / Tidak Aktif (read-only, referensi dari ParameterGlobal):*
-
-| Caption di Form | Fungsi |
-|---|---|
-| **(Global) Durasi Hari Tidak Aktif** | Nilai global threshold hari tidak aktif *(read-only)* |
-| **(Global) Biaya Tidak Aktif** | Nilai global biaya tidak aktif *(read-only)* |
-| **(Global) Durasi Hari Dormant** | Nilai global threshold hari dormant *(read-only)* |
-| **(Global) Biaya Dormant** | Nilai global biaya dormant *(read-only)* |
-| **(Global) Durasi Hari Tutup Saldo Nol** | Nilai global threshold hari tutup otomatis *(read-only)* |
-
-*Parameter Produk Dormant / Tidak Aktif (override):*
+*Parameter Produk Dormant / Tidak Aktif:*
 
 | Caption di Form | Field | Fungsi |
 |---|---|---|
-| **Boleh Tidak (Dormant dan Tidak Aktif)** | `is_tidak_dormant` | ☑ = rekening produk ini boleh berstatus Tidak Aktif maupun Dormant |
-| **Custom Param Dormant / Tidak Aktif** | `is_custom_dormant` | ☑ = gunakan threshold & biaya dari produk, bukan global |
+| **Boleh Tidak Dormant** | `is_tidak_dormant` | ☑ = rekening produk ini boleh berstatus Tidak Aktif maupun Dormant |
+| **Custom Param Dormant** | `is_custom_dormant` | ☑ = gunakan threshold & biaya dari produk, bukan global |
 | **Durasi Hari Tidak Aktif** | `jumlah_hari_jadi_tidak_aktif` | Override threshold hari tidak aktif *(aktif jika Custom Param dicentang)* |
 | **Durasi Hari Dormant** | `jumlah_hari_jadi_dormant` | Override threshold hari dormant *(aktif jika Custom Param dicentang)* |
 | **Biaya Tidak Aktif** | `biaya_rekening_tidak_aktif` | Override nominal biaya tidak aktif *(aktif jika Custom Param dicentang)* |
@@ -426,100 +504,85 @@ flowchart TD
 
 ---
 
-## 4. Pencatatan Aktivitas Nasabah (UC-04)
+## 5. Pencatatan Aktivitas Nasabah (UC-04)
 
 **Aktor:** Nasabah (via ATM, Mobile Banking, Internet Banking, atau Teller)
 
 Nasabah yang melakukan aktivitas apapun — baik transaksi finansial maupun non-finansial — akan dicatat oleh sistem sebagai bukti keaktifan rekening. Pencatatan berjalan di latar belakang dan **tidak memperlambat** layanan yang diterima nasabah.
 
-### 4.1. Aktivitas Non-Finansial yang Dicatat
+### 5.1. Aktivitas yang Dicatat
 
-Aktivitas berikut tidak melibatkan pergerakan uang, namun tetap dihitung sebagai bukti nasabah masih aktif menggunakan rekeningnya:
+Aktivitas berikut dicatat dan menghitung ulang counter keaktifan rekening:
 
-| Jenis Aktivitas | Kanal | Kode Aktivitas |
+| Kategori | Jenis Aktivitas | Kanal |
 |---|---|---|
-| Cek Saldo | ATM, Mobile Banking, Internet Banking, Teller | `CEK_SALDO` |
-| Cek Mutasi / Riwayat Transaksi | ATM, Mobile Banking, Internet Banking, Teller | `CEK_MUTASI` |
-| Cetak Buku Tabungan | Teller | `CETAK_PASSBOOK` |
-| Cetak Saldo Passbook | Teller | `CETAK_SALDO` |
-| Pembukaan Rekening | Teller | `REGISTER_REKENING` |
+| **Kredit (Pemasukan)** | Setor tunai, setoran kliring, transfer masuk (oleh nasabah) | Teller, ATM/CDM, E-Channel |
+| **Debet (Penarikan)** | Tarik tunai, transfer keluar, pembayaran | Teller, ATM, E-Channel |
+| **Cek Saldo** | Pengecekan saldo rekening | ATM, Mobile Banking, Internet Banking, Teller |
+| **Non-Finansial Lainnya** | Cetak buku tabungan, cetak saldo passbook, pembukaan rekening | Teller |
 
-Aktivitas non-finansial dicatat ke tabel `RekeningAktivitasNonfin` secara real-time (asynchronous). Field `tgl_aktivitas_terakhir` di `RekeningLiabilitas` **tidak diupdate real-time** — diurus oleh proses EOD setiap akhir hari kerja.
+Aktivitas non-finansial (cek saldo, cetak passbook) dicatat ke tabel `RekeningAktivitasNonfin` secara real-time. Field `tgl_aktivitas_terakhir` di `RekeningLiabilitas` diupdate setiap EOD — kecuali saat inquiry di menu Informasi Rekening yang memicu update langsung.
 
-> **Update Realtime saat Inquiry:** Khusus ketika nomor rekening di-inquiry melalui layar Informasi Rekening, sistem akan langsung melakukan kalkulasi dan update data tanpa menunggu jadwal EOD, memastikan data yang tampil selalu sinkron dengan aktivitas hari ini.
-
-### 4.2. Transaksi Finansial — Yang Dihitung dan Yang Dikecualikan
-
-Tidak semua transaksi finansial dihitung sebagai aktivitas nasabah. Transaksi yang **dibuat otomatis oleh sistem** (tanpa keterlibatan nasabah) **dikecualikan**, karena bukan cerminan keaktifan nasabah sesungguhnya.
+### 5.2. Transaksi Finansial — Yang Dihitung dan Yang Dikecualikan
 
 | Kategori | Contoh Transaksi | Dihitung sebagai Aktivitas? |
 |---|---|:---:|
-| Transaksi oleh nasabah | Setor tunai, tarik tunai, transfer, pembayaran tagihan, pemindahbukuan | ✅ Ya |
+| Transaksi oleh nasabah | Setor tunai, tarik tunai, transfer | ✅ Ya |
 | Bagi hasil / nisbah | Pembukuan bagi hasil tabungan, giro, deposito | ❌ Tidak |
 | Pajak & zakat | Pemotongan pajak bagi hasil, zakat bagi hasil | ❌ Tidak |
 | Biaya rekening | Biaya administrasi bulanan, biaya rekening dormant | ❌ Tidak |
 | Transfer otomatis sistem | Auto transfer antar rekening yang dibuat oleh sistem | ❌ Tidak |
 
-> Daftar transaksi yang dikecualikan dapat dikonfigurasi oleh administrator melalui menu **Parameter Transaksi** (`tipe_exclude_aktivitas_nasabah`), sehingga fleksibel mengikuti kebijakan bank.
+> Daftar transaksi yang dikecualikan dapat dikonfigurasi administrator melalui menu **Parameter Transaksi** (`tipe_exclude_aktivitas_nasabah`).
 
-### Skenario Khusus — Aktivitas pada Rekening Tidak Aktif atau Dormant
+**Skenario Khusus — Aktivitas pada Rekening Tidak Aktif atau Dormant:**
 
-| Skenario | Given | When | Then |
-|---|---|---|---|
-| **Nasabah melakukan transaksi pada rekening Tidak Aktif** | Rekening berstatus Tidak Aktif, nasabah melakukan transaksi (mis. setor tunai) | Proses harian berjalan | Transaksi tetap **dicatat** secara historis, namun **tidak me-reset hitungan hari** status rekening — rekening tetap berstatus Tidak Aktif |
-| **Nasabah cek saldo pada rekening Dormant** | Rekening berstatus Dormant, nasabah melakukan cek saldo | Proses harian berjalan | Aktivitas cek saldo **tidak dicatat** sebagai aktivitas yang mengubah status — rekening tetap berstatus Dormant |
-
-> **Catatan penting:** Aktivitas nasabah — baik transaksi finansial maupun non-finansial — **tidak** secara otomatis mengembalikan status rekening ke Aktif. Rekening yang sudah berstatus Tidak Aktif atau Dormant hanya bisa dikembalikan ke status Aktif melalui proses **reaktivasi manual** oleh petugas cabang (lihat Bab 7).
+> Aktivitas nasabah — baik transaksi finansial maupun non-finansial — **tidak** secara otomatis mengembalikan status rekening ke Aktif. Rekening yang sudah berstatus Tidak Aktif atau Dormant hanya bisa dikembalikan melalui proses **reaktivasi** (lihat Bab 8).
 
 ---
 
-## 5. Proses EOD (End of Day)
+## 6. Proses EOD (End of Day)
 
-### 5.1. Alur Proses EOD
+### 6.1. Alur Proses EOD
 
 Urutan proses EOD yang wajib dijaga:
 
-```
-Step 1 — [BARU] Update Tanggal Aktivitas Terakhir
-         Script: batchprocess/update_account_lasttxdate.py
-         - Update tgl_transaksi_terakhir (dari transaksi nasabah finansial hari ini)
-         - Update tgl_aktivitas_nonfin_terakhir (dari RekeningAktivitasNonfin hari ini)
-         - Update tgl_aktivitas_terakhir (gabungan transaksi + non-finansial)
+```mermaid
+flowchart LR
+    S1["Step 1 — BARU\nUpdate Tgl Aktivitas Terakhir\nupdate_account_lasttxdate.py"]
+    S2["Step 2 — DIMODIFIKASI\nBatch Dormant\nupdate_dormant_account.py"]
+    S3["Step 3 — DIMODIFIKASI\nBatch Tutup Otomatis\nsaving_auto_close.py"]
 
-Step 2 — [EXISTING, DIMODIFIKASI] Batch Dormant
-         Script: batchprocess/update_dormant_account.py
-         - Baca tgl_aktivitas_terakhir (field baru) sebagai acuan penentuan status
-         - Baca threshold efektif dari produk (jika is_custom_dormant = T) atau ParameterGlobal
-         - Update status rekening ke TIDAK_AKTIF (7) atau DORMANT (2) sesuai threshold
-
-Step 3 — [EXISTING, DIMODIFIKASI] Batch Tutup Otomatis
-         Script: batchprocess/saving_auto_close.py
-         - Identifikasi rekening dengan saldo nol melewati threshold (dari semua status)
-         - Baca threshold efektif dari produk (jika is_custom_tutup_oto = T) atau ParameterGlobal
-         - Tutup rekening otomatis jika memenuhi syarat
+    S1 --> S2 --> S3
 ```
+
+| Step | Script | Fungsi |
+|---|---|---|
+| 1 *(baru)* | `update_account_lasttxdate.py` | Update `tgl_transaksi_terakhir`, `tgl_aktivitas_nonfin_terakhir`, dan `tgl_aktivitas_terakhir` (gabungan) di `RekeningLiabilitas` |
+| 2 *(dimodifikasi)* | `update_dormant_account.py` | Baca `tgl_aktivitas_terakhir` → tentukan status Tidak Aktif atau Dormant berdasarkan threshold efektif |
+| 3 *(dimodifikasi)* | `saving_auto_close.py` | Identifikasi rekening saldo nol melewati threshold → tutup otomatis |
 
 > ⚠️ **Urutan Step 1 → 2 → 3 wajib dijaga.** Step 2 dan 3 harus berjalan setelah `tgl_aktivitas_terakhir` selesai diupdate oleh Step 1.
 
-### 5.2. Rekening Berubah Menjadi Tidak Aktif (UC-01)
+### 6.2. Rekening Berubah Menjadi Tidak Aktif (UC-01)
 
 **Aktor:** Sistem (proses otomatis harian / EOD)
 
 | | Keterangan |
 |---|---|
-| **Given** | Rekening nasabah berstatus **Aktif** dan tidak memiliki aktivitas apapun (transaksi, cek saldo, login mobile banking, dll.) selama lebih dari batas hari yang dikonfigurasi (default: 360 hari / ± 1 tahun) |
+| **Given** | Rekening nasabah berstatus **Aktif** dan tidak memiliki aktivitas apapun selama lebih dari batas hari yang dikonfigurasi (default: 360 hari / ± 1 tahun) |
 | **When** | Proses harian (End of Day) berjalan |
-| **Then** | Status rekening berubah menjadi **Tidak Aktif**, dan rekening dicatat dalam laporan rekening tidak aktif (R041) |
+| **Then** | Status rekening berubah menjadi **Tidak Aktif** (H+1); rekening dicatat dalam laporan R041 |
 
 **Skenario Tambahan:**
 
 | Skenario | Given | When | Then |
 |---|---|---|---|
 | **Produk dikecualikan** | Rekening menggunakan produk dengan `is_tidak_dormant = T` | Proses harian berjalan | Rekening **tidak** berubah status — tetap Aktif |
-| **Produk dengan threshold custom** | Rekening menggunakan produk dengan `is_custom_dormant = T` dan batas hari tidak aktif berbeda dari standar | Proses harian berjalan | Sistem menggunakan batas hari dari konfigurasi produk |
-| **Nasabah cek saldo melalui ATM** | Rekening hampir melewati batas hari tidak aktif, lalu nasabah melakukan cek saldo via ATM | Proses harian berjalan | Aktivitas cek saldo **dicatat** dan hitungan hari tidak aktif di-reset — rekening tetap Aktif |
+| **Produk dengan threshold custom** | Rekening menggunakan produk dengan `is_custom_dormant = T` | Proses harian berjalan | Sistem menggunakan batas hari dari konfigurasi produk |
+| **Nasabah cek saldo melalui ATM** | Rekening hampir melewati batas hari tidak aktif, nasabah cek saldo via ATM | Proses harian berjalan | Cek saldo **dicatat** dan counter di-reset — rekening tetap Aktif |
 
-### 5.3. Rekening Berubah Menjadi Dormant (UC-02)
+### 6.3. Rekening Berubah Menjadi Dormant (UC-02)
 
 **Aktor:** Sistem (proses otomatis harian / EOD)
 
@@ -527,16 +590,16 @@ Step 3 — [EXISTING, DIMODIFIKASI] Batch Tutup Otomatis
 |---|---|
 | **Given** | Rekening nasabah berstatus **Tidak Aktif** dan tidak ada aktivitas apapun hingga melewati batas hari dormant (default: 1.800 hari / ± 5 tahun sejak aktivitas terakhir) |
 | **When** | Proses harian (End of Day) berjalan |
-| **Then** | Status rekening berubah menjadi **Dormant**, rekening dicatat dalam laporan rekening dormant (R029), dan seluruh transaksi diblokir |
+| **Then** | Status rekening berubah menjadi **Dormant** (H+1); rekening dicatat dalam laporan R029; seluruh transaksi nasabah diblokir |
 
 **Skenario Tambahan:**
 
 | Skenario | Given | When | Then |
 |---|---|---|---|
-| **Rekening dikecualikan dari dormant** | Rekening menggunakan produk dengan `is_tidak_dormant = T`, atau rekening spesifik dengan `rekeningliabilitas.is_tidak_dormant = T` | Proses harian berjalan | Rekening **tidak** berubah ke status Dormant |
-| **Produk dengan threshold dormant custom** | Produk memiliki `is_custom_dormant = T` dan batas hari dormant berbeda dari standar global | Proses harian berjalan | Sistem menggunakan batas hari dari konfigurasi produk |
+| **Rekening dikecualikan** | Rekening/produk dengan `is_tidak_dormant = T` | Proses harian berjalan | Rekening **tidak** berubah ke status Dormant |
+| **Produk dengan threshold dormant custom** | Produk memiliki `is_custom_dormant = T` | Proses harian berjalan | Sistem menggunakan batas hari dari konfigurasi produk |
 
-### 5.4. Rekening Ditutup Otomatis Saldo Nol (UC-03)
+### 6.4. Rekening Ditutup Otomatis Saldo Nol (UC-03)
 
 **Aktor:** Sistem (proses otomatis harian / EOD)
 
@@ -544,25 +607,25 @@ Step 3 — [EXISTING, DIMODIFIKASI] Batch Tutup Otomatis
 |---|---|
 | **Given** | Rekening nasabah (dalam status apapun kecuali Tutup) memiliki **saldo Rp 0** secara terus-menerus selama lebih dari batas hari yang dikonfigurasi (default: 180 hari) |
 | **When** | Proses harian (End of Day) berjalan |
-| **Then** | Rekening ditutup otomatis, dicatat dalam laporan rekening tutup otomatis (R030) beserta tanggal saldo pertama kali menjadi nol dan parameter hari yang digunakan |
+| **Then** | Rekening ditutup otomatis; dicatat dalam laporan R030 |
 
 **Skenario Tambahan:**
 
 | Skenario | Given | When | Then |
 |---|---|---|---|
-| **Produk dikecualikan dari tutup otomatis** | Rekening menggunakan produk yang dikonfigurasi untuk tidak pernah ditutup otomatis | Proses harian berjalan | Rekening **tidak** ditutup, meskipun saldo Rp 0 dalam waktu lama |
-| **Saldo kembali ada sebelum batas** | Rekening memiliki saldo Rp 0, kemudian ada setoran sebelum melewati batas hari | Proses harian berjalan | Hitungan hari saldo nol di-reset, rekening tidak ditutup |
+| **Produk dikecualikan** | Rekening menggunakan produk dengan `is_exc_tutupnol = T` | Proses harian berjalan | Rekening **tidak** ditutup, meskipun saldo Rp 0 dalam waktu lama |
+| **Saldo kembali ada sebelum batas** | Rekening saldo Rp 0, kemudian ada setoran sebelum melewati batas hari | Proses harian berjalan | Counter saldo nol di-reset, rekening tidak ditutup |
 
 ---
 
-## 6. Transaksi Berdasarkan Status Rekening
+## 7. Transaksi Berdasarkan Status Rekening
 
 Perilaku sistem saat transaksi dilakukan pada rekening dengan status berbeda ditentukan oleh konfigurasi `allow_rekening_tidak_aktif` dan `allow_rekening_dormant` di **Parameter Transaksi**. Nilai default:
 
 | Kondisi | Default |
 |---|---|
 | Rekening Tidak Aktif | Hanya kredit yang diizinkan (`allow_rekening_tidak_aktif = C`) |
-| Rekening Dormant | Seluruh transaksi ditolak (`allow_rekening_dormant = F`) |
+| Rekening Dormant | Seluruh transaksi nasabah ditolak (`allow_rekening_dormant = F`) |
 
 **Tabel nilai `allow_rekening_*`:**
 
@@ -579,11 +642,16 @@ Lihat **Lampiran C** untuk screenshot pesan penolakan transaksi pada rekening Ti
 
 ---
 
-## 7. Reaktivasi Rekening (UC-05)
+## 8. Reaktivasi Rekening (UC-05)
 
-**Aktor:** Petugas Cabang (User), Supervisor/Pejabat Cabang (Approver)
+Rekening Tidak Aktif dan Dormant dapat diaktivasi melalui dua jalur:
 
-Menu: **Rekening → Ubah Rekening Tidak Aktif / Dormant**
+| Channel | Aplikasi | Mekanisme |
+|---|---|---|
+| **Kantor Cabang** | DAF & BDS | Operator input → Supervisor otorisasi |
+| **E-Channel** | BSya Mobile | Nasabah aktivasi mandiri |
+
+### 8.1. Alur Reaktivasi via Cabang (DAF / BDS)
 
 ```mermaid
 flowchart TD
@@ -591,37 +659,26 @@ flowchart TD
     B --> D[Submit → status: Menunggu Persetujuan]
     D --> E([Supervisor membuka\nantrian persetujuan])
     E --> F{Keputusan}
-    F -->|Setuju| G[- Status rekening → AKTIF\n- Tanggal aktivitas di-reset ke hari ini\n- Log disimpan\n- Notifikasi ke Petugas]
-    F -->|Tolak| H[- Status rekening tetap\n- Log disimpan\n- Notifikasi ke Petugas]
+    F -->|Setuju| G[Status rekening → AKTIF\nCounter aktivitas di-reset ke hari ini\nLog & notifikasi disimpan]
+    F -->|Tolak| H[Status rekening tetap\nLog & notifikasi disimpan]
 ```
 
 | | Keterangan |
 |---|---|
-| **Given** | Rekening nasabah berstatus **Tidak Aktif** atau **Dormant**, dan petugas cabang membuka menu reaktivasi rekening |
-| **When** | Petugas cabang mencari rekening dan mengajukan permohonan reaktivasi |
-| **Then** | Permohonan masuk ke antrian persetujuan Supervisor/pejabat cabang |
+| **Given** | Rekening nasabah berstatus **Tidak Aktif** atau **Dormant** |
+| **When** | Petugas cabang mengajukan reaktivasi melalui menu DAF atau BDS |
+| **Then** | Pengajuan masuk ke antrian Supervisor |
 
-**Skenario: Permohonan Disetujui**
+| Skenario | When | Then |
+|---|---|---|
+| **Disetujui** | Supervisor menyetujui pengajuan | Status → **Aktif**; counter aktivitas di-reset; log disimpan; notifikasi ke petugas |
+| **Ditolak** | Supervisor menolak pengajuan | Status **tidak berubah**; log disimpan; notifikasi ke petugas |
 
-| | Keterangan |
-|---|---|
-| **Given** | Permohonan reaktivasi sudah diajukan oleh petugas cabang dan menunggu persetujuan |
-| **When** | Supervisor/pejabat cabang menyetujui permohonan |
-| **Then** | Status rekening berubah menjadi **Aktif**, tanggal aktivitas terakhir di-reset ke hari ini, aktivitas dicatat dalam log, dan notifikasi dikirimkan ke petugas cabang |
-
-**Skenario: Permohonan Ditolak**
-
-| | Keterangan |
-|---|---|
-| **Given** | Permohonan reaktivasi sudah diajukan oleh petugas cabang dan menunggu persetujuan |
-| **When** | Supervisor/pejabat cabang menolak permohonan |
-| **Then** | Status rekening **tidak berubah** (tetap Tidak Aktif / Dormant), log disimpan, dan notifikasi dikirimkan ke petugas cabang |
-
-> **Catatan Penting:** Aktivitas nasabah sendiri (seperti cek saldo, login, atau transaksi) **tidak** secara otomatis mengubah status rekening kembali menjadi Aktif. Reaktivasi hanya bisa dilakukan oleh petugas cabang melalui menu khusus dengan persetujuan atasan.
+> Tutup rekening dapat dilakukan langsung **tanpa reaktivasi** terlebih dahulu. Status Tidak Aktif/Dormant akan ditampilkan pada informasi override.
 
 ---
 
-## 8. Pengenaan Biaya Rekening (UC-06)
+## 9. Pengenaan Biaya Rekening (UC-06)
 
 **Aktor:** Sistem (proses otomatis bulanan / EOM)
 
@@ -629,173 +686,79 @@ flowchart TD
 |---|---|
 | **Given** | Rekening nasabah berstatus **Tidak Aktif** atau **Dormant** pada saat proses akhir bulan berjalan |
 | **When** | Proses akhir bulan (End of Month) berjalan |
-| **Then** | Biaya administrasi rekening dikenakan sesuai konfigurasi yang berlaku (dari pengaturan produk atau pengaturan global) |
+| **Then** | Biaya administrasi rekening dikenakan sesuai konfigurasi yang berlaku. Biaya tidak boleh melebihi saldo tersedia — partial debet diperbolehkan, saldo tidak boleh menjadi negatif |
 
 **Skenario Tambahan:**
 
 | Skenario | Given | When | Then |
 |---|---|---|---|
-| **Biaya dari konfigurasi produk** | Produk memiliki konfigurasi biaya sendiri yang berbeda dari standar global (`is_custom_dormant = T`) | Proses akhir bulan berjalan | Sistem menggunakan nominal biaya dari konfigurasi produk |
+| **Biaya dari konfigurasi produk** | Produk memiliki konfigurasi biaya sendiri (`is_custom_dormant = T`) | Proses akhir bulan berjalan | Sistem menggunakan nominal biaya dari konfigurasi produk |
 | **Biaya dari konfigurasi global** | Produk tidak memiliki konfigurasi biaya khusus | Proses akhir bulan berjalan | Sistem menggunakan nominal biaya dari pengaturan global (`TAKT_BIAYA`, `DORM_BIAYA`) |
-| **Produk tanpa biaya tidak aktif** | Produk dikonfigurasi dengan biaya tidak aktif = Rp 0 (mis. TabunganKu) | Proses akhir bulan berjalan | Tidak ada biaya yang dikenakan, rekening tetap pada statusnya |
-
-Script: `batchprocess/admcost_dormant_process.py` — dimodifikasi untuk menambah pengenaan biaya rekening Tidak Aktif.
+| **Saldo tidak mencukupi** | Saldo rekening lebih kecil dari biaya yang akan dikenakan | Proses akhir bulan berjalan | Biaya dikenakan sebesar saldo tersedia (partial); saldo tidak menjadi negatif |
 
 ---
 
-## 9. Laporan
+## 10. Laporan
 
-### 9.1. Laporan Rekening Tidak Aktif (R041)
+### 10.1. Laporan Rekening Tidak Aktif (R041)
 
 - **Nama Laporan:** Rekening Aktif jadi Tidak Aktif
+- **Sistem:** DAF
 - **Menu:** Laporan → Rekening Aktif jadi Tidak Aktif
 - **Trigger:** Dihasilkan setiap hari setelah proses EOD — rekening yang berubah dari Aktif ke Tidak Aktif pada hari tersebut
 - **Kolom:** Nomor Rekening, Nama Nasabah, Tanggal Aktivitas Terakhir, Saldo, Parameter Hari Tidak Aktif, Tanggal Proses
 
-### 9.2. Laporan Rekening Dormant (R029)
+### 10.2. Laporan Rekening Dormant (R029)
 
 - **Nama Laporan:** Rekening Dormant
+- **Sistem:** DAF (R029) dan BDS (R029 Perubahan Status)
 - **Menu:** Laporan → Rekening Dormant
 - **Trigger:** Dihasilkan setiap hari setelah proses EOD
-- **Enhance:** Penambahan kolom `tgl_aktivitas_terakhir` (gabungan transaksi + non-finansial) untuk menggantikan kolom `tgl_trans_cabang_terakhir` / `tgl_trans_echannel_terakhir` yang terpisah
+- **Enhance:** Penambahan kolom `tgl_aktivitas_terakhir` (gabungan transaksi + non-finansial)
 
-### 9.3. Laporan Tutup Otomatis (R030)
+### 10.3. Laporan Tutup Otomatis (R030)
 
 - **Nama Laporan:** Rekening Tutup Otomatis
+- **Sistem:** DAF
 - **Menu:** Laporan → Rekening Tutup Otomatis
 - **Trigger:** Dihasilkan setiap hari setelah proses EOD
 - **Enhance:** Penambahan kolom `tgl_saldo_nol` (tanggal saldo pertama kali menjadi nol) dan `param_hari_tutup_oto` (threshold hari efektif yang digunakan)
 
 ---
 
-## 10. Perubahan Database
+## 11. Perubahan Database
 
-### 10.1. Ringkasan Perubahan
+### 11.1. Ringkasan Perubahan
 
 | Objek | Aksi | Keterangan |
 |---|---|---|
 | `parameterglobal` | ADD COLUMN `kode_group` | Pengelompokan parameter per fitur/modul |
-| `parameterglobal` | INSERT 5 data | Parameter `REKENING_DORMANT`: `TAKT_HARI`, `DORM_HARI`, `TUTUP_NOL_HARI`, `TAKT_BIAYA`, `DORM_BIAYA` |
+| `parameterglobal` | INSERT 5 data | Parameter grup `REKENING_DORMANT`: `TAKT_HARI`, `DORM_HARI`, `TUTUP_NOL_HARI`, `TAKT_BIAYA`, `DORM_BIAYA` |
 | `produk` | ADD COLUMN | `is_custom_dormant`, `is_custom_tutup_oto`, `is_exc_tutupnol`, `jumlah_hari_jadi_dormant`, `biaya_rekening_tidak_aktif`, `is_biaya_rekening_tidak_aktif` |
-| `produk` | UBAH SEMANTIK | `is_tidak_dormant` diperluas ke fase Tidak Aktif; `jumlah_hari_jadi_tidak_aktif`, `biaya_rekening_dormant`, `is_biaya_rekening_dormant`, `jumlah_hari_tutup_otomatis` hanya dibaca jika flag custom aktif |
-| `rekeningliabilitas` | ADD COLUMN | `tgl_aktivitas_terakhir TIMESTAMP`, `tgl_aktivitas_nonfin_terakhir TIMESTAMP` |
+| `produk` | UBAH SEMANTIK | `is_tidak_dormant` diperluas ke fase Tidak Aktif; kolom override hanya dibaca jika flag custom aktif |
+| `rekeningliabilitas` | ADD COLUMN | `tgl_aktivitas_terakhir`, `tgl_aktivitas_nonfin_terakhir` |
 | `parametertransaksiumum` | ADD COLUMN | `tipe_exclude_aktivitas_nasabah`, `is_transaksi_sistem`, `allow_rekening_tidak_aktif`, `allow_rekening_dormant` |
 | `rekeningaktivitasnonfin` | CREATE TABLE | Log aktivitas non-finansial nasabah |
 | `ibankrep.rekening_tidak_aktif` | CREATE TABLE | Tabel report rekening yang berpindah status ke Tidak Aktif |
 | `ibankrep.rekening_dorman` | ADD COLUMN | `tgl_aktivitas_terakhir` |
 | `ibankrep.rekening_tutupotomatis` | ADD COLUMN | `tgl_saldo_nol`, `param_hari_tutup_oto` |
-| `ibanktmp.rekening_dorman_candidate` | CREATE TABLE | Staging kandidat rekening Dormant |
-| `ibanktmp.rekening_tidak_aktif_candidate` | CREATE TABLE | Staging kandidat rekening Tidak Aktif |
-| `ibanktmp.rekening_transaksi_terakhir` | CREATE TABLE | Staging update `tgl_transaksi_terakhir` |
-| `ibanktmp.rekening_aktivitas_nonfin_terakhir` | CREATE TABLE | Staging update `tgl_aktivitas_nonfin_terakhir` |
-| `ibanktmp.autoclose_zerobalance_candidate` | CREATE TABLE | Staging kandidat tutup otomatis saldo nol |
-| `bpscript` / `bpstep` | INSERT | Registrasi script `update_account_lasttxdate` ke EOD |
+| `ibanktmp.*` | CREATE TABLE | Tabel staging EOD: kandidat tidak aktif, dormant, tutup otomatis, update aktivitas |
+| `bpscript` / `bpstep` | INSERT | Registrasi script `update_account_lasttxdate` ke jadwal EOD |
 | `report` | INSERT | Registrasi laporan R041 — Rekening Aktif jadi Tidak Aktif |
 
-### 10.2. DDL
-
-#### ① ALTER TABLE produk — Tambah Flag Custom & Kolom Override
-
-```sql
-ALTER TABLE ibankcore.produk ADD (
-  is_custom_dormant             VARCHAR2(1),
-  is_custom_tutup_oto           VARCHAR2(1),
-  is_exc_tutupnol               VARCHAR2(1),
-  jumlah_hari_jadi_dormant      NUMBER,
-  biaya_rekening_tidak_aktif    NUMBER(20, 8),
-  is_biaya_rekening_tidak_aktif VARCHAR2(1)
-);
-```
-
-#### ② ALTER TABLE rekeningliabilitas — Tambah Kolom Baru
-
-```sql
-ALTER TABLE ibankcore.rekeningliabilitas
-  ADD tgl_aktivitas_terakhir      TIMESTAMP NULL;
-
-ALTER TABLE ibankcore.rekeningliabilitas
-  ADD tgl_aktivitas_nonfin_terakhir TIMESTAMP NULL;
-
-CREATE INDEX idx_rekliab_tglakt ON ibankcore.rekeningliabilitas (tgl_aktivitas_terakhir);
-
--- One-time migration: isi dari tgl_transaksi_terakhir
-UPDATE ibankcore.rekeningliabilitas
-SET tgl_aktivitas_terakhir = tgl_transaksi_terakhir
-WHERE tgl_transaksi_terakhir IS NOT NULL;
-```
-
-#### ③ ALTER TABLE parametertransaksiumum — Tambah Field
-
-```sql
-ALTER TABLE ibankcore.parametertransaksiumum ADD (
-  is_transaksi_sistem            VARCHAR2(1)  DEFAULT 'F',
-  tipe_exclude_aktivitas_nasabah VARCHAR2(2)  DEFAULT 'F',
-  allow_rekening_tidak_aktif     VARCHAR2(2)  DEFAULT 'C',
-  allow_rekening_dormant         VARCHAR2(2)  DEFAULT 'F'
-);
-```
-
-#### ④ CREATE TABLE rekeningaktivitasnonfin
-
-```sql
-CREATE TABLE ibankcore.rekeningaktivitasnonfin (
-    id                  NUMBER GENERATED BY DEFAULT AS IDENTITY NOT NULL,
-    nomor_rekening      VARCHAR2(20)  NOT NULL,
-    tanggal_aktivitas   TIMESTAMP     NOT NULL,
-    kode_aktivitas      VARCHAR2(20)  NOT NULL,
-    kode_channel        VARCHAR2(10)  NULL,
-    nomor_referensi     VARCHAR2(50)  NULL,
-    user_input          VARCHAR2(20)  NULL,
-    terminal_input      VARCHAR2(19)  NULL,
-    kode_cabang         VARCHAR2(10)  NULL,
-    tanggal_input       TIMESTAMP     DEFAULT SYSTIMESTAMP,
-    CONSTRAINT rekeningaktivitasnonfin_pkey PRIMARY KEY (id)
-);
-
-CREATE INDEX idx_ran_norek_tgl ON ibankcore.rekeningaktivitasnonfin (nomor_rekening, tanggal_aktivitas DESC);
-CREATE INDEX idx_ran_jenis     ON ibankcore.rekeningaktivitasnonfin (kode_aktivitas, tanggal_aktivitas);
-CREATE INDEX idx_ran_tglakt    ON ibankcore.rekeningaktivitasnonfin (tanggal_aktivitas);
-```
-
-#### ⑤ CREATE TABLE ibankrep.rekening_tidak_aktif
-
-```sql
-CREATE TABLE ibankrep.rekening_tidak_aktif (
-    id_report              NUMBER(*,0)     NOT NULL,
-    nomor_rekening         VARCHAR2(20)    NOT NULL,
-    tanggal_proses         DATE            NOT NULL,
-    tgl_aktivitas_terakhir TIMESTAMP       NULL,
-    param_hari_tidak_aktif NUMBER          NULL,
-    saldo                  NUMBER(36, 10)  NULL,
-    CONSTRAINT rekening_tidak_aktif_pkey PRIMARY KEY (id_report)
-);
-
-CREATE SEQUENCE ibankrep.seq_rekening_tidak_aktif START WITH 1 INCREMENT BY 1 NOMAXVALUE NOCYCLE CACHE 20;
-CREATE INDEX idx_rep_tdkakt_norek ON ibankrep.rekening_tidak_aktif (nomor_rekening, tanggal_proses DESC);
-```
+> DDL detail untuk setiap objek di atas dituangkan dalam dokumen TSD (Technical Specification Document).
 
 ---
 
-## 11. Pengaturan Umum
+## 12. Pengaturan Umum
 
 - Seluruh konfigurasi parameter (hari dan biaya) dapat diubah oleh administrator sistem tanpa perlu deployment ulang aplikasi.
 - Nilai parameter global berlaku untuk semua produk kecuali produk yang memiliki konfigurasi override sendiri (`is_custom_dormant = T` atau `is_custom_tutup_oto = T`).
 - Perubahan threshold parameter global berlaku efektif pada proses EOD berikutnya setelah perubahan disimpan.
 - Reaktivasi rekening hanya dapat dilakukan melalui menu yang tersedia, oleh petugas yang memiliki hak akses, dan memerlukan persetujuan supervisor — tidak ada reaktivasi otomatis berdasarkan aktivitas nasabah.
+- Perubahan status rekening di seluruh channel (BDS, E-Channel) efektif H+1 setelah proses EOD, sinkron dengan Core Banking (DAF).
 - Tabel `RekeningAktivitasNonfin` dapat di-purge secara berkala (retensi disarankan: 2 tahun) untuk mengendalikan pertumbuhan volume data.
-
----
-
-## 12. Persetujuan Dokumen
-
-Dokumen ini telah disetujui oleh pihak-pihak berikut:
-
-| **No** | **Nama** | **Jabatan** | **Institusi** | **Tanda Tangan** | **Tanggal** |
-|---|---|---|---|---|---|
-| 1 | | | PT Ihsan Solusi Informatika | | |
-| 2 | | | PT Ihsan Solusi Informatika | | |
-| 3 | | | BCA Syariah | | |
-| 4 | | | BCA Syariah | | |
+- Biaya administrasi rekening Tidak Aktif dan Dormant tidak boleh menyebabkan saldo negatif — pendebetan dilakukan sebesar saldo tersedia (partial debet).
 
 ---
 
