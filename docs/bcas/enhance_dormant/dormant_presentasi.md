@@ -415,3 +415,98 @@ gantt
 | **Mengapa field baru** | Menghindari perubahan pada field existing yang banyak dipakai modul lain |
 | **Pengecualian** | Transaksi sistem otomatis (bagi hasil, biaya admin, dll.) tetap dikecualikan dari hitungan aktivitas |
 | **Konfigurasi** | Daftar transaksi yang dikecualikan dapat dikelola via **Parameter Transaksi** — fleksibel |
+
+---
+
+## Posisi Update Ketiga Field
+
+### Mekanisme Update (Kapan & Siapa)
+
+| | `tgl_transaksi_terakhir` | `tgl_aktivitas_nonfin_terakhir` | `tgl_aktivitas_terakhir` |
+|---|---|---|---|
+| **Diupdate oleh** | Proses posting transaksi (real-time) | Insert ke `rekeningaktivitasnonfin` (real-time) | Proses EOD (batch harian) |
+| **Waktu update** | Saat transaksi diposting | Saat nasabah melakukan aktivitas non-fin | Satu kali per hari, saat EOD |
+| **Sumber nilai** | `tanggal_transaksi` dari tabel Transaksi | `tanggal_aktivitas` dari `rekeningaktivitasnonfin` | `MAX(tgl_transaksi_terakhir, tgl_aktivitas_nonfin_terakhir)` |
+
+---
+
+### Kondisi Update per Skenario EOD
+
+| Kondisi | `tgl_transaksi_terakhir` | `tgl_aktivitas_nonfin_terakhir` | `tgl_aktivitas_terakhir` |
+|---|---|---|---|
+| Ada transaksi finansial nasabah hari ini | Sudah ter-`UPDATE` saat posting | Tidak berubah | `UPDATE` ke tanggal hari ini |
+| Ada aktivitas non-finansial hari ini (cek saldo, cetak buku, dll.) | Tidak berubah | Sudah ter-`INSERT` saat aktivitas terjadi | `UPDATE` ke tanggal hari ini |
+| Keduanya ada hari ini | Sudah ter-`UPDATE` saat posting | Sudah ter-`INSERT` | `UPDATE` ke yang paling baru |
+| Tidak ada aktivitas apapun hari ini | Tidak ada `UPDATE` | Tidak ada `UPDATE` | Tidak ada `UPDATE` — nilai dari EOD sebelumnya dipertahankan |
+| Hanya transaksi sistem hari ini (bagi hasil, biaya admin, dll.) | Tidak ada `UPDATE` *(dikecualikan)* | Tidak ada `UPDATE` | Tidak ada `UPDATE` — transaksi sistem tidak dihitung |
+
+---
+
+### Ringkasan Peran Masing-masing Field
+
+| | `tgl_transaksi_terakhir` | `tgl_aktivitas_nonfin_terakhir` | `tgl_aktivitas_terakhir` |
+|---|---|---|---|
+| **Mencatat** | Transaksi finansial nasabah saja | Aktivitas non-finansial saja | Gabungan — ambil yang paling baru |
+| **Acuan perhitungan status rekening** | Jika ada data di tabel transaksi dan parametertransaksi tiak exclude maka tgl_transaksi_terakhir di update  | Jika ada data di tabel rekeningaktivitasnonfin yang sama dengang tgl sistem update tgl_aktivitas_nonfin_terakhir | Jika Rekening tidak dalam posisi dormant / non aktif lihat tanggal yang paling besar antara tgl_transaksi_terakhir dan tgl_aktivitas_nonfin_terakhir  |
+| **Given** | Ada baris di `DetilTransaksi` JOIN `Transaksi` untuk rekening ini dengan `status_otorisasi = 1` | Ada baris di `rekeningaktivitasnonfin` dengan `tanggal_aktivitas` = hari ini | `RekeningTransaksi.status_rekening = 1` (rekening aktif) dan salah satu dari `tgl_transaksi_terakhir` / `tgl_aktivitas_nonfin_terakhir` tidak NULL |
+| **When** | `tipe_exclude_aktivitas_nasabah` di `parametertransaksiumum`: NULL atau tidak ada = ✅ hitung \| `'F'` = ✅ hitung \| `'D'` + `jenis_mutasi='C'` = ✅ kredit dihitung \| `'C'` + `jenis_mutasi='D'` = ✅ debit dihitung \| `'DC'` = ❌ exclude semua | `tanggal_aktivitas >= Today AND tanggal_aktivitas < Today + 1` | — (langsung kalkulasi setelah step 1 & 2 selesai) |
+| **Then** | `tgl_transaksi_terakhir = Today` | `tgl_aktivitas_nonfin_terakhir = Today` | `tgl_aktivitas_terakhir = GREATEST(NVL(tgl_transaksi_terakhir, tgl_aktivitas_nonfin_terakhir), NVL(tgl_aktivitas_nonfin_terakhir, tgl_transaksi_terakhir))` — handles NULL di salah satu sisi |
+
+---
+
+### Kondisi Update — Bahasa Bisnis
+
+| | `tgl_transaksi_terakhir` | `tgl_aktivitas_nonfin_terakhir` | `tgl_aktivitas_terakhir` |
+|---|---|---|---|
+| **Situasi awal** | Nasabah melakukan transaksi finansial hari ini (setor, tarik, transfer, bayar tagihan) dan transaksi sudah diotorisasi | Nasabah melakukan aktivitas non-finansial hari ini (cek saldo, cek mutasi, cetak buku tabungan) | Proses akhir hari (EOD) sedang berjalan dan rekening masih berstatus aktif |
+| **Syarat berlaku** | Jenis transaksi tersebut tidak dikecualikan oleh pengaturan parameter — atau jika dikecualikan sebagian, setidaknya ada sisi (debit/kredit) yang tetap dihitung | Aktivitas tercatat pada tanggal yang sama dengan tanggal sistem hari ini | Minimal salah satu dari tanggal transaksi atau tanggal aktivitas non-finansial sudah terisi |
+| **Hasilnya** | Tanggal transaksi terakhir rekening diperbarui menjadi hari ini | Tanggal aktivitas non-finansial terakhir rekening diperbarui menjadi hari ini | Tanggal aktivitas terakhir rekening diisi dengan tanggal yang paling baru di antara keduanya — jika salah satu kosong, dipakai yang ada |
+
+---
+
+### Detail per Field
+
+#### `tgl_transaksi_terakhir`
+
+**Situasi:** Nasabah melakukan transaksi finansial hari ini (setor, tarik, transfer, bayar tagihan) dan transaksi sudah diotorisasi.
+
+**Data yang dilihat:**
+- **Transaksi** — header transaksi, difilter yang sudah diotorisasi (`status_otorisasi = 1`)
+- **DetilTransaksi** — detail mutasi per rekening, untuk melihat arah mutasi (debit/kredit)
+- **Parametertransaksiumum** — pengaturan per kode transaksi (`tipe_exclude_aktivitas_nasabah`):
+  - Tidak terdaftar / kosong → dihitung sebagai aktivitas nasabah
+  - `F` → dihitung sebagai aktivitas nasabah
+  - `D` → sisi debit dikecualikan, sisi kredit tetap dihitung
+  - `C` → sisi kredit dikecualikan, sisi debit tetap dihitung
+  - `DC` → seluruh transaksi dikecualikan
+
+**Syarat:** Jenis transaksi tersebut tidak dikecualikan oleh pengaturan parameter — atau jika dikecualikan sebagian, setidaknya ada sisi (debit/kredit) yang tetap dihitung.
+
+**Hasil:** Tanggal transaksi terakhir rekening diperbarui menjadi hari ini.
+
+---
+
+#### `tgl_aktivitas_nonfin_terakhir`
+
+**Situasi:** Nasabah melakukan aktivitas non-finansial hari ini (cek saldo, cek mutasi, cetak buku tabungan).
+
+**Data yang dilihat:**
+- **RekeningAktivitasNonfin** — log aktivitas non-finansial per rekening, difilter `tanggal_aktivitas` yang jatuh pada hari ini
+
+**Syarat:** Aktivitas tercatat pada tanggal yang sama dengan tanggal sistem hari ini.
+
+**Hasil:** Tanggal aktivitas non-finansial terakhir rekening diperbarui menjadi hari ini.
+
+---
+
+#### `tgl_aktivitas_terakhir`
+
+**Situasi:** Proses akhir hari (EOD) sedang berjalan dan rekening masih berstatus aktif.
+
+**Data yang dilihat:**
+- **RekeningTransaksi** — status rekening, difilter `status_rekening = 1` (rekening aktif)
+- **rekeningliabilitas** — nilai `tgl_transaksi_terakhir` dan `tgl_aktivitas_nonfin_terakhir` yang sudah diperbarui di dua langkah sebelumnya
+
+**Syarat:** Minimal salah satu dari tanggal transaksi atau tanggal aktivitas non-finansial sudah terisi.
+
+**Hasil:** Tanggal aktivitas terakhir rekening diisi dengan tanggal yang paling baru di antara keduanya — jika salah satu kosong, dipakai yang ada.
