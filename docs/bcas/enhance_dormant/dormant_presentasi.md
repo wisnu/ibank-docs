@@ -484,6 +484,12 @@ gantt
 
 **Hasil:** Tanggal transaksi terakhir rekening diperbarui menjadi hari ini.
 
+**Contoh kasus:**
+
+> Rekening 001-123456 memiliki `tgl_transaksi_terakhir` = 1 Maret 2025. Pada 10 April 2025, nasabah melakukan transfer keluar (debit) sebesar Rp 500.000. Kode transaksi `TF` terdaftar di parameter dengan `tipe_exclude_aktivitas_nasabah = NULL`. Karena tidak dikecualikan, EOD 10 April memperbarui `tgl_transaksi_terakhir` menjadi **10 April 2025**.
+
+> Rekening 001-654321 menerima bagi hasil (kode `SD`) pada 10 April 2025. Kode `SD` terdaftar dengan `tipe_exclude_aktivitas_nasabah = 'DC'`. Karena seluruh transaksi dikecualikan, `tgl_transaksi_terakhir` **tidak berubah**.
+
 ---
 
 #### `tgl_aktivitas_nonfin_terakhir`
@@ -496,6 +502,12 @@ gantt
 **Syarat:** Aktivitas tercatat pada tanggal yang sama dengan tanggal sistem hari ini.
 
 **Hasil:** Tanggal aktivitas non-finansial terakhir rekening diperbarui menjadi hari ini.
+
+**Contoh kasus:**
+
+> Rekening 001-123456 memiliki `tgl_aktivitas_nonfin_terakhir` = 5 Januari 2025. Pada 10 April 2025, nasabah mengecek saldo via ATM — sistem mencatat satu baris di `RekeningAktivitasNonfin` dengan `tanggal_aktivitas = 10 April 2025`. EOD 10 April memperbarui `tgl_aktivitas_nonfin_terakhir` menjadi **10 April 2025**.
+
+> Rekening 001-654321 tidak ada aktivitas non-finansial sama sekali pada 10 April 2025. Tidak ada baris baru di `RekeningAktivitasNonfin`, sehingga `tgl_aktivitas_nonfin_terakhir` **tidak berubah**.
 
 ---
 
@@ -510,3 +522,37 @@ gantt
 **Syarat:** Minimal salah satu dari tanggal transaksi atau tanggal aktivitas non-finansial sudah terisi.
 
 **Hasil:** Tanggal aktivitas terakhir rekening diisi dengan tanggal yang paling baru di antara keduanya — jika salah satu kosong, dipakai yang ada.
+
+**Contoh kasus:**
+
+> Setelah EOD 10 April 2025: `tgl_transaksi_terakhir` = 10 April (ada transfer), `tgl_aktivitas_nonfin_terakhir` = 5 Januari (tidak ada aktivitas non-fin hari ini). Sistem mengambil yang paling baru → `tgl_aktivitas_terakhir` = **10 April 2025**.
+
+> Setelah EOD 11 April 2025: tidak ada transaksi finansial maupun non-finansial. `tgl_transaksi_terakhir` tetap 10 April, `tgl_aktivitas_nonfin_terakhir` tetap 5 Januari. Tidak ada yang lebih baru → `tgl_aktivitas_terakhir` tetap **10 April 2025**.
+
+> Rekening yang `tgl_transaksi_terakhir` kosong (belum pernah bertransaksi), namun `tgl_aktivitas_nonfin_terakhir` = 10 April (pernah cek saldo). Sistem memakai yang ada → `tgl_aktivitas_terakhir` = **10 April 2025**.
+
+---
+
+### Tabel Contoh Kasus Gabungan
+
+`Tanggal Sistem` : 2 April 2026
+
+`tgl_transaksi_terakhir` = 15 Jan 2026
+
+`tgl_aktivitas_nonfin_terakhir` = 20 Feb 2026
+
+`tgl_aktivitas_terakhir` = 20 Feb 2026
+
+| # | Skenario hari ini (2 Apr 2026) | `tgl_transaksi_terakhir` | `tgl_aktivitas_nonfin_terakhir` | `tgl_aktivitas_terakhir` |
+|---|---|---|---|---|
+| 1 | Nasabah transfer (kode `TF`, tidak dikecualikan) | ~~15 Jan~~ → **02 Apr 2026** | 20 Feb 2026 | ~~20 Feb~~ → **02 Apr 2026** |
+| 2 | Nasabah cek saldo via ATM | 15 Jan 2026 | ~~20 Feb~~ → **02 Apr 2026** | ~~20 Feb~~ → **02 Apr 2026** |
+| 3 | Nasabah transfer sekaligus cek mutasi | ~~15 Jan~~ → **02 Apr 2026** | ~~20 Feb~~ → **02 Apr 2026** | ~~20 Feb~~ → **02 Apr 2026** |
+| 4 | Hanya terima bagi hasil (kode `SD`, `tipe = DC`) | 15 Jan 2026 *(dikecualikan)* | 20 Feb 2026 | 20 Feb 2026 |
+| 5 | Tidak ada aktivitas apapun | 15 Jan 2026 | 20 Feb 2026 | 20 Feb 2026 |
+| 6 | Rekening baru — belum pernah bertransaksi, baru pertama cek saldo | *(NULL)* | NULL → **02 Apr 2026** | NULL → **02 Apr 2026** *(diambil dari nonfin)* |
+| 7 | Terima autodebit (kode `AD`, `tipe = D`) + nasabah juga setor tunai (kredit) | ~~15 Jan~~ → **02 Apr 2026** *(kredit setor dihitung)* | 20 Feb 2026 | ~~20 Feb~~ → **02 Apr 2026** |
+| 8a | Pindah Buku masuk — rekening **menerima** dana (kredit, kode `PB`, `tipe = DC`) | 15 Jan 2026 *(PB dikecualikan penuh, tidak berubah)* | 20 Feb 2026 | 20 Feb 2026 |
+| 8b | Pindah Buku keluar — rekening **mengirim** dana (debit, kode `PB`, `tipe = DC`) | 15 Jan 2026 *(PB dikecualikan penuh, tidak berubah)* | 20 Feb 2026 | 20 Feb 2026 |
+
+
