@@ -62,6 +62,7 @@ nav:
           - FSD - Fingerscan Biometrik: bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md
       - Enhance Dormant:
           - Screenshot: bjbs/enhance_dormant/dormant_screenshot.md
+          - DDL/DML Update (Postgres): bjbs/enhance_dormant/executed_update_pg.md
 
   - BCAS:
       - Enhance Dormant:
