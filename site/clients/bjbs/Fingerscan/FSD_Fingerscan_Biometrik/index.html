@@ -1,0 +1,5920 @@
+
+<!doctype html>
+<html lang="id" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dokumentasi aplikasi core banking iBank">
+      
+      
+      
+        <link rel="canonical" href="https://wisnu.github.io/ibank-docs/clients/bjbs/Fingerscan/FSD_Fingerscan_Biometrik/">
+      
+      
+        <link rel="prev" href="../../../bcas/saku_valas/fsd_sakuvalas/">
+      
+      
+        <link rel="next" href="../../enhance_dormant/dormant_screenshot/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>FSD - Fingerscan Biometrik - iBank Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<meta name="robots" content="noindex, nofollow" />
+
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#functional-specification-document" class="md-skip">
+          Lewati ke isi
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="iBank Documentation" class="md-header__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            iBank Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FSD - Fingerscan Biometrik
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cari" placeholder="Cari" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cari">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Kosongkan" aria-label="Kosongkan" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Mempersiapkan pencarian
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tab" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../public/" class="md-tabs__link">
+          
+  
+  
+  Public
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../private/" class="md-tabs__link">
+          
+  
+  
+  Private
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../ihsansolusi/ibank/GL/TSD%20Architecture/" class="md-tabs__link">
+          
+  
+  
+  iBank
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Clients
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  BJBS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../bcas/enhance_dormant/dormant_fsd/" class="md-tabs__link">
+          
+  
+  
+  BCAS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigasi" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="iBank Documentation" class="md-nav__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    iBank Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../public/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Private
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Private
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../private/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iBank
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    iBank
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    General Ledger
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    General Ledger
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/TSD%20Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2" id="__nav_4_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chart of Account
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/PRD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/FSD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_3" id="__nav_4_1_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA List
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA List
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/list/FSD_COA_List/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_4" id="__nav_4_1_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Create
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Create
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/create/FSD_COA_Create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Create
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_5" id="__nav_4_1_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Edit
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Edit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/edit/FSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/edit/TSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/edit/TEST_COA_Edit.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEST - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/edit/referensi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referensi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Neraca / Laba Rugi
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/balance-sheet/FSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/balance-sheet/TSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_4" id="__nav_4_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trial Balance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/trial-balance/FSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/trial-balance/TSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_5" id="__nav_4_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buku Besar
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Buku Besar
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/ledger/placeholder.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coming Soon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clients
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_1" id="__nav_5_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_2" id="__nav_5_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_1" id="__nav_5_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_presentasi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_2" id="__nav_5_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/enhance_dormant/dormant_presentasi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bcas/saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Daftar isi">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="functional-specification-document">Functional Specification Document</h1>
+<h1 id="sistem-fingerscan-biometrik">Sistem FingerScan Biometrik</h1>
+<hr />
+<table>
+<thead>
+<tr>
+<th>Dokumen</th>
+<th>Nilai</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nomor Dokumen</td>
+<td>FSD-BJBS-FingerScan-01</td>
+</tr>
+<tr>
+<td>Versi</td>
+<td>1.1.0</td>
+</tr>
+<tr>
+<td>Tanggal</td>
+<td>30 Januari 2026</td>
+</tr>
+<tr>
+<td>Referensi PRD</td>
+<td>PRD-BJBS-FingerScan-01</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="daftar-isi">Daftar Isi</h2>
+<ul>
+<li><a href="#1-pendahuluan">1. Pendahuluan</a></li>
+<li><a href="#11-tujuan-dokumen">1.1 Tujuan Dokumen</a></li>
+<li><a href="#12-ruang-lingkup">1.2 Ruang Lingkup</a></li>
+<li><a href="#13-definisi-dan-istilah">1.3 Definisi dan Istilah</a></li>
+<li><a href="#14-referensi">1.4 Referensi</a></li>
+<li><a href="#2-deskripsi-umum-sistem">2. Deskripsi Umum Sistem</a></li>
+<li><a href="#21-high-level-architecture">2.1 High Level Architecture</a><ul>
+<li><a href="#211-context-diagram">2.1.1 Context Diagram</a></li>
+<li><a href="#212-container-diagram">2.1.2 Container Diagram</a></li>
+</ul>
+</li>
+<li><a href="#22-high-level-process-flow">2.2 High Level Process Flow</a><ul>
+<li><a href="#221-enrollment-process-flow">2.2.1 Enrollment Process Flow</a></li>
+<li><a href="#222-verification-process-flow">2.2.2 Verification Process Flow</a></li>
+</ul>
+</li>
+<li><a href="#3-modul-sistem">3. Modul Sistem</a></li>
+<li><a href="#31-fingerstation-client-app">3.1 Fingerstation (Client App)</a></li>
+<li><a href="#32-fingerscan-service-backend">3.2 Fingerscan Service (Backend)</a></li>
+<li><a href="#33-fingerscan-management-web-portal">3.3 Fingerscan Management (Web Portal)</a></li>
+<li><a href="#4-spesifikasi-fungsional">4. Spesifikasi Fungsional</a></li>
+<li><a href="#41-f01-enrollment-sidik-jari">4.1 F01: Enrollment Sidik Jari</a></li>
+<li><a href="#42-f02-verifikasi-sidik-jari">4.2 F02: Verifikasi Sidik Jari</a></li>
+<li><a href="#43-f03-manajemen-lockunlock">4.3 F03: Manajemen Lock/Unlock</a></li>
+<li><a href="#44-f04-fallback-password">4.4 F04: Fallback Password</a></li>
+<li><a href="#45-f05-manajemen-device--station">4.5 F05: Manajemen Device &amp; Station</a></li>
+<li><a href="#46-f06-audit--reporting">4.6 F06: Audit &amp; Reporting</a></li>
+<li><a href="#5-spesifikasi-antarmuka">5. Spesifikasi Antarmuka</a></li>
+<li><a href="#51-api-specification">5.1 API Specification</a></li>
+<li><a href="#52-websocket-events">5.2 WebSocket Events</a></li>
+<li><a href="#53-external-system-integration">5.3 External System Integration</a></li>
+<li><a href="#6-spesifikasi-data">6. Spesifikasi Data</a></li>
+<li><a href="#61-entity-relationship-diagram">6.1 Entity Relationship Diagram</a></li>
+<li><a href="#62-data-dictionary">6.2 Data Dictionary</a></li>
+<li><a href="#7-spesifikasi-user-interface">7. Spesifikasi User Interface</a></li>
+<li><a href="#71-fingerstation-ui">7.1 Fingerstation UI</a></li>
+<li><a href="#72-verification-dialog">7.2 Verification Dialog</a></li>
+<li><a href="#73-management-portal">7.3 Management Portal</a></li>
+<li><a href="#8-business-rules">8. Business Rules</a></li>
+<li><a href="#9-error-handling">9. Error Handling</a></li>
+<li><a href="#10-security-specification">10. Security Specification</a></li>
+<li><a href="#11-performance-requirements">11. Performance Requirements</a></li>
+<li><a href="#12-lampiran">12. Lampiran</a></li>
+</ul>
+<hr />
+<h2 id="1-pendahuluan">1. Pendahuluan</h2>
+<h3 id="11-tujuan-dokumen">1.1 Tujuan Dokumen</h3>
+<p>Dokumen ini menjelaskan spesifikasi fungsional lengkap untuk <strong>Sistem FingerScan Biometrik</strong> yang akan digunakan sebagai mekanisme otorisasi transaksi di seluruh jaringan kantor Bank. Dokumen ini menjadi acuan bagi tim pengembang, QA, dan stakeholder terkait dalam proses development dan testing.</p>
+<h3 id="12-ruang-lingkup">1.2 Ruang Lingkup</h3>
+<p><strong>Dalam Scope:</strong></p>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Fitur</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Enrollment biometrik</td>
+<td>Pendaftaran sidik jari user definitif dan alternate</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Verifikasi biometrik</td>
+<td>Proses verifikasi untuk approval transaksi</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Device management</td>
+<td>Pengelolaan perangkat DigitalPersona 4500</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Fallback mechanism</td>
+<td>Mekanisme fallback ke password di modul DAF/BDS</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Audit trail</td>
+<td>Pencatatan seluruh aktivitas verifikasi</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Integration API</td>
+<td>Service untuk integrasi dengan surrounding apps</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Di Luar Scope:</strong></p>
+<ul>
+<li>Biometrik selain sidik jari (face recognition, iris scan)</li>
+<li>Login sistem menggunakan fingerprint</li>
+<li>Proses integrasi detail di sisi surrounding apps</li>
+<li>Fingerscan Management / Service tidak menangani proses fallback password</li>
+</ul>
+<h3 id="13-definisi-dan-istilah">1.3 Definisi dan Istilah</h3>
+<table>
+<thead>
+<tr>
+<th>Istilah</th>
+<th>Definisi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Enrollment</strong></td>
+<td>Proses pendaftaran sidik jari user ke dalam sistem</td>
+</tr>
+<tr>
+<td><strong>Template</strong></td>
+<td>Data digital hasil ekstraksi fitur sidik jari (bukan gambar mentah)</td>
+</tr>
+<tr>
+<td><strong>Fingerstation</strong></td>
+<td>Aplikasi client yang terhubung dengan device fingerprint</td>
+</tr>
+<tr>
+<td><strong>Maker</strong></td>
+<td>User yang melakukan input transaksi</td>
+</tr>
+<tr>
+<td><strong>Checker/Approver</strong></td>
+<td>User yang melakukan otorisasi transaksi</td>
+</tr>
+<tr>
+<td><strong>Definitif</strong></td>
+<td>User utama yang memiliki wewenang approval</td>
+</tr>
+<tr>
+<td><strong>Alternate</strong></td>
+<td>User pengganti yang dapat melakukan approval</td>
+</tr>
+<tr>
+<td><strong>Fallback</strong></td>
+<td>Mekanisme cadangan menggunakan password</td>
+</tr>
+<tr>
+<td><strong>mTLS</strong></td>
+<td>Mutual TLS untuk autentikasi dua arah</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-referensi">1.4 Referensi</h3>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Dokumen</th>
+<th>Versi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>PRD-BJBS-FingerScan-01</td>
+<td>1.0.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>DigitalPersona 4500 SDK Documentation</td>
+<td>-</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Bank Security Policy</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-deskripsi-umum-sistem">2. Deskripsi Umum Sistem</h2>
+<p>Sistem FingerScan Biometrik merupakan sistem middleware yang berfungsi sebagai layer verifikasi biometrik antara aplikasi bisnis (DAF, BDS, dll) dengan proses approval transaksi. Sistem ini menggantikan mekanisme otorisasi berbasis password untuk meningkatkan keamanan dan memastikan kehadiran fisik approver.</p>
+<h3 id="21-high-level-architecture">2.1 High Level Architecture</h3>
+<pre class="mermaid"><code>graph LR
+    subgraph DataCenter["☁️ DATA CENTER"]
+        direction TB
+
+        subgraph BackendApps["Backend Applications"]
+            BE_DAF["BE DAF&lt;br/&gt;(Core Banking)"]
+            BE_BDS["BE BDS&lt;br/&gt;(Branch Delivery)"]
+            BE_SingleUI["BE SingleUI&lt;br/&gt;(Corporate App)"]
+        end
+
+        Service["Fingerscan Service&lt;br/&gt;(Verification, Enrollment, Admin)"]
+        Redis["Redis&lt;br/&gt;(Cache)"]
+        DB[("Fingerscan DB&lt;br/&gt;(PostgreSQL)")]
+        OIDC["OIDC&lt;br/&gt;(Identity)"]
+
+        %% Backend to Fingerscan Service connections
+        BE_DAF --&gt;|"[2] REST API"| Service
+        BE_BDS --&gt;|"[2] REST API"| Service
+        BE_SingleUI --&gt;|"[2] REST API"| Service
+
+        %% Service connections
+        Service -.-&gt;|"[4] Cache"| Redis
+        Service -.-&gt;|"[5] Store/Retrieve"| DB
+        Service -.-&gt;|"[6] Authenticate"| OIDC
+    end
+
+    subgraph Workstation["🖥️ WORKSTATION  CABANG"]
+        direction LR
+
+        subgraph Apps["Business Applications"]
+            DAF["DAF&lt;br/&gt;(Core Banking)"]
+            BDS["BDS&lt;br/&gt;(Branch Delivery)"]
+            Corporate["Corporate&lt;br/&gt;(Single UI)"]
+        end
+
+        FS["Fingerstation ClientApp"]
+        Device["DigitalPersona 4500&lt;br/&gt;(Reader)"]
+
+        %% Local connection between apps and station
+        DAF -.-&gt;|"[1a] Local Get DeviceID"| FS
+        BDS -.-&gt;|"[1a] Local Get DeviceID"| FS
+        Corporate -.-&gt;|"[1a] Local Get DeviceID"| FS
+
+        %% Station internal
+        FS --&gt;|"[7] USB/SDK"| Device
+    end
+
+
+    %% Cross-location connections (Workstation to Data Center)
+    DAF ==&gt;|"[1b] (TCP)"| BE_DAF
+    BDS ==&gt;|"[1b] (HTTP)"| BE_BDS
+    Corporate ==&gt;|"[1b] (GraphQL)"| BE_SingleUI
+    FS ==&gt;|"[3] (WebSocket)"| Service
+
+    %% Styling
+    classDef workstationBG fill:#E8F4F8,stroke:#2E5C8A,stroke-width:3px,stroke-dasharray: 5 5
+    classDef datacenterBG fill:#E8F5E9,stroke:#2E7D4E,stroke-width:3px,stroke-dasharray: 5 5
+    classDef appStyle fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    classDef backendStyle fill:#3498DB,stroke:#2874A6,stroke-width:2px,color:#fff
+    classDef serviceStyle fill:#50C878,stroke:#2E7D4E,stroke-width:2px,color:#fff
+    classDef storageStyle fill:#F39C12,stroke:#C87F0A,stroke-width:2px,color:#fff
+    classDef stationStyle fill:#9B59B6,stroke:#6C3483,stroke-width:2px,color:#fff
+    classDef deviceStyle fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
+
+    class Workstation workstationBG
+    class DataCenter datacenterBG
+    class DAF,BDS,Corporate appStyle
+    class BE_DAF,BE_BDS,BE_SingleUI backendStyle
+    class Service serviceStyle
+    class Redis,DB,OIDC storageStyle
+    class FS stationStyle
+    class Device deviceStyle</code></pre>
+<hr />
+<p><strong>Penjelasan Alur:</strong></p>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Layer</th>
+<th>Lokasi</th>
+<th>Protokol</th>
+<th>Deskripsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>[1a]</strong></td>
+<td>Apps → Fingerstation</td>
+<td><strong>Local</strong> (Workstation)</td>
+<td>IPC/Local API</td>
+<td>Business apps memanggil Fingerstation secara lokal untuk mendapatkan Device ID</td>
+</tr>
+<tr>
+<td><strong>[1b]</strong></td>
+<td>Apps → Backend Apps</td>
+<td><strong>Network</strong> (WAN/VPN)</td>
+<td>TCP/HTTP/GraphQL</td>
+<td>Business apps mengirim request otorisasi/enrollment ke Backend masing-masing</td>
+</tr>
+<tr>
+<td><strong>[2]</strong></td>
+<td>Backend → Service</td>
+<td><strong>Network</strong> (WAN/VPN)</td>
+<td>REST API (HTTPS)</td>
+<td>Backend apps mengirim request verifikasi ke Fingerscan Service</td>
+</tr>
+<tr>
+<td><strong>[3]</strong></td>
+<td>Fingerstation → Service</td>
+<td><strong>Network</strong> (WAN/VPN)</td>
+<td>WebSocket (mTLS)</td>
+<td>Fingerstation mengirim template hasil capture ke service via koneksi aman</td>
+</tr>
+<tr>
+<td><strong>[4]</strong></td>
+<td>Service → Cache</td>
+<td><strong>Local</strong> (Data Center)</td>
+<td>Redis Protocol</td>
+<td>Service mengecek cache untuk template yang sering digunakan</td>
+</tr>
+<tr>
+<td><strong>[5]</strong></td>
+<td>Service → Database</td>
+<td><strong>Local</strong> (Data Center)</td>
+<td>JDBC/SQL</td>
+<td>Service menyimpan dan mengambil data template, audit log, dan konfigurasi</td>
+</tr>
+<tr>
+<td><strong>[6]</strong></td>
+<td>Service → OIDC</td>
+<td><strong>Local</strong> (Data Center)</td>
+<td>OAuth2/OIDC</td>
+<td>Service melakukan autentikasi dan autorisasi user saat enrollment</td>
+</tr>
+<tr>
+<td><strong>[7]</strong></td>
+<td>Fingerstation → Device</td>
+<td><strong>Local</strong> (Workstation)</td>
+<td>USB/SDK</td>
+<td>Fingerstation berkomunikasi dengan hardware fingerprint reader</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Catatan Arsitektur:</strong></p>
+<ul>
+<li>🖥️ <strong>Workstation/Cabang</strong>: Business applications (DAF, BDS, CMS) dan Fingerstation berjalan di PC yang sama</li>
+<li>☁️ <strong>Data Center/Kantor Pusat</strong>: Fingerscan Service dan semua komponen backend berjalan secara terpusat</li>
+<li>🔗 <strong>Koneksi Lokal</strong> ([1a], [6], [7]): Komunikasi dalam satu mesin/workstation</li>
+<li>🌐 <strong>Koneksi Network</strong> ([1b], [2]): Komunikasi melalui jaringan (VPN/MPLS) antara cabang dan kantor pusat</li>
+</ul>
+<hr />
+<h4 id="211-context-diagram">2.1.1 Context Diagram</h4>
+<pre class="mermaid"><code>C4Context
+    title System Context Diagram - Fingerscan Biometric System
+
+    Person(teller, "Teller/CS", "Staff cabang yang melakukan transaksi dan membutuhkan approval")
+    Person(approver, "Approver", "User yang melakukan otorisasi transaksi dengan sidik jari")
+    Person(admin, "IT Administrator", "Administrator yang mengelola sistem fingerprint")
+
+    System(fingerscan, "Fingerscan System", "Sistem verifikasi biometrik untuk approval transaksi menggunakan sidik jari")
+
+    System_Ext(daf, "DAF System", "Aplikasi core banking untuk transaksi")
+    System_Ext(bds, "BDS System", "Aplikasi branch delivery system")
+    System_Ext(corporate, "Corporate System", "Aplikasi corporate banking (Single UI)")
+    System_Ext(hrmis, "HRMIS", "Sistem HR untuk data karyawan")
+    System_Ext(oidc, "OIDC Provider", "Identity &amp; Access Management sistem")
+
+    Rel(teller, daf, "Input dan submit transaksi", "HTTPS")
+    Rel(teller, bds, "Input dan submit transaksi", "HTTPS")
+    Rel(approver, fingerscan, "Verifikasi approval dengan scan sidik jari", "Desktop App")
+    Rel(admin, fingerscan, "Kelola enrollment, device, dan konfigurasi", "Web Portal/HTTPS")
+
+    Rel(daf, fingerscan, "Request verifikasi approval transaksi", "REST API/HTTPS")
+    Rel(bds, fingerscan, "Request verifikasi approval transaksi", "REST API/HTTPS")
+    Rel(corporate, fingerscan, "Request enrollment user", "REST API/HTTPS")
+
+    Rel(fingerscan, hrmis, "Validasi status karyawan aktif", "REST API/HTTPS")
+    Rel(fingerscan, oidc, "Autentikasi dan autorisasi user", "OAuth2/OIDC")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")</code></pre>
+<p><strong>Penjelasan Context Diagram:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Elemen</th>
+<th>Type</th>
+<th>Deskripsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Teller/CS</strong></td>
+<td>Person</td>
+<td>User yang melakukan input transaksi dan meminta approval</td>
+</tr>
+<tr>
+<td><strong>Approver</strong></td>
+<td>Person</td>
+<td>User yang melakukan otorisasi transaksi menggunakan sidik jari</td>
+</tr>
+<tr>
+<td><strong>IT Administrator</strong></td>
+<td>Person</td>
+<td>Administrator yang mengelola enrollment, device, dan sistem</td>
+</tr>
+<tr>
+<td><strong>Fingerscan System</strong></td>
+<td>System</td>
+<td>Sistem inti untuk verifikasi biometrik dan manajemen enrollment</td>
+</tr>
+<tr>
+<td><strong>DAF System</strong></td>
+<td>External System</td>
+<td>Core banking application yang memerlukan approval biometrik</td>
+</tr>
+<tr>
+<td><strong>BDS System</strong></td>
+<td>External System</td>
+<td>Branch delivery system yang memerlukan approval biometrik</td>
+</tr>
+<tr>
+<td><strong>Corporate System</strong></td>
+<td>External System</td>
+<td>Corporate banking app (Single UI) untuk enrollment</td>
+</tr>
+<tr>
+<td><strong>HRMIS</strong></td>
+<td>External System</td>
+<td>Sistem HR untuk validasi data karyawan</td>
+</tr>
+<tr>
+<td><strong>OIDC Provider</strong></td>
+<td>External System</td>
+<td>Identity provider untuk autentikasi dan autorisasi</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Interactions:</strong>
+- Business Apps (DAF, BDS) mengirim request verifikasi ke Fingerscan System
+- Approver berinteraksi langsung dengan Fingerscan untuk scan sidik jari
+- Fingerscan System memvalidasi user melalui HRMIS dan OIDC
+- Administrator mengelola sistem melalui web portal</p>
+<h4 id="212-container-diagram">2.1.2 Container Diagram</h4>
+<pre class="mermaid"><code>C4Container
+    title Container Diagram - Fingerscan Biometric System
+
+    Person(teller, "Teller/CS", "Staff cabang yang melakukan input transaksi")
+    Person(approver, "Approver", "User yang melakukan otorisasi dengan sidik jari")
+    Person(admin, "IT Admin", "Administrator sistem di kantor pusat")
+
+    Boundary(b1, "Workstation / Cabang", "Windows PC") {
+        Container(daf, "DAF Application", "Java/Spring", "Aplikasi core banking untuk transaksi")
+        Container(bds, "BDS Application", "Java/Spring", "Aplikasi branch delivery system")
+        Container(fingerstation, "Fingerstation", "Electron/C++", "Aplikasi client untuk capture sidik jari dan komunikasi dengan device")
+
+        System_Ext(device, "DigitalPersona 4500", "Hardware fingerprint reader")
+    }
+
+    Boundary(b2, "Data Center / Kantor Pusat", "Private Cloud") {
+        Container(api, "Fingerscan API", "Java Spring Boot", "REST API untuk verifikasi dan enrollment")
+        Container(verif, "Verification Engine", "Java/C++", "Engine untuk matching template sidik jari")
+        Container(enroll, "Enrollment Service", "Java Spring Boot", "Service untuk pendaftaran sidik jari")
+        Container(mgmt, "Management Portal", "React/TypeScript", "Portal web untuk administrasi sistem")
+
+        ContainerDb(db, "Fingerprint DB", "PostgreSQL", "Database untuk template, audit log, dan konfigurasi")
+        ContainerDb(cache, "Cache", "Redis", "Cache untuk template yang sering digunakan")
+
+        System_Ext(oidc, "OIDC Provider", "Identity &amp; Access Management")
+        System_Ext(hrmis, "HRMIS", "Sistem data karyawan")
+    }
+
+    %% User interactions
+    Rel(teller, daf, "Input transaksi", "HTTPS")
+    Rel(teller, bds, "Input transaksi", "HTTPS")
+    Rel(approver, fingerstation, "Scan sidik jari untuk approval", "Desktop App")
+    Rel(admin, mgmt, "Kelola sistem", "HTTPS")
+
+    %% Local workstation communications
+    Rel(daf, fingerstation, "[1a] Trigger capture", "IPC/Local API")
+    Rel(bds, fingerstation, "[1a] Trigger capture", "IPC/Local API")
+    Rel(fingerstation, device, "[7] Capture fingerprint", "USB/SDK")
+
+    %% Network communications (Workstation to Data Center)
+    Rel(daf, api, "[1b] Request verification", "REST/HTTPS via VPN")
+    Rel(bds, api, "[1b] Request verification", "REST/HTTPS via VPN")
+    Rel(fingerstation, api, "[2] Send template", "WebSocket/mTLS via VPN")
+
+    %% Data center internal communications
+    Rel(api, verif, "Delegate verification", "Internal API")
+    Rel(api, enroll, "Delegate enrollment", "Internal API")
+    Rel(mgmt, api, "Manage system", "REST/HTTPS")
+
+    Rel(verif, cache, "[3] Check template cache", "Redis Protocol")
+    Rel(verif, db, "[4] Get/Store template", "JDBC/SQL")
+    Rel(enroll, db, "[4] Store enrollment", "JDBC/SQL")
+
+    Rel(api, oidc, "[5] Authenticate user", "OAuth2/OIDC")
+    Rel(enroll, hrmis, "Validate employee", "REST/HTTPS")
+
+    UpdateLayoutConfig($c4ShapeInRow="4", $c4BoundaryInRow="2")</code></pre>
+<p><strong>Penjelasan Container Diagram:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Elemen</th>
+<th>Jenis</th>
+<th>Deskripsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Teller/CS</strong></td>
+<td>Person</td>
+<td>User yang melakukan input transaksi di aplikasi bisnis</td>
+</tr>
+<tr>
+<td><strong>Approver</strong></td>
+<td>Person</td>
+<td>User yang melakukan otorisasi menggunakan sidik jari</td>
+</tr>
+<tr>
+<td><strong>IT Admin</strong></td>
+<td>Person</td>
+<td>Administrator yang mengelola sistem fingerprint</td>
+</tr>
+<tr>
+<td><strong>Workstation Boundary</strong></td>
+<td>Boundary</td>
+<td>PC di cabang yang menjalankan business apps dan fingerstation</td>
+</tr>
+<tr>
+<td><strong>Data Center Boundary</strong></td>
+<td>Boundary</td>
+<td>Infrastruktur terpusat di kantor pusat</td>
+</tr>
+<tr>
+<td><strong>DAF/BDS</strong></td>
+<td>Container</td>
+<td>Aplikasi bisnis yang memerlukan otorisasi fingerprint</td>
+</tr>
+<tr>
+<td><strong>Fingerstation</strong></td>
+<td>Container</td>
+<td>Aplikasi client untuk interface dengan device</td>
+</tr>
+<tr>
+<td><strong>DigitalPersona 4500</strong></td>
+<td>External System</td>
+<td>Hardware fingerprint reader</td>
+</tr>
+<tr>
+<td><strong>Fingerscan API</strong></td>
+<td>Container</td>
+<td>API gateway untuk semua request verifikasi/enrollment</td>
+</tr>
+<tr>
+<td><strong>Verification Engine</strong></td>
+<td>Container</td>
+<td>Engine untuk matching sidik jari (1:1 matching)</td>
+</tr>
+<tr>
+<td><strong>Enrollment Service</strong></td>
+<td>Container</td>
+<td>Service untuk proses pendaftaran sidik jari</td>
+</tr>
+<tr>
+<td><strong>Management Portal</strong></td>
+<td>Container</td>
+<td>Web portal untuk administrasi</td>
+</tr>
+<tr>
+<td><strong>Fingerprint DB</strong></td>
+<td>Database</td>
+<td>PostgreSQL untuk menyimpan template dan audit</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Database</td>
+<td>Redis untuk performa (caching template)</td>
+</tr>
+<tr>
+<td><strong>OIDC Provider</strong></td>
+<td>External System</td>
+<td>SSO untuk autentikasi user</td>
+</tr>
+<tr>
+<td><strong>HRMIS</strong></td>
+<td>External System</td>
+<td>Sistem HR untuk validasi karyawan</td>
+</tr>
+</tbody>
+</table>
+<h2 id="22-high-level-process-flow">2.2 High Level Process Flow</h2>
+<h3 id="221-enrollment-process-flow">2.2.1 Enrollment Process Flow</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    autonumber
+    participant Admin
+    participant Portal as Frontend App
+    participant Backend as Backend Service
+    participant Service as Fingerscan Service
+    participant Redis as Redis Cache
+    participant Station as Fingerstation
+    participant Device as Fingerprint Device
+    participant DB as PostgreSQL
+
+    Admin-&gt;&gt;Portal: Pilih user untuk enrollment
+    Portal-&gt;&gt;Backend: Request enrollment
+    Backend-&gt;&gt;Service: POST /enrollment/start
+    Service-&gt;&gt;DB: Create enrollment_session
+    DB--&gt;&gt;Service: session_id
+    Service--&gt;&gt;Backend: {session_id, status: pending}
+    Backend--&gt;&gt;Portal: Session created
+
+    loop For each finger (min 3)
+        Portal-&gt;&gt;Backend: Request capture
+        Backend-&gt;&gt;Service: POST /enrollment/capture-sync
+        Service-&gt;&gt;Redis: Publish capture command
+        Redis--&gt;&gt;Station: Capture command
+        Station-&gt;&gt;Admin: "Letakkan jari Anda"
+        Admin-&gt;&gt;Device: Place finger
+        Device--&gt;&gt;Station: Raw fingerprint data
+        Station-&gt;&gt;Station: Extract template
+        Station-&gt;&gt;Redis: Publish capture result
+        Redis--&gt;&gt;Service: Template + quality_score
+        Service-&gt;&gt;DB: Save to fingerprint_templates
+        Service-&gt;&gt;DB: Log to enrollment_logs
+        Service--&gt;&gt;Backend: {step: n/3, quality_score}
+        Backend--&gt;&gt;Portal: Capture success
+        Portal--&gt;&gt;Admin: Show progress
+    end
+
+    Portal-&gt;&gt;Backend: Complete enrollment
+    Backend-&gt;&gt;Service: POST /enrollment/complete
+    Service-&gt;&gt;DB: Update session status
+    Service--&gt;&gt;Backend: {status: completed}
+    Backend--&gt;&gt;Portal: Enrollment success
+    Portal--&gt;&gt;Admin: Konfirmasi sukses</code></pre>
+<p><strong>Penjelasan Alur:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Dari</th>
+<th>Ke</th>
+<th>Deskripsi</th>
+<th>Protokol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1-3</strong></td>
+<td>Admin → Service</td>
+<td>Inisiasi enrollment session</td>
+<td>REST API</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>4-5</strong></td>
+<td>Service → DB</td>
+<td>Buat record enrollment_session</td>
+<td>SQL</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>6-7</strong></td>
+<td>Service → Portal</td>
+<td>Return session_id untuk tracking</td>
+<td>HTTP Response</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>8-10</strong></td>
+<td>Portal → Service</td>
+<td>Request capture untuk setiap jari</td>
+<td>REST API</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>11-12</strong></td>
+<td>Service → Station</td>
+<td>Kirim capture command via Redis pub/sub</td>
+<td>Redis</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>13-15</strong></td>
+<td>Admin → Device</td>
+<td>User meletakkan jari di scanner</td>
+<td>Physical</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>16-17</strong></td>
+<td>Station</td>
+<td>Ekstrak template dari raw data</td>
+<td>Internal</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>18-19</strong></td>
+<td>Station → Service</td>
+<td>Kirim template hasil capture via Redis</td>
+<td>Redis</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>20-21</strong></td>
+<td>Service → DB</td>
+<td>Simpan template dan log enrollment</td>
+<td>SQL</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>22-25</strong></td>
+<td>Service → Admin</td>
+<td>Return hasil capture</td>
+<td>HTTP Response</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>26-31</strong></td>
+<td>Portal → Admin</td>
+<td>Complete enrollment dan konfirmasi</td>
+<td>REST + UI</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Timeline Estimasi:</strong>
+- Step 1-7: ~200ms (session creation)
+- Step 8-25: ~5-10 detik per jari (capture + save)
+- Step 26-31: ~100ms (complete session)
+- <strong>Total: ~16-31 detik</strong> untuk 3 jari (user-dependent)</p>
+<h3 id="222-verification-process-flow">2.2.2 Verification Process Flow</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    autonumber
+    participant Approver
+    participant App as Frontend App
+    participant Backend as Backend Service
+    participant Service as Fingerscan Service
+    participant Redis as Redis Cache
+    participant Station as Fingerstation
+    participant Device as Fingerprint Device
+    participant DB as PostgreSQL
+
+    Approver-&gt;&gt;App: Klik tombol Approve
+    App-&gt;&gt;Backend: Request verification
+    Backend-&gt;&gt;Service: POST /fingerprint/verify-sync
+
+    Note over Service: Validate user status
+    Service-&gt;&gt;DB: Check user (is_active, is_blocked)
+    DB--&gt;&gt;Service: User status OK
+
+    Note over Service: Resolve device
+    Service-&gt;&gt;DB: Get device by id/ip_address
+    DB--&gt;&gt;Service: Device info (is_online: true)
+
+    Service-&gt;&gt;Redis: Publish capture command
+    Redis--&gt;&gt;Station: Capture command + context
+    Station-&gt;&gt;Approver: "Letakkan jari Anda"
+    Approver-&gt;&gt;Device: Place finger
+    Device--&gt;&gt;Station: Raw fingerprint data
+    Station-&gt;&gt;Station: Extract template
+
+    Station-&gt;&gt;Redis: Publish capture result
+    Redis--&gt;&gt;Service: Captured template
+
+    Note over Service: Matching Process
+    Service-&gt;&gt;DB: Get enrolled templates for user
+    DB--&gt;&gt;Service: Stored templates
+    Service-&gt;&gt;Service: Compare templates (1:1 match)
+
+    alt Match Found (confidence &gt;= threshold)
+        Service-&gt;&gt;DB: Reset failed_verification_attempts
+        Service-&gt;&gt;DB: Log to verification_logs (result: match)
+        Service-&gt;&gt;Redis: Store result
+        Service--&gt;&gt;Backend: {success: true, confidence_score}
+        Backend--&gt;&gt;App: Verification success
+        App--&gt;&gt;Approver: Approval berhasil
+    else No Match
+        Service-&gt;&gt;DB: Increment failed_verification_attempts
+        alt attempts &gt;= 3
+            Service-&gt;&gt;DB: Set is_blocked = true
+            Service-&gt;&gt;DB: Log to verification_logs (result: no_match, blocked)
+            Service--&gt;&gt;Backend: {success: false, blocked: true}
+            Backend--&gt;&gt;App: User blocked
+            App--&gt;&gt;Approver: Akun terkunci
+        else attempts &lt; 3
+            Service-&gt;&gt;DB: Log to verification_logs (result: no_match)
+            Service--&gt;&gt;Backend: {success: false, retry_remaining}
+            Backend--&gt;&gt;App: Verification failed
+            App--&gt;&gt;Approver: Gagal, coba lagi
+        end
+    end</code></pre>
+<p><strong>Penjelasan Alur:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Dari</th>
+<th>Ke</th>
+<th>Deskripsi</th>
+<th>Protokol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1-3</strong></td>
+<td>Approver → Service</td>
+<td>Request verifikasi saat approval transaksi</td>
+<td>REST API</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>4-5</strong></td>
+<td>Service → DB</td>
+<td>Validasi user aktif dan tidak di-block</td>
+<td>SQL</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>6-7</strong></td>
+<td>Service → DB</td>
+<td>Resolve device dari device_id atau ip_address</td>
+<td>SQL</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>8-9</strong></td>
+<td>Service → Station</td>
+<td>Kirim capture command via Redis pub/sub</td>
+<td>Redis</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>10-12</strong></td>
+<td>Approver → Device</td>
+<td>User meletakkan jari di scanner</td>
+<td>Physical</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>13</strong></td>
+<td>Station</td>
+<td>Ekstrak template dari raw fingerprint</td>
+<td>Internal</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>14-15</strong></td>
+<td>Station → Service</td>
+<td>Kirim template via Redis</td>
+<td>Redis</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>16-17</strong></td>
+<td>Service → DB</td>
+<td>Ambil enrolled templates untuk matching</td>
+<td>SQL</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>18</strong></td>
+<td>Service</td>
+<td>Proses matching 1:1</td>
+<td>Internal</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>19-24</strong></td>
+<td>Service → App</td>
+<td>Handle result (success/failed/blocked)</td>
+<td>HTTP</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Timeline Estimasi:</strong>
+- Step 1-9: ~200ms (validation + command dispatch)
+- Step 10-15: ~2-5 detik (user action + capture)
+- Step 16-18: ~100ms (matching process)
+- Step 19-24: ~50ms (logging + response)
+- <strong>Total: ~2.5-5.5 detik</strong> (user-dependent)</p>
+<p><strong>Timeout Handling:</strong>
+- Sync mode timeout: 30 detik
+- Jika timeout tercapai, return HTTP 408 dengan status "timeout"</p>
+<hr />
+<h2 id="3-business-rules">3. Business Rules</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Category</th>
+<th>Rule</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BR-001</td>
+<td>Enrollment</td>
+<td>Minimal 2 jari dari kedua tangan</td>
+<td>Validation sebelum save</td>
+</tr>
+<tr>
+<td>BR-002</td>
+<td>Enrollment</td>
+<td>Quality score minimal 40</td>
+<td>Check saat capture</td>
+</tr>
+<tr>
+<td>BR-003</td>
+<td>Enrollment</td>
+<td>Tidak boleh duplicate</td>
+<td>Cross-check dengan existing templates</td>
+</tr>
+<tr>
+<td>BR-004</td>
+<td>Enrollment</td>
+<td>User harus aktif di HRMIS</td>
+<td>API call ke HRMIS</td>
+</tr>
+<tr>
+<td>BR-005</td>
+<td>Verification</td>
+<td>Max retry 3x</td>
+<td>Counter di database</td>
+</tr>
+<tr>
+<td>BR-006</td>
+<td>Verification</td>
+<td>Timeout 30 detik</td>
+<td>Session expiry</td>
+</tr>
+<tr>
+<td>BR-007</td>
+<td>Verification</td>
+<td>Match threshold configurable</td>
+<td>Default 40</td>
+</tr>
+<tr>
+<td>BR-008</td>
+<td>Verification</td>
+<td>1 active session per user</td>
+<td>Reject concurrent</td>
+</tr>
+<tr>
+<td>BR-009</td>
+<td>Lock</td>
+<td>Auto lock setelah 3x gagal</td>
+<td>System triggered</td>
+</tr>
+<tr>
+<td>BR-010</td>
+<td>Lock</td>
+<td>Manual unlock by admin only</td>
+<td>Role-based access</td>
+</tr>
+<tr>
+<td>BR-011</td>
+<td>Fallback</td>
+<td>Approval dari Admin Kantor Pusat</td>
+<td>Workflow approval</td>
+</tr>
+<tr>
+<td>BR-012</td>
+<td>Fallback</td>
+<td>Max duration 30 hari</td>
+<td>Validation</td>
+</tr>
+<tr>
+<td>BR-013</td>
+<td>Fallback</td>
+<td>Auto disable setelah expired</td>
+<td>Scheduler</td>
+</tr>
+<tr>
+<td>BR-014</td>
+<td>Audit</td>
+<td>Semua aktivitas harus di-log</td>
+<td>Aspect/interceptor</td>
+</tr>
+<tr>
+<td>BR-015</td>
+<td>Audit</td>
+<td>Retention minimal 2 tahun</td>
+<td>Archival policy</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-modul-sistem">4. Modul Sistem</h2>
+<h3 id="41-fingerstation-client-app">4.1 Fingerstation (Client App)</h3>
+<p><strong>Deskripsi:</strong> Aplikasi desktop yang diinstal pada workstation cabang untuk menghubungkan device fingerprint dengan Fingerscan Service.</p>
+<p><strong>Teknologi:</strong> Electron / .NET Desktop App</p>
+<p><strong>Fungsi Utama:</strong></p>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Fungsi</th>
+<th>Deskripsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Device Connection</td>
+<td>Mengelola koneksi dengan DigitalPersona 4500</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Capture</td>
+<td>Melakukan capture sidik jari dari device</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Template Extraction</td>
+<td>Mengekstrak template dari hasil capture</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Secure Communication</td>
+<td>Mengirim template ke service via WebSocket</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Status Reporting</td>
+<td>Melaporkan status device dan station</td>
+</tr>
+</tbody>
+</table>
+<p><strong>State Diagram:</strong></p>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; STARTUP
+    STARTUP --&gt; OFFLINE: Initialize
+    OFFLINE --&gt; ONLINE: Device Connected
+    OFFLINE --&gt; ERROR: Device Error
+    ERROR --&gt; OFFLINE: Device Error
+    ONLINE --&gt; CAPTURING: Capture Request
+    ONLINE --&gt; ERROR: Capture Failed
+    CAPTURING --&gt; SENDING: Capture Complete
+    SENDING --&gt; ONLINE: Send Complete</code></pre>
+<h3 id="42-fingerscan-service-backend">4.2 Fingerscan Service (Backend)</h3>
+<p><strong>Deskripsi:</strong> Backend service yang menangani logika bisnis verifikasi, enrollment, dan manajemen sistem.</p>
+<p><strong>Teknologi:</strong> Python Sanic (Async Framework)</p>
+<p><strong>Stack:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Sanic 25.x (Async Python)</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>PostgreSQL 15+</td>
+</tr>
+<tr>
+<td>ORM</td>
+<td>SQLAlchemy 2.0 (Async)</td>
+</tr>
+<tr>
+<td>Cache/Messaging</td>
+<td>Redis (Pub/Sub)</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>JWT + Bcrypt</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sub-modul (Services):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sub-modul</th>
+<th>File</th>
+<th>Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fingerprint Verification</strong></td>
+<td>fingerprint_verification_service.py</td>
+<td>Matching template 1:1, logging hasil</td>
+</tr>
+<tr>
+<td><strong>Enrollment Service</strong></td>
+<td>enrollment_service.py</td>
+<td>Session management, template capture</td>
+</tr>
+<tr>
+<td><strong>Device Service</strong></td>
+<td>device_service.py</td>
+<td>Device registration, status, resolve</td>
+</tr>
+<tr>
+<td><strong>User Service</strong></td>
+<td>user_service.py</td>
+<td>User CRUD, blocking, auth</td>
+</tr>
+<tr>
+<td><strong>Template Service</strong></td>
+<td>fingerprint_template_service.py</td>
+<td>Template CRUD, upsert</td>
+</tr>
+<tr>
+<td><strong>Command Service</strong></td>
+<td>command_service.py</td>
+<td>Dispatch command ke station via Redis</td>
+</tr>
+<tr>
+<td><strong>Redis Service</strong></td>
+<td>redis_service.py</td>
+<td>Redis connection, pub/sub</td>
+</tr>
+<tr>
+<td><strong>Log Service</strong></td>
+<td>log_service.py</td>
+<td>Audit logging ke database</td>
+</tr>
+<tr>
+<td><strong>Parameter Service</strong></td>
+<td>parameter_service.py</td>
+<td>System configuration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-fingerscan-management-web-portal">4.3 Fingerscan Management (Web Portal)</h3>
+<p><strong>Deskripsi:</strong> Portal web untuk administrasi sistem fingerprint.</p>
+<p><strong>Teknologi:</strong> Next.js / React</p>
+<p><strong>Menu Struktur:</strong></p>
+<div class="highlight"><pre><span></span><code>Fingerscan Management
+├── Dashboard
+│   ├── Station Status Overview
+│   ├── Verification Statistics
+│   └── Alert &amp; Notifications
+├── Enrollment
+│   ├── New Enrollment
+│   ├── Update Enrollment
+│   └── Enrollment History
+├── User Management
+│   ├── User List
+│   ├── Lock/Unlock User
+│   └── Fallback Management
+├── Device Management
+│   ├── Station List
+│   ├── Device Registration
+│   └── Maintenance Schedule
+├── Reports
+│   ├── Verification Report
+│   ├── Audit Trail
+│   └── Usage Statistics
+└── Settings
+    ├── System Parameters
+    ├── Branch Configuration
+    └── Integration Settings
+</code></pre></div>
+<hr />
+<h2 id="5-spesifikasi-fungsional">5. Spesifikasi Fungsional</h2>
+<h3 id="51-f01-enrollment-sidik-jari">5.1 F01: Enrollment Sidik Jari</h3>
+<h4 id="411-deskripsi">4.1.1 Deskripsi</h4>
+<p>Proses pendaftaran sidik jari user ke dalam sistem untuk pertama kali. Enrollment dilakukan untuk user definitif (di Kantor Pusat) dan user alternate (di Cabang).</p>
+<h4 id="412-precondition">4.1.2 Precondition</h4>
+<ul>
+<li>User terdaftar di sistem (exists in users table)</li>
+<li>User aktif (is_active = true)</li>
+<li>Device terdaftar dan online (is_online = true)</li>
+<li>Device dapat melakukan enrollment (can_enroll = true)</li>
+</ul>
+<h4 id="413-flow-diagram">4.1.3 Flow Diagram</h4>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Admin
+    participant Portal as Frontend App
+    participant Service as Fingerscan Service
+    participant Redis
+    participant Station as Fingerstation
+    participant DB as PostgreSQL
+
+    Admin-&gt;&gt;Portal: 1. Select User untuk enrollment
+    Portal-&gt;&gt;Service: 2. POST /enrollment/start
+    Service-&gt;&gt;DB: 3. Create enrollment_session
+    Service--&gt;&gt;Portal: 4. {session_id, status: pending}
+
+    loop For each finger (templates_required = 3)
+        Admin-&gt;&gt;Portal: 5. Request capture
+        Portal-&gt;&gt;Service: 6. POST /enrollment/capture-sync
+        Service-&gt;&gt;Redis: 7. Publish capture command
+        Redis--&gt;&gt;Station: 8. Capture request + finger_position
+
+        Note over Station: User places finger
+
+        Station--&gt;&gt;Redis: 9. Template + quality_score
+        Redis--&gt;&gt;Service: 10. Capture result
+
+        alt quality_score &gt;= threshold
+            Service-&gt;&gt;DB: 11. Save fingerprint_template
+            Service-&gt;&gt;DB: 12. Update templates_captured++
+            Service--&gt;&gt;Portal: 13. {step: n/3, success}
+        else quality_score &lt; threshold
+            Service--&gt;&gt;Portal: 13. {error: low quality, retry}
+        end
+    end
+
+    Portal-&gt;&gt;Service: 14. POST /enrollment/complete
+    Service-&gt;&gt;DB: 15. Update session_status = completed
+    Service--&gt;&gt;Portal: 16. {status: completed}
+    Portal--&gt;&gt;Admin: 17. Enrollment berhasil</code></pre>
+<h4 id="414-business-rules">4.1.4 Business Rules</h4>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Validasi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BR-E01</td>
+<td>Minimal 3 jari dari kedua tangan</td>
+<td>System enforced</td>
+</tr>
+<tr>
+<td>BR-E02</td>
+<td>Template harus memenuhi quality threshold</td>
+<td>Score &gt;= 40</td>
+</tr>
+<tr>
+<td>BR-E03</td>
+<td>Tidak boleh duplicate dengan user lain</td>
+<td>Matching check</td>
+</tr>
+<tr>
+<td>BR-E04</td>
+<td>User harus aktif di HRMIS</td>
+<td>API validation</td>
+</tr>
+<tr>
+<td>BR-E05</td>
+<td>Enrollment definitif hanya di Kantor Pusat</td>
+<td>Location check</td>
+</tr>
+</tbody>
+</table>
+<h4 id="415-data-input">4.1.5 Data Input</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user_id</td>
+<td>String</td>
+<td>Yes</td>
+<td>Exists in HRMIS, Active</td>
+</tr>
+<tr>
+<td>finger_index</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>1-10 (mapping jari)</td>
+</tr>
+<tr>
+<td>template_data</td>
+<td>Binary</td>
+<td>Yes</td>
+<td>Quality &gt;= 40</td>
+</tr>
+<tr>
+<td>station_id</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Station ONLINE</td>
+</tr>
+<tr>
+<td>enrolled_by</td>
+<td>String</td>
+<td>Yes</td>
+<td>From session</td>
+</tr>
+</tbody>
+</table>
+<h4 id="416-data-output">4.1.6 Data Output</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enrollment_id</td>
+<td>UUID</td>
+<td>ID enrollment</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Enum</td>
+<td>SUCCESS, FAILED</td>
+</tr>
+<tr>
+<td>finger_count</td>
+<td>Integer</td>
+<td>Jumlah jari terdaftar</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Status message</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="42-f02-verifikasi-sidik-jari">4.2 F02: Verifikasi Sidik Jari</h3>
+<h4 id="421-deskripsi">4.2.1 Deskripsi</h4>
+<p>Proses verifikasi sidik jari user saat melakukan approval transaksi. Verifikasi dipicu oleh aplikasi bisnis (DAF, BDS, dll) ketika user melakukan aksi approval.</p>
+<h4 id="422-precondition">4.2.2 Precondition</h4>
+<ul>
+<li>User telah melakukan enrollment (memiliki fingerprint_templates)</li>
+<li>User tidak dalam status blocked (is_blocked = false)</li>
+<li>User aktif (is_active = true)</li>
+<li>Device dalam status online (is_online = true)</li>
+</ul>
+<h4 id="423-sequence-diagram">4.2.3 Sequence Diagram</h4>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App as Business App
+    participant Backend as Backend Service
+    participant Service as Fingerscan Service
+    participant Redis
+    participant Station as Fingerstation
+    participant DB as PostgreSQL
+
+    App-&gt;&gt;Backend: 1. Request Approval
+    Backend-&gt;&gt;Service: 2. POST /fingerprint/verify-sync
+
+    Service-&gt;&gt;DB: 3. Check user status
+    DB--&gt;&gt;Service: 4. {is_active: true, is_blocked: false}
+
+    Service-&gt;&gt;DB: 5. Resolve device
+    DB--&gt;&gt;Service: 6. Device info
+
+    Service-&gt;&gt;Redis: 7. Publish capture command
+    Redis--&gt;&gt;Station: 8. Capture request
+
+    Note over Station: User scans finger
+
+    Station--&gt;&gt;Redis: 9. Template result
+    Redis--&gt;&gt;Service: 10. Captured template
+
+    Service-&gt;&gt;DB: 11. Get enrolled templates
+    DB--&gt;&gt;Service: 12. User templates
+    Service-&gt;&gt;Service: 13. Match Process (1:1)
+
+    alt Match Success
+        Service-&gt;&gt;DB: 14a. Log verification (result: match)
+        Service-&gt;&gt;DB: 14b. Reset failed_attempts
+        Service--&gt;&gt;Backend: 15. {success: true, confidence_score}
+        Backend--&gt;&gt;App: 16. Proceed with transaction
+    else No Match
+        Service-&gt;&gt;DB: 14a. Increment failed_attempts
+        Service-&gt;&gt;DB: 14b. Log verification (result: no_match)
+        Service--&gt;&gt;Backend: 15. {success: false, retry_remaining}
+        Backend--&gt;&gt;App: 16. Reject / Allow retry
+    end</code></pre>
+<h4 id="424-flow-verifikasi-gagal">4.2.4 Flow: Verifikasi Gagal</h4>
+<pre class="mermaid"><code>flowchart TD
+    Failed([Verification Failed]) --&gt; Increment[Increment failed_verification_attempts]
+    Increment --&gt; Check{attempts &gt;= 3?}
+    Check --&gt;|No| Retry[Allow Retry]
+    Check --&gt;|Yes| Lock[Set is_blocked = true]
+    Lock --&gt; SetReason[Set blocked_reason]
+    SetReason --&gt; Log[Log to verification_logs]
+    Log --&gt; Return[Return blocked status]
+
+    style Failed fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
+    style Check fill:#F39C12,stroke:#C87F0A,stroke-width:2px,color:#fff
+    style Lock fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
+    style Return fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
+    style Retry fill:#50C878,stroke:#2E7D4E,stroke-width:2px,color:#fff</code></pre>
+<h4 id="425-business-rules">4.2.5 Business Rules</h4>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BR-V01</td>
+<td>Max retry 3x</td>
+<td>Set is_blocked=true setelah 3x gagal</td>
+</tr>
+<tr>
+<td>BR-V02</td>
+<td>Timeout 30 detik</td>
+<td>Return HTTP 408 jika timeout</td>
+</tr>
+<tr>
+<td>BR-V03</td>
+<td>Match threshold configurable</td>
+<td>Via parameters table</td>
+</tr>
+<tr>
+<td>BR-V04</td>
+<td>User harus aktif</td>
+<td>Check is_active sebelum verify</td>
+</tr>
+<tr>
+<td>BR-V05</td>
+<td>User tidak boleh blocked</td>
+<td>Check is_blocked sebelum verify</td>
+</tr>
+</tbody>
+</table>
+<h4 id="426-api-request">4.2.6 API Request</h4>
+<div class="highlight"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/</span><span class="kc">f</span><span class="err">i</span><span class="kc">n</span><span class="err">gerpri</span><span class="kc">nt</span><span class="err">/veri</span><span class="kc">f</span><span class="err">y</span><span class="mi">-</span><span class="err">sy</span><span class="kc">n</span><span class="err">c</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;550e8400-e29b-41d4-a716-446655440000&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;660e8400-e29b-41d4-a716-446655440001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;john.doe&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;application&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DAF-CORE&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;transaction_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TRX20250128001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;supervisor_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Smith&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;reference_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REF-001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transfer approval Rp 50.000.000&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="427-api-response">4.2.7 API Response</h4>
+<p><strong>Success:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;match&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;confidence_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">95.2</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-28T10:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;verification_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;verify_sync_660e8400_1706438400&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;660e8400-e29b-41d4-a716-446655440001&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Failed (Blocked):</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;blocked&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Too many failed verification attempts&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;550e8400-e29b-41d4-a716-446655440000&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Timeout:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Verification process timed out. Please try again.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;verification_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;verify_sync_660e8400_1706438400&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="43-f03-manajemen-lockunlock">4.3 F03: Manajemen Lock/Unlock</h3>
+<h4 id="431-deskripsi">4.3.1 Deskripsi</h4>
+<p>Fungsi untuk mengunci dan membuka kunci akun user di level fingerprint.</p>
+<h4 id="432-kondisi-lock">4.3.2 Kondisi Lock</h4>
+<table>
+<thead>
+<tr>
+<th>Kondisi</th>
+<th>Trigger</th>
+<th>Auto/Manual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3x verifikasi gagal</td>
+<td>System</td>
+<td>Auto</td>
+</tr>
+<tr>
+<td>Request dari admin</td>
+<td>Admin action</td>
+<td>Manual</td>
+</tr>
+<tr>
+<td>User resign/non-aktif</td>
+<td>HRMIS sync</td>
+<td>Auto</td>
+</tr>
+<tr>
+<td>Security incident</td>
+<td>Security team</td>
+<td>Manual</td>
+</tr>
+</tbody>
+</table>
+<h4 id="433-proses-unlock">4.3.3 Proses Unlock</h4>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Admin
+    participant Portal as Admin Portal
+    participant Service as Fingerscan Service
+
+    Admin-&gt;&gt;Portal: 1. View Locked Users
+    Portal-&gt;&gt;Service: 2. Get List
+    Service--&gt;&gt;Portal: Return locked users
+    Portal--&gt;&gt;Admin: Display list
+
+    Admin-&gt;&gt;Portal: 3. Select User &amp; Reason
+    Portal-&gt;&gt;Service: 4. Validate Authority
+    Service--&gt;&gt;Portal: Authority confirmed
+
+    Portal-&gt;&gt;Service: 5. Reset Counter &amp; Unlock
+    Service-&gt;&gt;Service: Update user status
+
+    Portal-&gt;&gt;Service: 6. Log Action
+    Service--&gt;&gt;Portal: Success confirmation
+    Portal--&gt;&gt;Admin: User unlocked successfully</code></pre>
+<hr />
+<h3 id="44-f04-fallback-password">4.4 F04: Fallback Password</h3>
+<h4 id="441-deskripsi">4.4.1 Deskripsi</h4>
+<p>Mekanisme cadangan yang memungkinkan user melakukan approval dengan password ketika fingerprint tidak dapat digunakan (device rusak, kondisi darurat).</p>
+<h4 id="442-ketentuan-fallback">4.4.2 Ketentuan Fallback</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Nilai</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Approval Required</td>
+<td>Admin Kantor Pusat (TI)</td>
+<td>Mandatory</td>
+</tr>
+<tr>
+<td>Max Duration</td>
+<td>30 hari</td>
+<td>Configurable</td>
+</tr>
+<tr>
+<td>Min Duration</td>
+<td>1 hari</td>
+<td>Configurable</td>
+</tr>
+<tr>
+<td>Auto Expire</td>
+<td>Yes</td>
+<td>Scheduler based</td>
+</tr>
+<tr>
+<td>Reason Required</td>
+<td>Yes</td>
+<td>Mandatory field</td>
+</tr>
+</tbody>
+</table>
+<h4 id="443-flow-aktivasi">4.4.3 Flow Aktivasi</h4>
+<pre class="mermaid"><code>flowchart TD
+    Start([Request Fallback]) --&gt; Input[Input Reason &amp; Duration]
+    Input --&gt; Approval{Approval by Admin}
+    Approval --&gt;|Reject| Rejected([Rejected])
+    Approval --&gt;|Approve| Activate[Activate Fallback]
+    Activate --&gt; SetExpiry[Set Expiry Schedule]
+    SetExpiry --&gt; Notify[Notify User]
+    Notify --&gt; End([End])
+
+    style Start fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style Rejected fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
+    style Approval fill:#F39C12,stroke:#C87F0A,stroke-width:2px,color:#fff
+    style Activate fill:#50C878,stroke:#2E7D4E,stroke-width:2px,color:#fff
+    style Notify fill:#50C878,stroke:#2E7D4E,stroke-width:2px,color:#fff
+    style End fill:#95A5A6,stroke:#5D6D7E,stroke-width:2px,color:#fff</code></pre>
+<h4 id="444-flow-expiry">4.4.4 Flow Expiry</h4>
+<pre class="mermaid"><code>flowchart TD
+    Start([Scheduler Check Daily]) --&gt; GetExpired[Get Expired Fallback Users]
+    GetExpired --&gt; Disable[Disable Fallback for Each User]
+    Disable --&gt; Notify[Send Notification]
+    Notify --&gt; End([End])
+
+    style Start fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style Disable fill:#E74C3C,stroke:#922B21,stroke-width:2px,color:#fff
+    style Notify fill:#F39C12,stroke:#C87F0A,stroke-width:2px,color:#fff
+    style End fill:#95A5A6,stroke:#5D6D7E,stroke-width:2px,color:#fff</code></pre>
+<hr />
+<h3 id="45-f05-manajemen-device-station">4.5 F05: Manajemen Device &amp; Station</h3>
+<h4 id="451-registrasi-station">4.5.1 Registrasi Station</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>station_name</td>
+<td>String</td>
+<td>Yes</td>
+<td>Nama identifikasi station</td>
+</tr>
+<tr>
+<td>branch_code</td>
+<td>String</td>
+<td>Yes</td>
+<td>Kode cabang</td>
+</tr>
+<tr>
+<td>device_serial</td>
+<td>String</td>
+<td>Yes</td>
+<td>Serial number device</td>
+</tr>
+<tr>
+<td>ip_address</td>
+<td>String</td>
+<td>Yes</td>
+<td>IP address station</td>
+</tr>
+<tr>
+<td>location</td>
+<td>String</td>
+<td>No</td>
+<td>Lokasi fisik (Teller 1, CS, dll)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="452-status-monitoring">4.5.2 Status Monitoring</h4>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Kondisi</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ONLINE</td>
+<td>Connected &amp; device ready</td>
+<td>Available for use</td>
+</tr>
+<tr>
+<td>OFFLINE</td>
+<td>No heartbeat &gt; 60s</td>
+<td>Alert to admin</td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td>Device malfunction</td>
+<td>Require maintenance</td>
+</tr>
+<tr>
+<td>MAINTENANCE</td>
+<td>Scheduled maintenance</td>
+<td>Temporarily unavailable</td>
+</tr>
+</tbody>
+</table>
+<h4 id="453-heartbeat-mechanism">4.5.3 Heartbeat Mechanism</h4>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Station as Fingerstation
+    participant Service as Fingerscan Service
+
+    loop Every 30 seconds
+        Station-&gt;&gt;Service: Heartbeat
+        Note right of Station: Payload:&lt;br/&gt;{&lt;br/&gt;"station_id": "STN-001",&lt;br/&gt;"device_status": "READY",&lt;br/&gt;"timestamp": "2025-01-28T10:00:00Z"&lt;br/&gt;}
+        Service-&gt;&gt;Service: Update last_heartbeat
+    end
+
+    Note over Service: If no heartbeat &gt; 60s
+    Service-&gt;&gt;Service: Mark station OFFLINE</code></pre>
+<hr />
+<h3 id="46-f06-audit-reporting">4.6 F06: Audit &amp; Reporting</h3>
+<h4 id="461-data-audit-trail">4.6.1 Data Audit Trail</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>log_id</td>
+<td>UUID</td>
+<td>Unique log identifier</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>DateTime</td>
+<td>Waktu event</td>
+</tr>
+<tr>
+<td>event_type</td>
+<td>Enum</td>
+<td>ENROLLMENT, VERIFICATION, LOCK, UNLOCK, FALLBACK</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>String</td>
+<td>User yang terlibat</td>
+</tr>
+<tr>
+<td>actor_id</td>
+<td>String</td>
+<td>User yang melakukan aksi</td>
+</tr>
+<tr>
+<td>application_code</td>
+<td>String</td>
+<td>Kode aplikasi source</td>
+</tr>
+<tr>
+<td>transaction_ref</td>
+<td>String</td>
+<td>Referensi transaksi</td>
+</tr>
+<tr>
+<td>transaction_type</td>
+<td>String</td>
+<td>Jenis transaksi</td>
+</tr>
+<tr>
+<td>station_id</td>
+<td>String</td>
+<td>Station yang digunakan</td>
+</tr>
+<tr>
+<td>ip_address</td>
+<td>String</td>
+<td>IP address</td>
+</tr>
+<tr>
+<td>result</td>
+<td>Enum</td>
+<td>SUCCESS, FAILED</td>
+</tr>
+<tr>
+<td>details</td>
+<td>JSON</td>
+<td>Additional details</td>
+</tr>
+</tbody>
+</table>
+<h4 id="462-report-types">4.6.2 Report Types</h4>
+<table>
+<thead>
+<tr>
+<th>Report</th>
+<th>Deskripsi</th>
+<th>Retention</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verification Summary</td>
+<td>Ringkasan verifikasi harian/bulanan</td>
+<td>2 tahun</td>
+</tr>
+<tr>
+<td>Failed Verification</td>
+<td>Daftar verifikasi gagal</td>
+<td>2 tahun</td>
+</tr>
+<tr>
+<td>User Activity</td>
+<td>Aktivitas per user</td>
+<td>2 tahun</td>
+</tr>
+<tr>
+<td>Station Usage</td>
+<td>Penggunaan per station</td>
+<td>1 tahun</td>
+</tr>
+<tr>
+<td>Fallback Usage</td>
+<td>Penggunaan fallback</td>
+<td>2 tahun</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-spesifikasi-antarmuka">5. Spesifikasi Antarmuka</h2>
+<h3 id="51-api-specification">5.1 API Specification</h3>
+<h4 id="511-base-url">5.1.1 Base URL</h4>
+<div class="highlight"><pre><span></span><code>Production: https://fingerscan.bank.internal/api
+Staging:    https://fingerscan-stg.bank.internal/api
+</code></pre></div>
+<h4 id="512-technology-stack">5.1.2 Technology Stack</h4>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Sanic (Async Python)</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>PostgreSQL 15+</td>
+</tr>
+<tr>
+<td>ORM</td>
+<td>SQLAlchemy 2.0 (Async)</td>
+</tr>
+<tr>
+<td>Cache/Messaging</td>
+<td>Redis (Pub/Sub)</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>JWT (24h expiration)</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>WebSocket</td>
+</tr>
+<tr>
+<td>API Documentation</td>
+<td>OpenAPI 3.0 / Swagger</td>
+</tr>
+</tbody>
+</table>
+<h4 id="513-authentication">5.1.3 Authentication</h4>
+<p>Semua API menggunakan JWT Bearer Token:</p>
+<div class="highlight"><pre><span></span><code>Authorization: Bearer &lt;access_token&gt;
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/auth/register</td>
+<td>POST</td>
+<td>User registration</td>
+</tr>
+<tr>
+<td>/auth/login</td>
+<td>POST</td>
+<td>Login dan mendapatkan JWT token</td>
+</tr>
+<tr>
+<td>/auth/me</td>
+<td>GET</td>
+<td>Get current user info</td>
+</tr>
+</tbody>
+</table>
+<h4 id="514-endpoints">5.1.4 Endpoints</h4>
+<p><strong>Device Management</strong> (<code>/devices</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/devices</td>
+<td>List semua devices (dengan filter)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/devices/pending</td>
+<td>List devices pending approval</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/devices</td>
+<td>Register device baru</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/devices/{device_id}</td>
+<td>Get device detail</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/devices/{device_id}</td>
+<td>Update device</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/devices/{device_id}</td>
+<td>Hapus device</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/devices/{device_id}/approve</td>
+<td>Approve pending device</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/devices/{device_id}/status</td>
+<td>Check device online status</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Enrollment</strong> (<code>/enrollment</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>/enrollment/start</td>
+<td>Mulai enrollment session</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/enrollment/capture</td>
+<td>Request capture (async)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/enrollment/capture-sync</td>
+<td>Request capture (sync, 15s timeout)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/enrollment/complete</td>
+<td>Complete enrollment session</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/enrollment/sessions</td>
+<td>List enrollment sessions</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/enrollment/sessions/{session_id}</td>
+<td>Get session detail</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/enrollment/result/{session_id}</td>
+<td>Get capture result</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/enrollment/sessions/{session_id}/template</td>
+<td>Add template to session</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fingerprint Verification &amp; Identification</strong> (<code>/fingerprint</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>/fingerprint/verify</td>
+<td>Start verification (async)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/fingerprint/verify-sync</td>
+<td>Verify synchronous (timeout)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/fingerprint/verification/result/{id}</td>
+<td>Get verification result</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/fingerprint/identify</td>
+<td>Start identification 1:N (async)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/fingerprint/identify-sync</td>
+<td>Identify synchronous</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/fingerprint/identification/result/{id}</td>
+<td>Get identification result</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Template Management</strong> (<code>/fingerprint/templates</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/fingerprint/templates</td>
+<td>List templates (dengan filter)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/fingerprint/templates/{template_id}</td>
+<td>Get template detail</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/fingerprint/templates</td>
+<td>Create/update template</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/fingerprint/templates/{template_id}</td>
+<td>Update template</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/fingerprint/templates/{template_id}</td>
+<td>Hapus template</td>
+</tr>
+</tbody>
+</table>
+<p><strong>User Management</strong> (<code>/users</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/users</td>
+<td>List users (dengan filter)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/users/{user_id}</td>
+<td>Get user detail</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/users/{user_id}</td>
+<td>Update user (termasuk unblock)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/users/{user_id}</td>
+<td>Hapus user</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Configuration</strong> (<code>/parameters</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/parameters</td>
+<td>List configuration parameters</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/parameters/{parameter_id}</td>
+<td>Get parameter</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/parameters</td>
+<td>Create parameter</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/parameters/{parameter_id}</td>
+<td>Update parameter</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/parameters/{parameter_id}</td>
+<td>Delete parameter</td>
+</tr>
+</tbody>
+</table>
+<h4 id="515-contoh-api-detail">5.1.5 Contoh API Detail</h4>
+<p><strong>POST /fingerprint/verify-sync</strong> (Verifikasi Synchronous)</p>
+<p>Request:
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;550e8400-e29b-41d4-a716-446655440000&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;660e8400-e29b-41d4-a716-446655440001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;john.doe&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;application&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DAF-CORE&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;supervisor_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Smith&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;reference_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TRX20250128001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transfer approval&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>Response (Success):
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;confidence_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">95.2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fingerprint verified successfully&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;verification_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;770e8400-e29b-41d4-a716-446655440002&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>Response (Error - 408 Timeout):
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Verification timeout&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;No fingerprint captured within timeout period&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>POST /enrollment/start</strong> (Mulai Enrollment)</p>
+<p>Request:
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;550e8400-e29b-41d4-a716-446655440000&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;660e8400-e29b-41d4-a716-446655440001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;templates_required&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ip_address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;192.168.1.100&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>Response (201):
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;880e8400-e29b-41d4-a716-446655440003&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;550e8400-e29b-41d4-a716-446655440000&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;660e8400-e29b-41d4-a716-446655440001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;session_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;templates_captured&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;templates_required&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="52-websocket-events">5.2 WebSocket Events</h3>
+<h4 id="521-connection">5.2.1 Connection</h4>
+<div class="highlight"><pre><span></span><code>wss://fingerscan.bank.internal/ws/station
+</code></pre></div>
+<h4 id="522-communication-pattern">5.2.2 Communication Pattern</h4>
+<p>Sistem menggunakan Redis Pub/Sub untuk komunikasi async antara API dan Fingerstation:</p>
+<ol>
+<li><strong>API</strong> mengirim command ke Redis channel</li>
+<li><strong>Fingerstation</strong> subscribe ke channel dan menerima command</li>
+<li><strong>Fingerstation</strong> mengirim hasil capture ke Redis</li>
+<li><strong>API</strong> mengambil hasil dari Redis (polling atau callback)</li>
+</ol>
+<h4 id="523-events">5.2.3 Events</h4>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Direction</th>
+<th>Payload</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>station.connect</td>
+<td>Station → Service</td>
+<td>{ station_id, device_serial }</td>
+</tr>
+<tr>
+<td>station.heartbeat</td>
+<td>Station → Service</td>
+<td>{ station_id, device_status, is_online }</td>
+</tr>
+<tr>
+<td>capture.request</td>
+<td>Service → Station</td>
+<td>{ session_id, finger_position, timeout }</td>
+</tr>
+<tr>
+<td>capture.result</td>
+<td>Station → Service</td>
+<td>{ session_id, template_data, quality_score }</td>
+</tr>
+<tr>
+<td>capture.error</td>
+<td>Station → Service</td>
+<td>{ session_id, error_code, message }</td>
+</tr>
+<tr>
+<td>echo.request</td>
+<td>Service → Station</td>
+<td>{ command_id, echo_text }</td>
+</tr>
+<tr>
+<td>echo.result</td>
+<td>Station → Service</td>
+<td>{ command_id, result }</td>
+</tr>
+<tr>
+<td>station.disconnect</td>
+<td>Station → Service</td>
+<td>{ station_id, reason }</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-external-system-integration">5.3 External System Integration</h3>
+<h4 id="531-oidc-integration">5.3.1 OIDC Integration</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization Endpoint</td>
+<td>https://sso.bank.internal/oauth/authorize</td>
+</tr>
+<tr>
+<td>Token Endpoint</td>
+<td>https://sso.bank.internal/oauth/token</td>
+</tr>
+<tr>
+<td>Userinfo Endpoint</td>
+<td>https://sso.bank.internal/oauth/userinfo</td>
+</tr>
+<tr>
+<td>Scopes</td>
+<td>openid profile email</td>
+</tr>
+</tbody>
+</table>
+<h4 id="532-hrmis-integration">5.3.2 HRMIS Integration</h4>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/employee/{id}</td>
+<td>GET</td>
+<td>Validate employee status</td>
+</tr>
+<tr>
+<td>/api/employee/{id}/branch</td>
+<td>GET</td>
+<td>Get employee branch</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-spesifikasi-data">6. Spesifikasi Data</h2>
+<h3 id="61-entity-relationship-diagram">6.1 Entity Relationship Diagram</h3>
+<blockquote>
+<p>[!NOTE]
+Diagram berikut menunjukkan relasi antar tabel. Detail field lengkap akan didokumentasikan dalam TSD.</p>
+</blockquote>
+<pre class="mermaid"><code>erDiagram
+    users ||--o{ fingerprint_templates : "memiliki"
+    users ||--o{ enrollment_sessions : "melakukan"
+    users ||--o{ verification_logs : "diverifikasi"
+    users ||--o{ identification_logs : "teridentifikasi"
+    users }o--o{ devices : "user_allowed_devices"
+
+    devices ||--o{ fingerprint_templates : "digunakan_saat_capture"
+    devices ||--o{ enrollment_sessions : "digunakan_untuk"
+    devices ||--o{ enrollment_logs : "mencatat"
+    devices ||--o{ verification_logs : "mencatat"
+    devices ||--o{ identification_logs : "mencatat"
+
+    enrollment_sessions ||--o{ enrollment_logs : "memiliki"
+
+    users {
+        uuid id PK
+        string username
+        string role
+        boolean is_active
+        boolean is_blocked
+        int failed_verification_attempts
+    }
+
+    devices {
+        uuid id PK
+        string station_id UK
+        string serial_number UK
+        string status
+        boolean is_online
+        boolean can_enroll
+    }
+
+    fingerprint_templates {
+        uuid id PK
+        uuid user_id FK
+        uuid device_id FK
+        binary template_data
+        string finger_position
+        int quality_score
+    }
+
+    enrollment_sessions {
+        uuid id PK
+        uuid user_id FK
+        uuid device_id FK
+        string session_status
+        int templates_captured
+        int templates_required
+    }
+
+    verification_logs {
+        uuid id PK
+        uuid user_id FK
+        uuid device_id FK
+        string verification_result
+        float confidence_score
+        string transaction_code
+    }
+
+    identification_logs {
+        uuid id PK
+        uuid identified_user_id FK
+        uuid device_id FK
+        float confidence_score
+    }
+
+    enrollment_logs {
+        uuid id PK
+        uuid session_id FK
+        uuid user_id FK
+        uuid device_id FK
+        string finger_position
+        string result
+    }
+
+    parameters {
+        uuid id PK
+        string parameter_name
+        string parameter_value
+    }</code></pre>
+<h3 id="62-deskripsi-tabel-database">6.2 Deskripsi Tabel Database</h3>
+<blockquote>
+<p>[!NOTE]
+Detail lengkap spesifikasi kolom, tipe data, constraint, dan index akan didokumentasikan dalam TSD (Technical Specification Document).</p>
+</blockquote>
+<h4 id="621-users">6.2.1 users</h4>
+<p>Tabel master untuk menyimpan data user yang ter-enroll dalam sistem biometrik. Menyimpan informasi kredensial, role (user/admin), status aktif, counter failed verification untuk auto-lock, dan informasi blocking.</p>
+<h4 id="622-devices">6.2.2 devices</h4>
+<p>Tabel master station/device fingerprint scanner. Menyimpan informasi station_id, serial_number, manufacturer, model, IP address, status koneksi (is_online), kemampuan enrollment (can_enroll), dan approval status (pending/approved/active).</p>
+<h4 id="623-fingerprint_templates">6.2.3 fingerprint_templates</h4>
+<p>Tabel untuk menyimpan template sidik jari user. Setiap user dapat memiliki multiple records (maksimal 10 jari dengan unique constraint pada kombinasi user_id + finger_position). Template disimpan dalam format base64. Menyimpan quality_score untuk validasi kualitas capture.</p>
+<h4 id="624-enrollment_sessions">6.2.4 enrollment_sessions</h4>
+<p>Tabel untuk mencatat sesi enrollment. Menyimpan progress enrollment (templates_captured vs templates_required), status session (pending/in_progress/completed/failed), dan referensi ke user dan device yang digunakan.</p>
+<h4 id="625-verification_logs">6.2.5 verification_logs</h4>
+<p>Tabel transaksi untuk mencatat setiap proses verifikasi fingerprint 1:1. Menyimpan hasil matching (match/no_match/error), confidence_score, referensi ke aplikasi dan transaksi, serta informasi audit (IP address, timestamp).</p>
+<h4 id="626-identification_logs">6.2.6 identification_logs</h4>
+<p>Tabel transaksi untuk mencatat proses identifikasi 1:N. Menyimpan user yang teridentifikasi, confidence_score, dan informasi audit.</p>
+<h4 id="627-enrollment_logs">6.2.7 enrollment_logs</h4>
+<p>Tabel detail untuk mencatat setiap capture dalam sesi enrollment. Menyimpan finger_position, quality_score, hasil capture (success/failure), dan pesan error jika ada.</p>
+<h4 id="628-user_allowed_devices-junction-table">6.2.8 user_allowed_devices (Junction Table)</h4>
+<p>Tabel many-to-many untuk mengatur device mana saja yang boleh digunakan oleh user tertentu. Menyimpan role assignment dan status aktif.</p>
+<h4 id="629-parameters">6.2.9 parameters</h4>
+<p>Tabel konfigurasi sistem untuk menyimpan parameter-parameter seperti threshold matching, timeout, dan konfigurasi lainnya.</p>
+<hr />
+<h2 id="7-spesifikasi-user-interface">7. Spesifikasi User Interface</h2>
+<h3 id="71-fingerstation-ui">7.1 Fingerstation UI</h3>
+<p>TBD</p>
+<!-- **Main Window:**
+
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────────────┐
+│  FingerStation v1.0                              [─][□][×]│
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│   ┌─────────────────────────────────────────────────┐   │
+│   │                                                 │   │
+│   │                  [Device Icon]                  │   │
+│   │                                                 │   │
+│   │              Status: ● ONLINE                   │   │
+│   │                                                 │   │
+│   │         Device: DigitalPersona 4500            │   │
+│   │         Serial: DP4500-ABC123                  │   │
+│   │                                                 │   │
+│   └─────────────────────────────────────────────────┘   │
+│                                                         │
+│   Station ID: STN-001-BRANCH-A                         │
+│   Branch: Cabang Utama                                 │
+│   IP: 192.168.1.100                                    │
+│   Connected: 2025-01-28 08:00:00                       │
+│                                                         │
+├─────────────────────────────────────────────────────────┤
+│   [Settings]                      [Reconnect] [Exit]   │
+└─────────────────────────────────────────────────────────┘
+``` --&gt;
+
+### 7.2 Verification Dialog
+TBD
+&lt;!-- **Verification Prompt (Muncul di aplikasi bisnis):**
+</code></pre></div>
+┌─────────────────────────────────────────────────────────┐
+│  Verifikasi Sidik Jari                            [×]   │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│   Transaksi: Transfer Dana                             │
+│   Referensi: TRX20250128001                            │
+│   Nominal: Rp 50.000.000                               │
+│                                                         │
+│   ┌─────────────────────────────────────────────────┐   │
+│   │                                                 │   │
+│   │              [Fingerprint Icon]                 │   │
+│   │                                                 │   │
+│   │        Letakkan jari pada scanner              │   │
+│   │                                                 │   │
+│   │              Timeout: 25 detik                  │   │
+│   │              ████████████░░░░░░░               │   │
+│   │                                                 │   │
+│   └─────────────────────────────────────────────────┘   │
+│                                                         │
+│   Percobaan: 1 dari 3                                  │
+│                                                         │
+├─────────────────────────────────────────────────────────┤
+│              [Gunakan Password]        [Batal]         │
+└─────────────────────────────────────────────────────────┘
+<div class="highlight"><pre><span></span><code>**Verification Success:**
+</code></pre></div>
+┌─────────────────────────────────────────────────────────┐
+│  Verifikasi Berhasil                              [×]   │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│                    ✓ SUKSES                            │
+│                                                         │
+│   Verifikasi ID: VRF-20250128-00001                    │
+│   Waktu: 2025-01-28 10:30:00                           │
+│   User: John Doe (USR001)                              │
+│                                                         │
+├─────────────────────────────────────────────────────────┤
+│                        [OK]                             │
+└─────────────────────────────────────────────────────────┘
+``` -->
+
+<h3 id="73-management-portal">7.3 Management Portal</h3>
+<p>TBD
+&lt;!-- <strong>Dashboard:</strong></p>
+<div class="highlight"><pre><span></span><code>┌────────────────────────────────────────────────────────────────────┐
+│  Fingerscan Management                    [User: Admin] [Logout]  │
+├──────────────────┬─────────────────────────────────────────────────┤
+│                  │                                                 │
+│  Dashboard       │  ┌──────────────────────────────────────────┐  │
+│  Enrollment      │  │  Station Status                          │  │
+│  User Mgmt       │  ├──────────────────────────────────────────┤  │
+│  Device Mgmt     │  │  ● Online: 45    ○ Offline: 3            │  │
+│  Reports         │  │  ⚠ Error: 2     🔧 Maintenance: 1        │  │
+│  Settings        │  └──────────────────────────────────────────┘  │
+│                  │                                                 │
+│                  │  ┌──────────────────────────────────────────┐  │
+│                  │  │  Today&#39;s Statistics                      │  │
+│                  │  ├──────────────────────────────────────────┤  │
+│                  │  │  Total Verifications: 1,234              │  │
+│                  │  │  Success Rate: 98.5%                     │  │
+│                  │  │  Avg Response Time: 2.3s                 │  │
+│                  │  │  Failed Attempts: 19                     │  │
+│                  │  │  Users Locked: 2                         │  │
+│                  │  └──────────────────────────────────────────┘  │
+│                  │                                                 │
+│                  │  ┌──────────────────────────────────────────┐  │
+│                  │  │  Recent Alerts                           │  │
+│                  │  ├──────────────────────────────────────────┤  │
+│                  │  │  ⚠ Station STN-005 offline (5 min ago)   │  │
+│                  │  │  🔒 User USR045 locked (10 min ago)       │  │
+│                  │  │  ⚠ Station STN-012 device error          │  │
+│                  │  └──────────────────────────────────────────┘  │
+│                  │                                                 │
+└──────────────────┴─────────────────────────────────────────────────┘
+``` --&gt;
+
+---
+
+## 8. Business Rules
+
+| ID | Category | Rule | Implementation |
+|----|----------|------|----------------|
+| BR-001 | Enrollment | Minimal 2 jari dari kedua tangan | Validation sebelum save |
+| BR-002 | Enrollment | Quality score minimal 40 | Check saat capture |
+| BR-003 | Enrollment | Tidak boleh duplicate | Cross-check dengan existing templates |
+| BR-004 | Enrollment | User harus aktif di HRMIS | API call ke HRMIS |
+| BR-005 | Verification | Max retry 3x | Counter di database |
+| BR-006 | Verification | Timeout 30 detik | Session expiry |
+| BR-007 | Verification | Match threshold configurable | Default 40 |
+| BR-008 | Verification | 1 active session per user | Reject concurrent |
+| BR-009 | Lock | Auto lock setelah 3x gagal | System triggered |
+| BR-010 | Lock | Manual unlock by admin only | Role-based access |
+| BR-011 | Fallback | Approval dari Admin Kantor Pusat | Workflow approval |
+| BR-012 | Fallback | Max duration 30 hari | Validation |
+| BR-013 | Fallback | Auto disable setelah expired | Scheduler |
+| BR-014 | Audit | Semua aktivitas harus di-log | Aspect/interceptor |
+| BR-015 | Audit | Retention minimal 2 tahun | Archival policy |
+
+---
+
+## 9. Error Handling
+
+### 9.1 Error Codes
+
+| Code | Category | Message | Action |
+|------|----------|---------|--------|
+| E001 | Enrollment | User not found in HRMIS | Verify user data |
+| E002 | Enrollment | User already enrolled | Use update instead |
+| E003 | Enrollment | Low quality capture | Retry capture |
+| E004 | Enrollment | Duplicate template detected | Investigate |
+| E005 | Enrollment | Station not available | Check station status |
+| E101 | Verification | User not enrolled | Complete enrollment first |
+| E102 | Verification | User is locked | Contact admin |
+| E103 | Verification | Session timeout | Retry verification |
+| E104 | Verification | No match found | Retry or use fallback |
+| E105 | Verification | Station offline | Use different station |
+| E106 | Verification | Concurrent session exists | Wait and retry |
+| E201 | Fallback | Not authorized | Contact IT admin |
+| E202 | Fallback | Invalid duration | Check parameters |
+| E203 | Fallback | Already active | Check existing fallback |
+| E301 | Station | Device not connected | Check USB connection |
+| E302 | Station | Device error | Restart device |
+| E303 | Station | Network error | Check connectivity |
+| E901 | System | Internal server error | Contact support |
+| E902 | System | Database error | Contact support |
+| E903 | System | Service unavailable | Try again later |
+
+### 9.2 Error Response Format
+
+```json
+{
+  &quot;code&quot;: &quot;E104&quot;,
+  &quot;message&quot;: &quot;No match found&quot;,
+  &quot;details&quot;: {
+    &quot;session_id&quot;: &quot;550e8400-e29b-41d4-a716-446655440000&quot;,
+    &quot;retry_remaining&quot;: 2
+  },
+  &quot;timestamp&quot;: &quot;2025-01-28T10:30:00Z&quot;
+}
+</code></pre></div>
+<hr />
+<h2 id="10-security-specification">10. Security Specification</h2>
+<h3 id="101-data-security">10.1 Data Security</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Template Storage</td>
+<td>AES-256 encryption at rest</td>
+</tr>
+<tr>
+<td>Data Transmission</td>
+<td>TLS 1.3 + mTLS</td>
+</tr>
+<tr>
+<td>Key Management</td>
+<td>HSM-based key storage</td>
+</tr>
+<tr>
+<td>Template Format</td>
+<td>ISO/IEC 19794-2 (tidak menyimpan gambar)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="102-access-control">10.2 Access Control</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teller/CS</td>
+<td>View own verification status</td>
+</tr>
+<tr>
+<td>Approver</td>
+<td>Perform verification</td>
+</tr>
+<tr>
+<td>Branch Admin</td>
+<td>Enrollment alternate, view station</td>
+</tr>
+<tr>
+<td>IT Admin</td>
+<td>Full access except audit deletion</td>
+</tr>
+<tr>
+<td>Auditor</td>
+<td>Read-only audit logs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="103-network-security">10.3 Network Security</h3>
+<pre class="mermaid"><code>graph TB
+    Internet["Internet (Blocked)"]
+
+    subgraph Corporate["Corporate Network"]
+        direction LR
+
+        subgraph Branch["Branch Network"]
+            BranchFW["Firewall Rules"]
+        end
+
+        VPN["VPN/MPLS&lt;br/&gt;(Encrypted)"]
+
+        subgraph DataCenter["Data Center Network"]
+            DCFW["Firewall Rules"]
+        end
+
+        Branch ---|Encrypted| VPN
+        VPN ---|Encrypted| DataCenter
+    end
+
+    style Internet fill:#ff6b6b,stroke:#c92a2a,stroke-width:2px,color:#fff
+    style Corporate fill:#E8F5E9,stroke:#2E7D4E,stroke-width:3px
+    style Branch fill:#E3F2FD,stroke:#1976D2,stroke-width:2px
+    style DataCenter fill:#E3F2FD,stroke:#1976D2,stroke-width:2px
+    style VPN fill:#FFF3E0,stroke:#F57C00,stroke-width:2px
+    style BranchFW fill:#FFE0B2,stroke:#E65100,stroke-width:2px
+    style DCFW fill:#FFE0B2,stroke:#E65100,stroke-width:2px</code></pre>
+<h3 id="104-audit-trail">10.4 Audit Trail</h3>
+<p>Semua akses dan operasi dicatat dengan informasi:</p>
+<ul>
+<li>Timestamp (dengan timezone)</li>
+<li>User ID dan IP address</li>
+<li>Action performed</li>
+<li>Result (success/failure)</li>
+<li>Request/Response payload (sanitized)</li>
+</ul>
+<hr />
+<h2 id="11-performance-requirements">11. Performance Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verification Response Time</td>
+<td>&lt; 5 detik (P95)</td>
+<td>End-to-end</td>
+</tr>
+<tr>
+<td>Enrollment Response Time</td>
+<td>&lt; 10 detik per jari</td>
+<td>End-to-end</td>
+</tr>
+<tr>
+<td>API Response Time</td>
+<td>&lt; 200ms (P95)</td>
+<td>Server-side</td>
+</tr>
+<tr>
+<td>Concurrent Verifications</td>
+<td>100 per detik</td>
+<td>Load test</td>
+</tr>
+<tr>
+<td>System Availability</td>
+<td>99.9%</td>
+<td>Uptime monitoring</td>
+</tr>
+<tr>
+<td>Database Query Time</td>
+<td>&lt; 50ms (P95)</td>
+<td>Query profiling</td>
+</tr>
+<tr>
+<td>WebSocket Latency</td>
+<td>&lt; 100ms</td>
+<td>Network monitoring</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="12-lampiran">12. Lampiran</h2>
+<h3 id="lampiran-a-finger-position-mapping">Lampiran A: Finger Position Mapping</h3>
+<table>
+<thead>
+<tr>
+<th>Position (String)</th>
+<th>Tangan</th>
+<th>Jari</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>right_thumb</td>
+<td>Kanan</td>
+<td>Jempol</td>
+</tr>
+<tr>
+<td>right_index</td>
+<td>Kanan</td>
+<td>Telunjuk</td>
+</tr>
+<tr>
+<td>right_middle</td>
+<td>Kanan</td>
+<td>Tengah</td>
+</tr>
+<tr>
+<td>right_ring</td>
+<td>Kanan</td>
+<td>Manis</td>
+</tr>
+<tr>
+<td>right_little</td>
+<td>Kanan</td>
+<td>Kelingking</td>
+</tr>
+<tr>
+<td>left_thumb</td>
+<td>Kiri</td>
+<td>Jempol</td>
+</tr>
+<tr>
+<td>left_index</td>
+<td>Kiri</td>
+<td>Telunjuk</td>
+</tr>
+<tr>
+<td>left_middle</td>
+<td>Kiri</td>
+<td>Tengah</td>
+</tr>
+<tr>
+<td>left_ring</td>
+<td>Kiri</td>
+<td>Manis</td>
+</tr>
+<tr>
+<td>left_little</td>
+<td>Kiri</td>
+<td>Kelingking</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Setiap user hanya dapat memiliki satu template per finger_position (unique constraint pada user_id + finger_position).</p>
+</blockquote>
+<h3 id="lampiran-b-status-transition">Lampiran B: Status Transition</h3>
+<p><strong>User Status:</strong>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; is_active_true
+    is_active_true --&gt; is_blocked_true: 3x failed_verification_attempts
+    is_blocked_true --&gt; is_active_true: PUT /users/{id} (unblock: true)
+    is_active_true --&gt; is_active_false: Admin deactivate
+    is_active_false --&gt; is_active_true: Admin activate
+
+    state is_active_true {
+        [*] --&gt; Normal
+        Normal: is_active=true, is_blocked=false
+    }
+
+    state is_blocked_true {
+        [*] --&gt; Blocked
+        Blocked: is_blocked=true, blocked_reason set
+    }</code></pre></p>
+<p><strong>Verification Result:</strong>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; pending
+    pending --&gt; match: fingerprint matched
+    pending --&gt; no_match: fingerprint not matched
+    pending --&gt; timeout: 30s timeout (HTTP 408)
+    pending --&gt; error: system error
+
+    match --&gt; logged: Log to verification_logs
+    no_match --&gt; check_attempts
+    check_attempts --&gt; logged: attempts &lt; 3
+    check_attempts --&gt; blocked: attempts &gt;= 3
+    blocked --&gt; logged: Log with blocked status</code></pre></p>
+<p><strong>Device Status:</strong>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; pending: Device auto-register
+    pending --&gt; approved: POST /devices/{id}/approve
+    approved --&gt; active: Device connected
+    active --&gt; is_online_true: WebSocket connected
+    is_online_true --&gt; is_online_false: Disconnect / no heartbeat
+
+    state is_online_true {
+        [*] --&gt; Online
+        Online: is_online=true, can process requests
+    }
+
+    state is_online_false {
+        [*] --&gt; Offline
+        Offline: is_online=false
+    }</code></pre></p>
+<p><strong>Enrollment Session Status:</strong>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; pending: POST /enrollment/start
+    pending --&gt; in_progress: First capture received
+    in_progress --&gt; in_progress: templates_captured++
+    in_progress --&gt; completed: templates_captured &gt;= templates_required
+    in_progress --&gt; failed: Error / timeout
+    pending --&gt; failed: Error</code></pre></p>
+<h3 id="lampiran-c-checklist-deployment">Lampiran C: Checklist Deployment</h3>
+<ul>
+<li>[ ] Database schema created</li>
+<li>[ ] Redis cluster configured</li>
+<li>[ ] OIDC client registered</li>
+<li>[ ] mTLS certificates installed</li>
+<li>[ ] Firewall rules configured</li>
+<li>[ ] Monitoring setup complete</li>
+<li>[ ] Backup procedures tested</li>
+<li>[ ] Disaster recovery plan documented</li>
+<li>[ ] User training completed</li>
+<li>[ ] UAT sign-off obtained</li>
+</ul>
+<hr />
+<h2 id="riwayat-perubahan">Riwayat Perubahan</h2>
+<table>
+<thead>
+<tr>
+<th>Versi</th>
+<th>Tanggal</th>
+<th>Penulis</th>
+<th>Perubahan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>01 Januari 2026</td>
+<td>-</td>
+<td>Initial document</td>
+</tr>
+<tr>
+<td>1.1.0</td>
+<td>30 Januari 2026</td>
+<td>-</td>
+<td>Update API endpoints dan spesifikasi data sesuai implementasi backend (Sanic/Python)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Dokumen ini bersifat rahasia dan hanya untuk penggunaan internal.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Kembali ke atas
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Tersalin ke clipboard", "clipboard.copy": "Salin ke clipboard", "search.result.more.one": "1 lagi di halaman ini", "search.result.more.other": "# lagi di halaman ini", "search.result.none": "Tidak ada dokumen yang sesuai", "search.result.one": "1 dokumen ditemukan", "search.result.other": "# dokumen ditemukan", "search.result.placeholder": "Ketik untuk mulai pencarian", "search.result.term.missing": "Tidak ada", "select.version": "Pilih versi"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

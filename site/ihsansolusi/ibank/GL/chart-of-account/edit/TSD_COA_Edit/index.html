@@ -1,0 +1,5368 @@
+
+<!doctype html>
+<html lang="id" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dokumentasi aplikasi core banking iBank">
+      
+      
+      
+        <link rel="canonical" href="https://wisnu.github.io/ibank-docs/ihsansolusi/ibank/GL/chart-of-account/edit/TSD_COA_Edit/">
+      
+      
+        <link rel="prev" href="../FSD_COA_Edit/">
+      
+      
+        <link rel="next" href="../referensi/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>TSD - COA Edit - iBank Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<meta name="robots" content="noindex, nofollow" />
+
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tsd-ubah-rekening-chart-of-account" class="md-skip">
+          Lewati ke isi
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../../.." title="iBank Documentation" class="md-header__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            iBank Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              TSD - COA Edit
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cari" placeholder="Cari" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cari">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Kosongkan" aria-label="Kosongkan" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Mempersiapkan pencarian
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tab" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../../public/" class="md-tabs__link">
+          
+  
+  
+  Public
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../../private/" class="md-tabs__link">
+          
+  
+  
+  Private
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../TSD%20Architecture/" class="md-tabs__link">
+          
+  
+  
+  iBank
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../../clients/bjbs/Fingerscan/FSD_Fingerscan_Biometrik/" class="md-tabs__link">
+          
+  
+  
+  Clients
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../../clients/bjbs/Fingerscan/FSD_Fingerscan_Biometrik/" class="md-tabs__link">
+          
+  
+  
+  BJBS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../../clients/bcas/enhance_dormant/dormant_fsd/" class="md-tabs__link">
+          
+  
+  
+  BCAS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigasi" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../../.." title="iBank Documentation" class="md-nav__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    iBank Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../public/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Private
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Private
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../private/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iBank
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    iBank
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    General Ledger
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    General Ledger
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../TSD%20Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2" id="__nav_4_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chart of Account
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PRD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FSD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_3" id="__nav_4_1_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA List
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA List
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../list/FSD_COA_List/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_4" id="__nav_4_1_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Create
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Create
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../create/FSD_COA_Create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Create
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_5" id="__nav_4_1_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Edit
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Edit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Daftar isi">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Daftar isi
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-tujuan-ruang-lingkup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tujuan &amp; Ruang Lingkup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-asumsi-ketergantungan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Asumsi &amp; Ketergantungan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-arsitektur-ringkas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Arsitektur Ringkas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-model-data-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Model Data &amp; Mapping
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Model Data &amp; Mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-entity-utama" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Entity Utama
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-field-editable-whitelist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Field Editable (Whitelist)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Field Editable (Whitelist)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#master-ibcoreaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master ibcore.account
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance-ibcoreaccountinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance ibcore.accountinstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-frontend-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 🖥️ Frontend Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 🖥️ Frontend Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-mockup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Mockup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-frontend-field-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Frontend Field Mapping
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 Frontend Field Mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#form-ubah-rekening-master-ibcoreaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Form Ubah Rekening (Master ibcore.account)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tab-parameter-saldo-dan-transaksi-default-di-ibcoreaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tab: Parameter Saldo dan Transaksi (Default di ibcore.account)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tab: Parameter Saldo dan Transaksi (Default di ibcore.account)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#button-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Button Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grid-list-account-instance-ibcoreaccountinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grid: List Account Instance (ibcore.accountinstance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-backend-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 🛠️ Backend Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 🛠️ Backend Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-api-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 API Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 API Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#611-get-detail-rekening-form-ubah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.1 Get Detail Rekening (Form Ubah)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#612-submit-pengajuan-ubah-rekening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.2 Submit Pengajuan Ubah Rekening
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#613-pending-list-otorisasi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.3 Pending List Otorisasi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#614-detail-pengajuan-beforeafter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.4 Detail Pengajuan (Before/After)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#615-approve-pengajuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.5 Approve Pengajuan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#616-reject-pengajuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.6 Reject Pengajuan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-backend-data-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Backend Data Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 Backend Data Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entity-ibcoreaccount-master-coa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entity: ibcore.account (Master COA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entity-ibcoreaccountinstance-coa-per-branch-currency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entity: ibcore.accountinstance (COA per Branch &amp; Currency)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-validation-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Validation Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Validation Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-umum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Umum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-mapping-dropdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Mapping Dropdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-perilaku-tombol-set-semua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Perilaku Tombol "Set Semua"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-proses-approval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Proses Approval
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Proses Approval">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-approve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Approve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-reject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Reject
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Error Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-logging-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Logging &amp; Audit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-performance-pagination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Performance &amp; Pagination
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-security-access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Security &amp; Access Control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-shared-business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. 📌 Shared Business Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Open Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-change-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Change Log
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Change Log">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v20-2026-01-28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v2.0 (2026-01-28)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v10-2026-01-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.0 (2026-01-19)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TEST_COA_Edit.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEST - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../referensi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referensi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Neraca / Laba Rugi
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../balance-sheet/FSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../balance-sheet/TSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_4" id="__nav_4_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trial Balance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../trial-balance/FSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../trial-balance/TSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_5" id="__nav_4_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buku Besar
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Buku Besar
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ledger/placeholder.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coming Soon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clients
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_1" id="__nav_5_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bjbs/Fingerscan/FSD_Fingerscan_Biometrik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_2" id="__nav_5_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bjbs/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bjbs/enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_1" id="__nav_5_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_presentasi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_2" id="__nav_5_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bjbs/Fingerscan/FSD_Fingerscan_Biometrik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bjbs/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bjbs/enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/enhance_dormant/dormant_presentasi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../../clients/bcas/saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Daftar isi">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Daftar isi
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-tujuan-ruang-lingkup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tujuan &amp; Ruang Lingkup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-asumsi-ketergantungan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Asumsi &amp; Ketergantungan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-arsitektur-ringkas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Arsitektur Ringkas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-model-data-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Model Data &amp; Mapping
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Model Data &amp; Mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-entity-utama" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Entity Utama
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-field-editable-whitelist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Field Editable (Whitelist)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Field Editable (Whitelist)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#master-ibcoreaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master ibcore.account
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance-ibcoreaccountinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance ibcore.accountinstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-frontend-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 🖥️ Frontend Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 🖥️ Frontend Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-mockup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Mockup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-frontend-field-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Frontend Field Mapping
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 Frontend Field Mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#form-ubah-rekening-master-ibcoreaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Form Ubah Rekening (Master ibcore.account)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tab-parameter-saldo-dan-transaksi-default-di-ibcoreaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tab: Parameter Saldo dan Transaksi (Default di ibcore.account)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tab: Parameter Saldo dan Transaksi (Default di ibcore.account)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#button-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Button Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grid-list-account-instance-ibcoreaccountinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grid: List Account Instance (ibcore.accountinstance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-backend-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 🛠️ Backend Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 🛠️ Backend Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-api-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 API Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 API Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#611-get-detail-rekening-form-ubah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.1 Get Detail Rekening (Form Ubah)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#612-submit-pengajuan-ubah-rekening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.2 Submit Pengajuan Ubah Rekening
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#613-pending-list-otorisasi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.3 Pending List Otorisasi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#614-detail-pengajuan-beforeafter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.4 Detail Pengajuan (Before/After)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#615-approve-pengajuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.5 Approve Pengajuan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#616-reject-pengajuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.6 Reject Pengajuan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-backend-data-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Backend Data Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 Backend Data Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entity-ibcoreaccount-master-coa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entity: ibcore.account (Master COA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entity-ibcoreaccountinstance-coa-per-branch-currency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entity: ibcore.accountinstance (COA per Branch &amp; Currency)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-validation-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Validation Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Validation Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-umum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Umum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-mapping-dropdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Mapping Dropdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-perilaku-tombol-set-semua" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Perilaku Tombol "Set Semua"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-proses-approval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Proses Approval
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Proses Approval">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-approve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Approve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-reject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Reject
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Error Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-logging-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Logging &amp; Audit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-performance-pagination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Performance &amp; Pagination
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-security-access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Security &amp; Access Control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-shared-business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. 📌 Shared Business Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Open Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-change-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Change Log
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Change Log">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v20-2026-01-28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v2.0 (2026-01-28)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v10-2026-01-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.0 (2026-01-19)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="tsd-ubah-rekening-chart-of-account">TSD: Ubah Rekening (Chart of Account)</h1>
+<table>
+<thead>
+<tr>
+<th><strong>Metadata</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Module</strong></td>
+<td>COA Management – Ubah Rekening</td>
+</tr>
+<tr>
+<td><strong>Parent FSD</strong></td>
+<td>FSD_COA_Edit.md</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>2.0</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>2026-01-28</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Draft</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>IT / System Owner</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-tujuan-ruang-lingkup">1. Tujuan &amp; Ruang Lingkup</h2>
+<p>Dokumen ini menjabarkan spesifikasi teknis implementasi modul <strong>Ubah Rekening (COA)</strong>, mencakup:</p>
+<ul>
+<li>Endpoint backend untuk pengambilan data, submit, dan otorisasi.</li>
+<li>Struktur payload dan mapping field ke schema database.</li>
+<li>Validasi, transaksi, audit, dan logging.</li>
+<li>Perilaku propagasi parameter default ke seluruh <code>accountinstance</code>.</li>
+<li>Detail tabel database yang diakses dan dimodifikasi.</li>
+<li>Mockup frontend dan mapping field UI ke database.</li>
+</ul>
+<hr />
+<h2 id="2-asumsi-ketergantungan">2. Asumsi &amp; Ketergantungan</h2>
+<ul>
+<li>Modul otorisasi tersedia (pending list, detail before/after, approve/reject).</li>
+<li>Akses menu mengikuti role (Operator Data vs Otorisator).</li>
+<li>Referensi master seperti CPA, Pajak, Branch, Currency tersedia via layanan referensi.</li>
+<li>Audit user tersedia di header (mis. <code>X-UserId</code>) atau token.</li>
+</ul>
+<hr />
+<h2 id="3-arsitektur-ringkas">3. Arsitektur Ringkas</h2>
+<ul>
+<li>FE memanggil BE service <code>coa-management</code>.</li>
+<li>BE melakukan validasi, menyimpan pengajuan ke tabel pengajuan, dan menampilkan pending list.</li>
+<li>Approve/Reject dijalankan oleh Otorisator dengan transaksi atomik.</li>
+</ul>
+<hr />
+<h2 id="4-model-data-mapping">4. Model Data &amp; Mapping</h2>
+<h3 id="41-entity-utama">4.1 Entity Utama</h3>
+<ul>
+<li><code>ibcore.account</code> (Master COA)</li>
+<li>PK: <code>account_code</code></li>
+<li><code>ibcore.accountinstance</code> (COA per Branch &amp; Currency)</li>
+<li>PK: <code>accountinstance_id</code></li>
+</ul>
+<h3 id="42-field-editable-whitelist">4.2 Field Editable (Whitelist)</h3>
+<h4 id="master-ibcoreaccount">Master <code>ibcore.account</code></h4>
+<p>Editable:</p>
+<ul>
+<li><code>account_name</code></li>
+<li><code>account_desc</code></li>
+<li><code>account_type</code> atau <code>account_group_code</code> (pilih salah satu sesuai keputusan bisnis)</li>
+<li><code>fl_cpa_accountcode</code></li>
+<li><code>lbus_code</code>, <code>lbus_type</code>, <code>lsmk_code</code>, <code>lsmk_type</code>, <code>lbbu_code</code>, <code>intern_code</code>, <code>pub_code</code></li>
+<li><code>sandi_bi</code></li>
+<li><code>tax_type</code>, <code>tax_code</code>, <code>tax_account_code</code>, <code>tax_rate_npwp</code>, <code>tax_rate_non_npwp</code>, <code>tax_flag_pph21</code>, <code>tax_flag_expert</code></li>
+<li><code>normal_balance_type_def</code>, <code>is_zero_balance_def</code>, <code>trx_permit_type_def</code></li>
+<li><code>isrpvrakreportshow</code>, <code>is_hidden_offbalancesheet</code>, <code>israkaccount</code></li>
+</ul>
+<p>Read-only:</p>
+<ul>
+<li><code>account_code</code>, <code>time_create</code>, <code>isactivaoffbalancesheet</code>, <code>isrpvaccount</code>, <code>fl_parent_account</code>, <code>is_detail</code></li>
+</ul>
+<h4 id="instance-ibcoreaccountinstance">Instance <code>ibcore.accountinstance</code></h4>
+<p>Editable:</p>
+<ul>
+<li><code>normal_balance_type</code></li>
+<li><code>is_zero_balance</code></li>
+<li><code>trx_permit_type</code></li>
+</ul>
+<p>Read-only:</p>
+<ul>
+<li><code>branch_code</code>, <code>currency_code</code>, seluruh kolom saldo</li>
+</ul>
+<hr />
+<h2 id="5-frontend-specification">5. 🖥️ Frontend Specification</h2>
+<h3 id="51-mockup">5.1 Mockup</h3>
+<p>Link mockup UI: <a href="../../assets/FSD_COA_Edit.html">FSD_COA_Edit.html</a></p>
+<p>Screenshot Tab <code>Konfigurasi Pelaporan</code></p>
+<p><img alt="COA Ubah Rekening 1" src="../../assets/FSD_COA_Edit_ss1.png" /></p>
+<p>Screenshot Tab <code>Konfigurasi Saldo &amp; Transaksi</code></p>
+<p><img alt="COA Ubah Rekening 2" src="../../assets/FSD_COA_Edit_ss2.png" /></p>
+<h3 id="52-frontend-field-mapping">5.2 Frontend Field Mapping</h3>
+<blockquote>
+<p>Catatan: Beberapa label field UI dipetakan ke kolom DB berikut.</p>
+</blockquote>
+<h4 id="form-ubah-rekening-master-ibcoreaccount">Form Ubah Rekening (Master <code>ibcore.account</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Field (UI)</th>
+<th>Mandatory</th>
+<th>DB Column</th>
+<th>DB Table</th>
+<th>Rules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kelompok Rekening</td>
+<td>M</td>
+<td><code>account_group_code</code></td>
+<td><code>ibcore.account</code></td>
+<td>Read-only dari DB</td>
+</tr>
+<tr>
+<td>Tanggal Pembuatan</td>
+<td>M</td>
+<td><code>time_create</code></td>
+<td><code>ibcore.account</code></td>
+<td>Read-only dari DB</td>
+</tr>
+<tr>
+<td>Rekening Administratif Aktiva</td>
+<td>O</td>
+<td><code>isactivaoffbalancesheet</code></td>
+<td><code>ibcore.account</code></td>
+<td>Read-only dari DB</td>
+</tr>
+<tr>
+<td>Account RPV</td>
+<td>O</td>
+<td><code>isrpvaccount</code></td>
+<td><code>ibcore.account</code></td>
+<td>Read-only dari DB</td>
+</tr>
+<tr>
+<td>Rekening Induk</td>
+<td>M</td>
+<td><code>fl_parent_account</code></td>
+<td><code>ibcore.account</code></td>
+<td>Read-only. Parent rekening</td>
+</tr>
+<tr>
+<td>Nama Rekening Induk</td>
+<td>M</td>
+<td><code>account_name</code> (lookup)</td>
+<td><code>ibcore.account</code></td>
+<td>Read-only. Lookup dari <code>account.account_name</code> parent</td>
+</tr>
+<tr>
+<td>Kode Rekening</td>
+<td>M</td>
+<td><code>account_code</code></td>
+<td><code>ibcore.account</code></td>
+<td>Read-only (PK)</td>
+</tr>
+<tr>
+<td>Nama Rekening</td>
+<td>M</td>
+<td><code>account_name</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Tidak boleh kosong. Max 200 char</td>
+</tr>
+<tr>
+<td>Deskripsi Rekening</td>
+<td>O</td>
+<td><code>account_desc</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Max 400 char</td>
+</tr>
+<tr>
+<td>Grup Rekening</td>
+<td>M</td>
+<td><code>account_type</code> / <code>account_group_code</code>*</td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Dropdown: reference data dengan kode</td>
+</tr>
+<tr>
+<td>Detail</td>
+<td>O</td>
+<td><code>is_detail</code></td>
+<td><code>ibcore.account</code></td>
+<td>Read-only. Posting account indicator</td>
+</tr>
+<tr>
+<td>Keterhubungan CPA</td>
+<td>O</td>
+<td><code>fl_cpa_accountcode</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Pilih dari referensi CPA</td>
+</tr>
+<tr>
+<td>LBUS Code</td>
+<td>O</td>
+<td><code>lbus_code</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Pelaporan regulator</td>
+</tr>
+<tr>
+<td>LBUS Type</td>
+<td>O</td>
+<td><code>lbus_type</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Pelaporan regulator</td>
+</tr>
+<tr>
+<td>LSMK Code</td>
+<td>O</td>
+<td><code>lsmk_code</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Pelaporan regulator</td>
+</tr>
+<tr>
+<td>LSMK Type</td>
+<td>O</td>
+<td><code>lsmk_type</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Pelaporan regulator</td>
+</tr>
+<tr>
+<td>LBBU Code</td>
+<td>O</td>
+<td><code>lbbu_code</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Laporan internal</td>
+</tr>
+<tr>
+<td>Intern Code</td>
+<td>O</td>
+<td><code>intern_code</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Klasifikasi internal</td>
+</tr>
+<tr>
+<td>PUB Code</td>
+<td>O</td>
+<td><code>pub_code</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Publikasi/laporan tertentu</td>
+</tr>
+<tr>
+<td>Sandi BI</td>
+<td>O</td>
+<td><code>sandi_bi</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Max 10 char</td>
+</tr>
+<tr>
+<td>Tipe Pajak</td>
+<td>O</td>
+<td><code>tax_type</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Dari master pajak</td>
+</tr>
+<tr>
+<td>Tenaga Ahli</td>
+<td>O</td>
+<td><code>tax_flag_expert</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Default uncheck</td>
+</tr>
+<tr>
+<td>Kode Pajak</td>
+<td>O</td>
+<td><code>tax_code</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Max 20 char</td>
+</tr>
+<tr>
+<td>Nomor Akun Pajak</td>
+<td>O</td>
+<td><code>tax_account_code</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Refer ke <code>account.account_code</code> dengan <code>is_detail='T'</code></td>
+</tr>
+<tr>
+<td>Tarif Pajak NPWP</td>
+<td>O</td>
+<td><code>tax_rate_npwp</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Numerik &gt;= 0, default 0.00</td>
+</tr>
+<tr>
+<td>Tarif Pajak Non NPWP</td>
+<td>O</td>
+<td><code>tax_rate_non_npwp</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Numerik &gt;= 0, default 0.00</td>
+</tr>
+<tr>
+<td>Flag PPh21</td>
+<td>O</td>
+<td><code>tax_flag_pph21</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Opsional, flag</td>
+</tr>
+<tr>
+<td>RPV RAK Report Show</td>
+<td>O</td>
+<td><code>isrpvrakreportshow</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Flag tampil report</td>
+</tr>
+<tr>
+<td>Hidden Offbalance Sheet</td>
+<td>O</td>
+<td><code>is_hidden_offbalancesheet</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Flag</td>
+</tr>
+<tr>
+<td>RAK Account</td>
+<td>O</td>
+<td><code>israkaccount</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Flag</td>
+</tr>
+</tbody>
+</table>
+<p>*Catatan: pada dokumen lama ada "Grup Rekening" sebagai klasifikasi laporan (misal ASET). Di schema tersedia <code>account_group_code</code> dan <code>account_type</code>. Implementasi final perlu konsisten (pilih salah satu atau gabungkan aturan).</p>
+<hr />
+<h4 id="tab-parameter-saldo-dan-transaksi-default-di-ibcoreaccount">Tab: Parameter Saldo dan Transaksi (Default di <code>ibcore.account</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Field (UI)</th>
+<th>Mandatory</th>
+<th>DB Column</th>
+<th>DB Table</th>
+<th>Rules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Saldo Normal (Default)</td>
+<td>M</td>
+<td><code>normal_balance_type_def</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Dropdown: {Debet, Kredit, Netral} (mapping ke kode internal <code>varchar(1)</code>)</td>
+</tr>
+<tr>
+<td>Saldo Harus Nihil (Default)</td>
+<td>M</td>
+<td><code>is_zero_balance_def</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Dropdown: {Boleh Tidak Nihil, Harus Nihil} (mapping <code>varchar(1)</code>)</td>
+</tr>
+<tr>
+<td>Status Transaksi (Default)</td>
+<td>M</td>
+<td><code>trx_permit_type_def</code></td>
+<td><code>ibcore.account</code></td>
+<td><strong>Editable</strong>. Dropdown status transaksi (mapping <code>varchar(1)</code>)</td>
+</tr>
+</tbody>
+</table>
+<h5 id="button-rules">Button Rules</h5>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Set Semua Status Saldo Normal</td>
+<td>Update <code>accountinstance.normal_balance_type</code> untuk seluruh instance sesuai default yang dipilih</td>
+</tr>
+<tr>
+<td>Set Semua Status Saldo Nihil</td>
+<td>Update <code>accountinstance.is_zero_balance</code> untuk seluruh instance sesuai default yang dipilih</td>
+</tr>
+<tr>
+<td>Set Semua Status Transaksi</td>
+<td>Update <code>accountinstance.trx_permit_type</code> untuk seluruh instance sesuai default yang dipilih</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="grid-list-account-instance-ibcoreaccountinstance">Grid: List Account Instance (<code>ibcore.accountinstance</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Field (UI)</th>
+<th>Mandatory</th>
+<th>DB Column</th>
+<th>DB Table</th>
+<th>Lookup Table</th>
+<th>Rules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kode Kantor</td>
+<td>M</td>
+<td><code>branch_code</code></td>
+<td><code>ibcore.accountinstance</code></td>
+<td>-</td>
+<td>Read-only</td>
+</tr>
+<tr>
+<td>Nama Kantor</td>
+<td>M</td>
+<td><code>branch_name</code> (lookup)</td>
+<td><code>ibent.cabang</code></td>
+<td><code>ibent.cabang</code></td>
+<td>Read-only, lookup master branch</td>
+</tr>
+<tr>
+<td>Kode Valuta</td>
+<td>M</td>
+<td><code>currency_code</code></td>
+<td><code>ibcore.accountinstance</code></td>
+<td>-</td>
+<td>Read-only</td>
+</tr>
+<tr>
+<td>Saldo Normal</td>
+<td>M</td>
+<td><code>normal_balance_type</code></td>
+<td><code>ibcore.accountinstance</code></td>
+<td>-</td>
+<td><strong>Editable</strong></td>
+</tr>
+<tr>
+<td>Saldo Harus Nihil</td>
+<td>M</td>
+<td><code>is_zero_balance</code></td>
+<td><code>ibcore.accountinstance</code></td>
+<td>-</td>
+<td><strong>Editable</strong></td>
+</tr>
+<tr>
+<td>Tipe Bertransaksi</td>
+<td>M</td>
+<td><code>trx_permit_type</code></td>
+<td><code>ibcore.accountinstance</code></td>
+<td>-</td>
+<td><strong>Editable</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-backend-specification">6. 🛠️ Backend Specification</h2>
+<h3 id="61-api-specification">6.1 API Specification</h3>
+<p>Base path (contoh): <code>/api/coa</code></p>
+<h4 id="611-get-detail-rekening-form-ubah">6.1.1 Get Detail Rekening (Form Ubah)</h4>
+<p><strong>Endpoint:</strong> <code>GET /api/coa/accounts/{account_code}</code></p>
+<p><strong>Tabel yang Diakses (SELECT):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Operasi</th>
+<th>Kolom</th>
+<th>Joinlookup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ibcore.account</code></td>
+<td><strong>SELECT</strong></td>
+<td>Semua kolom (account_code, account_name, account_desc, fl_parent_account, account_group_code, account_type, account_level, is_detail, normal_balance_type_def, is_zero_balance_def, trx_permit_type_def, fl_cpa_accountcode, lbus_code, lbus_type, lsmk_code, lsmk_type, lbbu_code, intern_code, pub_code, sandi_bi, tax_type, tax_code, tax_account_code, tax_rate_npwp, tax_rate_non_npwp, tax_flag_pph21, tax_flag_expert, isactivaoffbalancesheet, isrpvaccount, isrpvrakreportshow, is_hidden_offbalancesheet, israkaccount, userid_create, time_create, userid_last_modified, time_last_modified)</td>
+<td>Self-JOIN untuk mendapatkan <code>parent_account_name</code> dari <code>fl_parent_account</code></td>
+</tr>
+<tr>
+<td><code>ibcore.accountinstance</code></td>
+<td><strong>SELECT</strong></td>
+<td>accountinstance_id, account_code, branch_code, currency_code, normal_balance_type, is_zero_balance, trx_permit_type, isbolehinput, balance_sign</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>ibent.cabang</code></td>
+<td><strong>SELECT</strong> (lookup)</td>
+<td>branch_code, branch_name</td>
+<td>JOIN dengan <code>accountinstance.branch_code</code></td>
+</tr>
+<tr>
+<td>Master Currency</td>
+<td><strong>SELECT</strong> (lookup)</td>
+<td>currency_code, currency_name</td>
+<td>JOIN dengan <code>accountinstance.currency_code</code> (optional)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response 200</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;account&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;account_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;100100&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;account_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kas&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;account_desc&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kas besar&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;account_group_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ASET&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;account_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fl_parent_account&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;100000&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;parent_account_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aktiva&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;is_detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;T&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;time_create&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-10T08:10:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;isactivaoffbalancesheet&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;isrpvaccount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fl_cpa_accountcode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CPA001&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lbus_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LB01&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lbus_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lsmk_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LK01&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lsmk_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lbbu_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LBBU01&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;intern_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INT01&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;pub_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PUB01&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;sandi_bi&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1234567890&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tax_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PPh&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tax_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TAX01&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tax_account_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;200100&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tax_rate_npwp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tax_rate_non_npwp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tax_flag_pph21&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tax_flag_expert&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;normal_balance_type_def&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;is_zero_balance_def&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;trx_permit_type_def&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;isrpvrakreportshow&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;is_hidden_offbalancesheet&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;israkaccount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;userid_create&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;userid_last_modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;time_last_modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-15T10:30:00Z&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;instances&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;accountinstance_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AI001&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;branch_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;001&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;branch_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kantor Pusat&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;currency_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IDR&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;normal_balance_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;is_zero_balance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;trx_permit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Validasi:</strong></p>
+<ul>
+<li><code>account_code</code> harus exist di <code>ibcore.account</code></li>
+<li>Jika tidak ditemukan, return error 404 (data not found)</li>
+</ul>
+<hr />
+<h4 id="612-submit-pengajuan-ubah-rekening">6.1.2 Submit Pengajuan Ubah Rekening</h4>
+<p><strong>Endpoint:</strong> <code>POST /api/coa/accounts/{account_code}/change-requests</code></p>
+<p><strong>Tabel yang Diakses/Dimodifikasi:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Operasi</th>
+<th>Kolom</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ibcore.account</code></td>
+<td><strong>SELECT</strong></td>
+<td>Semua kolom</td>
+<td>Ambil data sebelum perubahan (before) untuk audit</td>
+</tr>
+<tr>
+<td><code>ibcore.accountinstance</code></td>
+<td><strong>SELECT</strong></td>
+<td>Semua kolom terkait</td>
+<td>Ambil data instance sebelum perubahan (before)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perubahan klasifikasi&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;changes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;account&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;account_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kas Besar&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;account_desc&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kas besar utama&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;account_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tax_rate_npwp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.00</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tax_rate_non_npwp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">2.00</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;normal_balance_type_def&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;is_zero_balance_def&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;trx_permit_type_def&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;account_instances&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;accountinstance_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AI001&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;normal_balance_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;is_zero_balance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;trx_permit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;apply_defaults&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;normal_balance_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;is_zero_balance&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;trx_permit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Response 201</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CR-COA-20260119-0001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PENDING_APPROVAL&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Proses Backend:</strong></p>
+<ol>
+<li>Validasi input (field mandatory, format, dll)</li>
+<li><strong>SELECT</strong> data existing dari <code>ibcore.account</code> dan <code>ibcore.accountinstance</code> (before)</li>
+<li>Commit transaksi</li>
+</ol>
+<hr />
+<h4 id="613-pending-list-otorisasi">6.1.3 Pending List Otorisasi</h4>
+<p><strong>Endpoint:</strong> <code>GET /api/coa/change-requests?status=PENDING_APPROVAL</code></p>
+<p><strong>Tabel yang Diakses (SELECT):</strong></p>
+<p><strong>Response 200</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CR-COA-20260119-0001&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;account_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;100100&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;requested_by&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;operator01&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;requested_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-19T09:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PENDING_APPROVAL&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;pagination&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h4 id="614-detail-pengajuan-beforeafter">6.1.4 Detail Pengajuan (Before/After)</h4>
+<p><strong>Endpoint:</strong> <code>GET /api/coa/change-requests/{request_id}</code></p>
+<p><strong>Tabel yang Diakses (SELECT):</strong></p>
+<p><strong>Response 200</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CR-COA-20260119-0001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;account_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;100100&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;requested_by&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;operator01&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;requested_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-19T09:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PENDING_APPROVAL&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perubahan klasifikasi&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;before&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">&quot;account&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">      </span><span class="nt">&quot;account_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kas&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;account_desc&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kas besar&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tax_rate_npwp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;account_instances&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;accountinstance_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AI001&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;normal_balance_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;is_zero_balance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;trx_permit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;after&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">&quot;account&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;account_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kas Besar&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;account_desc&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kas besar utama&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tax_rate_npwp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.00</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;account_instances&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;accountinstance_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AI001&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;normal_balance_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;is_zero_balance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;trx_permit_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h4 id="615-approve-pengajuan">6.1.5 Approve Pengajuan</h4>
+<p><strong>Endpoint:</strong> <code>POST /api/coa/change-requests/{request_id}/approve</code></p>
+<p><strong>Tabel yang Diakses/Dimodifikasi:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Operasi</th>
+<th>Kolom</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ibcore.account</code></td>
+<td><strong>UPDATE</strong></td>
+<td>Kolom sesuai perubahan (account_name, account_desc, tax_rate_npwp, normal_balance_type_def, dll), userid_last_modified, time_last_modified</td>
+<td>Apply perubahan ke master COA</td>
+</tr>
+<tr>
+<td><code>ibcore.accountinstance</code></td>
+<td><strong>UPDATE</strong></td>
+<td>normal_balance_type, is_zero_balance, trx_permit_type (per instance yang berubah)</td>
+<td>Apply perubahan ke instance COA</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;comment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Data sudah sesuai&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Response 200</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CR-COA-20260119-0001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APPROVED&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Proses Backend (dalam transaksi atomik):</strong></p>
+<ol>
+<li>Validasi input</li>
+<li><strong>UPDATE</strong> ibcore.account dengan data perubahan</li>
+<li><strong>UPDATE</strong> userid_last_modified, time_last_modified pada ibcore.account</li>
+<li><strong>UPDATE</strong> ibcore.accountinstance dengan data perubahan</li>
+<li>Commit transaksi</li>
+</ol>
+<hr />
+<h4 id="616-reject-pengajuan">6.1.6 Reject Pengajuan</h4>
+<p><strong>Endpoint:</strong> <code>POST /api/coa/change-requests/{request_id}/reject</code></p>
+<p><strong>Tabel yang Diakses/Dimodifikasi:</strong></p>
+<p><strong>Request</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Data tidak sesuai&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Response 200</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CR-COA-20260119-0001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REJECTED&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h3 id="62-backend-data-requirements">6.2 Backend Data Requirements</h3>
+<h4 id="entity-ibcoreaccount-master-coa">Entity: <code>ibcore.account</code> (Master COA)</h4>
+<p><strong>Primary Key:</strong> <code>account_code</code></p>
+<p><strong>Kolom yang Relevan untuk Modul Ubah Rekening:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Kolom</th>
+<th>Tipe</th>
+<th>Editable</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>account_code</code></td>
+<td>varchar</td>
+<td>No</td>
+<td>Primary Key</td>
+</tr>
+<tr>
+<td><code>account_name</code></td>
+<td>varchar(200)</td>
+<td>Yes</td>
+<td>Nama rekening</td>
+</tr>
+<tr>
+<td><code>account_desc</code></td>
+<td>varchar(400)</td>
+<td>Yes</td>
+<td>Deskripsi rekening</td>
+</tr>
+<tr>
+<td><code>account_group_code</code></td>
+<td>varchar</td>
+<td>Yes*</td>
+<td>Grup rekening</td>
+</tr>
+<tr>
+<td><code>account_type</code></td>
+<td>varchar(1)</td>
+<td>Yes*</td>
+<td>Tipe rekening</td>
+</tr>
+<tr>
+<td><code>account_level</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Level hirarki</td>
+</tr>
+<tr>
+<td><code>fl_parent_account</code></td>
+<td>varchar</td>
+<td>No</td>
+<td>FK ke account_code (parent)</td>
+</tr>
+<tr>
+<td><code>is_detail</code></td>
+<td>varchar(1)</td>
+<td>No</td>
+<td>Posting account indicator (T/F)</td>
+</tr>
+<tr>
+<td><code>normal_balance_type_def</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Saldo normal default (D/K/N)</td>
+</tr>
+<tr>
+<td><code>is_zero_balance_def</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Saldo harus nihil default (T/F)</td>
+</tr>
+<tr>
+<td><code>trx_permit_type_def</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Status transaksi default</td>
+</tr>
+<tr>
+<td><code>fl_cpa_accountcode</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Keterhubungan CPA</td>
+</tr>
+<tr>
+<td><code>lbus_code</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Kode LBUS (pelaporan regulator)</td>
+</tr>
+<tr>
+<td><code>lbus_type</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Tipe LBUS</td>
+</tr>
+<tr>
+<td><code>lsmk_code</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Kode LSMK (pelaporan regulator)</td>
+</tr>
+<tr>
+<td><code>lsmk_type</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Tipe LSMK</td>
+</tr>
+<tr>
+<td><code>lbbu_code</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Kode LBBU (laporan internal)</td>
+</tr>
+<tr>
+<td><code>intern_code</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Kode internal</td>
+</tr>
+<tr>
+<td><code>pub_code</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Kode publikasi</td>
+</tr>
+<tr>
+<td><code>sandi_bi</code></td>
+<td>varchar(10)</td>
+<td>Yes</td>
+<td>Sandi BI</td>
+</tr>
+<tr>
+<td><code>tax_type</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Tipe pajak</td>
+</tr>
+<tr>
+<td><code>tax_code</code></td>
+<td>varchar(20)</td>
+<td>Yes</td>
+<td>Kode pajak</td>
+</tr>
+<tr>
+<td><code>tax_account_code</code></td>
+<td>varchar</td>
+<td>Yes</td>
+<td>Nomor akun pajak (FK ke account_code)</td>
+</tr>
+<tr>
+<td><code>tax_rate_npwp</code></td>
+<td>decimal</td>
+<td>Yes</td>
+<td>Tarif pajak NPWP (&gt;= 0)</td>
+</tr>
+<tr>
+<td><code>tax_rate_non_npwp</code></td>
+<td>decimal</td>
+<td>Yes</td>
+<td>Tarif pajak non-NPWP (&gt;= 0)</td>
+</tr>
+<tr>
+<td><code>tax_flag_pph21</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Flag PPh21 (T/F)</td>
+</tr>
+<tr>
+<td><code>tax_flag_expert</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Flag tenaga ahli (T/F)</td>
+</tr>
+<tr>
+<td><code>isactivaoffbalancesheet</code></td>
+<td>varchar(1)</td>
+<td>No</td>
+<td>Rekening adm. aktiva (T/F)</td>
+</tr>
+<tr>
+<td><code>isrpvaccount</code></td>
+<td>varchar(1)</td>
+<td>No</td>
+<td>Account RPV (T/F)</td>
+</tr>
+<tr>
+<td><code>isrpvrakreportshow</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>RPV RAK report show (T/F)</td>
+</tr>
+<tr>
+<td><code>is_hidden_offbalancesheet</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Hidden offbalance sheet (T/F)</td>
+</tr>
+<tr>
+<td><code>israkaccount</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>RAK account (T/F)</td>
+</tr>
+<tr>
+<td><code>userid_create</code></td>
+<td>varchar</td>
+<td>No</td>
+<td>User pembuat (audit)</td>
+</tr>
+<tr>
+<td><code>time_create</code></td>
+<td>timestamp</td>
+<td>No</td>
+<td>Waktu pembuatan (audit)</td>
+</tr>
+<tr>
+<td><code>userid_last_modified</code></td>
+<td>varchar</td>
+<td>Auto</td>
+<td>User terakhir ubah (audit)</td>
+</tr>
+<tr>
+<td><code>time_last_modified</code></td>
+<td>timestamp</td>
+<td>Auto</td>
+<td>Waktu terakhir ubah (audit)</td>
+</tr>
+</tbody>
+</table>
+<p>*Pilih salah satu antara <code>account_group_code</code> atau <code>account_type</code> sesuai keputusan bisnis</p>
+<hr />
+<h4 id="entity-ibcoreaccountinstance-coa-per-branch-currency">Entity: <code>ibcore.accountinstance</code> (COA per Branch &amp; Currency)</h4>
+<p><strong>Primary Key:</strong> <code>accountinstance_id</code></p>
+<p><strong>Kolom yang Relevan untuk Modul Ubah Rekening:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Kolom</th>
+<th>Tipe</th>
+<th>Editable</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>accountinstance_id</code></td>
+<td>varchar</td>
+<td>No</td>
+<td>Primary Key</td>
+</tr>
+<tr>
+<td><code>account_code</code></td>
+<td>varchar</td>
+<td>No</td>
+<td>FK ke ibcore.account</td>
+</tr>
+<tr>
+<td><code>branch_code</code></td>
+<td>varchar</td>
+<td>No</td>
+<td>FK ke master branch</td>
+</tr>
+<tr>
+<td><code>currency_code</code></td>
+<td>varchar</td>
+<td>No</td>
+<td>FK ke master currency</td>
+</tr>
+<tr>
+<td><code>normal_balance_type</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Saldo normal per instance (D/K/N)</td>
+</tr>
+<tr>
+<td><code>is_zero_balance</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Saldo harus nihil per instance (T/F)</td>
+</tr>
+<tr>
+<td><code>trx_permit_type</code></td>
+<td>varchar(1)</td>
+<td>Yes</td>
+<td>Status transaksi per instance</td>
+</tr>
+<tr>
+<td><code>isbolehinput</code></td>
+<td>varchar(1)</td>
+<td>No</td>
+<td>Boleh input manual (T/F)</td>
+</tr>
+<tr>
+<td><code>balance_sign</code></td>
+<td>varchar(1)</td>
+<td>No</td>
+<td>Tanda saldo (+/-)</td>
+</tr>
+<tr>
+<td><code>balance</code></td>
+<td>decimal</td>
+<td>No</td>
+<td>Saldo (read-only untuk edit COA)</td>
+</tr>
+<tr>
+<td><code>trial_balance</code></td>
+<td>decimal</td>
+<td>No</td>
+<td>Trial balance (read-only)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-validation-rules">7. Validation Rules</h2>
+<h3 id="71-umum">7.1 Umum</h3>
+<ul>
+<li><code>account_code</code> harus exist di <code>ibcore.account</code>.</li>
+<li>Field berubah hanya dari whitelist editable.</li>
+<li><code>tax_rate_npwp</code>, <code>tax_rate_non_npwp</code> &gt;= 0.00; jika null -&gt; set 0.00.</li>
+<li>Default parameter harus valid: <code>normal_balance_type_def</code>, <code>is_zero_balance_def</code>, <code>trx_permit_type_def</code>.</li>
+<li>Untuk perubahan instance: <code>accountinstance_id</code> harus exist dan terkait <code>account_code</code>.</li>
+</ul>
+<h3 id="72-mapping-dropdown">7.2 Mapping Dropdown</h3>
+<ul>
+<li><code>normal_balance_type(_def)</code>: {Debet -&gt; <code>D</code>, Kredit -&gt; <code>K</code>, Netral -&gt; <code>N</code>}</li>
+<li><code>is_zero_balance(_def)</code>: {Boleh Tidak Nihil -&gt; <code>F</code>, Harus Nihil -&gt; <code>T</code>}</li>
+<li><code>trx_permit_type(_def)</code>: mapping sesuai master (mis. <code>A</code>=All, <code>D</code>=Debet only, <code>K</code>=Kredit only)</li>
+</ul>
+<hr />
+<h2 id="8-perilaku-tombol-set-semua">8. Perilaku Tombol "Set Semua"</h2>
+<p>Ketika user menekan tombol:</p>
+<ul>
+<li><strong>Set Semua Status Saldo Normal</strong>: <code>accountinstance.normal_balance_type</code> diset ke <code>normal_balance_type_def</code> untuk seluruh instance.</li>
+<li><strong>Set Semua Status Saldo Nihil</strong>: <code>accountinstance.is_zero_balance</code> diset ke <code>is_zero_balance_def</code> untuk seluruh instance.</li>
+<li><strong>Set Semua Status Transaksi</strong>: <code>accountinstance.trx_permit_type</code> diset ke <code>trx_permit_type_def</code> untuk seluruh instance.</li>
+</ul>
+<p>Implementasi pada submit:</p>
+<ul>
+<li>FE mengisi <code>apply_defaults</code> agar BE melakukan override untuk semua instance.</li>
+<li>BE mengisi perubahan per instance (before/after) sebagai bagian pengajuan.</li>
+</ul>
+<hr />
+<hr />
+<h2 id="10-proses-approval">10. Proses Approval</h2>
+<h3 id="101-approve">10.1 Approve</h3>
+<ol>
+<li>Validasi status masih <code>PENDING_APPROVAL</code>.</li>
+<li>Apply perubahan ke <code>ibcore.account</code> (UPDATE field sesuai after_json).</li>
+<li>Apply perubahan ke <code>ibcore.accountinstance</code> (UPDATE field sesuai after_json).</li>
+<li>Update audit: <code>userid_last_modified</code>, <code>time_last_modified</code> pada <code>ibcore.account</code>.</li>
+<li>Update status pengajuan ke <code>APPROVED</code> dengan <code>approved_by</code> dan <code>approved_at</code>.</li>
+</ol>
+<h3 id="102-reject">10.2 Reject</h3>
+<ol>
+<li>Validasi status masih <code>PENDING_APPROVAL</code>.</li>
+<li>Simpan alasan reject ke <code>reject_reason</code>.</li>
+<li>Update status pengajuan ke <code>REJECTED</code> dengan <code>rejected_by</code> dan <code>rejected_at</code>.</li>
+<li><strong>Tidak ada</strong> perubahan ke data aktif (<code>ibcore.account</code> dan <code>ibcore.accountinstance</code>).</li>
+</ol>
+<hr />
+<h2 id="11-error-handling">11. Error Handling</h2>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Scenario</th>
+<th>HTTP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>COA-400-01</td>
+<td>Validation error (field invalid)</td>
+<td>400</td>
+</tr>
+<tr>
+<td>COA-404-01</td>
+<td>Account not found</td>
+<td>404</td>
+</tr>
+<tr>
+<td>COA-404-02</td>
+<td>Accountinstance not found</td>
+<td>404</td>
+</tr>
+<tr>
+<td>COA-409-01</td>
+<td>Request status not pending</td>
+<td>409</td>
+</tr>
+<tr>
+<td>COA-403-01</td>
+<td>Unauthorized role</td>
+<td>403</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="12-logging-audit">12. Logging &amp; Audit</h2>
+<ul>
+<li>Log audit untuk submit/approve/reject (user, timestamp, account_code, request_id).</li>
+<li>Simpan before/after dalam bentuk JSON untuk keperluan review otorisasi.</li>
+<li>Update <code>userid_last_modified</code> dan <code>time_last_modified</code> pada <code>ibcore.account</code> saat approve.</li>
+</ul>
+<hr />
+<h2 id="13-performance-pagination">13. Performance &amp; Pagination</h2>
+<ul>
+<li>Pending list gunakan pagination default (mis. <code>page</code>, <code>size</code>).</li>
+<li>Detail pengajuan menampilkan before/after sesuai kebutuhan UI.</li>
+</ul>
+<hr />
+<h2 id="14-security-access-control">14. Security &amp; Access Control</h2>
+<ul>
+<li><strong>Role Operator Data</strong>: akses GET detail, submit change.</li>
+<li><strong>Role Otorisator</strong>: akses pending list, detail, approve/reject.</li>
+<li>Endpoint harus validasi user dan role di middleware.</li>
+</ul>
+<hr />
+<h2 id="15-shared-business-rules">15. 📌 Shared Business Rules</h2>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-COA-R01</td>
+<td><code>account_code</code> bersifat <strong>read-only</strong> dan tidak boleh diubah</td>
+</tr>
+<tr>
+<td>FR-COA-R02</td>
+<td><code>fl_parent_account</code> (rekening induk) bersifat <strong>read-only</strong> pada proses ubah rekening</td>
+</tr>
+<tr>
+<td>FR-COA-R03</td>
+<td>Semua perubahan wajib melalui <strong>otorisasi</strong> sebelum efektif</td>
+</tr>
+<tr>
+<td>FR-COA-R04</td>
+<td>Jika pengajuan <strong>Reject</strong>, data aktif pada <code>account</code>/<code>accountinstance</code> tidak berubah</td>
+</tr>
+<tr>
+<td>FR-COA-R05</td>
+<td>Perubahan parameter default (di <code>account</code>) dapat dipropagasikan ke seluruh <code>accountinstance</code> melalui tombol "Set Semua..."</td>
+</tr>
+<tr>
+<td>FR-COA-R06</td>
+<td>Field tarif pajak (<code>tax_rate_npwp</code>, <code>tax_rate_non_npwp</code>) tidak boleh negatif dan default 0.00 jika kosong</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="16-open-questions">16. Open Questions</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>Open</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="17-change-log">17. Change Log</h2>
+<h3 id="v20-2026-01-28">v2.0 (2026-01-28)</h3>
+<ul>
+<li>Migrasi dan penyesuaian dari FSD_COA_Edit.md (referensi).</li>
+<li>Menambahkan spesifikasi detail tabel database (SELECT/INSERT/UPDATE).</li>
+<li>Menambahkan link mockup dan mapping field UI ke database.</li>
+<li>Sinkronisasi business rules, validation rules, dan scope.</li>
+<li>Penambahan detail operasi database untuk setiap endpoint API.</li>
+<li>Penambahan struktur tabel pengajuan (coa_change_request, coa_change_request_detail).</li>
+</ul>
+<h3 id="v10-2026-01-19">v1.0 (2026-01-19)</h3>
+<ul>
+<li>Inisialisasi dokumen TSD awal.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Kembali ke atas
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Tersalin ke clipboard", "clipboard.copy": "Salin ke clipboard", "search.result.more.one": "1 lagi di halaman ini", "search.result.more.other": "# lagi di halaman ini", "search.result.none": "Tidak ada dokumen yang sesuai", "search.result.one": "1 dokumen ditemukan", "search.result.other": "# dokumen ditemukan", "search.result.placeholder": "Ketik untuk mulai pencarian", "search.result.term.missing": "Tidak ada", "select.version": "Pilih versi"}, "version": null}</script>
+    
+    
+      <script src="../../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

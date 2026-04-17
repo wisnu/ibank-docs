@@ -33,46 +33,96 @@ theme:
 nav:
   - Home: index.md
 
+  - Public:
+      - Home: public/index.md
+
+  - Private:
+      - Home: private/index.md
+
+  # URL BARU (struktur rapi)
   - iBank:
       - General Ledger:
-          - TSD Architecture: ibank/GL/TSD Architecture.md
+          - TSD Architecture: ihsansolusi/ibank/GL/TSD Architecture.md
           - Chart of Account:
-              - PRD - Chart of Account: ibank/GL/chart-of-account/PRD_COA_Main.md
-              - FSD - Chart of Account: ibank/GL/chart-of-account/FSD_COA_Main.md
+              - PRD - Chart of Account: ihsansolusi/ibank/GL/chart-of-account/PRD_COA_Main.md
+              - FSD - Chart of Account: ihsansolusi/ibank/GL/chart-of-account/FSD_COA_Main.md
               - COA List:
-                  - FSD - COA List: ibank/GL/chart-of-account/list/FSD_COA_List.md
+                  - FSD - COA List: ihsansolusi/ibank/GL/chart-of-account/list/FSD_COA_List.md
               - COA Create:
-                  - FSD - COA Create: ibank/GL/chart-of-account/create/FSD_COA_Create.md
+                  - FSD - COA Create: ihsansolusi/ibank/GL/chart-of-account/create/FSD_COA_Create.md
               - COA Edit:
-                  - FSD - COA Edit: ibank/GL/chart-of-account/edit/FSD_COA_Edit.md
-                  - TSD - COA Edit: ibank/GL/chart-of-account/edit/TSD_COA_Edit.md
-                  - TEST - COA Edit: ibank/GL/chart-of-account/edit/TEST_COA_Edit.md
-                  - Referensi: ibank/GL/chart-of-account/edit/referensi.md
+                  - FSD - COA Edit: ihsansolusi/ibank/GL/chart-of-account/edit/FSD_COA_Edit.md
+                  - TSD - COA Edit: ihsansolusi/ibank/GL/chart-of-account/edit/TSD_COA_Edit.md
+                  - TEST - COA Edit: ihsansolusi/ibank/GL/chart-of-account/edit/TEST_COA_Edit.md
+                  - Referensi: ihsansolusi/ibank/GL/chart-of-account/edit/referensi.md
           - Neraca / Laba Rugi:
-              - FSD - Neraca / Laba Rugi: ibank/GL/balance-sheet/FSD_balance-sheet_report.md
-              - TSD - Neraca / Laba Rugi: ibank/GL/balance-sheet/TSD_balance-sheet_report.md
+              - FSD - Neraca / Laba Rugi: ihsansolusi/ibank/GL/balance-sheet/FSD_balance-sheet_report.md
+              - TSD - Neraca / Laba Rugi: ihsansolusi/ibank/GL/balance-sheet/TSD_balance-sheet_report.md
           - Trial Balance:
-              - FSD - Trial Balance: ibank/GL/trial-balance/FSD_trial-balance_report.md
-              - TSD - Trial Balance: ibank/GL/trial-balance/TSD_trial-balance_report.md
+              - FSD - Trial Balance: ihsansolusi/ibank/GL/trial-balance/FSD_trial-balance_report.md
+              - TSD - Trial Balance: ihsansolusi/ibank/GL/trial-balance/TSD_trial-balance_report.md
           - Buku Besar:
-              - Coming Soon: ibank/GL/ledger/placeholder.md
+              - Coming Soon: ihsansolusi/ibank/GL/ledger/placeholder.md
 
-  - BJBS:
+  - Clients:
+      - BJBS:
+          - Fingerscan:
+              - FSD - Fingerscan Biometrik: clients/bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md
+          - Enhance Dormant:
+              - Screenshot: clients/bjbs/enhance_dormant/dormant_screenshot.md
+              - DDL/DML Update (Postgres): clients/bjbs/enhance_dormant/executed_update_pg.md
+      - BCAS:
+          - Enhance Dormant:
+              - FSD - Enhance Dormant: clients/bcas/enhance_dormant/dormant_fsd.md
+              - Design Plan: clients/bcas/enhance_dormant/dormant_design_plan.md
+              - Use Case: clients/bcas/enhance_dormant/dormant_use_case.md
+              - Screenshot: clients/bcas/enhance_dormant/dormant_screenshot.md
+              - Presentasi - Tanggal Aktivitas: clients/bcas/enhance_dormant/dormant_presentasi.md
+          - Saku Valas:
+              - FSD - Saku Valas: clients/bcas/saku_valas/fsd_sakuvalas.md
+
+  # BACKWARD COMPATIBILITY (URL LAMA)
+  - BJBS (Legacy):
       - Fingerscan:
-          - FSD - Fingerscan Biometrik: bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md
+          - FSD - Fingerscan Biometrik: clients/bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md
       - Enhance Dormant:
-          - Screenshot: bjbs/enhance_dormant/dormant_screenshot.md
-          - DDL/DML Update (Postgres): bjbs/enhance_dormant/executed_update_pg.md
-
-  - BCAS:
+          - Screenshot: clients/bjbs/enhance_dormant/dormant_screenshot.md
+          - DDL/DML Update (Postgres): clients/bjbs/enhance_dormant/executed_update_pg.md
+  - BCAS (Legacy):
       - Enhance Dormant:
-          - FSD - Enhance Dormant: bcas/enhance_dormant/dormant_fsd.md
-          - Design Plan: bcas/enhance_dormant/dormant_design_plan.md
-          - Use Case: bcas/enhance_dormant/dormant_use_case.md
-          - Screenshot: bcas/enhance_dormant/dormant_screenshot.md
-          - Presentasi - Tanggal Aktivitas: bcas/enhance_dormant/dormant_presentasi.md
+          - FSD - Enhance Dormant: clients/bcas/enhance_dormant/dormant_fsd.md
+          - Design Plan: clients/bcas/enhance_dormant/dormant_design_plan.md
+          - Use Case: clients/bcas/enhance_dormant/dormant_use_case.md
+          - Screenshot: clients/bcas/enhance_dormant/dormant_screenshot.md
+          - Presentasi - Tanggal Aktivitas: clients/bcas/enhance_dormant/dormant_presentasi.md
       - Saku Valas:
-          - FSD - Saku Valas: bcas/saku_valas/fsd_sakuvalas.md
+          - FSD - Saku Valas: clients/bcas/saku_valas/fsd_sakuvalas.md
+
+plugins:
+  - search
+  - redirects:
+      redirect_maps:
+        'bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md': 'clients/bjbs/Fingerscan/FSD_Fingerscan_Biometrik.md'
+        'bjbs/enhance_dormant/dormant_screenshot.md': 'clients/bjbs/enhance_dormant/dormant_screenshot.md'
+        'bjbs/enhance_dormant/executed_update_pg.md': 'clients/bjbs/enhance_dormant/executed_update_pg.md'
+        'bcas/enhance_dormant/dormant_fsd.md': 'clients/bcas/enhance_dormant/dormant_fsd.md'
+        'bcas/enhance_dormant/dormant_design_plan.md': 'clients/bcas/enhance_dormant/dormant_design_plan.md'
+        'bcas/enhance_dormant/dormant_use_case.md': 'clients/bcas/enhance_dormant/dormant_use_case.md'
+        'bcas/enhance_dormant/dormant_screenshot.md': 'clients/bcas/enhance_dormant/dormant_screenshot.md'
+        'bcas/enhance_dormant/dormant_presentasi.md': 'clients/bcas/enhance_dormant/dormant_presentasi.md'
+        'bcas/saku_valas/fsd_sakuvalas.md': 'clients/bcas/saku_valas/fsd_sakuvalas.md'
+        'ibank/GL/TSD Architecture.md': 'ihsansolusi/ibank/GL/TSD Architecture.md'
+        'ibank/GL/chart-of-account/PRD_COA_Main.md': 'ihsansolusi/ibank/GL/chart-of-account/PRD_COA_Main.md'
+        'ibank/GL/chart-of-account/FSD_COA_Main.md': 'ihsansolusi/ibank/GL/chart-of-account/FSD_COA_Main.md'
+        'ibank/GL/chart-of-account/list/FSD_COA_List.md': 'ihsansolusi/ibank/GL/chart-of-account/list/FSD_COA_List.md'
+        'ibank/GL/chart-of-account/create/FSD_COA_Create.md': 'ihsansolusi/ibank/GL/chart-of-account/create/FSD_COA_Create.md'
+        'ibank/GL/chart-of-account/edit/FSD_COA_Edit.md': 'ihsansolusi/ibank/GL/chart-of-account/edit/FSD_COA_Edit.md'
+        'ibank/GL/chart-of-account/edit/TSD_COA_Edit.md': 'ihsansolusi/ibank/GL/chart-of-account/edit/TSD_COA_Edit.md'
+        'ibank/GL/chart-of-account/edit/referensi.md': 'ihsansolusi/ibank/GL/chart-of-account/edit/referensi.md'
+        'ibank/GL/balance-sheet/FSD_balance-sheet_report.md': 'ihsansolusi/ibank/GL/balance-sheet/FSD_balance-sheet_report.md'
+        'ibank/GL/balance-sheet/TSD_balance-sheet_report.md': 'ihsansolusi/ibank/GL/balance-sheet/TSD_balance-sheet_report.md'
+        'ibank/GL/trial-balance/FSD_trial-balance_report.md': 'ihsansolusi/ibank/GL/trial-balance/FSD_trial-balance_report.md'
+        'ibank/GL/trial-balance/TSD_trial-balance_report.md': 'ihsansolusi/ibank/GL/trial-balance/TSD_trial-balance_report.md'
 
 markdown_extensions:
   - pymdownx.superfences:
