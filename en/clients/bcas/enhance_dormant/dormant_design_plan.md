@@ -1,13 +1,16 @@
 # Enhancement Rekening Dormant — Design Plan
+>
 > Pendekatan minimal change | Berbasis struktur existing: `rekeningliabilitas`, `rekeningtransaksi`, `transaksi`, `detiltransaksi`
 > Aturan dormant dikonfigurasi terpusat via **`ParameterGlobal`**, dapat di-override di level produk.
-
+> Test tambah
 ---
 
 ## 1. Status Rekening — Alur Transisi
 
 ### 1.1 Diagram Transisi
+
 a
+
 #### Diagram A — Status Tidak Aktif & Dormant
 
 ```mermaid
@@ -42,6 +45,7 @@ stateDiagram-v2
 | Tutup | `3` | Rekening ditutup |
 
 > **Mapping Enum `status_rekening` di `rekeningtransaksi`:**
+>
 > - `1` = Aktif
 > - `2` = Dormant
 > - `3` = Tutup
@@ -169,6 +173,7 @@ flowchart TD
 | detiltransaksi | `nomor_rekening` | Index `idx_idx_46_2` sudah ada | KEEP |
 
 > **Kesimpulan:**
+>
 > - **1 kolom baru** di `parameterglobal`: `kode_group` varchar(30) — untuk pengelompokan parameter per fitur/modul
 > - **5 data baru** di `parameterglobal` (`kode_group='REKENING_DORMANT'`) — konfigurasi terpusat hari & biaya dormant/tidak aktif
 > - **6 kolom baru** di `produk`: 2 flag override (`is_custom_dormant`, `is_custom_tutup_oto`) + 1 flag pengecualian (`is_exc_tutupnol`) + 3 field nilai override; `is_tidak_dormant` existing dipakai dengan semantik baru
@@ -183,12 +188,14 @@ flowchart TD
 ## 3. Ringkasan Perubahan Database
 
 ### Tidak Diubah
+
 - Tabel `transaksi`, `detiltransaksi`, `rekeningtransaksi`
 - Field `tgl_transaksi_terakhir`, `tgl_trans_cabang_terakhir`, `tgl_trans_echannel_terakhir`
 - Field `is_tidak_dormant`, `is_biaya_rekening_dormant`
 - Semua index existing
 
 ### Ditambahkan / Diubah
+
 - **`ADD COLUMN kode_group`** di `parameterglobal` varchar(30) nullable — pengelompokan parameter per fitur (lihat Section 9)
 - **`INSERT` data baru** di `parameterglobal`: 5 kode parameter rekening status (lihat Section 9)
 - `ADD COLUMN tgl_aktivitas_terakhir` di `rekeningliabilitas`
@@ -346,7 +353,6 @@ CREATE INDEX idx_rep_tdkakt_norek ON ibankrep.rekening_tidak_aktif
 ALTER TABLE ibankrep.rekening_tidak_aktif ADD param_hari_tidak_aktif NUMBER;
 ```
 
-
 ### ⑥ ALTER TABLE ibankrep.rekening_dorman — Tambah Kolom Baru
 
 ```sql
@@ -473,6 +479,7 @@ WHERE kode_report = 'R029';
 ```
 
 ### ⑬ Penyesuaian Tabel Staging & Laporan (Ringkasan)
+
 - **Tabel Staging Tutup Otomatis**: `ibanktmp.autoclose_zerobalance_candidate` — baru (CREATE TABLE, sudah termasuk kolom `tgl_saldo_nol` dan `param_hari_tutup_oto`)
 - **Tabel Report Tutup Otomatis**: `ibankrep.rekening_tutupotomatis` ditambah 2 kolom audit trail (`tgl_saldo_nol`, `param_hari_tutup_oto`)
 - **Tabel Staging Status**: `ibanktmp.rekening_dorman_candidate` dan `ibanktmp.rekening_tidak_aktif_candidate` — baru (CREATE TABLE)
@@ -481,28 +488,32 @@ WHERE kode_report = 'R029';
 
 ---
 
-
 ## 5. Alur Proses
 
 ### Alur A — Transaksi Finansial (tidak ada perubahan di path transaksi)
+
 ```
 Transaksi masuk (Teller/ATM/Mobile)
   → Proses existing: INSERT transaksi, detiltransaksi  ← tidak diubah sama sekali
   → tgl_transaksi_terakhir akan diupdate saat EOD          ← sudah existing, tidak diubah
 ```
+
 > Tidak ada perubahan apapun pada path transaksi. Optimasi performa tetap terjaga.
 
 ### Alur B — Aktivitas Non-Finansial (baru, real-time)
+
 ```
 Nasabah cek saldo / mutasi via ATM, Mobile, IB
   → Proses existing: return saldo/mutasi ke nasabah  ← tidak diubah
   → [BARU] INSERT rekeningaktivitasnonfin          ← real-time, async
            nomor_rekening, tanggal_aktivitas, kode_aktivitas, kode_channel, ...
 ```
+
 > INSERT ke log dilakukan **asynchronous** agar tidak menambah latency di path inquiry.  
 > `tgl_aktivitas_terakhir` di `rekeningliabilitas` **tidak diupdate real-time** — diurus oleh proses EOD (lihat Alur C).
 
 ### Alur C — EOD Update
+
 ```
 EOD berjalan (urutan wajib):
 
@@ -555,6 +566,7 @@ Supervisor/Pejabat Cabang membuka antrian approval
 ```
 
 > **Catatan:**
+>
 > - Aktivitas nasabah (transaksi, inquiry, login) **tidak** mengubah status rekening kembali ke AKTIF secara otomatis.
 > - Rekening TIDAK AKTIF dan DORMANT menggunakan alur reaktivasi yang sama (belum ada perbedaan prosedur).
 > - Perlu form baru: `fUbahRekeningTidakAktifDormant` (dialog di modul Funding / Cabang).
@@ -563,6 +575,7 @@ Supervisor/Pejabat Cabang membuka antrian approval
 ---
 
 ### Alur D — EOM (End of Month) — Biaya Rekening
+
 ```
 EOM berjalan (akhir bulan):
 
@@ -579,15 +592,17 @@ EOM berjalan (akhir bulan):
 
 > **Implementasi Step 1** sudah ada di script `batchprocess/update_account_lasttxdate.py`.
 > Script tersebut perlu **dimodifikasi** untuk:
+>
 > - Membaca tabel `rekeningaktivitasnonfin` (tabel baru)
 > - Mengupdate `tgl_aktivitas_terakhir` di `rekeningliabilitas` (field baru)
-> 
+>
 > Detail SQL flows ada di script: `ULT_Select_RekeningTransaksiTerakhir`, `ULT_Select_RekeningAktivitasNonfinTerakhir`, `ULT_UpdateTglAktivitasTerakhir`.
 ---
 
 ## 6. Perubahan Query Batch Dormant
 
 ### Sebelum
+
 ```sql
 SELECT
     rl.nomor_rekening,
@@ -604,6 +619,7 @@ WHERE
 ```
 
 ### Sesudah — hanya ganti referensi field
+
 ```sql
 SELECT
     rl.nomor_rekening,
@@ -622,6 +638,7 @@ WHERE
 ```
 
 ### Bonus — Query rekening yang "diselamatkan" oleh enhancement
+
 ```sql
 -- Rekening dormant menurut logika lama, tapi aktif menurut logika baru
 SELECT
@@ -648,6 +665,7 @@ WHERE
 Menggunakan kolom baru `is_exclude_aktivitas_nasabah` di tabel `parametertransaksiumum` untuk menandai transaksi sistem yang **tidak dihitung** sebagai aktivitas nasabah.
 
 **Prinsip fail-safe:**
+
 - Kode transaksi dengan flag `'T'` → **di-exclude** (transaksi sistem)
 - Kode transaksi dengan flag `'F'` atau `NULL` → **dihitung sebagai aktivitas nasabah** (default)
 - Kode transaksi yang **belum terdaftar** di `parametertransaksiumum` → **dihitung sebagai aktivitas nasabah** (default aman)
@@ -749,6 +767,7 @@ WHEN MATCHED THEN
 ### 9.1 Filosofi: Global Default + Override Per Produk
 
 Aturan dormant dan tidak aktif dikonfigurasi **terpusat** di tabel `parameterglobal` sehingga:
+
 - Perubahan aturan bisa dilakukan dari satu tempat (UI Parameter Global), tanpa harus ubah data tiap produk.
 - Produk tertentu tetap bisa menggunakan nilai berbeda dengan cara mengisi field override di tabel `produk`.
 - Jika field override produk **`NULL`** → sistem otomatis fallback ke nilai di `parameterglobal`.
@@ -845,6 +864,7 @@ else:
 | `is_custom_tutup_oto` | Tutup Otomatis | `jumlah_hari_tutup_otomatis`, `is_tutup_otomatis_dormant` |
 
 **Contoh kasus:**
+
 - **TabunganKu** — ikut proses, biaya beda → `is_tidak_dormant = 'F'`, `is_custom_dormant = 'T'`, set `biaya_rekening_tidak_aktif = 0`, `is_biaya_rekening_tidak_aktif = 'F'`
 - **Deposito** — tidak perlu cek dormant sama sekali → `is_tidak_dormant = 'T'`
 - **Giro Korporat** — threshold dormant lebih panjang → `is_tidak_dormant = 'F'`, `is_custom_dormant = 'T'`, set `jumlah_hari_jadi_dormant = 180`
@@ -932,6 +952,7 @@ Dokumen ini berisi matriks status rekening berdasarkan aturan praktik perbankan 
 | Dormant | > 1.800 hari | Tidak ada aktivitas lebih dari 5 tahun |
 
 Catatan:
+
 - Aktivitas meliputi transaksi finansial maupun non finansial oleh nasabah.
 - Biaya admin otomatis biasanya tidak dihitung sebagai aktivitas.
 
@@ -971,6 +992,7 @@ Keterangan simbol:
 | ✅ | Diperbolehkan |
 | ⚠️ | Terbatas / tergantung kebijakan bank |
 | ❌ | Tidak diperbolehkan |
+
 ---
 
 *File ini dibuat: 2026-03-23. Update setiap kali ada perubahan signifikan pada struktur atau konvensi koding.*
