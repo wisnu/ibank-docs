@@ -3,7 +3,7 @@ FROM python:3.11
 WORKDIR /app
 
 # Install mkdocs and material theme
-RUN pip install mkdocs mkdocs-material
+RUN pip install -r requirements.txt
 
 # Copy documentation source
 COPY . .
