@@ -1,8 +1,10 @@
 # Executed Update — PostgreSQL
+
 ## Enhance Dormant BJBS
 
 Script DDL/DML yang dieksekusi untuk implementasi enhance dormant pada database PostgreSQL.
-
+Notes :
+Pastikan Service DAF dalam kondisi mati
 ---
 
 ### 1. Tabel Baru: `rekeningaktivitasnonfin`
