@@ -1,0 +1,5010 @@
+
+<!doctype html>
+<html lang="id" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dokumentasi aplikasi core banking iBank">
+      
+      
+      
+        <link rel="canonical" href="https://wisnu.github.io/ibank-docs/clients/bcas/enhance_dormant/dormant_presentasi/">
+      
+      
+        <link rel="prev" href="../dormant_screenshot/">
+      
+      
+        <link rel="next" href="../../saku_valas/fsd_sakuvalas/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Presentasi - Tanggal Aktivitas - iBank Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<meta name="robots" content="noindex, nofollow" />
+
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dasar-perhitungan-tanggal-aktivitas-nasabah" class="md-skip">
+          Lewati ke isi
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="iBank Documentation" class="md-header__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            iBank Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Presentasi - Tanggal Aktivitas
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cari" placeholder="Cari" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cari">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Kosongkan" aria-label="Kosongkan" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Mempersiapkan pencarian
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tab" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../public/" class="md-tabs__link">
+          
+  
+  
+  Public
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../private/" class="md-tabs__link">
+          
+  
+  
+  Private
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../ihsansolusi/ibank/GL/TSD%20Architecture/" class="md-tabs__link">
+          
+  
+  
+  iBank
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../bjbs/Fingerscan/FSD_Fingerscan_Biometrik/" class="md-tabs__link">
+          
+  
+  
+  Clients
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../bjbs/Fingerscan/FSD_Fingerscan_Biometrik/" class="md-tabs__link">
+          
+  
+  
+  BJBS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../dormant_fsd/" class="md-tabs__link">
+          
+  
+  
+  BCAS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigasi" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="iBank Documentation" class="md-nav__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    iBank Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../public/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Private
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Private
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../private/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iBank
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    iBank
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    General Ledger
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    General Ledger
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/TSD%20Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2" id="__nav_4_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chart of Account
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/PRD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/FSD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_3" id="__nav_4_1_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA List
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA List
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/list/FSD_COA_List/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_4" id="__nav_4_1_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Create
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Create
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/create/FSD_COA_Create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Create
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_5" id="__nav_4_1_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Edit
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Edit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/edit/FSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/edit/TSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/edit/TEST_COA_Edit.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEST - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/chart-of-account/edit/referensi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referensi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Neraca / Laba Rugi
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/balance-sheet/FSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/balance-sheet/TSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_4" id="__nav_4_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trial Balance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/trial-balance/FSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/trial-balance/TSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_5" id="__nav_4_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buku Besar
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Buku Besar
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ihsansolusi/ibank/GL/ledger/placeholder.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coming Soon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clients
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_1" id="__nav_5_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bjbs/Fingerscan/FSD_Fingerscan_Biometrik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_2" id="__nav_5_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bjbs/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bjbs/enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_1" id="__nav_5_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Daftar isi">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Daftar isi
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enhancement-rekening-dormant-tidak-aktif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enhancement Rekening Dormant &amp; Tidak Aktif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latar-belakang-masalah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Latar Belakang Masalah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apa-yang-dimaksud-transaksi-saat-ini" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apa yang Dimaksud "Transaksi" Saat Ini?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yang-tidak-tercatat-padahal-nasabah-aktif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Yang Tidak Tercatat — Padahal Nasabah Aktif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dampak-rekening-salah-masuk-dormant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dampak: Rekening Salah Masuk Dormant
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#akar-masalah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Akar Masalah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solusi-perluas-definisi-aktivitas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solusi: Perluas Definisi "Aktivitas"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dua-sumber-data-aktivitas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dua Sumber Data Aktivitas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-tidak-langsung-update-tgl_transaksi_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Tidak Langsung Update tgl_transaksi_terakhir?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solusi-field-baru-tidak-ubah-yang-lama" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solusi: Field Baru, Tidak Ubah yang Lama
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaksi-sistem-tidak-dihitung-sebagai-aktivitas-nasabah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaksi Sistem — Tidak Dihitung Sebagai Aktivitas Nasabah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alur-lengkap-eod-harian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alur Lengkap — EOD Harian
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-hanya-baca-transaksi-hari-ini-h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Hanya Baca Transaksi Hari Ini (H)?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mengapa Hanya Baca Transaksi Hari Ini (H)?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asumsi-dasar-eod-berjalan-setiap-hari" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asumsi Dasar: EOD Berjalan Setiap Hari
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-ini-aman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Ini Aman?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mengapa Ini Aman?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properti-monotonically-non-decreasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properti "Monotonically Non-Decreasing"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ilustrasi-3-hari-berturut-turut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ilustrasi: 3 Hari Berturut-turut
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-tidak-scan-seluruh-histori-setiap-hari" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Tidak Scan Seluruh Histori Setiap Hari?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#syarat-agar-pendekatan-ini-valid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syarat Agar Pendekatan Ini Valid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#perbandingan-skenario-sebelum-vs-sesudah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perbandingan Skenario: Sebelum vs Sesudah
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Perbandingan Skenario: Sebelum vs Sesudah">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#skenario-nasabah-hanya-cek-saldo-tidak-ada-transaksi-selama-2-tahun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skenario: Nasabah hanya cek saldo, tidak ada transaksi selama 2 tahun
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ringkasan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ringkasan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#posisi-update-ketiga-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Posisi Update Ketiga Field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Posisi Update Ketiga Field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mekanisme-update-kapan-siapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mekanisme Update (Kapan &amp; Siapa)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kondisi-update-per-skenario-eod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kondisi Update per Skenario EOD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ringkasan-peran-masing-masing-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ringkasan Peran Masing-masing Field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kondisi-update-bahasa-bisnis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kondisi Update — Bahasa Bisnis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detail-per-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detail per Field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detail per Field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tgl_transaksi_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_transaksi_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tgl_aktivitas_nonfin_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_aktivitas_nonfin_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tgl_aktivitas_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_aktivitas_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabel-contoh-kasus-gabungan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabel Contoh Kasus Gabungan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_2" id="__nav_5_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bjbs/Fingerscan/FSD_Fingerscan_Biometrik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bjbs/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bjbs/enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Daftar isi">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Daftar isi
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enhancement-rekening-dormant-tidak-aktif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enhancement Rekening Dormant &amp; Tidak Aktif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latar-belakang-masalah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Latar Belakang Masalah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apa-yang-dimaksud-transaksi-saat-ini" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apa yang Dimaksud "Transaksi" Saat Ini?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yang-tidak-tercatat-padahal-nasabah-aktif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Yang Tidak Tercatat — Padahal Nasabah Aktif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dampak-rekening-salah-masuk-dormant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dampak: Rekening Salah Masuk Dormant
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#akar-masalah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Akar Masalah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solusi-perluas-definisi-aktivitas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solusi: Perluas Definisi "Aktivitas"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dua-sumber-data-aktivitas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dua Sumber Data Aktivitas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-tidak-langsung-update-tgl_transaksi_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Tidak Langsung Update tgl_transaksi_terakhir?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solusi-field-baru-tidak-ubah-yang-lama" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solusi: Field Baru, Tidak Ubah yang Lama
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaksi-sistem-tidak-dihitung-sebagai-aktivitas-nasabah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaksi Sistem — Tidak Dihitung Sebagai Aktivitas Nasabah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alur-lengkap-eod-harian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alur Lengkap — EOD Harian
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-hanya-baca-transaksi-hari-ini-h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Hanya Baca Transaksi Hari Ini (H)?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mengapa Hanya Baca Transaksi Hari Ini (H)?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asumsi-dasar-eod-berjalan-setiap-hari" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asumsi Dasar: EOD Berjalan Setiap Hari
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-ini-aman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Ini Aman?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mengapa Ini Aman?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properti-monotonically-non-decreasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properti "Monotonically Non-Decreasing"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ilustrasi-3-hari-berturut-turut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ilustrasi: 3 Hari Berturut-turut
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-tidak-scan-seluruh-histori-setiap-hari" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Tidak Scan Seluruh Histori Setiap Hari?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#syarat-agar-pendekatan-ini-valid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syarat Agar Pendekatan Ini Valid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#perbandingan-skenario-sebelum-vs-sesudah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perbandingan Skenario: Sebelum vs Sesudah
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Perbandingan Skenario: Sebelum vs Sesudah">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#skenario-nasabah-hanya-cek-saldo-tidak-ada-transaksi-selama-2-tahun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skenario: Nasabah hanya cek saldo, tidak ada transaksi selama 2 tahun
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ringkasan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ringkasan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#posisi-update-ketiga-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Posisi Update Ketiga Field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Posisi Update Ketiga Field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mekanisme-update-kapan-siapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mekanisme Update (Kapan &amp; Siapa)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kondisi-update-per-skenario-eod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kondisi Update per Skenario EOD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ringkasan-peran-masing-masing-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ringkasan Peran Masing-masing Field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kondisi-update-bahasa-bisnis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kondisi Update — Bahasa Bisnis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detail-per-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detail per Field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detail per Field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tgl_transaksi_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_transaksi_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tgl_aktivitas_nonfin_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_aktivitas_nonfin_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tgl_aktivitas_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_aktivitas_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabel-contoh-kasus-gabungan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabel Contoh Kasus Gabungan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Daftar isi">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Daftar isi
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enhancement-rekening-dormant-tidak-aktif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enhancement Rekening Dormant &amp; Tidak Aktif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latar-belakang-masalah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Latar Belakang Masalah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apa-yang-dimaksud-transaksi-saat-ini" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apa yang Dimaksud "Transaksi" Saat Ini?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yang-tidak-tercatat-padahal-nasabah-aktif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Yang Tidak Tercatat — Padahal Nasabah Aktif
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dampak-rekening-salah-masuk-dormant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dampak: Rekening Salah Masuk Dormant
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#akar-masalah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Akar Masalah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solusi-perluas-definisi-aktivitas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solusi: Perluas Definisi "Aktivitas"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dua-sumber-data-aktivitas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dua Sumber Data Aktivitas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-tidak-langsung-update-tgl_transaksi_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Tidak Langsung Update tgl_transaksi_terakhir?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solusi-field-baru-tidak-ubah-yang-lama" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solusi: Field Baru, Tidak Ubah yang Lama
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaksi-sistem-tidak-dihitung-sebagai-aktivitas-nasabah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaksi Sistem — Tidak Dihitung Sebagai Aktivitas Nasabah
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alur-lengkap-eod-harian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alur Lengkap — EOD Harian
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-hanya-baca-transaksi-hari-ini-h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Hanya Baca Transaksi Hari Ini (H)?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mengapa Hanya Baca Transaksi Hari Ini (H)?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asumsi-dasar-eod-berjalan-setiap-hari" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asumsi Dasar: EOD Berjalan Setiap Hari
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-ini-aman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Ini Aman?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mengapa Ini Aman?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properti-monotonically-non-decreasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properti "Monotonically Non-Decreasing"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ilustrasi-3-hari-berturut-turut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ilustrasi: 3 Hari Berturut-turut
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mengapa-tidak-scan-seluruh-histori-setiap-hari" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mengapa Tidak Scan Seluruh Histori Setiap Hari?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#syarat-agar-pendekatan-ini-valid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syarat Agar Pendekatan Ini Valid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#perbandingan-skenario-sebelum-vs-sesudah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perbandingan Skenario: Sebelum vs Sesudah
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Perbandingan Skenario: Sebelum vs Sesudah">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#skenario-nasabah-hanya-cek-saldo-tidak-ada-transaksi-selama-2-tahun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skenario: Nasabah hanya cek saldo, tidak ada transaksi selama 2 tahun
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ringkasan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ringkasan
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#posisi-update-ketiga-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Posisi Update Ketiga Field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Posisi Update Ketiga Field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mekanisme-update-kapan-siapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mekanisme Update (Kapan &amp; Siapa)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kondisi-update-per-skenario-eod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kondisi Update per Skenario EOD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ringkasan-peran-masing-masing-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ringkasan Peran Masing-masing Field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kondisi-update-bahasa-bisnis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kondisi Update — Bahasa Bisnis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detail-per-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detail per Field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detail per Field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tgl_transaksi_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_transaksi_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tgl_aktivitas_nonfin_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_aktivitas_nonfin_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tgl_aktivitas_terakhir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tgl_aktivitas_terakhir
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabel-contoh-kasus-gabungan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabel Contoh Kasus Gabungan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="dasar-perhitungan-tanggal-aktivitas-nasabah">Dasar Perhitungan Tanggal Aktivitas Nasabah</h1>
+<h2 id="enhancement-rekening-dormant-tidak-aktif">Enhancement Rekening Dormant &amp; Tidak Aktif</h2>
+<hr />
+<h2 id="latar-belakang-masalah">Latar Belakang Masalah</h2>
+<p>Sistem saat ini menentukan status rekening (Aktif → Tidak Aktif → Dormant) berdasarkan <strong>satu field</strong>:</p>
+<div class="highlight"><pre><span></span><code>rekeningliabilitas.tgl_transaksi_terakhir
+</code></pre></div>
+<p>Field ini hanya mencatat tanggal transaksi finansial terakhir — yaitu mutasi yang mengubah saldo rekening.</p>
+<hr />
+<h2 id="apa-yang-dimaksud-transaksi-saat-ini">Apa yang Dimaksud "Transaksi" Saat Ini?</h2>
+<pre class="mermaid"><code>flowchart LR
+    A([Nasabah]) --&gt; B[Setor / Tarik Tunai]
+    A --&gt; C[Transfer]
+    A --&gt; D[Pembayaran Tagihan]
+    A --&gt; E[Autodebit]
+
+    B --&gt; F[(tgl_transaksi_terakhir\ndi-update)]
+    C --&gt; F
+    D --&gt; F
+    E --&gt; F
+
+    style F fill:#d4edda,stroke:#28a745</code></pre>
+<blockquote>
+<p>Hanya transaksi yang <strong>mengubah saldo</strong> yang tercatat.</p>
+</blockquote>
+<hr />
+<h2 id="yang-tidak-tercatat-padahal-nasabah-aktif">Yang Tidak Tercatat — Padahal Nasabah Aktif</h2>
+<pre class="mermaid"><code>flowchart LR
+    A([Nasabah]) --&gt; B[Cek Saldo via ATM]
+    A --&gt; C[Cek Mutasi via Mobile Banking]
+    A --&gt; D[Login Internet Banking]
+    A --&gt; E[Cetak Buku Tabungan]
+
+    B --&gt; F([❌ Tidak tercatat\nsebagai aktivitas])
+    C --&gt; F
+    D --&gt; F
+    E --&gt; F
+
+    style F fill:#f8d7da,stroke:#dc3545</code></pre>
+<blockquote>
+<p>Aktivitas-aktivitas ini <strong>tidak mengubah saldo</strong>, sehingga tidak masuk ke <code>tgl_transaksi_terakhir</code>.</p>
+</blockquote>
+<hr />
+<h2 id="dampak-rekening-salah-masuk-dormant">Dampak: Rekening Salah Masuk Dormant</h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant N as Nasabah
+    participant S as Sistem
+    participant R as Rekening
+
+    Note over R: Status: AKTIF
+    Note over R: tgl_transaksi_terakhir: 1 Jan 2024
+
+    N-&gt;&gt;S: Cek saldo via ATM (Feb 2024)
+    S--&gt;&gt;N: Tampilkan saldo
+    Note over R: tgl_transaksi_terakhir: TIDAK berubah ❌
+
+    N-&gt;&gt;S: Cek mutasi via Mobile (Jun 2024)
+    S--&gt;&gt;N: Tampilkan mutasi
+    Note over R: tgl_transaksi_terakhir: TIDAK berubah ❌
+
+    N-&gt;&gt;S: Cetak buku tabungan (Nov 2024)
+    S--&gt;&gt;N: Cetak selesai
+    Note over R: tgl_transaksi_terakhir: TIDAK berubah ❌
+
+    Note over S: EOD Jan 2025 — sudah 360 hari
+    S-&gt;&gt;R: ❌ Status → TIDAK AKTIF
+    Note over R: Padahal nasabah rutin pakai rekening!</code></pre>
+<hr />
+<h2 id="akar-masalah">Akar Masalah</h2>
+<table>
+<thead>
+<tr>
+<th>Aspek</th>
+<th>Kondisi Saat Ini</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Yang dicatat</strong></td>
+<td>Hanya transaksi finansial (debet/kredit)</td>
+</tr>
+<tr>
+<td><strong>Yang tidak dicatat</strong></td>
+<td>Cek saldo, cek mutasi, login, cetak buku</td>
+</tr>
+<tr>
+<td><strong>Akibat</strong></td>
+<td>Rekening bisa masuk status Tidak Aktif / Dormant meski nasabah masih aktif menggunakannya</td>
+</tr>
+<tr>
+<td><strong>Potensi kerugian</strong></td>
+<td>Nasabah komplain, biaya dormant dikenakan pada rekening yang sebenarnya aktif</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="solusi-perluas-definisi-aktivitas">Solusi: Perluas Definisi "Aktivitas"</h2>
+<p>Sistem tidak hanya mencatat transaksi finansial, tapi juga <strong>aktivitas non-finansial</strong> nasabah.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph SEBELUM["❌ Sebelum — Hanya Finansial"]
+        direction LR
+        T1[Setor] --&gt; D1[(tgl_transaksi_terakhir)]
+        T2[Tarik] --&gt; D1
+        T3[Transfer] --&gt; D1
+    end
+
+    subgraph SESUDAH["✅ Sesudah — Finansial + Non-Finansial"]
+        direction LR
+        T4[Setor] --&gt; D2
+        T5[Tarik] --&gt; D2
+        T6[Transfer] --&gt; D2
+        T7[Cek Saldo] --&gt; D2
+        T8[Cek Mutasi] --&gt; D2
+        T9[Cetak Buku] --&gt; D2
+        D2[(tgl_aktivitas_terakhir)]
+    end
+
+    style SEBELUM fill:#fff5f5,stroke:#dc3545
+    style SESUDAH fill:#f0fff4,stroke:#28a745</code></pre>
+<hr />
+<h2 id="dua-sumber-data-aktivitas">Dua Sumber Data Aktivitas</h2>
+<pre class="mermaid"><code>flowchart TD
+    A([Rekening Nasabah]) --&gt; B &amp; C
+
+    B["📊 Transaksi Finansial\n(existing)\n\ntabel: Transaksi + DetilTransaksi\nfield: tgl_transaksi_terakhir"]
+    C["📋 Aktivitas Non-Finansial\n(baru)\n\ntabel: rekeningaktivitasnonfin\nkode: CEK_SALDO, CEK_MUTASI\n       CETAK_PASSBOOK, CETAK_SALDO"]
+
+    B --&gt; D["🔀 Gabungkan:\nambil yang paling baru"]
+    C --&gt; D
+
+    D --&gt; E[(tgl_aktivitas_terakhir\ndi rekeningliabilitas)]
+
+    E --&gt; F["🔍 Dasar Perhitungan\nStatus Rekening EOD"]
+
+    style B fill:#fff3cd,stroke:#ffc107
+    style C fill:#cce5ff,stroke:#004085
+    style E fill:#d4edda,stroke:#28a745
+    style F fill:#d1ecf1,stroke:#0c5460</code></pre>
+<hr />
+<h2 id="mengapa-tidak-langsung-update-tgl_transaksi_terakhir">Mengapa Tidak Langsung Update <code>tgl_transaksi_terakhir</code>?</h2>
+<p><code>tgl_transaksi_terakhir</code> adalah field <strong>existing yang sudah banyak dipakai</strong> oleh modul lain.</p>
+<pre class="mermaid"><code>flowchart LR
+    F[(tgl_transaksi_terakhir)]
+
+    F --&gt; A[Batch Dormant]
+    F --&gt; B[Laporan Rekening Dormant]
+    F --&gt; C[Modul Cabang - Info Rekening]
+    F --&gt; D[API Inquiry Rekening]
+    F --&gt; E[Laporan Audit]
+
+    style F fill:#f8d7da,stroke:#dc3545</code></pre>
+<blockquote>
+<p>Mengubah field ini berisiko <strong>merusak modul lain</strong> yang bergantung pada semantik lamanya.</p>
+</blockquote>
+<hr />
+<h2 id="solusi-field-baru-tidak-ubah-yang-lama">Solusi: Field Baru, Tidak Ubah yang Lama</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>tgl_transaksi_terakhir</code></th>
+<th><code>tgl_aktivitas_terakhir</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Existing — tetap ada</td>
+<td>Baru — ditambahkan</td>
+</tr>
+<tr>
+<td><strong>Isi</strong></td>
+<td>Hanya transaksi finansial</td>
+<td>Finansial + Non-Finansial</td>
+</tr>
+<tr>
+<td><strong>Diupdate oleh</strong></td>
+<td>Proses posting transaksi</td>
+<td>Proses EOD (batch harian)</td>
+</tr>
+<tr>
+<td><strong>Dipakai untuk</strong></td>
+<td>Modul-modul existing</td>
+<td>Perhitungan status dormant/tidak aktif</td>
+</tr>
+<tr>
+<td><strong>Risiko</strong></td>
+<td>Tidak ada — tidak diubah</td>
+<td>Tidak ada — field baru</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Prinsip:</strong> <em>Minimal change</em> — tidak mengubah yang sudah berjalan, hanya menambahkan.</p>
+</blockquote>
+<hr />
+<h2 id="transaksi-sistem-tidak-dihitung-sebagai-aktivitas-nasabah">Transaksi Sistem — Tidak Dihitung Sebagai Aktivitas Nasabah</h2>
+<p>Tidak semua transaksi finansial mencerminkan keaktifan nasabah. Transaksi otomatis oleh sistem <strong>dikecualikan</strong>:</p>
+<pre class="mermaid"><code>flowchart TD
+    T([Transaksi Masuk]) --&gt; CHK{"Dibuat oleh\nnasabah sendiri?"}
+
+    CHK --&gt;|Ya| INC["✅ Dihitung sebagai\naktivitas nasabah\n\nContoh: setor, tarik, transfer"]
+    CHK --&gt;|Tidak| EXC["❌ Dikecualikan\n\nContoh:\nSD  — Bagi hasil tabungan\nPD  — Bagi hasil deposito\nSC  — Biaya administrasi\nSCD — Biaya rekening dormant\nSDP — Pajak bagi hasil\nSDZ — Zakat bagi hasil\nSI  — Auto transfer sistem"]
+
+    style INC fill:#d4edda,stroke:#28a745
+    style EXC fill:#f8d7da,stroke:#dc3545</code></pre>
+<blockquote>
+<p>Dikonfigurasi via <strong>Parameter Transaksi</strong> — flag <code>is_exclude_aktivitas_nasabah = 'T'</code></p>
+</blockquote>
+<hr />
+<h2 id="alur-lengkap-eod-harian">Alur Lengkap — EOD Harian</h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant TRX as Transaksi Nasabah
+    participant NON as Aktivitas Non-Finansial
+    participant EOD as Proses EOD
+    participant DB as rekeningliabilitas
+
+    Note over TRX,NON: Sepanjang hari H
+    TRX-&gt;&gt;DB: Transaksi diposting → catat di tabel Transaksi
+    NON-&gt;&gt;DB: Cek saldo/mutasi → INSERT rekeningaktivitasnonfin
+
+    Note over EOD: EOD Step 1 — Update tgl_aktivitas_terakhir
+    EOD-&gt;&gt;DB: SELECT MAX(tanggal_transaksi) per rekening\n(filter: exclude transaksi sistem)
+    EOD-&gt;&gt;DB: SELECT MAX(tanggal_aktivitas) per rekening\nfrom rekeningaktivitasnonfin
+    EOD-&gt;&gt;DB: UPDATE tgl_aktivitas_terakhir =\nMAX(tgl_transaksi, tgl_nonfin)
+
+    Note over EOD: EOD Step 2 — Batch Status Rekening
+    EOD-&gt;&gt;DB: Hitung hari = SYSDATE - tgl_aktivitas_terakhir
+    EOD-&gt;&gt;DB: Jika hari &gt; threshold → update status rekening</code></pre>
+<hr />
+<h2 id="mengapa-hanya-baca-transaksi-hari-ini-h">Mengapa Hanya Baca Transaksi Hari Ini (H)?</h2>
+<h3 id="asumsi-dasar-eod-berjalan-setiap-hari">Asumsi Dasar: EOD Berjalan Setiap Hari</h3>
+<p>Setiap EOD berjalan, sistem memperbarui <code>tgl_aktivitas_terakhir</code> di <code>rekeningliabilitas</code>. Nilai ini adalah <strong>akumulasi yang sudah benar per akhir hari sebelumnya (H-1)</strong>.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph H1["EOD H-1 (kemarin)"]
+        A1["Baca tabel Transaksi\n(H-1 masih ada sebelum WIPE)"] --&gt; B1[(rekeningliabilitas\ntgl_aktivitas_terakhir\n= nilai terbaru s.d. H-1)]
+    end
+
+    subgraph H["EOD H (hari ini)"]
+        A2["Baca tabel Transaksi\n(hari ini, sebelum WIPE)\n⚠️ HistTransaksi diabaikan"] --&gt; B2{Lebih baru\ndari H-1?}
+        B2 --&gt;|Ya| C2[UPDATE\ntgl_aktivitas_terakhir]
+        B2 --&gt;|Tidak| D2[Biarkan —\nnilai H-1 tetap berlaku]
+    end
+
+    B1 --&gt;|"nilai sudah tersimpan\ndi rekeningliabilitas"| H
+
+    style H1 fill:#e8f4fd,stroke:#0c5460
+    style H fill:#f0fff4,stroke:#28a745</code></pre>
+<blockquote>
+<p>EOD hari ini membaca tabel <strong><code>Transaksi</code></strong> (transaksi hari berjalan yang belum di-WIPE) — bukan <code>HistTransaksi</code>. Transaksi lama sudah diwakili oleh nilai <code>tgl_aktivitas_terakhir</code> yang tersimpan dari EOD sebelumnya.</p>
+</blockquote>
+<hr />
+<h2 id="mengapa-ini-aman">Mengapa Ini Aman?</h2>
+<h3 id="properti-monotonically-non-decreasing">Properti "Monotonically Non-Decreasing"</h3>
+<p><code>tgl_aktivitas_terakhir</code> hanya bisa <strong>sama atau lebih baru</strong> — tidak pernah mundur.</p>
+<pre class="mermaid"><code>flowchart LR
+    A["tgl_aktivitas_terakhir\nH-1 = 15 Mar"] --&gt; CHK{"Ada aktivitas\nhari ini?"}
+
+    CHK --&gt;|Ya, 10 Apr| UPDATE["UPDATE:\ntgl_aktivitas_terakhir = 10 Apr\n(lebih baru → pakai yang baru)"]
+    CHK --&gt;|Tidak ada| KEEP["KEEP:\ntgl_aktivitas_terakhir tetap 15 Mar\n(tidak ada yang lebih baru)"]
+
+    style UPDATE fill:#d4edda,stroke:#28a745
+    style KEEP fill:#fff3cd,stroke:#ffc107</code></pre>
+<table>
+<thead>
+<tr>
+<th>Kondisi</th>
+<th>Aksi EOD</th>
+<th>Hasil</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ada aktivitas hari ini</td>
+<td><code>UPDATE</code> jika lebih baru dari nilai tersimpan</td>
+<td><code>tgl_aktivitas_terakhir</code> = hari ini</td>
+</tr>
+<tr>
+<td>Tidak ada aktivitas hari ini</td>
+<td>Tidak ada <code>UPDATE</code></td>
+<td><code>tgl_aktivitas_terakhir</code> tetap dari EOD sebelumnya</td>
+</tr>
+<tr>
+<td>Nilai tersimpan sudah lebih baru</td>
+<td>Tidak ada <code>UPDATE</code></td>
+<td>Nilai lama dipertahankan</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="ilustrasi-3-hari-berturut-turut">Ilustrasi: 3 Hari Berturut-turut</h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant EOD as EOD Harian
+    participant TBL as rekeningliabilitas\n(tgl_aktivitas_terakhir)
+    participant TRX as Transaksi\n(bukan HistTransaksi)
+    participant HIS as HistTransaksi\n(diabaikan ❌)
+
+    Note over TBL: Nilai awal: 1 Mar
+
+    Note over EOD: EOD 10 Apr
+    EOD-&gt;&gt;TRX: SELECT MAX(tanggal_transaksi)\nWHERE tanggal_transaksi = 10 Apr
+    TRX--&gt;&gt;EOD: 10 Apr (ada transaksi hari ini)
+    Note over HIS: Tidak dibaca
+    EOD-&gt;&gt;TBL: 10 Apr &gt; 1 Mar → UPDATE ke 10 Apr
+    Note over TBL: Nilai: 10 Apr ✅
+
+    Note over EOD: EOD 11 Apr
+    EOD-&gt;&gt;TRX: SELECT MAX(tanggal_transaksi)\nWHERE tanggal_transaksi = 11 Apr
+    TRX--&gt;&gt;EOD: NULL (tidak ada aktivitas hari ini)
+    Note over HIS: Tidak dibaca
+    EOD-&gt;&gt;TBL: Tidak ada yang lebih baru → SKIP
+    Note over TBL: Nilai tetap: 10 Apr ✅
+
+    Note over EOD: EOD 12 Apr
+    EOD-&gt;&gt;TRX: SELECT MAX(tanggal_transaksi)\nWHERE tanggal_transaksi = 12 Apr
+    TRX--&gt;&gt;EOD: 12 Apr (ada transaksi hari ini)
+    Note over HIS: Tidak dibaca
+    EOD-&gt;&gt;TBL: 12 Apr &gt; 10 Apr → UPDATE ke 12 Apr
+    Note over TBL: Nilai: 12 Apr ✅</code></pre>
+<blockquote>
+<p>Meskipun 11 Apr tidak ada aktivitas, nilai 10 Apr tetap tersimpan dengan benar karena EOD H-1 sudah menjaganya. <code>HistTransaksi</code> <strong>tidak perlu dibaca</strong> — seluruh histori sudah terepresentasi oleh nilai <code>tgl_aktivitas_terakhir</code> yang tersimpan.</p>
+</blockquote>
+<hr />
+<h2 id="mengapa-tidak-scan-seluruh-histori-setiap-hari">Mengapa Tidak Scan Seluruh Histori Setiap Hari?</h2>
+<pre class="mermaid"><code>flowchart TD
+    subgraph SALAH["❌ Pendekatan Recalculate — Scan Semua Histori"]
+        S1["Scan tabel Transaksi +\ntabel HistTransaksi +\nrekeningaktivitasnonfin"] --&gt; S2[MAX per rekening\ndari seluruh data]
+        S2 --&gt; S3[(Update tgl_aktivitas_terakhir)]
+        S4["⚠️ Transaksi + HistTransaksi\nbisa ratusan juta baris\n→ performa sangat lambat\n→ EOD bisa timeout"]
+    end
+
+    subgraph BENAR["✅ Pendekatan Inkremental — Scan H Saja"]
+        B1["Scan tabel Transaksi saja\nWHERE tanggal_transaksi = HARI INI\n(HistTransaksi diabaikan ✅)"] --&gt; B2[MAX per rekening\nhanya dari data hari ini]
+        B2 --&gt; B3{Lebih baru\ndari tersimpan?}
+        B3 --&gt;|Ya| B4[(UPDATE\ntgl_aktivitas_terakhir)]
+        B3 --&gt;|Tidak| B5[Skip —\nnilai lama tetap valid]
+        B6["✅ Query ringan\n→ EOD cepat\n→ Histori dijaga oleh\nnilai tersimpan di rekeningliabilitas"]
+    end
+
+    style SALAH fill:#fff5f5,stroke:#dc3545
+    style BENAR fill:#f0fff4,stroke:#28a745</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Scan Semua Histori</th>
+<th>Scan H Saja (inkremental)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Volume data dibaca</strong></td>
+<td>Seluruh riwayat transaksi</td>
+<td>Hanya transaksi hari ini</td>
+</tr>
+<tr>
+<td><strong>Performa</strong></td>
+<td>Lambat — tidak skalabel</td>
+<td>Cepat — stabil meski data tumbuh</td>
+</tr>
+<tr>
+<td><strong>Keakuratan</strong></td>
+<td>Sama</td>
+<td>Sama (karena nilai H-1 sudah benar)</td>
+</tr>
+<tr>
+<td><strong>Ketergantungan</strong></td>
+<td>Tidak ada</td>
+<td>EOD wajib berjalan setiap hari</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="syarat-agar-pendekatan-ini-valid">Syarat Agar Pendekatan Ini Valid</h2>
+<pre class="mermaid"><code>flowchart LR
+    A["EOD berjalan\nsetiap hari\ntanpa skip"] --&gt; B["tgl_aktivitas_terakhir\nselalu akurat\nper akhir hari"]
+    B --&gt; C["EOD hari ini\ncukup baca H saja"]
+
+    A2["⚠️ Jika EOD skip\n1 hari"] --&gt; B2["Aktivitas hari skip\ntidak tercatat"]
+    B2 --&gt; C2["tgl_aktivitas_terakhir\nmundur 1 hari"]
+
+    style A fill:#d4edda,stroke:#28a745
+    style B fill:#d4edda,stroke:#28a745
+    style C fill:#d4edda,stroke:#28a745
+    style A2 fill:#f8d7da,stroke:#dc3545
+    style B2 fill:#f8d7da,stroke:#dc3545
+    style C2 fill:#f8d7da,stroke:#dc3545</code></pre>
+<blockquote>
+<p><strong>Kesimpulan:</strong> Pendekatan inkremental benar selama EOD <strong>tidak pernah dilewati</strong>. Jika EOD pernah skip, perlu mekanisme koreksi (scan N hari ke belakang).</p>
+</blockquote>
+<hr />
+<h2 id="perbandingan-skenario-sebelum-vs-sesudah">Perbandingan Skenario: Sebelum vs Sesudah</h2>
+<h3 id="skenario-nasabah-hanya-cek-saldo-tidak-ada-transaksi-selama-2-tahun">Skenario: Nasabah hanya cek saldo, tidak ada transaksi selama 2 tahun</h3>
+<pre class="mermaid"><code>gantt
+    title Timeline Rekening Nasabah
+    dateFormat YYYY-MM-DD
+    axisFormat %b %Y
+
+    section Aktivitas Nasabah
+    Transaksi terakhir          :milestone, 2022-01-01, 0d
+    Cek saldo rutin tiap bulan  :active, 2022-02-01, 2024-01-01
+
+    section Sistem Lama
+    Hitung dari tgl_transaksi_terakhir : crit, 2022-01-01, 2023-01-01
+    ❌ Rekening → TIDAK AKTIF  :milestone, crit, 2023-01-01, 0d
+
+    section Sistem Baru
+    Hitung dari tgl_aktivitas_terakhir : done, 2023-12-01, 2024-01-01
+    ✅ Rekening tetap AKTIF     :milestone, done, 2024-01-01, 0d</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Sistem Lama</th>
+<th>Sistem Baru</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dasar hitung</strong></td>
+<td><code>tgl_transaksi_terakhir</code> = 1 Jan 2022</td>
+<td><code>tgl_aktivitas_terakhir</code> = Des 2023</td>
+</tr>
+<tr>
+<td><strong>Hari dihitung</strong></td>
+<td>730 hari (&gt; 360)</td>
+<td>30 hari (&lt; 360)</td>
+</tr>
+<tr>
+<td><strong>Status rekening</strong></td>
+<td>❌ TIDAK AKTIF (salah)</td>
+<td>✅ AKTIF (benar)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="ringkasan">Ringkasan</h2>
+<table>
+<thead>
+<tr>
+<th>Poin</th>
+<th>Penjelasan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Masalah</strong></td>
+<td><code>tgl_transaksi_terakhir</code> hanya mencatat mutasi saldo — aktivitas non-finansial tidak terhitung</td>
+</tr>
+<tr>
+<td><strong>Dampak</strong></td>
+<td>Rekening bisa masuk Tidak Aktif / Dormant meski nasabah masih aktif menggunakan</td>
+</tr>
+<tr>
+<td><strong>Solusi</strong></td>
+<td>Tambah field baru <code>tgl_aktivitas_terakhir</code> yang menggabungkan transaksi nasabah + aktivitas non-finansial</td>
+</tr>
+<tr>
+<td><strong>Mengapa field baru</strong></td>
+<td>Menghindari perubahan pada field existing yang banyak dipakai modul lain</td>
+</tr>
+<tr>
+<td><strong>Pengecualian</strong></td>
+<td>Transaksi sistem otomatis (bagi hasil, biaya admin, dll.) tetap dikecualikan dari hitungan aktivitas</td>
+</tr>
+<tr>
+<td><strong>Konfigurasi</strong></td>
+<td>Daftar transaksi yang dikecualikan dapat dikelola via <strong>Parameter Transaksi</strong> — fleksibel</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="posisi-update-ketiga-field">Posisi Update Ketiga Field</h2>
+<h3 id="mekanisme-update-kapan-siapa">Mekanisme Update (Kapan &amp; Siapa)</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>tgl_transaksi_terakhir</code></th>
+<th><code>tgl_aktivitas_nonfin_terakhir</code></th>
+<th><code>tgl_aktivitas_terakhir</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Diupdate oleh</strong></td>
+<td>Proses posting transaksi (real-time)</td>
+<td>Insert ke <code>rekeningaktivitasnonfin</code> (real-time)</td>
+<td>Proses EOD (batch harian)</td>
+</tr>
+<tr>
+<td><strong>Waktu update</strong></td>
+<td>Saat transaksi diposting</td>
+<td>Saat nasabah melakukan aktivitas non-fin</td>
+<td>Satu kali per hari, saat EOD</td>
+</tr>
+<tr>
+<td><strong>Sumber nilai</strong></td>
+<td><code>tanggal_transaksi</code> dari tabel Transaksi</td>
+<td><code>tanggal_aktivitas</code> dari <code>rekeningaktivitasnonfin</code></td>
+<td><code>MAX(tgl_transaksi_terakhir, tgl_aktivitas_nonfin_terakhir)</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kondisi-update-per-skenario-eod">Kondisi Update per Skenario EOD</h3>
+<table>
+<thead>
+<tr>
+<th>Kondisi</th>
+<th><code>tgl_transaksi_terakhir</code></th>
+<th><code>tgl_aktivitas_nonfin_terakhir</code></th>
+<th><code>tgl_aktivitas_terakhir</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ada transaksi finansial nasabah hari ini</td>
+<td>Sudah ter-<code>UPDATE</code> saat posting</td>
+<td>Tidak berubah</td>
+<td><code>UPDATE</code> ke tanggal hari ini</td>
+</tr>
+<tr>
+<td>Ada aktivitas non-finansial hari ini (cek saldo, cetak buku, dll.)</td>
+<td>Tidak berubah</td>
+<td>Sudah ter-<code>INSERT</code> saat aktivitas terjadi</td>
+<td><code>UPDATE</code> ke tanggal hari ini</td>
+</tr>
+<tr>
+<td>Keduanya ada hari ini</td>
+<td>Sudah ter-<code>UPDATE</code> saat posting</td>
+<td>Sudah ter-<code>INSERT</code></td>
+<td><code>UPDATE</code> ke yang paling baru</td>
+</tr>
+<tr>
+<td>Tidak ada aktivitas apapun hari ini</td>
+<td>Tidak ada <code>UPDATE</code></td>
+<td>Tidak ada <code>UPDATE</code></td>
+<td>Tidak ada <code>UPDATE</code> — nilai dari EOD sebelumnya dipertahankan</td>
+</tr>
+<tr>
+<td>Hanya transaksi sistem hari ini (bagi hasil, biaya admin, dll.)</td>
+<td>Tidak ada <code>UPDATE</code> <em>(dikecualikan)</em></td>
+<td>Tidak ada <code>UPDATE</code></td>
+<td>Tidak ada <code>UPDATE</code> — transaksi sistem tidak dihitung</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="ringkasan-peran-masing-masing-field">Ringkasan Peran Masing-masing Field</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>tgl_transaksi_terakhir</code></th>
+<th><code>tgl_aktivitas_nonfin_terakhir</code></th>
+<th><code>tgl_aktivitas_terakhir</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mencatat</strong></td>
+<td>Transaksi finansial nasabah saja</td>
+<td>Aktivitas non-finansial saja</td>
+<td>Gabungan — ambil yang paling baru</td>
+</tr>
+<tr>
+<td><strong>Acuan perhitungan status rekening</strong></td>
+<td>Jika ada data di tabel transaksi dan parametertransaksi tiak exclude maka tgl_transaksi_terakhir di update</td>
+<td>Jika ada data di tabel rekeningaktivitasnonfin yang sama dengang tgl sistem update tgl_aktivitas_nonfin_terakhir</td>
+<td>Jika Rekening tidak dalam posisi dormant / non aktif lihat tanggal yang paling besar antara tgl_transaksi_terakhir dan tgl_aktivitas_nonfin_terakhir</td>
+</tr>
+<tr>
+<td><strong>Given</strong></td>
+<td>Ada baris di <code>DetilTransaksi</code> JOIN <code>Transaksi</code> untuk rekening ini dengan <code>status_otorisasi = 1</code></td>
+<td>Ada baris di <code>rekeningaktivitasnonfin</code> dengan <code>tanggal_aktivitas</code> = hari ini</td>
+<td><code>RekeningTransaksi.status_rekening = 1</code> (rekening aktif) dan salah satu dari <code>tgl_transaksi_terakhir</code> / <code>tgl_aktivitas_nonfin_terakhir</code> tidak NULL</td>
+</tr>
+<tr>
+<td><strong>When</strong></td>
+<td><code>tipe_exclude_aktivitas_nasabah</code> di <code>parametertransaksiumum</code>: NULL atau tidak ada = ✅ hitung | <code>'F'</code> = ✅ hitung | <code>'D'</code> + <code>jenis_mutasi='C'</code> = ✅ kredit dihitung | <code>'C'</code> + <code>jenis_mutasi='D'</code> = ✅ debit dihitung | <code>'DC'</code> = ❌ exclude semua</td>
+<td><code>tanggal_aktivitas &gt;= Today AND tanggal_aktivitas &lt; Today + 1</code></td>
+<td>— (langsung kalkulasi setelah step 1 &amp; 2 selesai)</td>
+</tr>
+<tr>
+<td><strong>Then</strong></td>
+<td><code>tgl_transaksi_terakhir = Today</code></td>
+<td><code>tgl_aktivitas_nonfin_terakhir = Today</code></td>
+<td><code>tgl_aktivitas_terakhir = GREATEST(NVL(tgl_transaksi_terakhir, tgl_aktivitas_nonfin_terakhir), NVL(tgl_aktivitas_nonfin_terakhir, tgl_transaksi_terakhir))</code> — handles NULL di salah satu sisi</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kondisi-update-bahasa-bisnis">Kondisi Update — Bahasa Bisnis</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>tgl_transaksi_terakhir</code></th>
+<th><code>tgl_aktivitas_nonfin_terakhir</code></th>
+<th><code>tgl_aktivitas_terakhir</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Situasi awal</strong></td>
+<td>Nasabah melakukan transaksi finansial hari ini (setor, tarik, transfer, bayar tagihan) dan transaksi sudah diotorisasi</td>
+<td>Nasabah melakukan aktivitas non-finansial hari ini (cek saldo, cek mutasi, cetak buku tabungan)</td>
+<td>Proses akhir hari (EOD) sedang berjalan dan rekening masih berstatus aktif</td>
+</tr>
+<tr>
+<td><strong>Syarat berlaku</strong></td>
+<td>Jenis transaksi tersebut tidak dikecualikan oleh pengaturan parameter — atau jika dikecualikan sebagian, setidaknya ada sisi (debit/kredit) yang tetap dihitung</td>
+<td>Aktivitas tercatat pada tanggal yang sama dengan tanggal sistem hari ini</td>
+<td>Minimal salah satu dari tanggal transaksi atau tanggal aktivitas non-finansial sudah terisi</td>
+</tr>
+<tr>
+<td><strong>Hasilnya</strong></td>
+<td>Tanggal transaksi terakhir rekening diperbarui menjadi hari ini</td>
+<td>Tanggal aktivitas non-finansial terakhir rekening diperbarui menjadi hari ini</td>
+<td>Tanggal aktivitas terakhir rekening diisi dengan tanggal yang paling baru di antara keduanya — jika salah satu kosong, dipakai yang ada</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="detail-per-field">Detail per Field</h3>
+<h4 id="tgl_transaksi_terakhir"><code>tgl_transaksi_terakhir</code></h4>
+<p><strong>Situasi:</strong> Nasabah melakukan transaksi finansial hari ini (setor, tarik, transfer, bayar tagihan) dan transaksi sudah diotorisasi.</p>
+<p><strong>Data yang dilihat:</strong>
+- <strong>Transaksi</strong> — header transaksi, difilter yang sudah diotorisasi (<code>status_otorisasi = 1</code>)
+- <strong>DetilTransaksi</strong> — detail mutasi per rekening, untuk melihat arah mutasi (debit/kredit)
+- <strong>Parametertransaksiumum</strong> — pengaturan per kode transaksi (<code>tipe_exclude_aktivitas_nasabah</code>):
+  - Tidak terdaftar / kosong → dihitung sebagai aktivitas nasabah
+  - <code>F</code> → dihitung sebagai aktivitas nasabah
+  - <code>D</code> → sisi debit dikecualikan, sisi kredit tetap dihitung
+  - <code>C</code> → sisi kredit dikecualikan, sisi debit tetap dihitung
+  - <code>DC</code> → seluruh transaksi dikecualikan</p>
+<p><strong>Syarat:</strong> Jenis transaksi tersebut tidak dikecualikan oleh pengaturan parameter — atau jika dikecualikan sebagian, setidaknya ada sisi (debit/kredit) yang tetap dihitung.</p>
+<p><strong>Hasil:</strong> Tanggal transaksi terakhir rekening diperbarui menjadi hari ini.</p>
+<p><strong>Contoh kasus:</strong></p>
+<blockquote>
+<p>Rekening 001-123456 memiliki <code>tgl_transaksi_terakhir</code> = 1 Maret 2025. Pada 10 April 2025, nasabah melakukan transfer keluar (debit) sebesar Rp 500.000. Kode transaksi <code>TF</code> terdaftar di parameter dengan <code>tipe_exclude_aktivitas_nasabah = NULL</code>. Karena tidak dikecualikan, EOD 10 April memperbarui <code>tgl_transaksi_terakhir</code> menjadi <strong>10 April 2025</strong>.</p>
+<p>Rekening 001-654321 menerima bagi hasil (kode <code>SD</code>) pada 10 April 2025. Kode <code>SD</code> terdaftar dengan <code>tipe_exclude_aktivitas_nasabah = 'DC'</code>. Karena seluruh transaksi dikecualikan, <code>tgl_transaksi_terakhir</code> <strong>tidak berubah</strong>.</p>
+</blockquote>
+<hr />
+<h4 id="tgl_aktivitas_nonfin_terakhir"><code>tgl_aktivitas_nonfin_terakhir</code></h4>
+<p><strong>Situasi:</strong> Nasabah melakukan aktivitas non-finansial hari ini (cek saldo, cek mutasi, cetak buku tabungan).</p>
+<p><strong>Data yang dilihat:</strong>
+- <strong>RekeningAktivitasNonfin</strong> — log aktivitas non-finansial per rekening, difilter <code>tanggal_aktivitas</code> yang jatuh pada hari ini</p>
+<p><strong>Syarat:</strong> Aktivitas tercatat pada tanggal yang sama dengan tanggal sistem hari ini.</p>
+<p><strong>Hasil:</strong> Tanggal aktivitas non-finansial terakhir rekening diperbarui menjadi hari ini.</p>
+<p><strong>Contoh kasus:</strong></p>
+<blockquote>
+<p>Rekening 001-123456 memiliki <code>tgl_aktivitas_nonfin_terakhir</code> = 5 Januari 2025. Pada 10 April 2025, nasabah mengecek saldo via ATM — sistem mencatat satu baris di <code>RekeningAktivitasNonfin</code> dengan <code>tanggal_aktivitas = 10 April 2025</code>. EOD 10 April memperbarui <code>tgl_aktivitas_nonfin_terakhir</code> menjadi <strong>10 April 2025</strong>.</p>
+<p>Rekening 001-654321 tidak ada aktivitas non-finansial sama sekali pada 10 April 2025. Tidak ada baris baru di <code>RekeningAktivitasNonfin</code>, sehingga <code>tgl_aktivitas_nonfin_terakhir</code> <strong>tidak berubah</strong>.</p>
+</blockquote>
+<hr />
+<h4 id="tgl_aktivitas_terakhir"><code>tgl_aktivitas_terakhir</code></h4>
+<p><strong>Situasi:</strong> Proses akhir hari (EOD) sedang berjalan dan rekening masih berstatus aktif.</p>
+<p><strong>Data yang dilihat:</strong>
+- <strong>RekeningTransaksi</strong> — status rekening, difilter <code>status_rekening = 1</code> (rekening aktif)
+- <strong>rekeningliabilitas</strong> — nilai <code>tgl_transaksi_terakhir</code> dan <code>tgl_aktivitas_nonfin_terakhir</code> yang sudah diperbarui di dua langkah sebelumnya</p>
+<p><strong>Syarat:</strong> Minimal salah satu dari tanggal transaksi atau tanggal aktivitas non-finansial sudah terisi.</p>
+<p><strong>Hasil:</strong> Tanggal aktivitas terakhir rekening diisi dengan tanggal yang paling baru di antara keduanya — jika salah satu kosong, dipakai yang ada.</p>
+<p><strong>Contoh kasus:</strong></p>
+<blockquote>
+<p>Setelah EOD 10 April 2025: <code>tgl_transaksi_terakhir</code> = 10 April (ada transfer), <code>tgl_aktivitas_nonfin_terakhir</code> = 5 Januari (tidak ada aktivitas non-fin hari ini). Sistem mengambil yang paling baru → <code>tgl_aktivitas_terakhir</code> = <strong>10 April 2025</strong>.</p>
+<p>Setelah EOD 11 April 2025: tidak ada transaksi finansial maupun non-finansial. <code>tgl_transaksi_terakhir</code> tetap 10 April, <code>tgl_aktivitas_nonfin_terakhir</code> tetap 5 Januari. Tidak ada yang lebih baru → <code>tgl_aktivitas_terakhir</code> tetap <strong>10 April 2025</strong>.</p>
+<p>Rekening yang <code>tgl_transaksi_terakhir</code> kosong (belum pernah bertransaksi), namun <code>tgl_aktivitas_nonfin_terakhir</code> = 10 April (pernah cek saldo). Sistem memakai yang ada → <code>tgl_aktivitas_terakhir</code> = <strong>10 April 2025</strong>.</p>
+</blockquote>
+<hr />
+<h3 id="tabel-contoh-kasus-gabungan">Tabel Contoh Kasus Gabungan</h3>
+<p><code>Tanggal Sistem</code> : 2 April 2026</p>
+<p><code>tgl_transaksi_terakhir</code> = 15 Jan 2026</p>
+<p><code>tgl_aktivitas_nonfin_terakhir</code> = 20 Feb 2026</p>
+<p><code>tgl_aktivitas_terakhir</code> = 20 Feb 2026</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Skenario hari ini (2 Apr 2026)</th>
+<th><code>tgl_transaksi_terakhir</code></th>
+<th><code>tgl_aktivitas_nonfin_terakhir</code></th>
+<th><code>tgl_aktivitas_terakhir</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Nasabah transfer (kode <code>TF</code>, tidak dikecualikan)</td>
+<td>~~15 Jan~~ → <strong>02 Apr 2026</strong></td>
+<td>20 Feb 2026</td>
+<td>~~20 Feb~~ → <strong>02 Apr 2026</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Nasabah cek saldo via ATM</td>
+<td>15 Jan 2026</td>
+<td>~~20 Feb~~ → <strong>02 Apr 2026</strong></td>
+<td>~~20 Feb~~ → <strong>02 Apr 2026</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nasabah transfer sekaligus cek mutasi</td>
+<td>~~15 Jan~~ → <strong>02 Apr 2026</strong></td>
+<td>~~20 Feb~~ → <strong>02 Apr 2026</strong></td>
+<td>~~20 Feb~~ → <strong>02 Apr 2026</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Hanya terima bagi hasil (kode <code>SD</code>, <code>tipe = DC</code>)</td>
+<td>15 Jan 2026 <em>(dikecualikan)</em></td>
+<td>20 Feb 2026</td>
+<td>20 Feb 2026</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Tidak ada aktivitas apapun</td>
+<td>15 Jan 2026</td>
+<td>20 Feb 2026</td>
+<td>20 Feb 2026</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Rekening baru — belum pernah bertransaksi, baru pertama cek saldo</td>
+<td><em>(NULL)</em></td>
+<td>NULL → <strong>02 Apr 2026</strong></td>
+<td>NULL → <strong>02 Apr 2026</strong> <em>(diambil dari nonfin)</em></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Terima autodebit (kode <code>AD</code>, <code>tipe = D</code>) + nasabah juga setor tunai (kredit)</td>
+<td>~~15 Jan~~ → <strong>02 Apr 2026</strong> <em>(kredit setor dihitung)</em></td>
+<td>20 Feb 2026</td>
+<td>~~20 Feb~~ → <strong>02 Apr 2026</strong></td>
+</tr>
+<tr>
+<td>8a</td>
+<td>Pindah Buku masuk — rekening <strong>menerima</strong> dana (kredit, kode <code>PB</code>, <code>tipe = DC</code>)</td>
+<td>15 Jan 2026 <em>(PB dikecualikan penuh, tidak berubah)</em></td>
+<td>20 Feb 2026</td>
+<td>20 Feb 2026</td>
+</tr>
+<tr>
+<td>8b</td>
+<td>Pindah Buku keluar — rekening <strong>mengirim</strong> dana (debit, kode <code>PB</code>, <code>tipe = DC</code>)</td>
+<td>15 Jan 2026 <em>(PB dikecualikan penuh, tidak berubah)</em></td>
+<td>20 Feb 2026</td>
+<td>20 Feb 2026</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Kembali ke atas
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Tersalin ke clipboard", "clipboard.copy": "Salin ke clipboard", "search.result.more.one": "1 lagi di halaman ini", "search.result.more.other": "# lagi di halaman ini", "search.result.none": "Tidak ada dokumen yang sesuai", "search.result.one": "1 dokumen ditemukan", "search.result.other": "# dokumen ditemukan", "search.result.placeholder": "Ketik untuk mulai pencarian", "search.result.term.missing": "Tidak ada", "select.version": "Pilih versi"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

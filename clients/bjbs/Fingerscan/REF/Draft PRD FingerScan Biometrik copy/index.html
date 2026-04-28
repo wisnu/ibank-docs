@@ -1,0 +1,3522 @@
+
+<!doctype html>
+<html lang="id" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dokumentasi aplikasi core banking iBank">
+      
+      
+      
+        <link rel="canonical" href="https://wisnu.github.io/ibank-docs/clients/bjbs/Fingerscan/REF/Draft%20PRD%20FingerScan%20Biometrik%20copy/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Draft PRD FingerScan Biometrik copy - iBank Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<meta name="robots" content="noindex, nofollow" />
+
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Lewati ke isi
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="iBank Documentation" class="md-header__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            iBank Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Draft PRD FingerScan Biometrik copy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cari" placeholder="Cari" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cari">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Kosongkan" aria-label="Kosongkan" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Mempersiapkan pencarian
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tab" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../public/" class="md-tabs__link">
+          
+  
+  
+  Public
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../private/" class="md-tabs__link">
+          
+  
+  
+  Private
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../ihsansolusi/ibank/GL/TSD%20Architecture/" class="md-tabs__link">
+          
+  
+  
+  iBank
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../FSD_Fingerscan_Biometrik/" class="md-tabs__link">
+          
+  
+  
+  Clients
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../FSD_Fingerscan_Biometrik/" class="md-tabs__link">
+          
+  
+  
+  BJBS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../bcas/enhance_dormant/dormant_fsd/" class="md-tabs__link">
+          
+  
+  
+  BCAS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigasi" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="iBank Documentation" class="md-nav__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    iBank Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../public/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Private
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Private
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../private/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iBank
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    iBank
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    General Ledger
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    General Ledger
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/TSD%20Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2" id="__nav_4_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chart of Account
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/PRD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/FSD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_3" id="__nav_4_1_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA List
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA List
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/list/FSD_COA_List/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_4" id="__nav_4_1_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Create
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Create
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/create/FSD_COA_Create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Create
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_5" id="__nav_4_1_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Edit
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Edit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/edit/FSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/edit/TSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/edit/TEST_COA_Edit.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEST - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/edit/referensi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referensi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Neraca / Laba Rugi
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/balance-sheet/FSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/balance-sheet/TSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_4" id="__nav_4_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trial Balance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/trial-balance/FSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/trial-balance/TSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_5" id="__nav_4_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buku Besar
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Buku Besar
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/ledger/placeholder.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coming Soon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clients
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_1" id="__nav_5_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FSD_Fingerscan_Biometrik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_2" id="__nav_5_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_1" id="__nav_5_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_presentasi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_2" id="__nav_5_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FSD_Fingerscan_Biometrik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_presentasi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Daftar isi">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p><img alt="" src="media/image1.png" />{width="2.2968755468066493in"
+height="1.6734372265966755in"}</p>
+<p>Dipersiapkan oleh</p>
+<p><img alt="A black text on a white background Description automatically
+generated" src="media/image3.png" />{width="3.596268591426072in"
+height="0.8567913385826772in"}</p>
+<p>PT Ihsan Solusi Informatika</p>
+<p>Jl. PHH Mustofa No. 39</p>
+<p>Ruko Surapati Core C-7 Bandung</p>
+<hr />
+<p><strong>Nomor Dokumen</strong>                                             <strong>Halaman</strong></p>
+<hr />
+<p><strong>PRD-BJBS-FingerScan-01</strong>                                    </p>
+<p><strong>Versi</strong>                    1.0.0                            2025</p>
+<hr />
+<h1 id="_1"></h1>
+<h1 id="author">AUTHOR</h1>
+<hr />
+<p><strong>Nama</strong>                                            <strong>Role</strong></p>
+<hr />
+<p><a href="mailto:auliardana@gmail.com">[Aulia Riefqi                                    <br />
+  Ardana]{.underline}</a>   </p>
+<hr />
+<h1 id="daftar-perubahan">DAFTAR PERUBAHAN</h1>
+<hr />
+<p><strong>Versi</strong>   <strong>Tanggal</strong>   <strong>Direview    </strong>Disetujui   <strong>Ringkasan Perubahan</strong>
+                            oleh<strong>        oleh</strong>        </p>
+<hr />
+<hr />
+<h1 id="daftar-isi">DAFTAR ISI</h1>
+<p><a href="#author"><strong>AUTHOR 2</strong></a></p>
+<p><a href="#daftar-perubahan"><strong>DAFTAR PERUBAHAN 3</strong></a></p>
+<p><a href="#daftar-isi"><strong>DAFTAR ISI 4</strong></a></p>
+<p><a href="#tujuan"><strong>Tujuan 5</strong></a></p>
+<p><a href="#ringkasan-sistem"><strong>Ringkasan Sistem 5</strong></a></p>
+<p><a href="#ruang-lingkup"><strong>Ruang Lingkup 5</strong></a></p>
+<p><a href="#list-requirement"><strong>List Requirement 6</strong></a></p>
+<blockquote>
+<p><a href="#a.-fungsional-functional-requirements">A. Fungsional (Functional Requirements)
+6</a></p>
+<p><a href="#b.-non-fungsional-non-functional-requirements">B. Non-Fungsional (Non-Functional Requirements)
+7</a></p>
+<p><a href="#c.-integrasi-integration-requirements">C. Integrasi (Integration Requirements)
+7</a></p>
+<p><a href="#d.-keamanan-security-requirements">D. Keamanan (Security Requirements)
+8</a></p>
+<p><a href="#e.-operasional-operational-requirements">E. Operasional (Operational Requirements)
+8</a></p>
+<p><a href="#f.-risiko-mitigasi-risk-control-requirements">F. Risiko &amp; Mitigasi (Risk Control Requirements)
+9</a></p>
+<p><a href="#g.-audit-logging">G. Audit &amp; Logging 9</a></p>
+<p><a href="#h.-acceptance-criteria">H. Acceptance Criteria 10</a></p>
+</blockquote>
+<p><a href="#activity-diagram">Activity Diagram 11</a></p>
+<p><a href="#wireframe">Wireframe 12</a></p>
+<p><a href="#arsitektur-sistem">Arsitektur Sistem 12</a></p>
+<h1 id="_2"></h1>
+<h1 id="tujuan">Tujuan</h1>
+<p>Menetapkan spesifikasi produk untuk pengembangan <strong>fitur otorisasi
+transaksi berbasis sidik jari (finger scan biometrik)</strong> di seluruh
+jaringan kantor Bank.</p>
+<ul>
+<li>
+<p>Mengganti otorisasi berbasis password menjadi sidik jari.</p>
+</li>
+<li>
+<p>Meningkatkan keamanan dan mengurangi fraud internal.</p>
+</li>
+<li>
+<p>Memastikan kehadiran fisik approval.</p>
+</li>
+<li>
+<p>Mempercepat proses layanan transaksi.</p>
+</li>
+</ul>
+<h1 id="ringkasan-sistem">Ringkasan Sistem</h1>
+<p>Komponen Sistem</p>
+<ul>
+<li>
+<p>Hardware: DigitalPersona 4500 Fingerprint Reader.</p>
+</li>
+<li>
+<p>Fingerprint Service &amp; Fingerprint FE untuk verifikasi</p>
+</li>
+<li>
+<p>Enrollment Service untuk pendaftaran awal user.</p>
+</li>
+<li>
+<p>Central Repository: Database biometrik terenkripsi.</p>
+</li>
+</ul>
+<h1 id="ruang-lingkup">Ruang Lingkup</h1>
+<p>In Scope:</p>
+<ul>
+<li>
+<p>Enrollment biometrik</p>
+</li>
+<li>
+<p>Device yang digunakan DigitalPersona 4500 Fingerprint Reader</p>
+</li>
+<li>
+<p>Integrasi dengan aplikasi berikut : DAF , BDS CS Teller</p>
+</li>
+<li>
+<p>Menyediakan service integrasi dengan surrounding apps via Fingerprint
+  Service</p>
+</li>
+<li>
+<p>Penyimpanan template terenkripsi</p>
+</li>
+</ul>
+<p>Out of Scope:</p>
+<ul>
+<li>
+<p>Biometrik selain sidik jari</p>
+</li>
+<li>
+<p>Login sistem</p>
+</li>
+<li>
+<p>Proses integrasi dengan surrounding apps tidak termasuk dalam timeline
+  utama</p>
+</li>
+</ul>
+<h1 id="list-requirement">List Requirement</h1>
+<h2 id="a-fungsional-functional-requirements">A. Fungsional (Functional Requirements)</h2>
+<p>+----+--------------------------------+--------------------------------+
+| ID | Nama Requirement               | Deskripsi                      |
++====+================================+================================+
+| 01 | Enrollment                     | Sistem menyediakan modul       |
+|    |                                | pendaftaran sidik jari untuk   |
+|    |                                | user definitif dan alternate.  |
++----+--------------------------------+--------------------------------+
+| 02 | Dual Finger                    | Sistem dapat merekam minimal   |
+|    |                                | dua sidik jari kedua tangan    |
+|    |                                | dengan parameterize.           |
++----+--------------------------------+--------------------------------+
+| 03 | Central Repository             | Data template sidik jari       |
+|    |                                | disimpan secara terpusat di    |
+|    |                                | database fingerprint.          |
++----+--------------------------------+--------------------------------+
+| 04 | Verification Process           | Sistem melakukan verifikasi    |
+|    |                                | fingerprint setiap kali        |
+|    |                                | approval dilakukan.            |
++----+--------------------------------+--------------------------------+
+| 05 | Approval Workflow              | Approval tidak dapat dilakukan |
+|    |                                | tanpa verifikasi fingerprint   |
+|    |                                | yang valid.                    |
++----+--------------------------------+--------------------------------+
+| 06 | Lock Mechanism                 | Sistem harus mengunci akun     |
+|    |                                | setelah 3 kali percobaan       |
+|    |                                | verifikasi gagal.              |
+|    |                                |                                |
+|    |                                | Skemanya seperti buka blokir,  |
+|    |                                | yang di lock user nya di level |
+|    |                                | fingerprint                    |
++----+--------------------------------+--------------------------------+
+| 07 | Fallback Password              | Fallback password dapat        |
+|    |                                | dilakukan dengan persetujuan   |
+|    |                                | user kantor pusat (TI).        |
+|    |                                | Fallback password hanya dapat  |
+|    |                                | ditentukan berapa hari atau    |
+|    |                                | ada durasi tertentu. Dan       |
+|    |                                | setelah lewat durasi akan      |
+|    |                                | kembali menggunakan            |
+|    |                                | fingerprint.                   |
++----+--------------------------------+--------------------------------+
+| 08 | Audit Trail                    | Semua aktivitas verifikasi dan |
+|    |                                | approval dicatat secara        |
+|    |                                | lengkap dengan event (kode     |
+|    |                                | aplikasi, jenis transaksi,     |
+|    |                                | waktu approval, Reference      |
+|    |                                | number, IP, input              |
+|    |                                | authorization, user input,     |
+|    |                                | user author, jam, hari)        |
++----+--------------------------------+--------------------------------+</p>
+<h2 id="_3"></h2>
+<h2 id="b-non-fungsional-non-functional-requirements">B. Non-Fungsional (Non-Functional Requirements)</h2>
+<hr />
+<p>ID      Nama Requirement                Deskripsi</p>
+<hr />
+<p>NF-01   Encryption                      Data biometrik harus dienkripsi
+                                          at rest dan in transit.</p>
+<p>NF-02   Response Time                   Verifikasi fingerprint maksimal
+                                          30 detik.</p>
+<p>NF-03   Availability                    Sistem beroperasi selama jam
+                                          kerja tanpa downtime.</p>
+<p>NF-04   Performance                     Menangani concurrent
+                                          verification requests.</p>
+<hr />
+<h2 id="_4"></h2>
+<h2 id="c-integrasi-integration-requirements">C. Integrasi (Integration Requirements)</h2>
+<hr />
+<p>ID     Nama Requirement                 Deskripsi</p>
+<hr />
+<p>I-01   [DAF-Core] Produk Parameter &gt; Terhubung dengan proses
+         Otorisasi Entri Data             otorisasi menu produk dan
+                                          parameter modul daf-core.</p>
+<p>I-02   [DAF-Core] Layanan dan         Terhubung dengan proses
+         Transaksi Counter &gt; Otorisasi   otorisasi menu layanan dan
+         Entri Data                       transaksi counter pada modul
+                                          daf-core</p>
+<p>I-03   [DAF-Core] Layanan dan         Terhubung dengan proses
+         Transaksi Counter &gt; Otorisasi   otorisasi menu layanan dan
+         Transaksi Teller dan Back Office transaksi counter - otorisasi
+                                          transaksi teller dan back office
+                                          pada modul daf-core</p>
+<p>I-04   [DAF-Core] Treasury &gt;         Terhubung dengan proses
+         Otorisasi Entri Data             otorisasi menu Treasury pada
+                                          modul daf-core</p>
+<p>I-05   [DAF-Financing] Financing &gt;   Terhubung dengan proses
+         Otorisasi Entri Data             otorisasi menu Financing pada
+                                          modul daf-financing</p>
+<p>I-06   [DAF-Financing] Financing &gt;   Terhubung dengan proses override
+         Override Entri Data              menu Financing pada modul
+                                          daf-financing</p>
+<p>I-07   [DAF-Treasury] Treasury &gt;     Terhubung dengan proses
+         Otorisasi Entri Data             otorisasi menu Tresuary pada
+                                          modul daf-treasury</p>
+<p>I-08   [DAF-Treasury] Treasury &gt;     Terhubung dengan proses override
+         Override Entri Data              menu Treasury pada modul
+                                          daf-treasury</p>
+<p>I-09   [DAF-Enterprise] Enterprise &gt; Terhubung dengan proses
+         Authorization List               otorisasi menu Enterprise pada
+                                          modul daf-enterprise</p>
+<p>I-10   [BDS-CS Teller] Otorisasi      Terhubung dengan proses otorisa
+         Entri Data                       di List Otorisasi Entri Data Web
+                                          BDS untuk teller &amp; CS.</p>
+<p>I-11   [BDS-CS Teller] Otorisasi      Terhubung dengan proses otorisa
+         Entri Data                       di List Otorisasi Entri Data Web
+                                          BDS untuk teller &amp; CS.</p>
+<p>I-12   Service Fingerprint              Menyediakan service untuk
+                                          mendukung verifikasi dari
+                                          surrounding apps misalnya : CMS,
+                                          VA, QRIS, CAM, VMS</p>
+<hr />
+<h2 id="_5"></h2>
+<h2 id="d-keamanan-security-requirements">D. Keamanan (Security Requirements)</h2>
+<hr />
+<p>ID     Nama Requirement                 Deskripsi</p>
+<hr />
+<p>S-01   Encrypted Template               Hanya template fingerprint yang
+                                          disimpan (bukan gambar mentah).</p>
+<p>S-02   Secure Channel                   Komunikasi antar komponen wajib
+                                          HTTPS + mTLS.</p>
+<p>S-03   OIDC Integration                 Autentikasi user menggunakan
+                                          OIDC (SSO internal).</p>
+<p>S-04   Access Policy                    Hanya user aktif HRMIS yang
+                                          dapat diverifikasi.</p>
+<p>S-05   Redis Cache                      Redis hanya menyimpan data
+                                          verifikasi sementara.</p>
+<hr />
+<h2 id="_6"></h2>
+<h2 id="e-operasional-operational-requirements">E. Operasional (Operational Requirements)</h2>
+<hr />
+<p>ID     Nama Requirement                 Deskripsi</p>
+<hr />
+<p>O-01   Deployment                       Enrollment definitif di Kantor
+                                          Pusat, alternate di Cabang.</p>
+<p>O-02   Device Distribution              Perangkat tersedia di meja
+                                          maker/approval.</p>
+<p>O-03   Device Type                      Menggunakan DigitalPersona 4500
+                                          Fingerprint Reader.</p>
+<p>O-04   Training                         User wajib mengikuti pelatihan
+                                          penggunaan perangkat.</p>
+<hr />
+<h2 id="_7"></h2>
+<h2 id="f-risiko-mitigasi-risk-control-requirements">F. Risiko &amp; Mitigasi (Risk Control Requirements)</h2>
+<hr />
+<p>ID     Nama Requirement                 Deskripsi</p>
+<hr />
+<p>R-01   Perangkat rusak                  Gunakan fallback password
+                                          sementara.</p>
+<p>R-02   User tidak bisa scan             Gunakan jari cadangan saat
+                                          enrollment.</p>
+<p>R-03   Fraud approval alternate         Wajib SK penugasan alternate.</p>
+<p>R-04   Keterlambatan approval           Distribusi device di meja maker.</p>
+<hr />
+<h2 id="_8"></h2>
+<h2 id="g-audit-logging">G. Audit &amp; Logging</h2>
+<hr />
+<p>ID     Nama Requirement                 Deskripsi</p>
+<hr />
+<p>A-01   Log Completeness                 Log mencatat semua aktivitas
+                                          verifikasi dan transaksi.</p>
+<p>A-02   Log Accessibility                Log hanya diakses auditor &amp; TI
+                                          pusat.</p>
+<p>A-03   Log Retention                    Log disimpan minimal 2 tahun.</p>
+<p>A-04   Audit Report                     Sistem menyediakan laporan audit
+                                          fingerprint usage.</p>
+<hr />
+<h2 id="_9"></h2>
+<h2 id="h-acceptance-criteria">H. Acceptance Criteria</h2>
+<hr />
+<p>ID      Nama Requirement                 Deskripsi</p>
+<hr />
+<p>AC-01   Kecepatan Verifikasi             \&lt; 5 detik per scan.</p>
+<p>AC-02   Akurasi                          ≥ 97% match.</p>
+<p>AC-03   Lock Mechanism                   3x gagal → user terkunci.</p>
+<p>AC-04   Audit Trail                      Semua log tercatat lengkap.</p>
+<p>AC-05   Fallback Password                Status user dapat diubah
+                                           menggunakan password .</p>
+<hr />
+<h1 id="_10"></h1>
+<h1 id="activity-diagram">Activity Diagram</h1>
+<p><img alt="" src="media/image2.png" />{width="4.872139107611549in"
+height="7.505208880139983in"}</p>
+<h1 id="wireframe">Wireframe</h1>
+<h1 id="arsitektur-sistem">Arsitektur Sistem</h1>
+<p><img alt="" src="media/image4.png" />{width="4.28125in" height="5.926208442694663in"}</p>
+<p>Diagram di atas memperlihatkan integrasi antara sistem baru (berwarna
+biru) dengan sistem eksisting (berwarna hijau).\
+\
+<strong>Penjelasan Layer:</strong></p>
+<p>a. Layer Atas</p>
+<ul>
+<li>
+<p>Fingerprint Service, REDIS dan DB Fingerprint: modul middleware yang
+  memverifikasi template terhadap database biometrik dan mengelola cache
+  melalui Redis.</p>
+</li>
+<li>
+<p>OIDC: menangani autentikasi user berbasis SSO.</p>
+</li>
+<li>
+<p>HRMIS: sumber data karyawan aktif.</p>
+</li>
+</ul>
+<p>b. Layer Tengah -- Integrasi Sistem Eksisting Front-End &amp; Integrasi
+Sistem Eksisting Service</p>
+<ul>
+<li>Fingerprint Management : antarmuka yang menghubungkan device dengan
+  layanan Fingerprint Service.</li>
+</ul>
+<!-- -->
+
+<ul>
+<li>
+<p>DAF dan BDS: aplikasi core banking yang memanfaatkan Fingerprint
+  Service untuk approval transaksi</p>
+</li>
+<li>
+<p>Surrounding Apps: sistem pendukung (CMS, APUPPT, VA, QRIS, dll.) yang
+  juga dapat terhubung dengan Fingerprint Service.</p>
+</li>
+</ul>
+<p>c. Layer Bawah -- Fingerstation &amp; Device</p>
+<ul>
+<li>
+<p>Fingerprint Device: perangkat DigitalPersona 4500 yang menangkap data
+  biometrik</p>
+</li>
+<li>
+<p>Fingerstation: aplikasi lokal untuk konversi hasil scan ke template
+  digital.</p>
+</li>
+</ul>
+<p><strong>Komponen Utama :</strong></p>
+<ol>
+<li>
+<p><strong>Fingerstation\
+    Peran utama:</strong></p>
+</li>
+<li>
+<p>Menjadi penghubung antara perangkat fingerprint fisik (scanner) dan
+  sistem backend.</p>
+</li>
+<li>
+<p>Melakukan proses perekaman (capture) dan pengiriman hasil fingerprint
+  ke layanan pusat.</p>
+</li>
+</ol>
+<p><strong>Interaksi</strong>:</p>
+<ul>
+<li>
+<p>Menerima perintah capture dari Fingerscan Service melalui koneksi
+  aman.</p>
+</li>
+<li>
+<p>Mengirim hasil tangkapan sidik jari (template) kembali ke Fingerscan
+  Service.</p>
+</li>
+<li>
+<p>Beroperasi pada perangkat di teller, counter cabang, atau terminal
+  yang memiliki device reader fingerscan.</p>
+</li>
+</ul>
+<p><strong>Catatan</strong>:</p>
+<blockquote>
+<p>Station tidak menyimpan data biometrik permanen. Semua hasil dikirim
+ke server pusat untuk diproses lebih lanjut.</p>
+</blockquote>
+<ol>
+<li><strong>Fingercan Service</strong></li>
+</ol>
+<blockquote>
+<p><strong>Peran utama:</strong></p>
+</blockquote>
+<ul>
+<li>
+<p>Mengatur seluruh siklus hidup proses verifikasi sidik jari --- mulai
+  dari pembuatan sesi, pemilihan station, hingga pencocokan hasil.</p>
+</li>
+<li>
+<p>Menjadi pusat komunikasi antara aplikasi bisnis dan station.</p>
+</li>
+<li>
+<p>Membuat dan mengelola session verifikasi.</p>
+</li>
+<li>
+<p>Mengirim perintah capture ke station yang aktif di cabang terkait.</p>
+</li>
+<li>
+<p>Melakukan matching antara hasil fingerprint dengan template yang
+  tersimpan.</p>
+</li>
+<li>
+<p>Mengirim hasil akhir (sukses/gagal) ke sistem aplikasi bisnis.</p>
+</li>
+<li>
+<p>Melakukan counter kegagalan, jika melebihi batas maksimal gagal akan
+  blokir user fingerscan.</p>
+</li>
+</ul>
+<p><strong>Interaksi:</strong></p>
+<ul>
+<li>
+<p>Berkomunikasi dua arah dengan Station melalui WebSocket aman.</p>
+</li>
+<li>
+<p>Menerima permintaan capture dari Business App melalui API REST/HTTPS.</p>
+</li>
+<li>
+<p>Menyampaikan hasil ke Business App (Core Banking / Authorization
+  Service) melalui API REST/HTTPS.</p>
+</li>
+<li>
+<p>Database fingerscan dan REDIS</p>
+</li>
+<li>
+<p><strong>Fingercan Management</strong></p>
+</li>
+</ul>
+<blockquote>
+<p><strong>Peran utama:</strong></p>
+<p><strong>Portal web administratif</strong> yang digunakan oleh petugas operasional
+dan administrator untuk:</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>Mengelola perangkat</strong> (station dan reader) yang terhubung ke sistem
+  biometrik.</p>
+</li>
+<li>
+<p><strong>Melakukan enrollment</strong> pengguna baru (pegawai atau nasabah) dengan
+  sidik jari.</p>
+</li>
+<li>
+<p><strong>Mengatur kebijakan &amp; parameter sistem</strong> seperti batas waktu
+  (timeout), minimal jari terdaftar.</p>
+</li>
+<li>
+<p><strong>Memantau kesehatan dan status station</strong> di seluruh cabang secara
+  real-time.</p>
+</li>
+<li>
+<p><strong>Melihat audit log dan aktivitas sistem</strong> terkait verifikasi serta
+  enrollment.</p>
+</li>
+</ul>
+<blockquote>
+<p>Portal ini menjadi <strong>antarmuka visual utama</strong> dari sistem Fingerscan
+yang menghubungkan pengguna non-teknis dengan layanan backend
+<strong>Fingerscan Service</strong>.</p>
+</blockquote>
+<p><strong>Interaksi:</strong></p>
+<ul>
+<li>
+<p>Berkomunikasi dengan <strong>Fingerscan Service</strong> melalui REST/HTTPS untuk
+  semua operasi CRUD dan konfigurasi.</p>
+</li>
+<li>
+<p>Menerima data status dan hasil enrollment real-time dari <strong>Fingerscan
+  Service</strong>.</p>
+</li>
+<li>
+<p>Menggunakan <strong>OIDC / Identity Provider</strong> untuk autentikasi pengguna.</p>
+</li>
+<li>
+<p>Mengakses database audit dan registry perangkat melalui <strong>Fingerscan
+  Service</strong></p>
+</li>
+<li>
+<p><strong>Business Applications (DAF, BDS, and Surrounding Apps)</strong></p>
+</li>
+</ul>
+<p><strong>Peran utama:</strong></p>
+<ul>
+<li>
+<p>Berfungsi sebagai aplikasi bisnis yang memanfaatkan layanan Fingerscan
+  service untuk otorisasi transaksi dan autentikasi pengguna.</p>
+</li>
+<li>
+<p>Menjadi titik awal interaksi pengguna terhadap proses verifikasi sidik
+  jari di sistem perbankan atau layanan internal.</p>
+</li>
+<li>
+<p>Melanjutkan proses approval ke alur transaksi atau penyimpanan data ,
+  jika otentikasi biometrik berhasil .</p>
+</li>
+</ul>
+<p><strong>Interaksi:</strong></p>
+<ul>
+<li>
+<p>Berkomunikasi langsung dengan <strong>Fingerscan Service</strong> melalui API REST
+  untuk membuat dan memantau sesi verifikasi.</p>
+</li>
+<li>
+<p>Melanjutkan proses data setelah hasil verifikasi diterima.**\
+  **</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>Catatan:</strong></p>
+<p>Business Applications hanya memicu dan mengonsumsi hasil verifikasi
+--- tidak menangani proses capture atau matching sidik jari. Semua
+logika biometrik berada di sisi <strong>Fingerscan Service</strong> dan
+<strong>Fingerstation.</strong></p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Kembali ke atas
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Tersalin ke clipboard", "clipboard.copy": "Salin ke clipboard", "search.result.more.one": "1 lagi di halaman ini", "search.result.more.other": "# lagi di halaman ini", "search.result.none": "Tidak ada dokumen yang sesuai", "search.result.one": "1 dokumen ditemukan", "search.result.other": "# dokumen ditemukan", "search.result.placeholder": "Ketik untuk mulai pencarian", "search.result.term.missing": "Tidak ada", "select.version": "Pilih versi"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

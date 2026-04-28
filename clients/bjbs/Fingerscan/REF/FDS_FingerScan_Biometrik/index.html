@@ -1,0 +1,6489 @@
+
+<!doctype html>
+<html lang="id" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dokumentasi aplikasi core banking iBank">
+      
+      
+      
+        <link rel="canonical" href="https://wisnu.github.io/ibank-docs/clients/bjbs/Fingerscan/REF/FDS_FingerScan_Biometrik/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>FUNCTIONAL DESIGN SPECIFICATION (FDS) - iBank Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<meta name="robots" content="noindex, nofollow" />
+
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#functional-design-specification-fds" class="md-skip">
+          Lewati ke isi
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="iBank Documentation" class="md-header__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            iBank Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FUNCTIONAL DESIGN SPECIFICATION (FDS)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Cari" placeholder="Cari" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Cari">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Kosongkan" aria-label="Kosongkan" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Mempersiapkan pencarian
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tab" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../public/" class="md-tabs__link">
+          
+  
+  
+  Public
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../private/" class="md-tabs__link">
+          
+  
+  
+  Private
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../ihsansolusi/ibank/GL/TSD%20Architecture/" class="md-tabs__link">
+          
+  
+  
+  iBank
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../FSD_Fingerscan_Biometrik/" class="md-tabs__link">
+          
+  
+  
+  Clients
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../FSD_Fingerscan_Biometrik/" class="md-tabs__link">
+          
+  
+  
+  BJBS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../bcas/enhance_dormant/dormant_fsd/" class="md-tabs__link">
+          
+  
+  
+  BCAS (Legacy)
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigasi" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="iBank Documentation" class="md-nav__button md-logo" aria-label="iBank Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    iBank Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Public
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../public/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Private
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Private
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../private/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iBank
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    iBank
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    General Ledger
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    General Ledger
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/TSD%20Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2" id="__nav_4_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chart of Account
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/PRD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PRD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/FSD_COA_Main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Chart of Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_3" id="__nav_4_1_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA List
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA List
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/list/FSD_COA_List/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_4" id="__nav_4_1_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Create
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Create
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/create/FSD_COA_Create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Create
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2_5" id="__nav_4_1_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COA Edit
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_1_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    COA Edit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/edit/FSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/edit/TSD_COA_Edit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/edit/TEST_COA_Edit.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEST - COA Edit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/chart-of-account/edit/referensi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referensi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Neraca / Laba Rugi
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/balance-sheet/FSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/balance-sheet/TSD_balance-sheet_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Neraca / Laba Rugi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_4" id="__nav_4_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trial Balance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/trial-balance/FSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/trial-balance/TSD_trial-balance_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TSD - Trial Balance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_5" id="__nav_4_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buku Besar
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Buku Besar
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../ihsansolusi/ibank/GL/ledger/placeholder.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coming Soon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clients
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_1" id="__nav_5_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FSD_Fingerscan_Biometrik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1_2" id="__nav_5_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_1" id="__nav_5_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_presentasi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2_2" id="__nav_5_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BJBS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BJBS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fingerscan
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fingerscan
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FSD_Fingerscan_Biometrik/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Fingerscan Biometrik
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../enhance_dormant/executed_update_pg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDL/DML Update (Postgres)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCAS (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BCAS (Legacy)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Enhance Dormant
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_fsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Enhance Dormant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_design_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_use_case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/enhance_dormant/dormant_presentasi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentasi - Tanggal Aktivitas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Saku Valas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../bcas/saku_valas/fsd_sakuvalas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FSD - Saku Valas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Daftar isi">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Daftar isi
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fingerscan-biometric-authorization-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FingerScan Biometric Authorization System
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📑 Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-pendahuluan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Pendahuluan
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Pendahuluan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-tujuan-dokumen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Tujuan Dokumen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-ruang-lingkup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Ruang Lingkup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-definisi-dan-istilah" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Definisi dan Istilah
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-referensi-dokumen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Referensi Dokumen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-gambaran-umum-sistem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Gambaran Umum Sistem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Gambaran Umum Sistem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-arsitektur-fungsional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Arsitektur Fungsional
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-komponen-utama" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Komponen Utama
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Komponen Utama">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-fingerprint-management-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.1 Fingerprint Management (Frontend)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-enrollment-service-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.2 Enrollment Service (Backend)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223-fingerprint-service-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3 Fingerprint Service (Backend)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#224-audit-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.4 Audit Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-aktor-sistem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Aktor Sistem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-desain-fungsional-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Desain Fungsional Detail
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Desain Fungsional Detail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-modul-enrollment-biometrik" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Modul Enrollment Biometrik
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 Modul Enrollment Biometrik">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-tujuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 Tujuan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312-business-process-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.2 Business Process Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#313-data-flow-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.3 Data Flow Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#314-business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.4 Business Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-modul-verificationotorisasi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Modul Verification/Otorisasi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Modul Verification/Otorisasi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-tujuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.1 Tujuan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-business-process-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.2 Business Process Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#323-sequence-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.3 Sequence Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324-business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.4 Business Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-modul-management-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Modul Management Template
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 Modul Management Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-tujuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.1 Tujuan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.2 Use Cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333-activity-flow-template-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.3 Activity Flow - Template Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-modul-audit-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Modul Audit &amp; Logging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 Modul Audit &amp; Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341-tujuan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.1 Tujuan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342-event-yang-dicatat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2 Event yang Dicatat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#343-audit-log-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.3 Audit Log Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-diagram-proses-bisnis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Diagram Proses Bisnis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Diagram Proses Bisnis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-activity-diagram-enrollment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Activity Diagram - Enrollment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-activity-diagram-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Activity Diagram - Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-activity-diagram-template-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Activity Diagram - Template Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-diagram-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Diagram Sequence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Diagram Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-sequence-diagram-enrollment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Sequence Diagram - Enrollment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-sequence-diagram-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Sequence Diagram - Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-sequence-diagram-template-sync-bulk-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Sequence Diagram - Template Sync (Bulk Process)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-state-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. State Diagram
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. State Diagram">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-state-diagram-template-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 State Diagram - Template Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-state-diagram-transaction-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 State Diagram - Transaction Authorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Business Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Business Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-enrollment-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Enrollment Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-verification-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Verification Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-security-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Security Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Data Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Data Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-entity-relationship" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Entity Relationship
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-data-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Data Dictionary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.2 Data Dictionary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-fingerprint_templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table: fingerprint_templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-verification_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table: verification_logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-authorization_sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table: authorization_sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-interface-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Interface Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Interface Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-enrollment-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Enrollment Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-verification-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Verification Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-admin-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Admin Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Error Handling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-error-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Error Scenarios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-error-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Error Messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-recovery-procedures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Recovery Procedures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-performance-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Performance Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Performance Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-response-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Response Time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Throughput
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 Scalability
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Acceptance Criteria
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Acceptance Criteria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-functional-acceptance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 Functional Acceptance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-non-functional-acceptance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 Non-Functional Acceptance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-integration-acceptance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 Integration Acceptance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-revision-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document Revision History
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approval
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="functional-design-specification-fds">FUNCTIONAL DESIGN SPECIFICATION (FDS)</h1>
+<h2 id="fingerscan-biometric-authorization-system">FingerScan Biometric Authorization System</h2>
+<p><strong>Dokumen:</strong> FDS-FINGERPRINT-001<br />
+<strong>Versi:</strong> 1.0<br />
+<strong>Tanggal:</strong> 28 Januari 2026<br />
+<strong>Status:</strong> Draft  </p>
+<hr />
+<p><strong>Dipersiapkan oleh:</strong><br />
+PT Ihsan Solusi Informatika<br />
+Jl. PHH Mustofa No. 39<br />
+Ruko Surapati Core C-7 Bandung  </p>
+<hr />
+<h2 id="table-of-contents">📑 Table of Contents</h2>
+<ol>
+<li><a href="#1-pendahuluan">Pendahuluan</a></li>
+<li>1.1 <a href="#11-tujuan-dokumen">Tujuan Dokumen</a></li>
+<li>1.2 <a href="#12-ruang-lingkup">Ruang Lingkup</a></li>
+<li>1.3 <a href="#13-definisi-dan-istilah">Definisi dan Istilah</a></li>
+<li>
+<p>1.4 <a href="#14-referensi-dokumen">Referensi Dokumen</a></p>
+</li>
+<li>
+<p><a href="#2-gambaran-umum-sistem">Gambaran Umum Sistem</a></p>
+</li>
+<li>2.1 <a href="#21-arsitektur-fungsional">Arsitektur Fungsional</a></li>
+<li>2.2 <a href="#22-komponen-utama">Komponen Utama</a></li>
+<li>
+<p>2.3 <a href="#23-aktor-sistem">Aktor Sistem</a></p>
+</li>
+<li>
+<p><a href="#3-desain-fungsional-detail">Desain Fungsional Detail</a></p>
+</li>
+<li>3.1 <a href="#31-modul-enrollment-biometrik">Modul Enrollment Biometrik</a></li>
+<li>3.2 <a href="#32-modul-verificationotorisasi">Modul Verification/Otorisasi</a></li>
+<li>3.3 <a href="#33-modul-management-template">Modul Management Template</a></li>
+<li>
+<p>3.4 <a href="#34-modul-audit--logging">Modul Audit &amp; Logging</a></p>
+</li>
+<li>
+<p><a href="#4-diagram-proses-bisnis">Diagram Proses Bisnis</a></p>
+</li>
+<li>4.1 <a href="#41-activity-diagram---enrollment">Activity Diagram - Enrollment</a></li>
+<li>4.2 <a href="#42-activity-diagram---verification">Activity Diagram - Verification</a></li>
+<li>
+<p>4.3 <a href="#43-activity-diagram---template-management">Activity Diagram - Template Management</a></p>
+</li>
+<li>
+<p><a href="#5-diagram-sequence">Diagram Sequence</a></p>
+</li>
+<li>5.1 <a href="#51-sequence-diagram---enrollment">Sequence Diagram - Enrollment</a></li>
+<li>5.2 <a href="#52-sequence-diagram---verification">Sequence Diagram - Verification</a></li>
+<li>
+<p>5.3 <a href="#53-sequence-diagram---template-sync">Sequence Diagram - Template Sync</a></p>
+</li>
+<li>
+<p><a href="#6-state-diagram">State Diagram</a></p>
+</li>
+<li>6.1 <a href="#61-state-diagram---template-status">State Diagram - Template Status</a></li>
+<li>
+<p>6.2 <a href="#62-state-diagram---transaction-authorization">State Diagram - Transaction Authorization</a></p>
+</li>
+<li>
+<p><a href="#7-business-rules">Business Rules</a></p>
+</li>
+<li>7.1 <a href="#71-enrollment-rules">Enrollment Rules</a></li>
+<li>7.2 <a href="#72-verification-rules">Verification Rules</a></li>
+<li>
+<p>7.3 <a href="#73-security-rules">Security Rules</a></p>
+</li>
+<li>
+<p><a href="#8-data-model">Data Model</a></p>
+</li>
+<li>8.1 <a href="#81-entity-relationship">Entity Relationship</a></li>
+<li>
+<p>8.2 <a href="#82-data-dictionary">Data Dictionary</a></p>
+</li>
+<li>
+<p><a href="#9-interface-design">Interface Design</a></p>
+</li>
+<li>9.1 <a href="#91-enrollment-interface">Enrollment Interface</a></li>
+<li>9.2 <a href="#92-verification-interface">Verification Interface</a></li>
+<li>
+<p>9.3 <a href="#93-admin-interface">Admin Interface</a></p>
+</li>
+<li>
+<p><a href="#10-error-handling">Error Handling</a></p>
+<ul>
+<li>10.1 <a href="#101-error-scenarios">Error Scenarios</a></li>
+<li>10.2 <a href="#102-error-messages">Error Messages</a></li>
+<li>10.3 <a href="#103-recovery-procedures">Recovery Procedures</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#11-performance-requirements">Performance Requirements</a></p>
+<ul>
+<li>11.1 <a href="#111-response-time">Response Time</a></li>
+<li>11.2 <a href="#112-throughput">Throughput</a></li>
+<li>11.3 <a href="#113-scalability">Scalability</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#12-acceptance-criteria">Acceptance Criteria</a></p>
+</li>
+</ol>
+<hr />
+<h2 id="1-pendahuluan">1. Pendahuluan</h2>
+<h3 id="11-tujuan-dokumen">1.1 Tujuan Dokumen</h3>
+<p>Dokumen Functional Design Specification (FDS) ini bertujuan untuk:
+- Menjelaskan secara detail desain fungsional sistem FingerScan Biometric Authorization
+- Mendefinisikan alur proses bisnis untuk enrollment dan verification
+- Menyediakan panduan implementasi untuk development team
+- Menjadi acuan testing dan quality assurance</p>
+<h3 id="12-ruang-lingkup">1.2 Ruang Lingkup</h3>
+<p>Dokumen ini mencakup:
+- <strong>Enrollment biometrik</strong> untuk user baru dan existing user
+- <strong>Verification/Authorization</strong> untuk transaksi perbankan
+- <strong>Template Management</strong> untuk maintenance data biometrik
+- <strong>Audit &amp; Logging</strong> untuk compliance dan security
+- <strong>Integration</strong> dengan aplikasi DAF, BDS, CS Teller</p>
+<p>Dokumen ini <strong>tidak mencakup</strong>:
+- Implementasi hardware DigitalPersona 4500
+- Login sistem menggunakan biometrik
+- Detail implementasi surrounding apps</p>
+<h3 id="13-definisi-dan-istilah">1.3 Definisi dan Istilah</h3>
+<table>
+<thead>
+<tr>
+<th>Istilah</th>
+<th>Definisi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Template</strong></td>
+<td>Data hasil ekstraksi karakteristik unik sidik jari yang telah dienkripsi</td>
+</tr>
+<tr>
+<td><strong>Enrollment</strong></td>
+<td>Proses pendaftaran sidik jari user ke dalam sistem</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td>Proses pencocokan sidik jari untuk otorisasi transaksi</td>
+</tr>
+<tr>
+<td><strong>Matching Score</strong></td>
+<td>Nilai kecocokan antara template tersimpan dengan scan real-time (0-100%)</td>
+</tr>
+<tr>
+<td><strong>Threshold</strong></td>
+<td>Batas minimum matching score untuk dianggap valid (default: 85%)</td>
+</tr>
+<tr>
+<td><strong>FIDO</strong></td>
+<td>Fast Identity Online - standard enkripsi biometrik</td>
+</tr>
+<tr>
+<td><strong>ISO Template</strong></td>
+<td>Format standar template sidik jari berdasarkan ISO/IEC 19794-2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-referensi-dokumen">1.4 Referensi Dokumen</h3>
+<ul>
+<li><strong>PRD-FINGERPRINT-001</strong>: Product Requirements Document FingerScan Biometric</li>
+<li><strong>TSD-FINGERPRINT-001</strong>: Technical Specification Document (akan dibuat)</li>
+<li><strong>API-SPEC-FINGERPRINT</strong>: API Specification Document (akan dibuat)</li>
+<li><strong>DigitalPersona SDK Documentation</strong>: Versi 4.5.0</li>
+</ul>
+<hr />
+<h2 id="2-gambaran-umum-sistem">2. Gambaran Umum Sistem</h2>
+<h3 id="21-arsitektur-fungsional">2.1 Arsitektur Fungsional</h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Presentation Layer"
+        UI1[Enrollment UI]
+        UI2[Verification UI]
+        UI3[Admin Dashboard]
+    end
+
+    subgraph "Application Layer"
+        FM[Fingerprint Management]
+        ES[Enrollment Service]
+        FS[Fingerprint Service]
+        AS[Audit Service]
+    end
+
+    subgraph "Integration Layer"
+        OIDC[OIDC/SSO]
+        REDIS[Redis Cache]
+        MQ[Message Queue]
+    end
+
+    subgraph "Data Layer"
+        DB1[(Fingerprint DB)]
+        DB2[(Audit DB)]
+        HRMIS[(HRMIS)]
+    end
+
+    subgraph "External Systems"
+        DAF[DAF App]
+        BDS[BDS App]
+        CST[CS Teller]
+    end
+
+    subgraph "Hardware"
+        DEV[DigitalPersona 4500]
+    end
+
+    UI1 --&gt; FM
+    UI2 --&gt; FM
+    UI3 --&gt; FM
+
+    FM --&gt; ES
+    FM --&gt; FS
+    FM --&gt; AS
+
+    ES --&gt; OIDC
+    FS --&gt; OIDC
+    FS --&gt; REDIS
+
+    ES --&gt; DB1
+    FS --&gt; DB1
+    AS --&gt; DB2
+
+    ES --&gt; HRMIS
+
+    FM --&gt; DEV
+
+    DAF --&gt; FS
+    BDS --&gt; FS
+    CST --&gt; FS
+
+    FS --&gt; MQ
+    MQ --&gt; AS</code></pre>
+<h3 id="22-komponen-utama">2.2 Komponen Utama</h3>
+<h4 id="221-fingerprint-management-frontend">2.2.1 Fingerprint Management (Frontend)</h4>
+<ul>
+<li><strong>Fungsi</strong>: Interface layer untuk interaksi user dengan device</li>
+<li><strong>Teknologi</strong>: React/Vue.js dengan WebUSB API</li>
+<li><strong>Tanggung Jawab</strong>:</li>
+<li>Komunikasi dengan DigitalPersona device</li>
+<li>Capture fingerprint scan</li>
+<li>Display status enrollment/verification</li>
+<li>Error handling dan user feedback</li>
+</ul>
+<h4 id="222-enrollment-service-backend">2.2.2 Enrollment Service (Backend)</h4>
+<ul>
+<li><strong>Fungsi</strong>: Mengelola proses pendaftaran template baru</li>
+<li><strong>Teknologi</strong>: Go/Java Spring Boot</li>
+<li><strong>Tanggung Jawab</strong>:</li>
+<li>Validasi user eligibility</li>
+<li>Template extraction dan encryption</li>
+<li>Quality check template</li>
+<li>Penyimpanan ke database</li>
+</ul>
+<h4 id="223-fingerprint-service-backend">2.2.3 Fingerprint Service (Backend)</h4>
+<ul>
+<li><strong>Fungsi</strong>: Core service untuk verification</li>
+<li><strong>Teknologi</strong>: Go dengan high-performance matching algorithm</li>
+<li><strong>Tanggung Jawab</strong>:</li>
+<li>Template matching</li>
+<li>Score calculation</li>
+<li>Cache management (Redis)</li>
+<li>Transaction authorization</li>
+</ul>
+<h4 id="224-audit-service">2.2.4 Audit Service</h4>
+<ul>
+<li><strong>Fungsi</strong>: Logging dan monitoring</li>
+<li><strong>Teknologi</strong>: ELK Stack / Custom logging service</li>
+<li><strong>Tanggung Jawab</strong>:</li>
+<li>Activity logging</li>
+<li>Compliance reporting</li>
+<li>Security monitoring</li>
+</ul>
+<h3 id="23-aktor-sistem">2.3 Aktor Sistem</h3>
+<pre class="mermaid"><code>graph LR
+    subgraph "Internal Users"
+        ADM[Administrator]
+        MGR[Manager/Supervisor]
+        TEL[Teller/Staff]
+    end
+
+    subgraph "External Systems"
+        APPS[Banking Apps&lt;br/&gt;DAF/BDS/CS]
+        HRMIS_SYS[HRMIS System]
+    end
+
+    subgraph "System Components"
+        SYS[FingerScan System]
+    end
+
+    ADM --&gt;|Manage Templates| SYS
+    ADM --&gt;|View Audit Logs| SYS
+
+    MGR --&gt;|Approve Enrollment| SYS
+    MGR --&gt;|Authorize Transaction| SYS
+
+    TEL --&gt;|Self-Enrollment| SYS
+
+    APPS --&gt;|Request Verification| SYS
+    SYS --&gt;|Return Auth Result| APPS
+
+    HRMIS_SYS --&gt;|Sync Employee Data| SYS</code></pre>
+<p><strong>Deskripsi Aktor:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aktor</th>
+<th>Peran</th>
+<th>Hak Akses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Administrator</strong></td>
+<td>Mengelola sistem secara keseluruhan</td>
+<td>Full access: enrollment, verification, template management, audit</td>
+</tr>
+<tr>
+<td><strong>Manager/Supervisor</strong></td>
+<td>Authorizer untuk transaksi critical</td>
+<td>Verification, view own template, approve enrollment</td>
+</tr>
+<tr>
+<td><strong>Teller/Staff</strong></td>
+<td>User operasional</td>
+<td>Self-enrollment, verification untuk transaksi sendiri</td>
+</tr>
+<tr>
+<td><strong>Banking Apps</strong></td>
+<td>Aplikasi yang memerlukan otorisasi</td>
+<td>API access untuk verification request</td>
+</tr>
+<tr>
+<td><strong>HRMIS System</strong></td>
+<td>Sumber data karyawan</td>
+<td>Sync employee master data</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-desain-fungsional-detail">3. Desain Fungsional Detail</h2>
+<h3 id="31-modul-enrollment-biometrik">3.1 Modul Enrollment Biometrik</h3>
+<h4 id="311-tujuan">3.1.1 Tujuan</h4>
+<p>Mendaftarkan template sidik jari user ke dalam sistem untuk keperluan otorisasi transaksi.</p>
+<h4 id="312-business-process-flow">3.1.2 Business Process Flow</h4>
+<p><strong>Trigger:</strong>
+- User baru yang belum memiliki template
+- User existing yang perlu update template
+- Mandatory enrollment untuk role tertentu (Manager/Supervisor)</p>
+<p><strong>Precondition:</strong>
+- User sudah terdaftar di HRMIS
+- User memiliki NIK valid
+- Device DigitalPersona tersedia dan terkoneksi
+- User terautentikasi via OIDC/SSO</p>
+<p><strong>Main Flow:</strong></p>
+<ol>
+<li><strong>Inisiasi Enrollment</strong></li>
+<li>User login ke Enrollment UI menggunakan OIDC</li>
+<li>System validasi user di HRMIS (status aktif, role, NIK)</li>
+<li>System check apakah user sudah memiliki template</li>
+<li>
+<p>Jika sudah ada, tampilkan option: Update atau View existing</p>
+</li>
+<li>
+<p><strong>Device Detection</strong></p>
+</li>
+<li>System detect DigitalPersona device</li>
+<li>Check device status (ready/busy/error)</li>
+<li>Initialize fingerprint reader</li>
+<li>
+<p>Display instructional message</p>
+</li>
+<li>
+<p><strong>Capture Process</strong></p>
+</li>
+<li>User diminta scan jari (minimum 2 jari: telunjuk kiri + kanan)</li>
+<li>System capture fingerprint untuk setiap jari:<ul>
+<li>Scan #1: Initial capture</li>
+<li>Scan #2: Verification capture (harus match dengan scan #1)</li>
+<li>Scan #3: Quality assurance (optional jika quality score &lt; 80%)</li>
+</ul>
+</li>
+<li>Quality check setiap capture (min score: 75%)</li>
+<li>
+<p>Retry mechanism jika quality rendah (max 3x per jari)</p>
+</li>
+<li>
+<p><strong>Template Extraction</strong></p>
+</li>
+<li>System extract minutiae points dari scan</li>
+<li>Convert ke ISO template format</li>
+<li>Generate unique template ID</li>
+<li>
+<p>Encrypt template menggunakan FIDO standard</p>
+</li>
+<li>
+<p><strong>Storage</strong></p>
+</li>
+<li>Save encrypted template ke database</li>
+<li>Link dengan NIK dan user metadata</li>
+<li>Set status: <code>PENDING_APPROVAL</code> (jika require approval)</li>
+<li>
+<p>Set status: <code>ACTIVE</code> (jika auto-approve)</p>
+</li>
+<li>
+<p><strong>Notification</strong></p>
+</li>
+<li>Send notification ke user (enrollment success)</li>
+<li>Send notification ke approver jika perlu approval</li>
+<li>Log activity ke audit system</li>
+</ol>
+<p><strong>Postcondition:</strong>
+- Template tersimpan dengan status ACTIVE atau PENDING_APPROVAL
+- User dapat melakukan verification (jika ACTIVE)
+- Audit log tercatat</p>
+<p><strong>Alternative Flow:</strong></p>
+<p><strong>A1: Template Already Exists</strong>
+- System detect existing template
+- Tampilkan opsi: View, Update, atau Cancel
+- Jika Update dipilih, lanjut ke main flow (dengan flag update mode)
+- Old template di-archive dengan status <code>SUPERSEDED</code></p>
+<p><strong>A2: Quality Check Failed</strong>
+- Jika setelah 3 retry masih gagal
+- Display error message dengan guidance
+- Opsi: Retry atau Cancel
+- Log failure ke audit system</p>
+<p><strong>A3: Device Error</strong>
+- System detect device disconnected/error
+- Display troubleshooting message
+- Pause enrollment process
+- Resume ketika device ready</p>
+<p><strong>A4: User Cancellation</strong>
+- User cancel di tengah proses
+- Cleanup partial data
+- Log cancellation
+- Return to home screen</p>
+<h4 id="313-data-flow-diagram">3.1.3 Data Flow Diagram</h4>
+<pre class="mermaid"><code>flowchart TD
+    Start([Start Enrollment]) --&gt; Auth{User&lt;br/&gt;Authenticated?}
+    Auth --&gt;|No| Login[Redirect to Login]
+    Login --&gt; Auth
+    Auth --&gt;|Yes| ValidUser{Valid User&lt;br/&gt;in HRMIS?}
+
+    ValidUser --&gt;|No| ErrorUser[Display Error:&lt;br/&gt;User not found]
+    ErrorUser --&gt; End([End])
+
+    ValidUser --&gt;|Yes| CheckTemplate{Existing&lt;br/&gt;Template?}
+    CheckTemplate --&gt;|Yes| ShowOption[Show Options:&lt;br/&gt;View/Update/Cancel]
+    ShowOption --&gt; UserChoice{User&lt;br/&gt;Choice?}
+    UserChoice --&gt;|Cancel| End
+    UserChoice --&gt;|View| ViewTemplate[Display Template Info]
+    ViewTemplate --&gt; End
+    UserChoice --&gt;|Update| ArchiveOld[Archive Old Template]
+
+    CheckTemplate --&gt;|No| InitDevice
+    ArchiveOld --&gt; InitDevice[Initialize Device]
+
+    InitDevice --&gt; DeviceReady{Device&lt;br/&gt;Ready?}
+    DeviceReady --&gt;|No| DeviceError[Display Device Error]
+    DeviceError --&gt; WaitDevice{Retry?}
+    WaitDevice --&gt;|Yes| InitDevice
+    WaitDevice --&gt;|No| End
+
+    DeviceReady --&gt;|Yes| CaptureFinger[Capture Fingerprint]
+    CaptureFinger --&gt; ScanCount{Scan&lt;br/&gt;Count}
+
+    ScanCount --&gt;|Scan 1| Scan1[Capture First Scan]
+    Scan1 --&gt; Quality1{Quality&lt;br/&gt;&gt;= 75%?}
+    Quality1 --&gt;|No| RetryCount1{Retry &lt; 3?}
+    RetryCount1 --&gt;|Yes| Scan1
+    RetryCount1 --&gt;|No| QualityFail[Quality Check Failed]
+    QualityFail --&gt; End
+    Quality1 --&gt;|Yes| Scan2
+
+    ScanCount --&gt;|Scan 2| Scan2[Capture Second Scan]
+    Scan2 --&gt; Quality2{Quality&lt;br/&gt;&gt;= 75%?}
+    Quality2 --&gt;|No| RetryCount2{Retry &lt; 3?}
+    RetryCount2 --&gt;|Yes| Scan2
+    RetryCount2 --&gt;|No| QualityFail
+    Quality2 --&gt;|Yes| Match{Match with&lt;br/&gt;Scan 1?}
+    Match --&gt;|No| MatchFail[Scans Don't Match&lt;br/&gt;Retry from Scan 1]
+    MatchFail --&gt; Scan1
+    Match --&gt;|Yes| ExtractTemplate
+
+    ExtractTemplate[Extract Template] --&gt; Encrypt[Encrypt Template&lt;br/&gt;FIDO Standard]
+    Encrypt --&gt; SaveDB[(Save to Database)]
+    SaveDB --&gt; RequireApproval{Require&lt;br/&gt;Approval?}
+
+    RequireApproval --&gt;|Yes| SetPending[Set Status:&lt;br/&gt;PENDING_APPROVAL]
+    RequireApproval --&gt;|No| SetActive[Set Status:&lt;br/&gt;ACTIVE]
+
+    SetPending --&gt; NotifyApprover[Notify Approver]
+    SetActive --&gt; NotifyUser[Notify User]
+    NotifyApprover --&gt; LogAudit
+    NotifyUser --&gt; LogAudit[Log to Audit]
+    LogAudit --&gt; Success[Display Success Message]
+    Success --&gt; End</code></pre>
+<h4 id="314-business-rules">3.1.4 Business Rules</h4>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Deskripsi</th>
+<th>Validasi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ENR-001</strong></td>
+<td>User harus terdaftar di HRMIS dengan status AKTIF</td>
+<td>Check <code>employee.status = 'ACTIVE'</code></td>
+</tr>
+<tr>
+<td><strong>ENR-002</strong></td>
+<td>Minimum 2 jari harus di-enroll (telunjuk kiri + kanan)</td>
+<td>Count enrolled fingers &gt;= 2</td>
+</tr>
+<tr>
+<td><strong>ENR-003</strong></td>
+<td>Quality score minimum 75% untuk setiap scan</td>
+<td><code>quality_score &gt;= 75</code></td>
+</tr>
+<tr>
+<td><strong>ENR-004</strong></td>
+<td>Maximum retry per jari adalah 3 kali</td>
+<td><code>retry_count &lt;= 3</code></td>
+</tr>
+<tr>
+<td><strong>ENR-005</strong></td>
+<td>Scan #2 harus match dengan Scan #1 (score &gt;= 85%)</td>
+<td><code>matching_score &gt;= 85</code></td>
+</tr>
+<tr>
+<td><strong>ENR-006</strong></td>
+<td>Template harus terenkripsi sebelum disimpan</td>
+<td>Check encryption status</td>
+</tr>
+<tr>
+<td><strong>ENR-007</strong></td>
+<td>Untuk role Manager/Supervisor, enrollment require approval</td>
+<td>If <code>role IN ('MANAGER', 'SUPERVISOR')</code></td>
+</tr>
+<tr>
+<td><strong>ENR-008</strong></td>
+<td>User hanya boleh memiliki 1 active template per NIK</td>
+<td>Unique constraint: <code>NIK + status='ACTIVE'</code></td>
+</tr>
+<tr>
+<td><strong>ENR-009</strong></td>
+<td>Update template akan archive template lama</td>
+<td>Old template status = 'SUPERSEDED'</td>
+</tr>
+<tr>
+<td><strong>ENR-010</strong></td>
+<td>Template ID harus unique di seluruh system</td>
+<td>UUID generation + uniqueness check</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="32-modul-verificationotorisasi">3.2 Modul Verification/Otorisasi</h3>
+<h4 id="321-tujuan">3.2.1 Tujuan</h4>
+<p>Melakukan verifikasi identitas user melalui sidik jari untuk otorisasi transaksi perbankan.</p>
+<h4 id="322-business-process-flow">3.2.2 Business Process Flow</h4>
+<p><strong>Trigger:</strong>
+- Transaksi memerlukan dual authorization
+- Transaction amount melebihi threshold
+- High-risk transaction
+- Request dari aplikasi DAF/BDS/CS Teller</p>
+<p><strong>Precondition:</strong>
+- User sudah memiliki template ACTIVE
+- Transaction data valid
+- Device tersedia
+- User terautentikasi</p>
+<p><strong>Main Flow:</strong></p>
+<ol>
+<li><strong>Transaction Initiation</strong></li>
+<li>Aplikasi (DAF/BDS/CS) create transaction</li>
+<li>System evaluate apakah perlu fingerprint authorization</li>
+<li>Jika ya, generate authorization request</li>
+<li>
+<p>Display authorization prompt di UI</p>
+</li>
+<li>
+<p><strong>User Identification</strong></p>
+</li>
+<li>System tampilkan daftar authorized approvers</li>
+<li>System fetch template dari database/cache (Redis)</li>
+<li>
+<p>Prepare untuk matching process</p>
+</li>
+<li>
+<p><strong>Fingerprint Capture</strong></p>
+</li>
+<li>Device ready untuk scan</li>
+<li>User scan fingerprint (1 jari)</li>
+<li>Quality check real-time (min 70% untuk verification)</li>
+<li>
+<p>Retry jika quality rendah (max 3x)</p>
+</li>
+<li>
+<p><strong>Matching Process</strong></p>
+</li>
+<li>System perform 1:1 matching</li>
+<li>Compare scanned template vs stored template</li>
+<li>Calculate matching score (0-100%)</li>
+<li>
+<p>Apply threshold (default: 85%)</p>
+</li>
+<li>
+<p><strong>Authorization Decision</strong></p>
+</li>
+<li>If score &gt;= threshold: <strong>APPROVED</strong></li>
+<li>If score &lt; threshold: <strong>REJECTED</strong></li>
+<li>
+<p>Log decision dengan detail score</p>
+</li>
+<li>
+<p><strong>Response to Application</strong></p>
+</li>
+<li>Return authorization result ke calling app</li>
+<li>Include: status, timestamp, approver NIK, score</li>
+<li>Update transaction status</li>
+<li>Send notification</li>
+</ol>
+<p><strong>Postcondition:</strong>
+- Transaction authorized atau rejected
+- Audit trail lengkap tersimpan
+- Notification terkirim</p>
+<p><strong>Alternative Flow:</strong></p>
+<p><strong>V1: Multiple Approvers Required</strong>
+- System loop verification untuk setiap approver
+- Semua approver harus verified (AND logic)
+- Jika ada 1 rejected, seluruh authorization gagal</p>
+<p><strong>V2: Verification Failed - Threshold Not Met</strong>
+- Display error: "Sidik jari tidak cocok"
+- Allow retry (max 3x)
+- After 3 failed attempts: lock authorization untuk 5 menit
+- Log suspicious activity</p>
+<p><strong>V3: Timeout</strong>
+- Verification window: 60 detik
+- Jika timeout, authorization auto-reject
+- User harus re-initiate transaction</p>
+<p><strong>V4: Template Not Found</strong>
+- System tidak menemukan active template
+- Display error: "Template tidak ditemukan"
+- Redirect ke enrollment
+- Cancel authorization</p>
+<p><strong>V5: Device Error</strong>
+- Same handling sebagai enrollment
+- Pause verification
+- Resume when ready</p>
+<h4 id="323-sequence-flow">3.2.3 Sequence Flow</h4>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App as Banking App&lt;br/&gt;(DAF/BDS/CS)
+    participant UI as Verification UI
+    participant FS as Fingerprint Service
+    participant Cache as Redis Cache
+    participant DB as Fingerprint DB
+    participant AS as Audit Service
+    participant Dev as DigitalPersona&lt;br/&gt;Device
+
+    App-&gt;&gt;FS: POST /api/v1/authorize&lt;br/&gt;{transactionId, requiredApprovers}
+    FS-&gt;&gt;FS: Validate Request
+    FS-&gt;&gt;DB: Check Approver Templates&lt;br/&gt;SELECT * WHERE nik IN (approvers)
+    DB--&gt;&gt;FS: Return Template IDs
+
+    FS-&gt;&gt;Cache: Get Templates&lt;br/&gt;MGET template:{ids}
+
+    alt Templates in Cache
+        Cache--&gt;&gt;FS: Return Templates
+    else Cache Miss
+        Cache--&gt;&gt;FS: null
+        FS-&gt;&gt;DB: Fetch Templates
+        DB--&gt;&gt;FS: Return Templates
+        FS-&gt;&gt;Cache: Store Templates&lt;br/&gt;SET template:{id} ttl=300
+    end
+
+    FS--&gt;&gt;App: Authorization Session Created&lt;br/&gt;{sessionId, status: PENDING}
+    App-&gt;&gt;UI: Redirect to Verification Page&lt;br/&gt;{sessionId}
+
+    UI-&gt;&gt;Dev: Initialize Device
+    Dev--&gt;&gt;UI: Device Ready
+
+    UI-&gt;&gt;UI: Display Approver List&lt;br/&gt;&amp; Scan Instructions
+
+    loop For Each Required Approver
+        UI-&gt;&gt;Dev: Request Scan
+        Dev--&gt;&gt;UI: Fingerprint Captured&lt;br/&gt;{rawTemplate, quality}
+
+        alt Quality Check
+            UI-&gt;&gt;UI: quality &gt;= 70%?
+            UI-&gt;&gt;FS: POST /api/v1/verify&lt;br/&gt;{sessionId, approverNIK, rawTemplate}
+        else Quality Failed
+            UI--&gt;&gt;UI: Display "Poor Quality"&lt;br/&gt;Retry (max 3x)
+        end
+
+        FS-&gt;&gt;Cache: GET template:{NIK}
+        Cache--&gt;&gt;FS: Stored Template
+
+        FS-&gt;&gt;FS: Perform Matching&lt;br/&gt;Compare(raw, stored)
+        FS-&gt;&gt;FS: Calculate Score
+
+        alt Score &gt;= Threshold (85%)
+            FS-&gt;&gt;FS: Result = APPROVED
+        else Score &lt; Threshold
+            FS-&gt;&gt;FS: Result = REJECTED
+        end
+
+        FS-&gt;&gt;AS: Log Verification Event&lt;br/&gt;{nik, score, result, timestamp}
+        AS--&gt;&gt;FS: Logged
+
+        FS--&gt;&gt;UI: Verification Result&lt;br/&gt;{approverNIK, status, score}
+        UI-&gt;&gt;UI: Update Approver Status&lt;br/&gt;Display Result
+    end
+
+    alt All Approvers Verified
+        UI-&gt;&gt;FS: POST /api/v1/authorize/complete&lt;br/&gt;{sessionId}
+        FS-&gt;&gt;FS: status = APPROVED
+        FS-&gt;&gt;App: Authorization Complete&lt;br/&gt;{status: APPROVED, approvers}
+        App-&gt;&gt;App: Execute Transaction
+    else Any Approval Failed
+        UI-&gt;&gt;FS: POST /api/v1/authorize/complete&lt;br/&gt;{sessionId}
+        FS-&gt;&gt;FS: status = REJECTED
+        FS-&gt;&gt;App: Authorization Failed&lt;br/&gt;{status: REJECTED}
+        App-&gt;&gt;App: Cancel Transaction
+    end
+
+    FS-&gt;&gt;AS: Log Authorization Result
+    AS--&gt;&gt;FS: Logged
+    FS--&gt;&gt;UI: Final Status
+    UI-&gt;&gt;UI: Display Result Message</code></pre>
+<h4 id="324-business-rules">3.2.4 Business Rules</h4>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Deskripsi</th>
+<th>Validasi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VER-001</strong></td>
+<td>Quality score minimum 70% untuk verification</td>
+<td><code>quality_score &gt;= 70</code></td>
+</tr>
+<tr>
+<td><strong>VER-002</strong></td>
+<td>Matching threshold default 85%, configurable per role</td>
+<td><code>matching_score &gt;= threshold</code></td>
+</tr>
+<tr>
+<td><strong>VER-003</strong></td>
+<td>Maximum retry untuk verification: 3 kali</td>
+<td><code>retry_count &lt;= 3</code></td>
+</tr>
+<tr>
+<td><strong>VER-004</strong></td>
+<td>After 3 failed attempts, lock selama 5 menit</td>
+<td><code>lock_duration = 300</code> seconds</td>
+</tr>
+<tr>
+<td><strong>VER-005</strong></td>
+<td>Verification timeout: 60 detik per approver</td>
+<td><code>session_timeout = 60</code> seconds</td>
+</tr>
+<tr>
+<td><strong>VER-006</strong></td>
+<td>Multi-approver menggunakan AND logic (semua harus approve)</td>
+<td>All <code>approver_status = 'APPROVED'</code></td>
+</tr>
+<tr>
+<td><strong>VER-007</strong></td>
+<td>Template di-cache di Redis dengan TTL 5 menit</td>
+<td><code>TTL = 300</code> seconds</td>
+</tr>
+<tr>
+<td><strong>VER-008</strong></td>
+<td>Hanya template dengan status ACTIVE yang bisa digunakan</td>
+<td><code>template.status = 'ACTIVE'</code></td>
+</tr>
+<tr>
+<td><strong>VER-009</strong></td>
+<td>Transaction dengan amount &gt; 100jt require 2 approvers</td>
+<td>If <code>amount &gt; 100000000</code> then <code>min_approvers = 2</code></td>
+</tr>
+<tr>
+<td><strong>VER-010</strong></td>
+<td>Setiap verification harus ter-log dengan matching score</td>
+<td>Mandatory audit logging</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="33-modul-management-template">3.3 Modul Management Template</h3>
+<h4 id="331-tujuan">3.3.1 Tujuan</h4>
+<p>Mengelola lifecycle template biometrik, termasuk view, update, block, unblock, dan delete.</p>
+<h4 id="332-use-cases">3.3.2 Use Cases</h4>
+<p><strong>UC-3.1: View Template</strong>
+- Admin/User dapat melihat detail template
+- Display: NIK, nama, tanggal enrollment, status, quality score
+- Tidak menampilkan raw template (security)</p>
+<p><strong>UC-3.2: Update Template</strong>
+- User re-enroll untuk update template
+- Old template otomatis di-archive (status: SUPERSEDED)
+- New template menjadi ACTIVE</p>
+<p><strong>UC-3.3: Block Template</strong>
+- Admin dapat block template (suspicious activity, kehilangan jari, dll)
+- Status berubah menjadi BLOCKED
+- User tidak bisa verify dengan template yang blocked
+- Require admin approval untuk unblock</p>
+<p><strong>UC-3.4: Delete Template</strong>
+- Soft delete (status: DELETED)
+- Tidak benar-benar dihapus dari database (for audit)
+- Require strong justification + approval</p>
+<p><strong>UC-3.5: Bulk Template Sync</strong>
+- Sync template dari HRMIS ketika ada perubahan employee status
+- Auto-block template jika employee status = INACTIVE/TERMINATED
+- Scheduled job: daily</p>
+<h4 id="333-activity-flow-template-lifecycle">3.3.3 Activity Flow - Template Lifecycle</h4>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; PENDING_APPROVAL: [1] Initial Enrollment&lt;br/&gt;(if require approval)
+    [*] --&gt; ACTIVE: [2] Initial Enrollment&lt;br/&gt;(auto-approve)
+
+    PENDING_APPROVAL --&gt; ACTIVE: [3] Admin Approve
+    PENDING_APPROVAL --&gt; REJECTED: [4] Admin Reject
+    REJECTED --&gt; [*]: [5] Cleanup
+
+    ACTIVE --&gt; BLOCKED: [6] Admin Block&lt;br/&gt;OR&lt;br/&gt;Suspicious Activity&lt;br/&gt;OR&lt;br/&gt;Employee Inactive
+    BLOCKED --&gt; ACTIVE: [7] Admin Unblock&lt;br/&gt;AND&lt;br/&gt;Employee Active
+
+    ACTIVE --&gt; SUPERSEDED: [8] User Re-enroll&lt;br/&gt;(New Template Created)
+    SUPERSEDED --&gt; [*]: [9] Archive
+
+    ACTIVE --&gt; DELETED: [10] Admin Delete&lt;br/&gt;(Soft Delete)
+    BLOCKED --&gt; DELETED: [11] Admin Delete
+    DELETED --&gt; [*]: [12] Archive
+
+    note right of ACTIVE
+        Template dapat digunakan
+        untuk verification
+    end note
+
+    note right of BLOCKED
+        Template tidak dapat
+        digunakan untuk verification
+    end note
+
+    note right of SUPERSEDED
+        Template lama yang sudah
+        di-replace dengan yang baru
+    end note</code></pre>
+<hr />
+<h3 id="34-modul-audit-logging">3.4 Modul Audit &amp; Logging</h3>
+<h4 id="341-tujuan">3.4.1 Tujuan</h4>
+<p>Mencatat seluruh aktivitas sistem untuk compliance, security monitoring, dan troubleshooting.</p>
+<h4 id="342-event-yang-dicatat">3.4.2 Event yang Dicatat</h4>
+<table>
+<thead>
+<tr>
+<th>Event Category</th>
+<th>Event Type</th>
+<th>Data Logged</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Enrollment</strong></td>
+<td>enrollment.started</td>
+<td>NIK, timestamp, initiator, device_id</td>
+</tr>
+<tr>
+<td></td>
+<td>enrollment.completed</td>
+<td>NIK, template_id, quality_score, status</td>
+</tr>
+<tr>
+<td></td>
+<td>enrollment.failed</td>
+<td>NIK, failure_reason, retry_count</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td>verification.started</td>
+<td>NIK, transaction_id, approver_list</td>
+</tr>
+<tr>
+<td></td>
+<td>verification.scan</td>
+<td>NIK, quality_score, timestamp</td>
+</tr>
+<tr>
+<td></td>
+<td>verification.matched</td>
+<td>NIK, matching_score, threshold, result</td>
+</tr>
+<tr>
+<td></td>
+<td>verification.failed</td>
+<td>NIK, failure_reason, attempts</td>
+</tr>
+<tr>
+<td><strong>Template Mgmt</strong></td>
+<td>template.viewed</td>
+<td>NIK, viewer_nik, timestamp</td>
+</tr>
+<tr>
+<td></td>
+<td>template.updated</td>
+<td>NIK, old_template_id, new_template_id</td>
+</tr>
+<tr>
+<td></td>
+<td>template.blocked</td>
+<td>NIK, blocker_nik, reason</td>
+</tr>
+<tr>
+<td></td>
+<td>template.deleted</td>
+<td>NIK, deleter_nik, reason</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>failed_attempts_exceeded</td>
+<td>NIK, attempt_count, lockout_until</td>
+</tr>
+<tr>
+<td></td>
+<td>suspicious_activity</td>
+<td>NIK, activity_type, details</td>
+</tr>
+<tr>
+<td></td>
+<td>unauthorized_access</td>
+<td>NIK, resource, timestamp</td>
+</tr>
+<tr>
+<td><strong>System</strong></td>
+<td>device.connected</td>
+<td>device_id, status</td>
+</tr>
+<tr>
+<td></td>
+<td>device.error</td>
+<td>device_id, error_code, message</td>
+</tr>
+<tr>
+<td></td>
+<td>cache.hit</td>
+<td>template_id</td>
+</tr>
+<tr>
+<td></td>
+<td>cache.miss</td>
+<td>template_id</td>
+</tr>
+</tbody>
+</table>
+<h4 id="343-audit-log-structure">3.4.3 Audit Log Structure</h4>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;event_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;event_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;verification.matched&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;event_category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;VERIFICATION&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-28T10:15:30.000Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;actor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;nik&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123456&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MANAGER&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;ip_address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;192.168.1.100&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;nik&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;789012&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Smith&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;template_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;temp-uuid-001&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;details&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;transaction_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TRX-20260128-001&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;matching_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">92.5</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;threshold&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">85.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APPROVED&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;quality_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">88.0</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DP4500-001&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;session_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;session-uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;application&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BDS-CS-TELLER&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="4-diagram-proses-bisnis">4. Diagram Proses Bisnis</h2>
+<h3 id="41-activity-diagram-enrollment">4.1 Activity Diagram - Enrollment</h3>
+<pre class="mermaid"><code>flowchart TD
+    Start([User Initiates&lt;br/&gt;Enrollment]) --&gt; CheckAuth{Authenticated?}
+    CheckAuth --&gt;|No| Login[Login via OIDC]
+    Login --&gt; CheckAuth
+
+    CheckAuth --&gt;|Yes| ValidateHRMIS[Validate User&lt;br/&gt;in HRMIS]
+    ValidateHRMIS --&gt; UserValid{User&lt;br/&gt;Valid?}
+
+    UserValid --&gt;|No| ErrorMsg1[Display Error:&lt;br/&gt;User Not Found]
+    ErrorMsg1 --&gt; End1([End])
+
+    UserValid --&gt;|Yes| CheckExisting{Existing&lt;br/&gt;Template?}
+
+    CheckExisting --&gt;|Yes| Options[Present Options:&lt;br/&gt;View | Update | Cancel]
+    Options --&gt; Choice{User&lt;br/&gt;Choice}
+    Choice --&gt;|View| DisplayInfo[Show Template Info]
+    DisplayInfo --&gt; End1
+    Choice --&gt;|Cancel| End1
+    Choice --&gt;|Update| Archive[Archive Old Template&lt;br/&gt;Status: SUPERSEDED]
+    Archive --&gt; PrepareEnroll
+
+    CheckExisting --&gt;|No| PrepareEnroll[Prepare Enrollment&lt;br/&gt;Session]
+
+    PrepareEnroll --&gt; InitDevice[Initialize&lt;br/&gt;DigitalPersona Device]
+    InitDevice --&gt; DeviceOK{Device&lt;br/&gt;Ready?}
+
+    DeviceOK --&gt;|No| ErrorDevice[Display Device Error&lt;br/&gt;+ Troubleshooting]
+    ErrorDevice --&gt; RetryDevice{Retry?}
+    RetryDevice --&gt;|Yes| InitDevice
+    RetryDevice --&gt;|No| End1
+
+    DeviceOK --&gt;|Yes| FingerLoop[["Loop: For Each Finger&lt;br/&gt;(Min 2 fingers)"]]
+
+    FingerLoop --&gt; Scan1[Capture Scan #1]
+    Scan1 --&gt; Quality1{Quality &gt;= 75%?}
+
+    Quality1 --&gt;|No| RetryCount1{Retry &lt; 3?}
+    RetryCount1 --&gt;|Yes| Scan1
+    RetryCount1 --&gt;|No| QualityFail[Quality Check Failed&lt;br/&gt;Retry Finger or Cancel]
+    QualityFail --&gt; QualityChoice{Continue?}
+    QualityChoice --&gt;|No| End1
+    QualityChoice --&gt;|Yes| FingerLoop
+
+    Quality1 --&gt;|Yes| Scan2[Capture Scan #2]
+    Scan2 --&gt; Quality2{Quality &gt;= 75%?}
+
+    Quality2 --&gt;|No| RetryCount2{Retry &lt; 3?}
+    RetryCount2 --&gt;|Yes| Scan2
+    RetryCount2 --&gt;|No| QualityFail
+
+    Quality2 --&gt;|Yes| MatchScans{Scan #1 &amp; #2&lt;br/&gt;Match &gt;= 85%?}
+    MatchScans --&gt;|No| MismatchMsg[Display: Scans Don't Match]
+    MismatchMsg --&gt; Scan1
+
+    MatchScans --&gt;|Yes| SaveFinger[Save Finger Template&lt;br/&gt;to Session]
+    SaveFinger --&gt; FingerCount{Enrolled&lt;br/&gt;Fingers &gt;= 2?}
+
+    FingerCount --&gt;|No| FingerLoop
+    FingerCount --&gt;|Yes| ExtractAll[Extract &amp; Combine&lt;br/&gt;All Templates]
+
+    ExtractAll --&gt; Encrypt[Encrypt Template&lt;br/&gt;FIDO Standard]
+    Encrypt --&gt; GenID[Generate Template ID&lt;br/&gt;UUID]
+    GenID --&gt; SaveDB[(Save to Database)]
+
+    SaveDB --&gt; CheckApproval{Approval&lt;br/&gt;Required?}
+
+    CheckApproval --&gt;|Yes| SetPending[Set Status:&lt;br/&gt;PENDING_APPROVAL]
+    SetPending --&gt; NotifyApprover[Send Notification&lt;br/&gt;to Approver]
+    NotifyApprover --&gt; LogAudit1
+
+    CheckApproval --&gt;|No| SetActive[Set Status:&lt;br/&gt;ACTIVE]
+    SetActive --&gt; NotifyUser[Send Success&lt;br/&gt;Notification]
+    NotifyUser --&gt; LogAudit1[Log to Audit System]
+
+    LogAudit1 --&gt; DisplaySuccess[Display Success&lt;br/&gt;Message]
+    DisplaySuccess --&gt; End1</code></pre>
+<hr />
+<h3 id="42-activity-diagram-verification">4.2 Activity Diagram - Verification</h3>
+<pre class="mermaid"><code>flowchart TD
+    Start([Transaction Requires&lt;br/&gt;Authorization]) --&gt; CreateSession[Create Authorization&lt;br/&gt;Session]
+
+    CreateSession --&gt; EvalRules{Evaluate&lt;br/&gt;Authorization Rules}
+
+    EvalRules --&gt;|Amount &gt; 100M| Set2Approvers[Required Approvers = 2]
+    EvalRules --&gt;|High Risk| Set2Approvers
+    EvalRules --&gt;|Normal| Set1Approver[Required Approvers = 1]
+
+    Set2Approvers --&gt; FetchTemplates
+    Set1Approver --&gt; FetchTemplates[Fetch Approver Templates]
+
+    FetchTemplates --&gt; CheckCache{Templates&lt;br/&gt;in Cache?}
+    CheckCache --&gt;|Yes| GetFromCache[Get from Redis]
+    CheckCache --&gt;|No| GetFromDB[Get from Database]
+    GetFromDB --&gt; CacheTemplates[Store in Cache&lt;br/&gt;TTL: 5min]
+    CacheTemplates --&gt; StartVerif
+    GetFromCache --&gt; StartVerif
+
+    StartVerif[Start Verification&lt;br/&gt;Process] --&gt; InitDevice[Initialize Device]
+    InitDevice --&gt; DeviceReady{Device&lt;br/&gt;Ready?}
+
+    DeviceReady --&gt;|No| DeviceError[Handle Device Error]
+    DeviceError --&gt; RetryDevice{Retry?}
+    RetryDevice --&gt;|Yes| InitDevice
+    RetryDevice --&gt;|No| RejectAuth[Authorization: REJECTED&lt;br/&gt;Reason: Device Error]
+    RejectAuth --&gt; LogFinal
+
+    DeviceReady --&gt;|Yes| ApproverLoop[["Loop: For Each&lt;br/&gt;Required Approver"]]
+
+    ApproverLoop --&gt; DisplayPrompt[Display Approver Info&lt;br/&gt;&amp; Scan Instruction]
+    DisplayPrompt --&gt; StartTimer[Start 60s Timer]
+
+    StartTimer --&gt; ScanFinger[Scan Fingerprint]
+    ScanFinger --&gt; CheckQuality{Quality&lt;br/&gt;&gt;= 70%?}
+
+    CheckQuality --&gt;|No| RetryQuality{Retry &lt; 3?}
+    RetryQuality --&gt;|Yes| ScanFinger
+    RetryQuality --&gt;|No| QualityTimeout[Quality Failed&lt;br/&gt;Mark Approver: FAILED]
+    QualityTimeout --&gt; NextApprover
+
+    CheckQuality --&gt;|Yes| PerformMatch[Perform 1:1 Matching&lt;br/&gt;vs Stored Template]
+
+    PerformMatch --&gt; CalcScore[Calculate&lt;br/&gt;Matching Score]
+    CalcScore --&gt; CompareThreshold{Score &gt;=&lt;br/&gt;Threshold?}
+
+    CompareThreshold --&gt;|Yes| ApproverApproved[Mark Approver: APPROVED&lt;br/&gt;Log Score]
+    ApproverApproved --&gt; NextApprover
+
+    CompareThreshold --&gt;|No| AttemptCount{Attempts&lt;br/&gt;&lt; 3?}
+    AttemptCount --&gt;|Yes| DisplayMismatch[Display: Fingerprint&lt;br/&gt;Tidak Cocok]
+    DisplayMismatch --&gt; ScanFinger
+
+    AttemptCount --&gt;|No| ApproverRejected[Mark Approver: REJECTED&lt;br/&gt;Lock 5 minutes]
+    ApproverRejected --&gt; LogSuspicious[Log Suspicious Activity]
+    LogSuspicious --&gt; NextApprover
+
+    NextApprover{More&lt;br/&gt;Approvers?} --&gt;|Yes| ApproverLoop
+    NextApprover --&gt;|No| CheckAllApprovals{All Approvers&lt;br/&gt;APPROVED?}
+
+    CheckAllApprovals --&gt;|Yes| AuthApproved[Authorization: APPROVED]
+    AuthApproved --&gt; UpdateTrx1[Update Transaction&lt;br/&gt;Status: APPROVED]
+    UpdateTrx1 --&gt; NotifyApp1[Notify Application&lt;br/&gt;+ Return Result]
+    NotifyApp1 --&gt; LogFinal
+
+    CheckAllApprovals --&gt;|No| AuthRejected[Authorization: REJECTED]
+    AuthRejected --&gt; UpdateTrx2[Update Transaction&lt;br/&gt;Status: REJECTED]
+    UpdateTrx2 --&gt; NotifyApp2[Notify Application&lt;br/&gt;+ Return Result]
+    NotifyApp2 --&gt; LogFinal[Log Final Authorization&lt;br/&gt;Result to Audit]
+
+    LogFinal --&gt; End1([End])</code></pre>
+<hr />
+<h3 id="43-activity-diagram-template-management">4.3 Activity Diagram - Template Management</h3>
+<pre class="mermaid"><code>flowchart TD
+    Start([Admin Opens&lt;br/&gt;Template Management]) --&gt; Auth{Admin&lt;br/&gt;Authenticated?}
+
+    Auth --&gt;|No| Login[Login]
+    Login --&gt; Auth
+
+    Auth --&gt;|Yes| LoadDashboard[Load Admin Dashboard]
+    LoadDashboard --&gt; DisplayList[Display Template List&lt;br/&gt;Filter: Status/NIK/Date]
+
+    DisplayList --&gt; SelectAction{Select&lt;br/&gt;Action}
+
+    SelectAction --&gt;|View| ViewDetail[Display Template Details&lt;br/&gt;NIK, Name, Status,&lt;br/&gt;Enrollment Date, Quality]
+    ViewDetail --&gt; DisplayList
+
+    SelectAction --&gt;|Update| StartUpdate[Initiate Update Process]
+    StartUpdate --&gt; EnrollmentFlow["Go to&lt;br/&gt;Enrollment Flow"]
+    EnrollmentFlow --&gt; ArchiveOld[Archive Old Template&lt;br/&gt;Status: SUPERSEDED]
+    ArchiveOld --&gt; DisplayList
+
+    SelectAction --&gt;|Block| ConfirmBlock{Confirm&lt;br/&gt;Block?}
+    ConfirmBlock --&gt;|No| DisplayList
+    ConfirmBlock --&gt;|Yes| EnterReason1[Enter Block Reason]
+    EnterReason1 --&gt; UpdateStatusBlock[Update Status: BLOCKED]
+    UpdateStatusBlock --&gt; LogBlock[Log Block Event]
+    LogBlock --&gt; NotifyUser1[Notify User:&lt;br/&gt;Template Blocked]
+    NotifyUser1 --&gt; DisplayList
+
+    SelectAction --&gt;|Unblock| CheckBlocked{Status =&lt;br/&gt;BLOCKED?}
+    CheckBlocked --&gt;|No| ErrorNotBlocked[Error: Not Blocked]
+    ErrorNotBlocked --&gt; DisplayList
+    CheckBlocked --&gt;|Yes| CheckEmployee{Employee&lt;br/&gt;Active?}
+    CheckEmployee --&gt;|No| ErrorInactive[Error: Employee Inactive]
+    ErrorInactive --&gt; DisplayList
+    CheckEmployee --&gt;|Yes| ConfirmUnblock{Confirm&lt;br/&gt;Unblock?}
+    ConfirmUnblock --&gt;|No| DisplayList
+    ConfirmUnblock --&gt;|Yes| UpdateStatusActive[Update Status: ACTIVE]
+    UpdateStatusActive --&gt; LogUnblock[Log Unblock Event]
+    LogUnblock --&gt; NotifyUser2[Notify User:&lt;br/&gt;Template Unblocked]
+    NotifyUser2 --&gt; DisplayList
+
+    SelectAction --&gt;|Delete| ConfirmDelete{Confirm&lt;br/&gt;Delete?}
+    ConfirmDelete --&gt;|No| DisplayList
+    ConfirmDelete --&gt;|Yes| EnterReason2[Enter Delete Reason&lt;br/&gt;+ Justification]
+    EnterReason2 --&gt; ValidateReason{Reason&lt;br/&gt;Valid?}
+    ValidateReason --&gt;|No| ErrorReason[Error: Insufficient&lt;br/&gt;Justification]
+    ErrorReason --&gt; DisplayList
+    ValidateReason --&gt;|Yes| SoftDelete[Soft Delete&lt;br/&gt;Status: DELETED]
+    SoftDelete --&gt; LogDelete[Log Delete Event]
+    LogDelete --&gt; NotifyUser3[Notify User:&lt;br/&gt;Template Deleted]
+    NotifyUser3 --&gt; DisplayList
+
+    SelectAction --&gt;|Bulk Sync| StartSync[Start Bulk Sync Process]
+    StartSync --&gt; FetchHRMIS[Fetch All Employees&lt;br/&gt;from HRMIS]
+    FetchHRMIS --&gt; CompareStatus[Compare Employee Status&lt;br/&gt;vs Template Status]
+
+    CompareStatus --&gt; SyncLoop[["Loop: For Each&lt;br/&gt;Mismatched Record"]]
+    SyncLoop --&gt; CheckMismatch{Mismatch&lt;br/&gt;Type?}
+
+    CheckMismatch --&gt;|Employee INACTIVE&lt;br/&gt;Template ACTIVE| AutoBlock[Auto Block Template]
+    AutoBlock --&gt; LogAutoBlock[Log Auto Block]
+    LogAutoBlock --&gt; SyncNext
+
+    CheckMismatch --&gt;|Employee ACTIVE&lt;br/&gt;Template BLOCKED| RequireManual[Flag for Manual Review]
+    RequireManual --&gt; SyncNext
+
+    CheckMismatch --&gt;|Employee NOT FOUND&lt;br/&gt;Template EXISTS| FlagDelete[Flag Template for Delete]
+    FlagDelete --&gt; SyncNext
+
+    SyncNext{More&lt;br/&gt;Records?} --&gt;|Yes| SyncLoop
+    SyncNext --&gt;|No| GenerateReport[Generate Sync Report]
+    GenerateReport --&gt; NotifyAdmin[Notify Admin:&lt;br/&gt;Sync Complete]
+    NotifyAdmin --&gt; DisplayList
+
+    SelectAction --&gt;|Refresh| DisplayList
+    SelectAction --&gt;|Exit| End1([End])</code></pre>
+<hr />
+<h2 id="5-diagram-sequence">5. Diagram Sequence</h2>
+<h3 id="51-sequence-diagram-enrollment">5.1 Sequence Diagram - Enrollment</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    actor User
+    participant UI as Enrollment UI
+    participant ES as Enrollment Service
+    participant OIDC as OIDC/SSO
+    participant HRMIS as HRMIS System
+    participant DB as Fingerprint DB
+    participant Cache as Redis Cache
+    participant AS as Audit Service
+    participant Dev as DigitalPersona&lt;br/&gt;Device
+    participant Notif as Notification Service
+
+    User-&gt;&gt;UI: Access Enrollment Page
+    UI-&gt;&gt;OIDC: Authenticate User
+    OIDC--&gt;&gt;UI: Token + User Info
+
+    UI-&gt;&gt;ES: GET /api/v1/enrollment/init&lt;br/&gt;{token, nik}
+    ES-&gt;&gt;HRMIS: Validate User&lt;br/&gt;GET /api/employees/{nik}
+    HRMIS--&gt;&gt;ES: Employee Data&lt;br/&gt;{nik, name, status, role}
+
+    alt User Not Found or Inactive
+        ES--&gt;&gt;UI: Error: User Not Eligible
+        UI--&gt;&gt;User: Display Error Message
+    else User Valid
+        ES-&gt;&gt;DB: Check Existing Template&lt;br/&gt;SELECT * WHERE nik={nik} AND status='ACTIVE'
+        DB--&gt;&gt;ES: Template Data or NULL
+
+        alt Template Exists
+            ES--&gt;&gt;UI: Session Created&lt;br/&gt;{sessionId, hasExisting: true}
+            UI--&gt;&gt;User: Show Options:&lt;br/&gt;View | Update | Cancel
+            User-&gt;&gt;UI: Choose "Update"
+        else No Template
+            ES--&gt;&gt;UI: Session Created&lt;br/&gt;{sessionId, hasExisting: false}
+        end
+
+        UI-&gt;&gt;Dev: Initialize Device
+        Dev--&gt;&gt;UI: Device Ready
+        UI--&gt;&gt;User: Display Scan Instructions
+
+        loop For Each Finger (min 2)
+            User-&gt;&gt;Dev: Place Finger
+            Dev-&gt;&gt;UI: Capture Scan #1&lt;br/&gt;{rawData, quality}
+
+            alt Quality &lt; 75%
+                UI--&gt;&gt;User: Poor Quality - Retry
+            else Quality OK
+                UI--&gt;&gt;User: Scan Again (Verification)
+                User-&gt;&gt;Dev: Place Same Finger
+                Dev-&gt;&gt;UI: Capture Scan #2&lt;br/&gt;{rawData, quality}
+
+                UI-&gt;&gt;UI: Compare Scan #1 vs #2
+
+                alt Match &gt;= 85%
+                    UI-&gt;&gt;UI: Store Finger Template
+                    UI--&gt;&gt;User: ✓ Finger Registered
+                else No Match
+                    UI--&gt;&gt;User: Scans Don't Match - Retry
+                end
+            end
+        end
+
+        UI-&gt;&gt;ES: POST /api/v1/enrollment/submit&lt;br/&gt;{sessionId, fingerTemplates[]}
+        ES-&gt;&gt;ES: Extract Minutiae&lt;br/&gt;Convert to ISO Format
+        ES-&gt;&gt;ES: Encrypt Template&lt;br/&gt;FIDO Standard
+        ES-&gt;&gt;ES: Generate Template ID
+
+        ES-&gt;&gt;DB: INSERT INTO templates&lt;br/&gt;{id, nik, encrypted_template, ...}
+        DB--&gt;&gt;ES: Template Saved
+
+        alt Require Approval (Manager/Supervisor Role)
+            ES-&gt;&gt;DB: UPDATE status='PENDING_APPROVAL'
+            ES-&gt;&gt;Notif: Notify Approver&lt;br/&gt;{nik, template_id}
+            Notif--&gt;&gt;ES: Notification Sent
+        else Auto Approve
+            ES-&gt;&gt;DB: UPDATE status='ACTIVE'
+            ES-&gt;&gt;Cache: SET template:{nik}&lt;br/&gt;ttl=300
+            Cache--&gt;&gt;ES: Cached
+        end
+
+        ES-&gt;&gt;AS: Log Enrollment Event&lt;br/&gt;{nik, template_id, status, quality_scores}
+        AS--&gt;&gt;ES: Event Logged
+
+        ES--&gt;&gt;UI: Enrollment Complete&lt;br/&gt;{status, template_id}
+        UI--&gt;&gt;User: ✓ Success Message
+    end</code></pre>
+<hr />
+<h3 id="52-sequence-diagram-verification">5.2 Sequence Diagram - Verification</h3>
+<p><em>Sudah dijelaskan di bagian 3.2.3</em></p>
+<hr />
+<h3 id="53-sequence-diagram-template-sync-bulk-process">5.3 Sequence Diagram - Template Sync (Bulk Process)</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Scheduler as Scheduled Job&lt;br/&gt;(Daily 2AM)
+    participant Sync as Template Sync Service
+    participant HRMIS as HRMIS System
+    participant DB as Fingerprint DB
+    participant AS as Audit Service
+    participant Notif as Notification Service
+    participant Cache as Redis Cache
+
+    Scheduler-&gt;&gt;Sync: Trigger Daily Sync
+    Sync-&gt;&gt;HRMIS: GET /api/employees/all
+    HRMIS--&gt;&gt;Sync: All Employee Data&lt;br/&gt;[{nik, status, ...}]
+
+    Sync-&gt;&gt;DB: SELECT * FROM templates&lt;br/&gt;WHERE status IN ('ACTIVE','BLOCKED')
+    DB--&gt;&gt;Sync: All Templates&lt;br/&gt;[{nik, status, ...}]
+
+    Sync-&gt;&gt;Sync: Compare &amp; Identify Mismatches
+
+    loop For Each Mismatch
+        alt Employee INACTIVE + Template ACTIVE
+            Sync-&gt;&gt;DB: UPDATE templates&lt;br/&gt;SET status='BLOCKED'&lt;br/&gt;WHERE nik={nik}
+            DB--&gt;&gt;Sync: Updated
+
+            Sync-&gt;&gt;Cache: DEL template:{nik}
+            Cache--&gt;&gt;Sync: Deleted from Cache
+
+            Sync-&gt;&gt;AS: Log Auto-Block&lt;br/&gt;{nik, reason: 'Employee Inactive'}
+            AS--&gt;&gt;Sync: Logged
+
+            Sync-&gt;&gt;Notif: Notify User&lt;br/&gt;{nik, message: 'Template Blocked'}
+            Notif--&gt;&gt;Sync: Sent
+
+        else Employee ACTIVE + Template BLOCKED
+            Sync-&gt;&gt;Sync: Flag for Manual Review&lt;br/&gt;Store in review_queue
+
+        else Employee NOT_FOUND + Template EXISTS
+            Sync-&gt;&gt;Sync: Flag for Deletion&lt;br/&gt;Store in deletion_queue
+
+        else Employee TERMINATED + Template ACTIVE
+            Sync-&gt;&gt;DB: UPDATE templates&lt;br/&gt;SET status='DELETED'&lt;br/&gt;WHERE nik={nik}
+            DB--&gt;&gt;Sync: Updated
+
+            Sync-&gt;&gt;Cache: DEL template:{nik}
+            Cache--&gt;&gt;Sync: Deleted
+
+            Sync-&gt;&gt;AS: Log Auto-Delete&lt;br/&gt;{nik, reason: 'Employee Terminated'}
+            AS--&gt;&gt;Sync: Logged
+        end
+    end
+
+    Sync-&gt;&gt;Sync: Generate Sync Report&lt;br/&gt;{blocked: X, deleted: Y, flagged: Z}
+    Sync-&gt;&gt;AS: Log Sync Summary
+    AS--&gt;&gt;Sync: Logged
+
+    Sync-&gt;&gt;Notif: Notify Admin&lt;br/&gt;Sync Report + Manual Review Items
+    Notif--&gt;&gt;Sync: Sent
+
+    Sync--&gt;&gt;Scheduler: Sync Complete</code></pre>
+<hr />
+<h2 id="6-state-diagram">6. State Diagram</h2>
+<h3 id="61-state-diagram-template-status">6.1 State Diagram - Template Status</h3>
+<p><em>Sudah dijelaskan di bagian 3.3.3</em></p>
+<hr />
+<h3 id="62-state-diagram-transaction-authorization">6.2 State Diagram - Transaction Authorization</h3>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; INITIATED: Transaction Created
+
+    INITIATED --&gt; PENDING_AUTH: Authorization Required&lt;br/&gt;(Amount/Risk Check)
+    INITIATED --&gt; APPROVED: No Authorization Needed&lt;br/&gt;(Auto-approve)
+
+    PENDING_AUTH --&gt; IN_PROGRESS: Verification Started
+
+    IN_PROGRESS --&gt; APPROVER_1_SCANNING: First Approver Scanning
+    APPROVER_1_SCANNING --&gt; APPROVER_1_APPROVED: Match &gt;= Threshold
+    APPROVER_1_SCANNING --&gt; APPROVER_1_REJECTED: Match &lt; Threshold&lt;br/&gt;OR Max Retry
+    APPROVER_1_SCANNING --&gt; TIMEOUT: 60s Timeout
+
+    APPROVER_1_APPROVED --&gt; APPROVER_2_SCANNING: Multi-Approver&lt;br/&gt;Required
+    APPROVER_1_APPROVED --&gt; APPROVED: Single Approver&lt;br/&gt;Sufficient
+
+    APPROVER_2_SCANNING --&gt; APPROVER_2_APPROVED: Match &gt;= Threshold
+    APPROVER_2_SCANNING --&gt; APPROVER_2_REJECTED: Match &lt; Threshold
+    APPROVER_2_SCANNING --&gt; TIMEOUT
+
+    APPROVER_2_APPROVED --&gt; APPROVED: All Approvers OK
+
+    APPROVER_1_REJECTED --&gt; REJECTED
+    APPROVER_2_REJECTED --&gt; REJECTED
+    TIMEOUT --&gt; REJECTED
+
+    APPROVED --&gt; EXECUTED: Transaction Processing
+    REJECTED --&gt; CANCELLED: Transaction Cancelled
+
+    EXECUTED --&gt; [*]: Success
+    CANCELLED --&gt; [*]: Failed
+
+    note right of PENDING_AUTH
+        Waiting for approver(s)
+        to scan fingerprint
+    end note
+
+    note right of APPROVED
+        All authorization checks
+        passed successfully
+    end note
+
+    note right of REJECTED
+        Authorization failed:
+        - Mismatch
+        - Timeout
+        - Device error
+    end note</code></pre>
+<hr />
+<h2 id="7-business-rules">7. Business Rules</h2>
+<h3 id="71-enrollment-rules">7.1 Enrollment Rules</h3>
+<p><em>Sudah dijelaskan di bagian 3.1.4</em></p>
+<hr />
+<h3 id="72-verification-rules">7.2 Verification Rules</h3>
+<p><em>Sudah dijelaskan di bagian 3.2.4</em></p>
+<hr />
+<h3 id="73-security-rules">7.3 Security Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Deskripsi</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SEC-001</strong></td>
+<td>Template harus dienkripsi dengan FIDO standard</td>
+<td>AES-256 encryption before storage</td>
+</tr>
+<tr>
+<td><strong>SEC-002</strong></td>
+<td>Raw fingerprint data tidak boleh disimpan</td>
+<td>Only store encrypted ISO template</td>
+</tr>
+<tr>
+<td><strong>SEC-003</strong></td>
+<td>Communication antara device-UI harus encrypted</td>
+<td>TLS 1.3</td>
+</tr>
+<tr>
+<td><strong>SEC-004</strong></td>
+<td>API calls harus menggunakan JWT authentication</td>
+<td>Validate JWT pada setiap request</td>
+</tr>
+<tr>
+<td><strong>SEC-005</strong></td>
+<td>Matching score tidak boleh exposed ke client</td>
+<td>Return only APPROVED/REJECTED</td>
+</tr>
+<tr>
+<td><strong>SEC-006</strong></td>
+<td>Failed attempts harus di-log dan monitored</td>
+<td>Log ke audit + alert if &gt; threshold</td>
+</tr>
+<tr>
+<td><strong>SEC-007</strong></td>
+<td>Template cache di Redis harus ter-encrypt</td>
+<td>Encrypt before storing in Redis</td>
+</tr>
+<tr>
+<td><strong>SEC-008</strong></td>
+<td>Session timeout: 15 menit inactivity</td>
+<td>Auto logout after timeout</td>
+</tr>
+<tr>
+<td><strong>SEC-009</strong></td>
+<td>Admin actions require strong authentication</td>
+<td>MFA for admin users</td>
+</tr>
+<tr>
+<td><strong>SEC-010</strong></td>
+<td>Audit logs harus immutable</td>
+<td>Write-only audit table</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-data-model">8. Data Model</h2>
+<h3 id="81-entity-relationship">8.1 Entity Relationship</h3>
+<pre class="mermaid"><code>erDiagram
+    EMPLOYEES ||--o{ FINGERPRINT_TEMPLATES : has
+    FINGERPRINT_TEMPLATES ||--o{ VERIFICATION_LOGS : used_in
+    FINGERPRINT_TEMPLATES ||--o{ ENROLLMENT_LOGS : records
+    TRANSACTIONS ||--o{ AUTHORIZATION_SESSIONS : requires
+    AUTHORIZATION_SESSIONS ||--o{ VERIFICATION_LOGS : contains
+
+    EMPLOYEES {
+        string nik PK
+        string name
+        string role
+        string department
+        string status
+        datetime join_date
+        datetime last_sync
+    }
+
+    FINGERPRINT_TEMPLATES {
+        uuid template_id PK
+        string nik FK
+        blob encrypted_template
+        string finger_position
+        float quality_score
+        string status
+        datetime enrolled_at
+        datetime expires_at
+        string enrolled_by
+        uuid superseded_by
+    }
+
+    ENROLLMENT_LOGS {
+        uuid log_id PK
+        uuid template_id FK
+        string nik
+        string event_type
+        json scan_details
+        string device_id
+        datetime created_at
+    }
+
+    VERIFICATION_LOGS {
+        uuid log_id PK
+        uuid template_id FK
+        uuid session_id FK
+        string nik
+        float matching_score
+        string result
+        string device_id
+        datetime verified_at
+    }
+
+    TRANSACTIONS {
+        uuid transaction_id PK
+        string transaction_type
+        decimal amount
+        string currency
+        string initiator_nik
+        datetime created_at
+    }
+
+    AUTHORIZATION_SESSIONS {
+        uuid session_id PK
+        uuid transaction_id FK
+        json required_approvers
+        string status
+        datetime created_at
+        datetime expires_at
+        int timeout_seconds
+    }</code></pre>
+<hr />
+<h3 id="82-data-dictionary">8.2 Data Dictionary</h3>
+<h4 id="table-fingerprint_templates">Table: <code>fingerprint_templates</code></h4>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Nullable</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>template_id</td>
+<td>UUID</td>
+<td>NO</td>
+<td>Primary key</td>
+<td>PK, Default: UUID()</td>
+</tr>
+<tr>
+<td>nik</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>Employee NIK</td>
+<td>FK to employees.nik</td>
+</tr>
+<tr>
+<td>encrypted_template</td>
+<td>BLOB</td>
+<td>NO</td>
+<td>Encrypted ISO template</td>
+<td>Max 64KB</td>
+</tr>
+<tr>
+<td>finger_position</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>Finger identifier</td>
+<td>Enum: LEFT_THUMB, LEFT_INDEX, ...</td>
+</tr>
+<tr>
+<td>quality_score</td>
+<td>DECIMAL(5,2)</td>
+<td>NO</td>
+<td>Template quality (0-100)</td>
+<td>Range: 0.00-100.00</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>Template status</td>
+<td>Enum: PENDING_APPROVAL, ACTIVE, BLOCKED, SUPERSEDED, DELETED</td>
+</tr>
+<tr>
+<td>enrolled_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>Enrollment timestamp</td>
+<td>Default: CURRENT_TIMESTAMP</td>
+</tr>
+<tr>
+<td>expires_at</td>
+<td>TIMESTAMP</td>
+<td>YES</td>
+<td>Expiration date</td>
+<td>Default: NULL (no expiry)</td>
+</tr>
+<tr>
+<td>enrolled_by</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>NIK of person who enrolled</td>
+<td>FK to employees.nik</td>
+</tr>
+<tr>
+<td>superseded_by</td>
+<td>UUID</td>
+<td>YES</td>
+<td>ID of newer template</td>
+<td>FK to template_id</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>Record creation</td>
+<td>Default: CURRENT_TIMESTAMP</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>Last update</td>
+<td>On Update: CURRENT_TIMESTAMP</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indexes:</strong>
+- PRIMARY KEY (template_id)
+- UNIQUE (nik, status) WHERE status='ACTIVE'
+- INDEX idx_nik (nik)
+- INDEX idx_status (status)</p>
+<hr />
+<h4 id="table-verification_logs">Table: <code>verification_logs</code></h4>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Nullable</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>log_id</td>
+<td>UUID</td>
+<td>NO</td>
+<td>Primary key</td>
+<td>PK, Default: UUID()</td>
+</tr>
+<tr>
+<td>template_id</td>
+<td>UUID</td>
+<td>NO</td>
+<td>Template used</td>
+<td>FK to fingerprint_templates</td>
+</tr>
+<tr>
+<td>session_id</td>
+<td>UUID</td>
+<td>YES</td>
+<td>Authorization session</td>
+<td>FK to authorization_sessions</td>
+</tr>
+<tr>
+<td>nik</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>User NIK</td>
+<td>FK to employees.nik</td>
+</tr>
+<tr>
+<td>matching_score</td>
+<td>DECIMAL(5,2)</td>
+<td>NO</td>
+<td>Match score (0-100)</td>
+<td>Range: 0.00-100.00</td>
+</tr>
+<tr>
+<td>threshold</td>
+<td>DECIMAL(5,2)</td>
+<td>NO</td>
+<td>Applied threshold</td>
+<td>Range: 0.00-100.00</td>
+</tr>
+<tr>
+<td>result</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>Verification result</td>
+<td>Enum: APPROVED, REJECTED</td>
+</tr>
+<tr>
+<td>quality_score</td>
+<td>DECIMAL(5,2)</td>
+<td>NO</td>
+<td>Scan quality</td>
+<td>Range: 0.00-100.00</td>
+</tr>
+<tr>
+<td>device_id</td>
+<td>VARCHAR(50)</td>
+<td>NO</td>
+<td>Device identifier</td>
+<td>-</td>
+</tr>
+<tr>
+<td>ip_address</td>
+<td>VARCHAR(45)</td>
+<td>NO</td>
+<td>Client IP</td>
+<td>IPv4/IPv6</td>
+</tr>
+<tr>
+<td>user_agent</td>
+<td>VARCHAR(255)</td>
+<td>YES</td>
+<td>Client info</td>
+<td>-</td>
+</tr>
+<tr>
+<td>verified_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>Verification time</td>
+<td>Default: CURRENT_TIMESTAMP</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indexes:</strong>
+- PRIMARY KEY (log_id)
+- INDEX idx_template (template_id)
+- INDEX idx_session (session_id)
+- INDEX idx_verified_at (verified_at)</p>
+<hr />
+<h4 id="table-authorization_sessions">Table: <code>authorization_sessions</code></h4>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Nullable</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>session_id</td>
+<td>UUID</td>
+<td>NO</td>
+<td>Primary key</td>
+<td>PK, Default: UUID()</td>
+</tr>
+<tr>
+<td>transaction_id</td>
+<td>UUID</td>
+<td>NO</td>
+<td>Related transaction</td>
+<td>FK to transactions</td>
+</tr>
+<tr>
+<td>required_approvers</td>
+<td>JSON</td>
+<td>NO</td>
+<td>List of approver NIKs</td>
+<td>Array of strings</td>
+</tr>
+<tr>
+<td>approved_by</td>
+<td>JSON</td>
+<td>YES</td>
+<td>List of approved NIKs</td>
+<td>Array of objects</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>Session status</td>
+<td>Enum: PENDING, IN_PROGRESS, APPROVED, REJECTED, TIMEOUT</td>
+</tr>
+<tr>
+<td>timeout_seconds</td>
+<td>INT</td>
+<td>NO</td>
+<td>Session timeout</td>
+<td>Default: 60</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>Session start</td>
+<td>Default: CURRENT_TIMESTAMP</td>
+</tr>
+<tr>
+<td>expires_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>Session expiry</td>
+<td>created_at + timeout</td>
+</tr>
+<tr>
+<td>completed_at</td>
+<td>TIMESTAMP</td>
+<td>YES</td>
+<td>Completion time</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indexes:</strong>
+- PRIMARY KEY (session_id)
+- INDEX idx_transaction (transaction_id)
+- INDEX idx_status (status)</p>
+<hr />
+<h2 id="9-interface-design">9. Interface Design</h2>
+<h3 id="91-enrollment-interface">9.1 Enrollment Interface</h3>
+<p><strong>Wireframe:</strong></p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────────┐
+│  FingerScan Biometric - Enrollment                 │
+│  User: John Doe (NIK: 123456)                       │
+└─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────┐
+│  [Step 1 of 3] Device Detection                     │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  [●] DigitalPersona 4500 - Ready                    │
+│                                                      │
+│  [Next] [Cancel]                                    │
+└─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────┐
+│  [Step 2 of 3] Fingerprint Capture                  │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  Finger: Left Index                                 │
+│  Scan #1: [========= ] 90% Quality ✓                │
+│  Scan #2: [          ] Waiting...                   │
+│                                                      │
+│  Instructions:                                       │
+│  - Place finger firmly on sensor                    │
+│  - Keep finger still during scan                    │
+│  - Remove finger when prompted                      │
+│                                                      │
+│  [Retry] [Skip Finger] [Cancel]                     │
+└─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────┐
+│  [Step 3 of 3] Confirmation                         │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  Enrolled Fingers:                                   │
+│  ✓ Left Index  - Quality: 92%                       │
+│  ✓ Right Index - Quality: 88%                       │
+│                                                      │
+│  Status: ACTIVE (Auto-approved)                      │
+│                                                      │
+│  [Finish] [Enroll More Fingers]                     │
+└─────────────────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>UI Components:</strong>
+- Progress indicator (Step 1/2/3)
+- Device status badge (Ready/Error/Disconnected)
+- Quality meter (0-100%) with color coding
+- Instructional text (dynamic based on step)
+- Action buttons (context-sensitive)</p>
+<hr />
+<h3 id="92-verification-interface">9.2 Verification Interface</h3>
+<p><strong>Wireframe:</strong></p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────────┐
+│  Transaction Authorization Required                 │
+│  TRX-20260128-001 - Transfer Rp 150,000,000         │
+└─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────┐
+│  Required Approvers: 2                               │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  [1] Manager: Jane Smith (NIK: 789012)              │
+│      Status: ⏳ Waiting for scan...                 │
+│      Timeout: 00:48                                 │
+│                                                      │
+│  [2] Supervisor: Bob Johnson (NIK: 345678)          │
+│      Status: ⏸️ Pending (waiting for #1)            │
+│                                                      │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  [Scan Now] [Cancel Authorization]                  │
+│                                                      │
+└─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────┐
+│  Scanning: Jane Smith                               │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  [Fingerprint Animation]                            │
+│                                                      │
+│  Place your finger on the sensor                    │
+│  Quality: [==========] 85% ✓                        │
+│                                                      │
+│  Verifying... Please wait                           │
+│                                                      │
+└─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────┐
+│  ✓ Authorization Successful                         │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  [1] Jane Smith      - ✓ APPROVED (92% match)       │
+│  [2] Bob Johnson     - ✓ APPROVED (88% match)       │
+│                                                      │
+│  Transaction has been approved.                      │
+│  Returning to application...                         │
+│                                                      │
+└─────────────────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>UI Components:</strong>
+- Transaction summary header
+- Approver list with status badges
+- Countdown timer
+- Real-time fingerprint animation
+- Quality indicator
+- Success/Error messages with appropriate icons</p>
+<hr />
+<h3 id="93-admin-interface">9.3 Admin Interface</h3>
+<p><strong>Wireframe:</strong></p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────────┐
+│  Admin Dashboard - Template Management              │
+│  [Refresh] [Bulk Sync] [Export Report]              │
+└─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────┐
+│  Filters:                                            │
+│  Status: [All ▼] NIK: [        ] Date: [         ]  │
+│  [Apply Filter] [Reset]                             │
+├─────────────────────────────────────────────────────┤
+│                                                      │
+│  NIK      | Name        | Status  | Enrolled  | ⚙️  │
+│  ────────────────────────────────────────────────── │
+│  123456   | John Doe    | ACTIVE  | 2026-01-20| ⋮  │
+│  789012   | Jane Smith  | BLOCKED | 2026-01-15| ⋮  │
+│  345678   | Bob Johnson | ACTIVE  | 2026-01-18| ⋮  │
+│  ────────────────────────────────────────────────── │
+│                                                      │
+│  Showing 3 of 150 | [&lt; Prev] Page 1 of 50 [Next &gt;] │
+└─────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────┐
+│  Template Details: Jane Smith (789012)              │
+├─────────────────────────────────────────────────────┤
+│  Template ID: temp-uuid-789012-001                  │
+│  Status: BLOCKED                                     │
+│  Enrolled: 2026-01-15 10:30:00                      │
+│  Quality: 88%                                        │
+│  Fingers: Left Index, Right Index                   │
+│  Blocked By: admin@company.com                      │
+│  Reason: Suspicious activity detected               │
+│                                                      │
+│  [Unblock] [Delete] [View Logs] [Close]             │
+└─────────────────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>UI Components:</strong>
+- Filter panel (status, NIK, date range)
+- Sortable data table
+- Pagination controls
+- Actions dropdown (⋮) per row
+- Modal dialogs for details/actions
+- Bulk action buttons</p>
+<hr />
+<h2 id="10-error-handling">10. Error Handling</h2>
+<h3 id="101-error-scenarios">10.1 Error Scenarios</h3>
+<table>
+<thead>
+<tr>
+<th>Error Code</th>
+<th>Scenario</th>
+<th>User Message</th>
+<th>System Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ENR-E001</strong></td>
+<td>User not found in HRMIS</td>
+<td>"User tidak ditemukan. Hubungi HR untuk registrasi."</td>
+<td>Log error, display message</td>
+</tr>
+<tr>
+<td><strong>ENR-E002</strong></td>
+<td>User status inactive</td>
+<td>"User tidak aktif. Hubungi HR untuk aktivasi."</td>
+<td>Log error, prevent enrollment</td>
+</tr>
+<tr>
+<td><strong>ENR-E003</strong></td>
+<td>Device not detected</td>
+<td>"Device tidak terdeteksi. Periksa koneksi USB."</td>
+<td>Display troubleshooting steps</td>
+</tr>
+<tr>
+<td><strong>ENR-E004</strong></td>
+<td>Device error</td>
+<td>"Device error (Code: {code}). Hubungi IT support."</td>
+<td>Log device error, notify admin</td>
+</tr>
+<tr>
+<td><strong>ENR-E005</strong></td>
+<td>Poor quality (retry exhausted)</td>
+<td>"Kualitas sidik jari rendah. Coba lagi atau hubungi admin."</td>
+<td>Log quality failure</td>
+</tr>
+<tr>
+<td><strong>ENR-E006</strong></td>
+<td>Scans don't match</td>
+<td>"Sidik jari tidak cocok. Pastikan menggunakan jari yang sama."</td>
+<td>Retry from Scan #1</td>
+</tr>
+<tr>
+<td><strong>ENR-E007</strong></td>
+<td>Template already exists</td>
+<td>"Template sudah ada. Pilih Update untuk mengganti."</td>
+<td>Show options</td>
+</tr>
+<tr>
+<td><strong>ENR-E008</strong></td>
+<td>Encryption failed</td>
+<td>"Gagal enkripsi template. Coba lagi atau hubungi IT."</td>
+<td>Log critical error, alert admin</td>
+</tr>
+<tr>
+<td><strong>VER-E001</strong></td>
+<td>Template not found</td>
+<td>"Template tidak ditemukan. Lakukan enrollment terlebih dahulu."</td>
+<td>Redirect to enrollment</td>
+</tr>
+<tr>
+<td><strong>VER-E002</strong></td>
+<td>Template blocked</td>
+<td>"Template di-block. Hubungi admin untuk unblock."</td>
+<td>Display error, log access attempt</td>
+</tr>
+<tr>
+<td><strong>VER-E003</strong></td>
+<td>Matching score below threshold</td>
+<td>"Sidik jari tidak cocok. Coba lagi."</td>
+<td>Allow retry (max 3x)</td>
+</tr>
+<tr>
+<td><strong>VER-E004</strong></td>
+<td>Max retry exceeded</td>
+<td>"Maksimal percobaan tercapai. Coba lagi dalam 5 menit."</td>
+<td>Lock for 5 minutes, log</td>
+</tr>
+<tr>
+<td><strong>VER-E005</strong></td>
+<td>Verification timeout</td>
+<td>"Waktu verifikasi habis. Silakan ulangi transaksi."</td>
+<td>Reject authorization</td>
+</tr>
+<tr>
+<td><strong>VER-E006</strong></td>
+<td>Session expired</td>
+<td>"Sesi authorization expired. Ulangi transaksi."</td>
+<td>Cleanup session</td>
+</tr>
+<tr>
+<td><strong>API-E001</strong></td>
+<td>Invalid JWT token</td>
+<td>"Unauthorized access."</td>
+<td>Return 401</td>
+</tr>
+<tr>
+<td><strong>API-E002</strong></td>
+<td>Missing required parameters</td>
+<td>"Bad request: {param} is required."</td>
+<td>Return 400</td>
+</tr>
+<tr>
+<td><strong>API-E003</strong></td>
+<td>Database connection error</td>
+<td>"Service unavailable. Please try again later."</td>
+<td>Return 503, alert admin</td>
+</tr>
+<tr>
+<td><strong>API-E004</strong></td>
+<td>Redis unavailable</td>
+<td>"Service degraded (cache unavailable)."</td>
+<td>Fallback to DB, log</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="102-error-messages">10.2 Error Messages</h3>
+<p><strong>Format Error Message:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;VER-E003&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sidik jari tidak cocok. Coba lagi.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;details&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;matching_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">72.5</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;threshold&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">85.0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;retry_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;max_retry&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-28T10:15:30.000Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;req-uuid-001&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="103-recovery-procedures">10.3 Recovery Procedures</h3>
+<table>
+<thead>
+<tr>
+<th>Error Type</th>
+<th>Recovery Procedure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Device Disconnected</strong></td>
+<td>1. Display reconnection guide<br/>2. Poll device status every 5s<br/>3. Resume when ready<br/>4. Restore session state</td>
+</tr>
+<tr>
+<td><strong>Quality Check Failed</strong></td>
+<td>1. Show finger placement guide<br/>2. Suggest cleaning sensor<br/>3. Allow 3 retries<br/>4. Escalate to admin if persist</td>
+</tr>
+<tr>
+<td><strong>Matching Failed</strong></td>
+<td>1. Allow retry (max 3x)<br/>2. Suggest re-enrollment if persist<br/>3. Lock after max retry<br/>4. Log suspicious activity</td>
+</tr>
+<tr>
+<td><strong>Database Error</strong></td>
+<td>1. Retry with exponential backoff (3x)<br/>2. Fallback to queue if persist<br/>3. Alert admin<br/>4. Display user-friendly message</td>
+</tr>
+<tr>
+<td><strong>Cache Unavailable</strong></td>
+<td>1. Fallback to direct DB query<br/>2. Log degraded performance<br/>3. Continue normal operation<br/>4. Alert admin for Redis check</td>
+</tr>
+<tr>
+<td><strong>Encryption Failed</strong></td>
+<td>1. Retry encryption (1x)<br/>2. If fail, abort enrollment<br/>3. Log critical error<br/>4. Immediate admin alert</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-performance-requirements">11. Performance Requirements</h2>
+<h3 id="111-response-time">11.1 Response Time</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Target</th>
+<th>Maximum</th>
+<th>Measurement Point</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Enrollment - Device Init</strong></td>
+<td>&lt; 1s</td>
+<td>2s</td>
+<td>Device ready → UI confirmation</td>
+</tr>
+<tr>
+<td><strong>Enrollment - Single Scan</strong></td>
+<td>&lt; 0.5s</td>
+<td>1s</td>
+<td>Scan trigger → Capture complete</td>
+</tr>
+<tr>
+<td><strong>Enrollment - Quality Check</strong></td>
+<td>&lt; 0.2s</td>
+<td>0.5s</td>
+<td>Capture → Quality score display</td>
+</tr>
+<tr>
+<td><strong>Enrollment - Template Extraction</strong></td>
+<td>&lt; 2s</td>
+<td>5s</td>
+<td>All scans → Template generated</td>
+</tr>
+<tr>
+<td><strong>Enrollment - Save to DB</strong></td>
+<td>&lt; 0.5s</td>
+<td>1s</td>
+<td>Submit → DB confirmation</td>
+</tr>
+<tr>
+<td><strong>Verification - Template Fetch</strong></td>
+<td>&lt; 0.1s</td>
+<td>0.3s</td>
+<td>Request → Template retrieved (cache hit)</td>
+</tr>
+<tr>
+<td><strong>Verification - Template Fetch</strong></td>
+<td>&lt; 0.5s</td>
+<td>1s</td>
+<td>Request → Template retrieved (cache miss)</td>
+</tr>
+<tr>
+<td><strong>Verification - Matching</strong></td>
+<td>&lt; 0.5s</td>
+<td>1s</td>
+<td>Scan → Match score calculated</td>
+</tr>
+<tr>
+<td><strong>Verification - End-to-End</strong></td>
+<td>&lt; 3s</td>
+<td>5s</td>
+<td>Request → Authorization result</td>
+</tr>
+<tr>
+<td><strong>API - Enrollment Init</strong></td>
+<td>&lt; 0.5s</td>
+<td>1s</td>
+<td>Request → Response</td>
+</tr>
+<tr>
+<td><strong>API - Verify Request</strong></td>
+<td>&lt; 1s</td>
+<td>2s</td>
+<td>Request → Response</td>
+</tr>
+<tr>
+<td><strong>Admin - Load Dashboard</strong></td>
+<td>&lt; 2s</td>
+<td>3s</td>
+<td>Request → Full page render</td>
+</tr>
+<tr>
+<td><strong>Bulk Sync</strong></td>
+<td>&lt; 5min</td>
+<td>10min</td>
+<td>For 10,000 templates</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="112-throughput">11.2 Throughput</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Concurrent Enrollments</strong></td>
+<td>50</td>
+<td>Simultaneous enrollment sessions</td>
+</tr>
+<tr>
+<td><strong>Concurrent Verifications</strong></td>
+<td>200</td>
+<td>Peak transaction authorization</td>
+</tr>
+<tr>
+<td><strong>API Requests/sec</strong></td>
+<td>1000</td>
+<td>Mixed read/write operations</td>
+</tr>
+<tr>
+<td><strong>Database Writes/sec</strong></td>
+<td>500</td>
+<td>Enrollment + audit logs</td>
+</tr>
+<tr>
+<td><strong>Database Reads/sec</strong></td>
+<td>2000</td>
+<td>Verification template fetches</td>
+</tr>
+<tr>
+<td><strong>Cache Hit Rate</strong></td>
+<td>&gt; 95%</td>
+<td>Redis template cache</td>
+</tr>
+<tr>
+<td><strong>Device per Branch</strong></td>
+<td>2-5</td>
+<td>Based on transaction volume</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="113-scalability">11.3 Scalability</h3>
+<p><strong>Horizontal Scaling:</strong>
+- Fingerprint Service: Stateless, dapat scale to N instances
+- Enrollment Service: Stateless, dapat scale to N instances
+- Database: Master-slave replication (1 master, 2+ slaves)
+- Redis: Cluster mode dengan 3+ nodes
+- Load Balancer: NGINX/HAProxy untuk distribute load</p>
+<p><strong>Vertical Scaling:</strong>
+- Database: Minimum 8 CPU, 16GB RAM untuk 10K users
+- Redis: Minimum 4 CPU, 8GB RAM
+- Application Server: Minimum 4 CPU, 8GB RAM per instance</p>
+<p><strong>Capacity Planning:</strong>
+- 10,000 users: 2 app instances, 1 DB master + 1 slave, 3-node Redis
+- 50,000 users: 5 app instances, 1 DB master + 2 slaves, 3-node Redis
+- 100,000 users: 10 app instances, 1 DB master + 3 slaves, 5-node Redis</p>
+<hr />
+<h2 id="12-acceptance-criteria">12. Acceptance Criteria</h2>
+<h3 id="121-functional-acceptance">12.1 Functional Acceptance</h3>
+<table>
+<thead>
+<tr>
+<th>Criteria ID</th>
+<th>Description</th>
+<th>Acceptance Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AC-F001</strong></td>
+<td>User dapat melakukan enrollment dengan minimum 2 jari</td>
+<td>Enroll 2 jari, verify template tersimpan dengan status ACTIVE</td>
+</tr>
+<tr>
+<td><strong>AC-F002</strong></td>
+<td>System menolak enrollment jika quality &lt; 75%</td>
+<td>Simulasi poor quality, verify enrollment ditolak</td>
+</tr>
+<tr>
+<td><strong>AC-F003</strong></td>
+<td>Template ter-enkripsi sebelum disimpan</td>
+<td>Inspect DB record, verify encrypted_template tidak readable</td>
+</tr>
+<tr>
+<td><strong>AC-F004</strong></td>
+<td>Verification berhasil dengan matching score &gt;= 85%</td>
+<td>Scan jari yang sama dengan enrollment, verify APPROVED</td>
+</tr>
+<tr>
+<td><strong>AC-F005</strong></td>
+<td>Verification gagal dengan matching score &lt; 85%</td>
+<td>Scan jari berbeda, verify REJECTED</td>
+</tr>
+<tr>
+<td><strong>AC-F006</strong></td>
+<td>Multi-approver require semua approver APPROVED</td>
+<td>Transaction dengan 2 approver, 1 reject, verify authorization REJECTED</td>
+</tr>
+<tr>
+<td><strong>AC-F007</strong></td>
+<td>Admin dapat block/unblock template</td>
+<td>Block template, verify status=BLOCKED, unblock, verify status=ACTIVE</td>
+</tr>
+<tr>
+<td><strong>AC-F008</strong></td>
+<td>Template blocked tidak bisa untuk verification</td>
+<td>Block template, attempt verification, verify REJECTED</td>
+</tr>
+<tr>
+<td><strong>AC-F009</strong></td>
+<td>Bulk sync auto-block template untuk employee inactive</td>
+<td>Set employee status=INACTIVE, run sync, verify template BLOCKED</td>
+</tr>
+<tr>
+<td><strong>AC-F010</strong></td>
+<td>Audit log tercatat untuk setiap enrollment dan verification</td>
+<td>Perform enrollment &amp; verification, verify logs exist in audit_db</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="122-non-functional-acceptance">12.2 Non-Functional Acceptance</h3>
+<table>
+<thead>
+<tr>
+<th>Criteria ID</th>
+<th>Description</th>
+<th>Acceptance Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AC-NF001</strong></td>
+<td>Verification response time &lt; 3s end-to-end</td>
+<td>Load test 100 concurrent verifications, verify p95 &lt; 3s</td>
+</tr>
+<tr>
+<td><strong>AC-NF002</strong></td>
+<td>System dapat handle 200 concurrent verifications</td>
+<td>Load test 200 concurrent users, verify no failures</td>
+</tr>
+<tr>
+<td><strong>AC-NF003</strong></td>
+<td>Cache hit rate &gt; 95% untuk verification</td>
+<td>Monitor Redis metrics selama 1 jam operasi, verify hit rate</td>
+</tr>
+<tr>
+<td><strong>AC-NF004</strong></td>
+<td>Template encryption menggunakan FIDO standard</td>
+<td>Code review + security audit</td>
+</tr>
+<tr>
+<td><strong>AC-NF005</strong></td>
+<td>API authentication menggunakan JWT</td>
+<td>Attempt API call without JWT, verify 401 response</td>
+</tr>
+<tr>
+<td><strong>AC-NF006</strong></td>
+<td>Failed attempts di-log dan monitored</td>
+<td>Perform 3 failed verifications, verify logs + alert triggered</td>
+</tr>
+<tr>
+<td><strong>AC-NF007</strong></td>
+<td>System recovery dari Redis failure dalam &lt; 1s</td>
+<td>Simulate Redis down, verify fallback to DB works</td>
+</tr>
+<tr>
+<td><strong>AC-NF008</strong></td>
+<td>Bulk sync complete dalam &lt; 5 min untuk 10K records</td>
+<td>Run sync with 10K templates, measure execution time</td>
+</tr>
+<tr>
+<td><strong>AC-NF009</strong></td>
+<td>UI responsive pada device dengan &lt; 100ms latency</td>
+<td>Test pada various devices, verify UI responsiveness</td>
+</tr>
+<tr>
+<td><strong>AC-NF010</strong></td>
+<td>Error messages user-friendly dan informatif</td>
+<td>Review all error messages, verify clarity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="123-integration-acceptance">12.3 Integration Acceptance</h3>
+<table>
+<thead>
+<tr>
+<th>Criteria ID</th>
+<th>Description</th>
+<th>Acceptance Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AC-I001</strong></td>
+<td>DAF app dapat request verification via API</td>
+<td>DAF calls API, verify authorization result returned</td>
+</tr>
+<tr>
+<td><strong>AC-I002</strong></td>
+<td>BDS app dapat request verification via API</td>
+<td>BDS calls API, verify authorization result returned</td>
+</tr>
+<tr>
+<td><strong>AC-I003</strong></td>
+<td>CS Teller dapat request verification via API</td>
+<td>CS Teller calls API, verify authorization result returned</td>
+</tr>
+<tr>
+<td><strong>AC-I004</strong></td>
+<td>HRMIS sync update employee status di fingerprint DB</td>
+<td>Update employee in HRMIS, verify sync updates template</td>
+</tr>
+<tr>
+<td><strong>AC-I005</strong></td>
+<td>Notification service send email/SMS untuk enrollment</td>
+<td>Complete enrollment, verify notification sent</td>
+</tr>
+<tr>
+<td><strong>AC-I006</strong></td>
+<td>Audit logs dapat di-query via Admin Dashboard</td>
+<td>Login admin, query audit logs, verify results</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="document-revision-history">Document Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2026-01-28</td>
+<td>PT Ihsan Solusi Informatika</td>
+<td>Initial draft FDS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="approval">Approval</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Name</th>
+<th>Signature</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Product Owner</strong></td>
+<td><strong><em>_</em></strong><strong><em>_</em></strong>_</td>
+<td><strong><em>_</em></strong><strong><em>_</em></strong>_</td>
+<td><strong><em>_</em></strong>_</td>
+</tr>
+<tr>
+<td><strong>Technical Lead</strong></td>
+<td><strong><em>_</em></strong><strong><em>_</em></strong>_</td>
+<td><strong><em>_</em></strong><strong><em>_</em></strong>_</td>
+<td><strong><em>_</em></strong>_</td>
+</tr>
+<tr>
+<td><strong>QA Lead</strong></td>
+<td><strong><em>_</em></strong><strong><em>_</em></strong>_</td>
+<td><strong><em>_</em></strong><strong><em>_</em></strong>_</td>
+<td><strong><em>_</em></strong>_</td>
+</tr>
+<tr>
+<td><strong>Security Officer</strong></td>
+<td><strong><em>_</em></strong><strong><em>_</em></strong>_</td>
+<td><strong><em>_</em></strong><strong><em>_</em></strong>_</td>
+<td><strong><em>_</em></strong>_</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>END OF DOCUMENT</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Kembali ke atas
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Tersalin ke clipboard", "clipboard.copy": "Salin ke clipboard", "search.result.more.one": "1 lagi di halaman ini", "search.result.more.other": "# lagi di halaman ini", "search.result.none": "Tidak ada dokumen yang sesuai", "search.result.one": "1 dokumen ditemukan", "search.result.other": "# dokumen ditemukan", "search.result.placeholder": "Ketik untuk mulai pencarian", "search.result.term.missing": "Tidak ada", "select.version": "Pilih versi"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
